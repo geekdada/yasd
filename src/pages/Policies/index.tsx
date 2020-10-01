@@ -48,7 +48,6 @@ const Page: React.FC = () => {
     }
   }
 
-  console.log(policyGroupNames, refs)
   return (
     <div tw="relative pb-5">
       <div

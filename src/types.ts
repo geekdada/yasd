@@ -23,3 +23,37 @@ export interface ProxyTestResult {
   available?: number
   tfo?: boolean
 }
+
+export interface RecentRequests {
+  requests: Array<RequestItem>
+}
+
+export interface RequestItem {
+  id: number
+  remoteAddress: string
+  inMaxSpeed: number
+  notes: string[]
+  inCurrentSpeed: number
+  failed: number
+  status: 'Active' | 'Complete'
+  outCurrentSpeed: number
+  completed: number
+  sourcePort: number
+  completedDate: number
+  outBytes: number
+  sourceAddress: string
+  localAddress: string
+  requestHeader: string
+  policyName: string
+  inBytes: number
+  method: string
+  pid: number
+  replica: number
+  rule: string
+  startDate: number
+  setupCompletedDate: number
+  outMaxSpeed: number
+  processPath: string
+  URL: string
+  timingRecords: Array<{ durationInMillisecond: number; name: string }>
+}

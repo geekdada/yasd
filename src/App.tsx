@@ -10,12 +10,16 @@ import tw from 'twin.macro'
 import css from '@emotion/css/macro'
 import styled from '@emotion/styled/macro'
 
+import FullLoading from './components/FullLoading'
 import IndexPage from './pages/Index'
 import { setServer } from './utils/fetcher'
 import PageLayout from './components/PageLayout'
 
 const PoliciesPage = loadable(() => import('./pages/Policies'), {
-  fallback: <Spinner />,
+  fallback: <FullLoading />,
+})
+const RequestsPage = loadable(() => import('./pages/Requests'), {
+  fallback: <FullLoading />,
 })
 
 setServer('0.0.0.0', 6171, 'teehee_network')
@@ -29,6 +33,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/policies">
           <PoliciesPage />
+        </Route>
+        <Route exact path="/requests">
+          <RequestsPage />
         </Route>
         <Route path="*">
           <Redirect to="/" />
