@@ -2,38 +2,70 @@
   "name": "yasd",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
+  "devDependencies": {
+    "@craco/craco": "^5.6.4",
+    "@emotion/core": "^10.0.35",
+    "@emotion/styled": "^10.0.27",
+    "@loadable/component": "^5.13.2",
+    "@sumup/circuit-ui": "^2.1.0",
+    "@sumup/collector": "^1.0.1",
+    "@sumup/design-tokens": "^1.0.3",
+    "@sumup/icons": "^1.2.0",
+    "@sumup/intl": "^1.1.3",
+    "@tailwindcss/custom-forms": "^0.2.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@types/jest": "^24.0.0",
+    "@types/loadable__component": "^5.13.0",
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "@types/react-router-dom": "^5.1.5",
+    "@typescript-eslint/eslint-plugin": "^3.9.0",
+    "@typescript-eslint/parser": "^3.9.0",
+    "autoprefixer": "^9.8.6",
+    "axios": "^0.20.0",
+    "clsx": "^1.1.1",
+    "craco-workbox": "^0.1.0",
+    "emotion-theming": "^10.0.27",
+    "eslint": "^6.6.0",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "modern-normalize": "^1.0.0",
+    "node-sass": "^4.14.1",
+    "notistack": "^1.0.0",
+    "postcss-import": "^12.0.1",
+    "prettier": "^2.1.2",
+    "prop-types": "^15.7.2",
+    "raw.macro": "^0.4.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "typescript": "~3.7.2"
+    "react-scroll-to": "^3.0.0-beta.6",
+    "swr": "^0.3.5",
+    "tailwindcss": "^1.6.2",
+    "twin.macro": "^1.7.0",
+    "typescript": "~3.7.2",
+    "use-is-in-viewport": "^1.0.9"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test"
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "last 2 iOS versions",
+      "last 5 Android versions",
+      "last 5 Chrome versions"
     ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "dependencies": {}
 }
