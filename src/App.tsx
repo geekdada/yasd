@@ -21,6 +21,9 @@ const PoliciesPage = loadable(() => import('./pages/Policies'), {
 const RequestsPage = loadable(() => import('./pages/Requests'), {
   fallback: <FullLoading />,
 })
+const TrafficPage = loadable(() => import('./pages/Traffic'), {
+  fallback: <FullLoading />,
+})
 
 setServer('0.0.0.0', 6171, 'teehee_network')
 
@@ -36,6 +39,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/requests">
           <RequestsPage />
+        </Route>
+        <Route exact path="/traffic">
+          <TrafficPage />
         </Route>
         <Route path="*">
           <Redirect to="/" />

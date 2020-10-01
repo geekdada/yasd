@@ -22,10 +22,10 @@ const Page: React.FC = () => {
 
   return (
     <div tw="py-5">
-      <MenuWrapper tw="flex justify-center">
+      <MenuWrapper tw="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
         {menu.map((item) => {
           return (
-            <MenuItemWrapper key={item.title} tw="w-1/2 px-4 mb-5">
+            <MenuItemWrapper key={item.title}>
               <MenuItem
                 shadow="single"
                 css={item.tintColor}

@@ -51,13 +51,13 @@ const Page: React.FC = () => {
   return (
     <div tw="relative pb-5">
       <div
-        tw="fixed top-0 left-0 right-0 shadow bg-white z-10 pt-5"
+        tw="sticky top-0 left-0 right-0 shadow bg-white z-10 pt-5 mb-4"
         ref={headerRef}>
         <Heading size={'tera'} noMargin tw="mb-2 px-4">
           Policies
         </Heading>
 
-        <PoliciesWrapper tw="py-3 px-4 mb-2">
+        <PoliciesWrapper tw="py-3 px-4">
           <ScrollTo>
             {({ scroll }) => (
               <React.Fragment>
@@ -79,7 +79,6 @@ const Page: React.FC = () => {
 
       <PolicyGroupsWrapper
         css={css`
-          padding-top: 9.5rem;
           ${tw`px-4`}
         `}>
         {policies &&

@@ -38,7 +38,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
   policyGroupName,
   policyGroup,
 }) => {
-  const [isInViewport, targetRef] = useIsInViewport({ threshold: 50 })
+  const [isInViewport, targetRef] = useIsInViewport({ threshold: 10 })
   const [selection, setSelection] = useState<string>()
   const [latencies, setLatencies] = useState<{
     [name: string]: number

@@ -13,4 +13,10 @@ export default [
     tintColor: tw`bg-gray-100`,
     textColor: tw`text-gray-800`,
   },
+  {
+    title: 'Traffic',
+    link: '/traffic',
+    tintColor: tw`bg-gray-100`,
+    textColor: tw`text-gray-800`,
+  },
 ]

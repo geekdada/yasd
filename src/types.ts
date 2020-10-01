@@ -57,3 +57,22 @@ export interface RequestItem {
   URL: string
   timingRecords: Array<{ durationInMillisecond: number; name: string }>
 }
+
+export interface Traffic {
+  startTime: number
+  interface: {
+    [name: string]: ConnectorTraffic
+  }
+  connector: {
+    [name: string]: ConnectorTraffic
+  }
+}
+
+export interface ConnectorTraffic {
+  outCurrentSpeed: number
+  in: number
+  inCurrentSpeed: number
+  outMaxSpeed: number
+  out: number
+  inMaxSpeed: number
+}
