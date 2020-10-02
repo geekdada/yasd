@@ -12,15 +12,9 @@ import { Policies, PolicyGroups } from '../../types'
 import fetcher from '../../utils/fetcher'
 import PolicyGroup from './components/PolicyGroup'
 
-const PoliciesWrapper = styled.div`
-  ${tw`flex justify-start flex-no-wrap overflow-auto pb-5`}
-`
-
 const PolicyNameItem = styled.div`
-  ${tw`flex-shrink-0 bg-gray-300 rounded-md px-3 py-2 mr-3 overflow-hidden cursor-pointer`}
+  ${tw`flex-shrink-0 bg-gray-200 rounded-md px-3 py-2 mr-3 overflow-hidden cursor-pointer hover:bg-gray-300`}
 `
-
-const PolicyGroupsWrapper = styled.div``
 
 const Page: React.FC = () => {
   const { data: policies, error: policiesError } = useSWR<Policies>(
@@ -57,7 +51,7 @@ const Page: React.FC = () => {
           Policies
         </Heading>
 
-        <PoliciesWrapper tw="py-3 px-4">
+        <div tw=" flex justify-start flex-no-wrap overflow-auto pt-3 pb-5 px-4">
           <ScrollTo>
             {({ scroll }) => (
               <React.Fragment>
@@ -74,10 +68,10 @@ const Page: React.FC = () => {
               </React.Fragment>
             )}
           </ScrollTo>
-        </PoliciesWrapper>
+        </div>
       </div>
 
-      <PolicyGroupsWrapper
+      <div
         css={css`
           ${tw`px-4`}
         `}>
@@ -93,7 +87,7 @@ const Page: React.FC = () => {
               </div>
             )
           })}
-      </PolicyGroupsWrapper>
+      </div>
     </div>
   )
 }

@@ -9,37 +9,16 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import tw from 'twin.macro'
 import React, { useState } from 'react'
 import useSWR from 'swr'
-import bytes from 'bytes'
 
+import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
 import { ConnectorTraffic, Traffic } from '../../types'
 import fetcher from '../../utils/fetcher'
+import TrafficDataCell from './components/TrafficDataCell'
 
 dayjs.extend(relativeTime)
 
 const TrafficWrapper = styled.div`
   ${tw`px-4`}
-`
-
-const DataGroup = styled.div`
-  ${tw`divide-y divide-gray-200 bg-gray-100 rounded-lg mb-4`}
-`
-
-const DataRow = styled.div``
-
-const DataRowMain = styled.div`
-  ${tw`flex items-center justify-between px-3 py-3 leading-normal text-gray-800`}
-
-  & > div:last-of-type {
-    ${tw`text-gray-600`}
-  }
-`
-
-const DataRowSub = styled.div`
-  ${tw`flex items-center justify-between px-3 leading-normal text-xs text-gray-800`}
-
-  & > div:last-of-type {
-    ${tw`text-gray-600`}
-  }
 `
 
 const Page: React.FC = () => {
@@ -113,72 +92,14 @@ const Page: React.FC = () => {
           <DataGroup>
             {Object.keys(traffic.interface).map((name) => {
               const data = traffic.interface[name]
-              return (
-                <DataRow key={name}>
-                  <DataRowMain>
-                    <div>{name}</div>
-                    <div>总计 {bytes(data.in + data.out)}</div>
-                  </DataRowMain>
-                  <div tw="pb-3">
-                    <DataRowSub>
-                      <div>流量</div>
-                      <div>
-                        上传: {bytes(data.out)} 下载: {bytes(data.in)}
-                      </div>
-                    </DataRowSub>
-                    <DataRowSub>
-                      <div>当前速度</div>
-                      <div>
-                        上传: {bytes(data.outCurrentSpeed)}/s 下载:{' '}
-                        {bytes(data.inCurrentSpeed)}/s
-                      </div>
-                    </DataRowSub>
-                    <DataRowSub>
-                      <div>最高速度</div>
-                      <div>
-                        上传: {bytes(data.outMaxSpeed)}/s 下载:{' '}
-                        {bytes(data.inMaxSpeed)}/s
-                      </div>
-                    </DataRowSub>
-                  </div>
-                </DataRow>
-              )
+              return <TrafficDataCell key={name} name={name} data={data} />
             })}
           </DataGroup>
 
           <DataGroup>
             {getSortedTraffic(traffic.connector).map((data) => {
               const name = data.name
-              return (
-                <DataRow key={name}>
-                  <DataRowMain>
-                    <div>{name}</div>
-                    <div>总计 {bytes(data.in + data.out)}</div>
-                  </DataRowMain>
-                  <div tw="pb-3">
-                    <DataRowSub>
-                      <div>流量</div>
-                      <div>
-                        上传: {bytes(data.out)} 下载: {bytes(data.in)}
-                      </div>
-                    </DataRowSub>
-                    <DataRowSub>
-                      <div>当前速度</div>
-                      <div>
-                        上传: {bytes(data.outCurrentSpeed)}/s 下载:{' '}
-                        {bytes(data.inCurrentSpeed)}/s
-                      </div>
-                    </DataRowSub>
-                    <DataRowSub>
-                      <div>最高速度</div>
-                      <div>
-                        上传: {bytes(data.outMaxSpeed)}/s 下载:{' '}
-                        {bytes(data.inMaxSpeed)}/s
-                      </div>
-                    </DataRowSub>
-                  </div>
-                </DataRow>
-              )
+              return <TrafficDataCell key={name} name={name} data={data} />
             })}
           </DataGroup>
         </TrafficWrapper>

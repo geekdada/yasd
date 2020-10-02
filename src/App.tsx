@@ -24,8 +24,24 @@ const RequestsPage = loadable(() => import('./pages/Requests'), {
 const TrafficPage = loadable(() => import('./pages/Traffic'), {
   fallback: <FullLoading />,
 })
+const ModulesPage = loadable(() => import('./pages/Modules'), {
+  fallback: <FullLoading />,
+})
+const ScriptingPage = loadable(() => import('./pages/Scripting'), {
+  fallback: <FullLoading />,
+})
 
-setServer('0.0.0.0', 6171, 'teehee_network')
+if (
+  process.env.REACT_APP_HOST &&
+  process.env.REACT_APP_PORT &&
+  process.env.REACT_APP_KEY
+) {
+  setServer(
+    process.env.REACT_APP_HOST,
+    Number(process.env.REACT_APP_PORT),
+    process.env.REACT_APP_KEY,
+  )
+}
 
 const App: React.FC = () => (
   <ThemeProvider theme={light}>
@@ -42,6 +58,12 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/traffic">
           <TrafficPage />
+        </Route>
+        <Route exact path="/modules">
+          <ModulesPage />
+        </Route>
+        <Route exact path="/scripting">
+          <ScriptingPage />
         </Route>
         <Route path="*">
           <Redirect to="/" />

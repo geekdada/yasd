@@ -1,12 +1,12 @@
 module.exports = {
-  purge: [
-    './src/**/*.jsx',
-  ],
+  purge: ['./src/**/*.jsx'],
   theme: {
-    extend: {}
+    extend: {},
   },
   variants: {},
-  plugins: [
-    require('@tailwindcss/custom-forms')
-  ]
+  plugins: [require('@tailwindcss/custom-forms')],
+  future: {
+    removeDeprecatedGapUtilities: true,
+    purgeLayersByDefault: true,
+  },
 }

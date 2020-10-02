@@ -76,3 +76,30 @@ export interface ConnectorTraffic {
   out: number
   inMaxSpeed: number
 }
+
+export interface Capability {
+  enabled: boolean
+}
+
+export interface Modules {
+  enabled: string[]
+  available: string[]
+}
+
+export interface Scriptings {
+  scripts: Array<{
+    name: string
+    type: string
+    path: string
+  }>
+}
+
+export interface EventList {
+  events: Array<{
+    identifier: string
+    date: string
+    type: string
+    allowDismiss: number
+    content: string
+  }>
+}
