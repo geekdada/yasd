@@ -103,3 +103,14 @@ export interface EventList {
     content: string
   }>
 }
+
+export interface Profile {
+  id: string
+  host: string
+  port: number
+  key: string
+  name: string
+  platform: 'macos' | 'ios'
+  platformVersion: string
+  platformBuild: number
+}

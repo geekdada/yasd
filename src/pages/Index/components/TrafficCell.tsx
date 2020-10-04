@@ -15,11 +15,11 @@ const Cell = styled.div`
 `
 
 const Title = styled.div`
-  ${tw`text-sm text-gray-500 leading-relaxed font-medium`}
+  ${tw`text-xs md:text-sm text-gray-500 leading-relaxed font-medium`}
 `
 
 const Data = styled.div`
-  ${tw`text-lg text-gray-700 leading-normal`}
+  ${tw`text-base md:text-lg text-gray-700 leading-normal`}
 `
 
 const TrafficCell: React.FC = () => {
@@ -33,7 +33,7 @@ const TrafficCell: React.FC = () => {
     },
   )
 
-  const activeConnector = useMemo(() => {
+  const activeInterface = useMemo(() => {
     if (!traffic) return undefined
 
     const aggregation: ConnectorTraffic = {
@@ -46,9 +46,8 @@ const TrafficCell: React.FC = () => {
     }
 
     // 第一个
-    for (const name in traffic.connector) {
-      const conn = traffic.connector[name]
-
+    for (const name in traffic.interface) {
+      const conn = traffic.interface[name]
       aggregation.in += conn.in
       aggregation.out += conn.out
       aggregation.outCurrentSpeed += conn.outCurrentSpeed
@@ -60,19 +59,19 @@ const TrafficCell: React.FC = () => {
 
   return (
     <div tw="grid grid-cols-3 gap-4 divide-x divide-gray-200 border-solid border border-gray-200 bg-gray-100">
-      {activeConnector && (
+      {activeInterface && (
         <React.Fragment>
           <Cell>
             <Title>Upload</Title>
-            <Data>{bytes(activeConnector.outCurrentSpeed)}/s</Data>
+            <Data>{bytes(activeInterface.outCurrentSpeed)}/s</Data>
           </Cell>
           <Cell>
             <Title>Download</Title>
-            <Data>{bytes(activeConnector.inCurrentSpeed)}/s</Data>
+            <Data>{bytes(activeInterface.inCurrentSpeed)}/s</Data>
           </Cell>
           <Cell>
             <Title>Total</Title>
-            <Data>{bytes(activeConnector.in + activeConnector.out)}</Data>
+            <Data>{bytes(activeInterface.in + activeInterface.out)}</Data>
           </Cell>
         </React.Fragment>
       )}

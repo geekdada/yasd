@@ -11,12 +11,12 @@ import { Collapse } from 'react-collapse'
 import { DataRow, DataRowMain, DataRowSub } from '../../../components/Data'
 import { ConnectorTraffic } from '../../../types'
 
-interface TrafficDataCellProps {
+interface TrafficDataRowProps {
   name: string
   data: ConnectorTraffic
 }
 
-const TrafficDataCell: React.FC<TrafficDataCellProps> = ({ name, data }) => {
+const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
   const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(false)
 
   return (
@@ -68,4 +68,4 @@ const TrafficDataCell: React.FC<TrafficDataCellProps> = ({ name, data }) => {
   )
 }
 
-export default TrafficDataCell
+export default TrafficDataRow
