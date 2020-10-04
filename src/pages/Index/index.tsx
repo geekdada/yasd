@@ -27,11 +27,11 @@ const Page: React.FC = () => {
   const history = useHistory()
   const profile = useProfile()
   const { data: systemProxy } = useSWR<Capability>(
-    '/features/system_proxy',
+    profile?.platform === 'macos' ? '/features/system_proxy' : null,
     fetcher,
   )
   const { data: enhancedMode } = useSWR<Capability>(
-    '/features/enhanced_mode',
+    profile?.platform === 'macos' ? '/features/enhanced_mode' : null,
     fetcher,
   )
 

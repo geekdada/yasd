@@ -18,7 +18,7 @@ const Events: React.FC = () => {
 
   return (
     <div tw="mx-4 p-3 bg-gray-100 rounded">
-      <div tw="text-base text-gray-700">Events</div>
+      <div tw="text-base font-medium text-gray-700">Events</div>
       <div tw="divide-y divide-gray-200 mt-1">
         {events &&
           events.events.slice(0, 5).map((item) => {
