@@ -149,8 +149,10 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
           return (
             <div
               css={[
-                tw`bg-gray-200 rounded-md px-4 py-3 cursor-pointer hover:bg-gray-300`,
-                selection === policy.name ? tw`bg-blue-600 text-white` : '',
+                tw`bg-gray-200 rounded-md px-4 py-3 cursor-pointer hover:bg-gray-300 transition-colors ease-in-out duration-200`,
+                selection === policy.name
+                  ? tw`bg-blue-600 text-white hover:bg-blue-600`
+                  : '',
               ]}
               key={policy.name}
               onClick={() => selectPolicy(policy.name)}>
