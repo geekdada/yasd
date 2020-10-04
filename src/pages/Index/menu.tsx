@@ -7,6 +7,7 @@ import CapabilityTile from './components/CapabilityTile'
 
 export interface MenuItem {
   title: string
+  subTitle?: string
   link?: string
   tintColor?: TwStyle
   textColor?: TwStyle
@@ -51,6 +52,16 @@ const menu: Array<MenuItem> = [
   {
     title: 'Rewrite',
     component: <CapabilityTile api="/features/rewrite" title="Rewrite" />,
+  },
+  {
+    title: 'GitHub',
+    subTitle: '🌟',
+    link: 'https://github.com/geekdada/yasd',
+  },
+  {
+    title: '请我喝咖啡！',
+    subTitle: '☕️',
+    link: 'https://surgio.royli.dev/support.html',
   },
 ]
 

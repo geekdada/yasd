@@ -67,6 +67,16 @@ const Page: React.FC = () => {
       })
   }, [enhancedMode])
 
+  const openLink = (link?: string) => {
+    if (!link) return
+
+    if (link.startsWith('http')) {
+      window.open(link)
+    } else {
+      history.push(link)
+    }
+  }
+
   return (
     <ModalProvider>
       <div tw="pb-5">
@@ -140,8 +150,12 @@ const Page: React.FC = () => {
                 ) : (
                   <MenuTile
                     style={item.tintColor}
-                    onClick={() => item.link && history.push(item.link)}>
+                    onClick={() => openLink(item.link)}>
                     <MenuTileTitle title={item.title} />
+
+                    {item.subTitle && (
+                      <div tw="text-base text-gray-500">{item.subTitle}</div>
+                    )}
                   </MenuTile>
                 )}
               </MenuItemWrapper>
