@@ -11,6 +11,7 @@ import css from '@emotion/css/macro'
 import styled from '@emotion/styled/macro'
 import store from 'store2'
 import { useLocation, useHistory } from 'react-router-dom'
+import ReactGA from 'react-ga'
 
 import FullLoading from './components/FullLoading'
 import { ProfileProvider } from './models/profile'
@@ -41,6 +42,14 @@ const App: React.FC = () => {
   const location = useLocation()
   const history = useHistory()
   const currentProfile = useRef<Profile>()
+
+  if (
+    process.env.NODE_ENV === 'production' &&
+    process.env.REACT_APP_ENABLE_GA
+  ) {
+    ReactGA.initialize('UA-146417304-2')
+    ReactGA.pageview(window.location.pathname + window.location.search)
+  }
 
   if (location.pathname !== '/') {
     const existingProfiles = store.get(ExistingProfiles)
