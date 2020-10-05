@@ -1,44 +1,50 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# YASD - Yet another Surge Dashboard
 
-## Available Scripts
+> STILL IN ALPHA
 
-In the project directory, you can run:
+![Github Actions][github-actions-image]
+[![Test coverage][codecov-image]][codecov-url]
+[![David deps][david-image]][david-url]
+[![Known Vulnerabilities][snyk-image]][snyk-url]
 
-### `yarn start`
+[codecov-image]: https://codecov.io/gh/geekdada/yasd/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/geekdada/yasd
+[david-image]: https://img.shields.io/david/geekdada/yasd.svg?style=flat-square
+[david-url]: https://david-dm.org/geekdada/yasd
+[snyk-image]: https://snyk.io/test/github/geekdada/yasd/badge.svg?targetFile=package.json
+[snyk-url]: https://snyk.io/test/github/geekdada/yasd?targetFile=package.json
+[github-actions-image]: https://github.com/geekdada/yasd/workflows/Node%20CI/badge.svg
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+[中文](/README_zh-CN.md) | [English](/README.md)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## What is YASD?
 
-### `yarn test`
+Starts from Surge iOS 4.4.0 and Surge Mac 4.0.0, you may use HTTP API to control Surge. YASD provides a way to interact with Surge's HTTP API, enabling you to control Surge from another device or outside your house.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+YASD isn't in its final shape, so please be patient if you find anything you aren't happy with 😎.
 
-### `yarn build`
+## How-to
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Right now, Surge doesn't support HTTPS API endpoints, so it's almost impossible to use HTTPS. If you find a way to proxy the HTTP API with HTTPS, you will be able to take advantages of many useful features such as the PWA.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+We provide both HTTP and HTTPS website:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- [HTTP](http://yasd.nerdynerd.org)
+- [HTTPS](https://yasd.vercel.app)
 
-### `yarn eject`
+## Known issues
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Error handling isn't ideal, try reloading if anything snaps.
+- i18n hasn't been implemented yet (0%), my apology to those who can't read Chinese or English.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Roadmap
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- [ ] i18n
+- [ ] Manage and inspect requests
+- [ ] Write and debug scripts
+- [ ] Manage DHCP devices
+- [ ] Full unit and e2e tests
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## License
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+[MIT](https://github.com/geekdada/yasd/blob/master/LICENSE)
