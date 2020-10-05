@@ -19,7 +19,7 @@
 
 ## What is YASD?
 
-Starts from Surge iOS 4.4.0 and Surge Mac 4.0.0, you may use (HTTP API)[https://manual.nssurge.com/others/http-api.html] to control Surge. YASD provides a way to interact with Surge's HTTP API, enabling you to control Surge from another device or outside your house.
+Starts from Surge iOS 4.4.0 and Surge Mac 4.0.0, you may use [HTTP API](https://manual.nssurge.com/others/http-api.html) to control Surge. YASD provides a way to interact with Surge's HTTP API, enabling you to control Surge from another device or outside your house.
 
 YASD isn't in its final shape, so please be patient if you find anything you aren't happy with 😎.
 
