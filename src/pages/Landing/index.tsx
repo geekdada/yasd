@@ -7,6 +7,7 @@ import React, {
   useState,
 } from 'react'
 import { Heading, Input, LoadingButton } from '@sumup/circuit-ui'
+import { CircleWarning } from '@sumup/icons'
 import styled from '@emotion/styled/macro'
 import tw from 'twin.macro'
 import axios from 'axios'
@@ -31,7 +32,7 @@ const Page: React.FC = () => {
     setExistingProfiles,
     getExistingProfiles,
   ] = useSetState<Array<Profile>>([])
-  const [hasError, setHasError] = useState<boolean>(false)
+  const [hasError, setHasError] = useState<boolean | string>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const addProfile = (config: Omit<Profile, 'id'>): Profile => {
@@ -116,7 +117,7 @@ const Page: React.FC = () => {
         selectProfile(newProfile.id)
       })
       .catch((err) => {
-        setHasError(true)
+        setHasError(err.message)
         console.error(err)
         setIsLoading(false)
       })
@@ -146,7 +147,7 @@ const Page: React.FC = () => {
           <Input
             type="text"
             required
-            invalid={hasError}
+            invalid={!!hasError}
             label="Name"
             placeholder="Mac"
             value={name}
@@ -157,7 +158,7 @@ const Page: React.FC = () => {
           <Input
             type="text"
             required
-            invalid={hasError}
+            invalid={!!hasError}
             label="Host"
             placeholder="127.0.0.1"
             value={host}
@@ -168,7 +169,7 @@ const Page: React.FC = () => {
           <Input
             type="number"
             required
-            invalid={hasError}
+            invalid={!!hasError}
             label="Port"
             placeholder="6171"
             value={port}
@@ -179,7 +180,7 @@ const Page: React.FC = () => {
           <Input
             type="text"
             required
-            invalid={hasError}
+            invalid={!!hasError}
             label="Key"
             placeholder="examplekey"
             value={key}
@@ -195,6 +196,13 @@ const Page: React.FC = () => {
             loadingLabel={'Loading'}>
             Done
           </LoadingButton>
+
+          {typeof hasError === 'string' && (
+            <div tw="text-red-400 mt-4 flex items-center">
+              <CircleWarning tw="mr-2" />
+              {hasError}
+            </div>
+          )}
         </form>
       </div>
 
