@@ -1,4 +1,4 @@
-# YASD - Yet another Surge Dashboard
+# YASD - Yet Another Surge Dashboard
 
 > STILL IN ALPHA
 
