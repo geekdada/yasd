@@ -1,4 +1,10 @@
-# YASD - Yet another Surge Dashboard
+<p align="center">
+  <a href="https://github.com/geekdada/yasd">
+    <img width="300" src="public/github-banner.png" alt="logo">
+  </a>
+</p>
+
+# Yet Another Surge Dashboard
 
 > STILL IN ALPHA
 
