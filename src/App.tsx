@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import { find } from 'lodash-es'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { ThemeProvider } from 'emotion-theming'
 import { light } from '@sumup/design-tokens'
 import { Switch, Route, Redirect } from 'react-router-dom'

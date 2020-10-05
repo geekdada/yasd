@@ -2,7 +2,10 @@
   "name": "yasd",
   "version": "0.1.0",
   "private": true,
-  "devDependencies": {
+  "license": "MIT",
+  "dependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-angular": "^11.0.0",
     "@craco/craco": "^5.6.4",
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
@@ -17,6 +20,8 @@
     "@testing-library/react-hooks": "^3.4.2",
     "@testing-library/user-event": "^7.1.2",
     "@types/bytes": "^3.1.0",
+    "@types/enzyme": "^3.10.7",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^24.0.0",
     "@types/loadable__component": "^5.13.0",
     "@types/lodash-es": "^4.17.3",
@@ -34,13 +39,20 @@
     "bytes": "^3.1.0",
     "clsx": "^1.1.1",
     "craco-workbox": "^0.1.0",
+    "dayjs": "^1.9.1",
     "emotion-theming": "^10.0.27",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
+    "enzyme-to-json": "^3.6.1",
     "eslint": "^6.6.0",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.0.8",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.0",
     "lodash-es": "^4.17.15",
     "modern-normalize": "^1.0.0",
     "node-sass": "^4.14.1",
+    "npm-debug-log-cleaner": "^1.0.3",
     "postcss-import": "^12.0.1",
     "prettier": "^2.1.2",
     "prop-types": "^15.7.2",
@@ -56,15 +68,17 @@
     "store2": "^2.12.0",
     "swr": "^0.3.5",
     "tailwindcss": "^1.6.2",
+    "ts-jest": "^24.3.0",
     "twin.macro": "^1.7.0",
-    "typescript": "~3.7.2",
+    "typescript": "^3.7.2",
     "use-is-in-viewport": "^1.0.9",
     "uuid": "^8.3.0"
   },
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test"
+    "test": "craco test",
+    "test:coverage": "craco test --coverage --runInBand --watchAll=false"
   },
   "browserslist": {
     "production": [
@@ -78,7 +92,12 @@
       "last 1 safari version"
     ]
   },
-  "dependencies": {
-    "dayjs": "^1.9.1"
+  "jest": {
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!lodash-es)"
+    ]
+  },
+  "engines": {
+    "node": ">=12.0.0"
   }
 }
