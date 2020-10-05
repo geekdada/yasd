@@ -1,4 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks'
+
 import useSetState from './use-set-state'
 
 describe('useSetState', () => {
@@ -8,7 +9,7 @@ describe('useSetState', () => {
       useSetState<State>({ a: 'old', b: 'old' }),
     )
 
-    await act(() => {
+    act(() => {
       const [state, setState] = result.current
 
       setState({ ...state, b: 'new' })
@@ -55,6 +56,9 @@ describe('useSetState', () => {
 
     const [state, setState, getState] = result.current
     expect(state).toMatchObject({ a: 'old', b: 'new' })
-    expect(await getState()).toMatchObject({ a: 'old', b: 'new' })
+
+    await act(async () => {
+      expect(await getState()).toMatchObject({ a: 'old', b: 'new' })
+    })
   })
 })
