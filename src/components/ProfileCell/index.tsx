@@ -111,12 +111,12 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
             onClick={deleteHandler}
             label={'delete profile'}
             css={[
-              tw`w-6 h-6 rounded-full text-gray-600 ml-2`,
+              tw`flex items-center justify-center w-8 h-8 rounded-full text-gray-600 ml-2`,
               css`
-                padding: 0.3rem;
+                padding: 0;
 
                 svg {
-                  ${tw`transition-colors duration-200 ease-in-out`}
+                  ${tw`transition-colors duration-200 ease-in-out w-4 h-4`}
                 }
                 &:hover svg {
                   ${tw`text-gray-700`}
