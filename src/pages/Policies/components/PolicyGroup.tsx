@@ -44,9 +44,13 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
     [name: string]: number
   }>({})
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isTesting, setIsTesting] = useState<boolean>(false)
 
   const selectPolicy = (name: string) => {
+    if (isLoading) return
+
     setIsLoading(true)
+
     fetcher({
       url: '/policy_groups/select',
       method: 'POST',
@@ -70,7 +74,10 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
   }
 
   const testPolicy = (policyGroupName: string) => {
-    setIsLoading(true)
+    if (isTesting) return
+
+    setIsTesting(true)
+
     fetcher<PolicyTestResult>({
       url: '/policy_groups/test',
       method: 'POST',
@@ -95,7 +102,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
         console.error(err)
       })
       .finally(() => {
-        setIsLoading(false)
+        setIsTesting(false)
       })
   }
 
@@ -140,7 +147,11 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
           size="kilo"
           label="test policy"
           onClick={() => testPolicy(policyGroupName)}>
-          <Zap tw="text-gray-700 w-5 h-5" />
+          {isTesting ? (
+            <Spinner tw="text-gray-700 w-5 h-5" />
+          ) : (
+            <Zap tw="text-gray-700 w-5 h-5" />
+          )}
         </IconButton>
       </Heading>
 
