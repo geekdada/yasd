@@ -8,7 +8,11 @@ import tw from 'twin.macro'
 import React, { useCallback, useEffect, useState } from 'react'
 import useIsInViewport from 'use-is-in-viewport'
 
-import { Policy, PolicyTestResult } from '../../../types'
+import {
+  Policy,
+  SelectPolicyTestResult,
+  UrlTestPolicyTestResult,
+} from '../../../types'
 import fetcher from '../../../utils/fetcher'
 
 interface PolicyGroupProps {
@@ -78,7 +82,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
 
     setIsTesting(true)
 
-    fetcher<PolicyTestResult>({
+    fetcher<SelectPolicyTestResult | UrlTestPolicyTestResult>({
       url: '/policy_groups/test',
       method: 'POST',
       data: {
@@ -90,11 +94,22 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
           [name: string]: number
         } = {}
 
-        Object.keys(res).forEach((key) => {
-          const result = res[key]
+        if (res.winner) {
+          const testResult = (res as UrlTestPolicyTestResult).results[0].data
+          Object.keys(testResult).forEach((key) => {
+            const result = testResult[key]
 
-          latencies[key] = result.receive ?? -1
-        })
+            latencies[key] = result.receive ?? -1
+          })
+          setSelection((res as UrlTestPolicyTestResult).winner)
+        } else {
+          const testResult = res as SelectPolicyTestResult
+          Object.keys(testResult).forEach((key) => {
+            const result = testResult[key]
+
+            latencies[key] = result.receive ?? -1
+          })
+        }
 
         setLatencies(latencies)
       })

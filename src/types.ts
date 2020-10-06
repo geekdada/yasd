@@ -12,8 +12,19 @@ export interface Policy {
   typeDescription: string
 }
 
-export interface PolicyTestResult {
+export interface SelectPolicyTestResult {
   [key: string]: ProxyTestResult
+}
+
+export interface UrlTestPolicyTestResult {
+  time: number
+  winner: string
+  results: Array<{
+    time: number
+    data: {
+      [key: string]: ProxyTestResult
+    }
+  }>
 }
 
 export interface ProxyTestResult {
