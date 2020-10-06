@@ -20,8 +20,9 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
       css={[
         css`
           min-height: 8rem;
+          cursor: ${props.onClick ? 'pointer' : 'inherit'};
         `,
-        tw`p-4 cursor-pointer`,
+        tw`p-4`,
         props.style || tw`bg-gray-100`,
       ]}>
       {props.children}

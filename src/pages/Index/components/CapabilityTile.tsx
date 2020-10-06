@@ -42,17 +42,8 @@ const CapabilityTile: React.FC<CapabilityTileProps> = ({
       })
   }, [api, capability])
 
-  const onClick: MouseEventHandler = () => {
-    if (link) {
-      history.push(link)
-      return
-    }
-
-    toggle()
-  }
-
   return (
-    <MenuTile onClick={onClick}>
+    <MenuTile onClick={link ? () => history.push(link) : undefined}>
       <MenuTileTitle title={title} />
 
       <MenuTileContent css={[tw`flex justify-end`]}>
