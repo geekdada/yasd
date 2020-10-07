@@ -49,6 +49,7 @@
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.0.8",
     "husky": "^4.3.0",
+    "identity-obj-proxy": "^3.0.0",
     "lint-staged": "^10.4.0",
     "lodash-es": "^4.17.15",
     "modern-normalize": "^1.0.0",
@@ -81,7 +82,8 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco test --watchAll=false",
+    "test:watch": "craco test",
     "test:coverage": "craco test --coverage --runInBand --watchAll=false",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "pub": "np --no-publish",
@@ -101,8 +103,12 @@
   },
   "jest": {
     "transformIgnorePatterns": [
-      "<rootDir>/node_modules/(?!lodash-es)"
-    ]
+      "<rootDir>/node_modules/(?!lodash-es)",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+    }
   },
   "engines": {
     "node": ">=12.0.0"
