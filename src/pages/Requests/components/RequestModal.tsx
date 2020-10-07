@@ -9,10 +9,12 @@ import tw from 'twin.macro'
 import { ModalHeader, ModalWrapper } from '@sumup/circuit-ui'
 import React, { KeyboardEvent, MouseEvent } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import { toast } from 'react-toastify'
 import 'react-tabs/style/react-tabs.css'
 
-import { DataGroup, DataRow, DataRowMain } from '../../../components/Data'
+import { DataGroup, DataRowMain } from '../../../components/Data'
 import { RequestItem } from '../../../types'
+import fetcher from '../../../utils/fetcher'
 
 const TabsWrapper = styled.div`
   .react-tabs__tab {
@@ -36,6 +38,22 @@ interface RequestModalProps {
 }
 
 const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
+  const killRequest = (id: number) => {
+    fetcher({
+      url: '/requests/kill',
+      method: 'POST',
+      data: {
+        id,
+      },
+    })
+      .then(() => {
+        toast.success('操作成功')
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
   return (
     <ModalWrapper>
       <ModalHeader title={`Detail (#${req.id})`} onClose={onClose} />
@@ -118,11 +136,21 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
               <pre
                 tw="font-mono text-xs text-gray-600 leading-tight p-3 whitespace-pre-wrap break-words"
                 css={css`
-                  min-height: 10rem;
+                  min-height: 7rem;
                 `}>
                 {req.notes && req.notes.join('\n')}
               </pre>
             </DataGroup>
+
+            {req.completed === 0 && (
+              <DataGroup title="Action">
+                <div
+                  tw="text-red-500 p-3 cursor-pointer hover:bg-gray-200"
+                  onClick={() => killRequest(req.id)}>
+                  Kill Connection...
+                </div>
+              </DataGroup>
+            )}
           </TabPanel>
 
           <TabPanel>
@@ -130,7 +158,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
               <pre
                 tw="font-mono text-xs text-gray-600 leading-tight p-3 whitespace-pre-wrap break-words"
                 css={css`
-                  min-height: 10rem;
+                  min-height: 7rem;
                 `}>
                 {req.requestHeader || ''}
               </pre>

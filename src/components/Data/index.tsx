@@ -13,7 +13,7 @@ export const DataGroup: React.FC<{ title?: string }> = (props) => {
           {props.title}
         </div>
       )}
-      <div tw="divide-y divide-gray-200 bg-gray-100 rounded-lg mb-4">
+      <div tw="divide-y divide-gray-200 bg-gray-100 rounded-lg mb-4 overflow-hidden">
         {props.children}
       </div>
     </div>

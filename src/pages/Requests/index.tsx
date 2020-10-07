@@ -17,7 +17,7 @@ import ListItem from './components/ListItem'
 import RequestModal from './components/RequestModal'
 
 const Page: React.FC = () => {
-  const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(false)
+  const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(true)
   const { data: requests, error: requestsError } = useSWR<RecentRequests>(
     '/requests/recent',
     fetcher,
