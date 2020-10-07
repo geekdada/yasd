@@ -25,7 +25,7 @@ const TabsWrapper = styled.div`
     ${tw`border-b-2 border-blue-100 mb-4`}
   }
   .react-tabs__tab-panel {
-    height: 30rem;
+    height: 25rem;
     overflow: auto;
   }
 `
@@ -52,74 +52,66 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
 
           <TabPanel>
             <DataGroup>
-              <DataRow tw="text-sm">
-                <DataRowMain>
-                  <div>日期</div>
-                  <div>{dayjs.unix(req.startDate).format('L LTS')}</div>
+              <DataRowMain tw="text-sm">
+                <div>日期</div>
+                <div>{dayjs.unix(req.startDate).format('L LTS')}</div>
+              </DataRowMain>
+              <DataRowMain tw="text-sm">
+                <div>状态</div>
+                <div>{req.status}</div>
+              </DataRowMain>
+              {req.completed === 1 && (
+                <DataRowMain tw="text-sm">
+                  <div>时长</div>
+                  <div>
+                    {dayjs
+                      .unix(req.completedDate - req.startDate)
+                      .get('millisecond')}
+                    ms
+                  </div>
                 </DataRowMain>
-                <DataRowMain>
-                  <div>状态</div>
-                  <div>{req.status}</div>
+              )}
+              {req.pid !== 0 && req.processPath && (
+                <DataRowMain tw="text-sm">
+                  <div>进程</div>
+                  <div>
+                    {trimPath(req.processPath)}({req.pid})
+                  </div>
                 </DataRowMain>
-                {req.completed === 1 && (
-                  <DataRowMain>
-                    <div>时长</div>
-                    <div>
-                      {dayjs
-                        .unix(req.completedDate - req.startDate)
-                        .get('millisecond')}
-                      ms
-                    </div>
-                  </DataRowMain>
-                )}
-                {req.pid !== 0 && req.processPath && (
-                  <DataRowMain>
-                    <div>进程</div>
-                    <div>
-                      {trimPath(req.processPath)}({req.pid})
-                    </div>
-                  </DataRowMain>
-                )}
-              </DataRow>
+              )}
             </DataGroup>
 
             <DataGroup>
-              <DataRow tw="text-sm">
-                <DataRowMain>
-                  <div>策略</div>
-                  <div>{req.policyName}</div>
-                </DataRowMain>
-                <DataRowMain>
-                  <div>规则</div>
-                  <div>{req.rule}</div>
-                </DataRowMain>
-              </DataRow>
+              <DataRowMain tw="text-sm">
+                <div>策略</div>
+                <div>{req.policyName}</div>
+              </DataRowMain>
+              <DataRowMain tw="text-sm">
+                <div>规则</div>
+                <div>{req.rule}</div>
+              </DataRowMain>
             </DataGroup>
 
             <DataGroup title="IP 地址">
-              <DataRow tw="text-sm">
-                <DataRowMain>
-                  <div>本地 IP 地址</div>
-                  <div>{req.localAddress}</div>
-                </DataRowMain>
-                <DataRowMain>
-                  <div>远端 IP 地址</div>
-                  <div>{req.remoteAddress}</div>
-                </DataRowMain>
-              </DataRow>
+              <DataRowMain tw="text-sm">
+                <div>本地 IP 地址</div>
+                <div>{req.localAddress}</div>
+              </DataRowMain>
+              <DataRowMain tw="text-sm">
+                <div>远端 IP 地址</div>
+                <div>{req.remoteAddress}</div>
+              </DataRowMain>
             </DataGroup>
 
             <DataGroup title="流量">
-              <DataRow tw="text-sm">
-                <DataRowMain>
-                  <div>下载</div>
-                  <div>{bytes(req.inBytes)}</div>
-                </DataRowMain>
-                <DataRowMain>
-                  <div>上传</div>
-                  <div>{bytes(req.outBytes)}</div>
-                </DataRowMain>
-              </DataRow>
+              <DataRowMain tw="text-sm">
+                <div>下载</div>
+                <div>{bytes(req.inBytes)}</div>
+              </DataRowMain>
+              <DataRowMain tw="text-sm">
+                <div>上传</div>
+                <div>{bytes(req.outBytes)}</div>
+              </DataRowMain>
             </DataGroup>
 
             <DataGroup title="备注">
@@ -146,15 +138,13 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
           </TabPanel>
           <TabPanel>
             <DataGroup>
-              <DataRow tw="text-sm">
-                {req.timingRecords &&
-                  req.timingRecords.map((item, index) => (
-                    <DataRowMain key={index}>
-                      <div>{item.name}</div>
-                      <div>{item.durationInMillisecond}ms</div>
-                    </DataRowMain>
-                  ))}
-              </DataRow>
+              {req.timingRecords &&
+                req.timingRecords.map((item, index) => (
+                  <DataRowMain key={index}>
+                    <div>{item.name}</div>
+                    <div>{item.durationInMillisecond}ms</div>
+                  </DataRowMain>
+                ))}
             </DataGroup>
           </TabPanel>
         </Tabs>
