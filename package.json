@@ -53,6 +53,7 @@
     "lodash-es": "^4.17.15",
     "modern-normalize": "^1.0.0",
     "node-sass": "^4.14.1",
+    "np": "^6.5.0",
     "npm-debug-log-cleaner": "^1.0.3",
     "postcss-import": "^12.0.1",
     "prettier": "^2.1.2",
@@ -81,7 +82,10 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "test:coverage": "craco test --coverage --runInBand --watchAll=false"
+    "test:coverage": "craco test --coverage --runInBand --watchAll=false",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "pub": "np --no-publish",
+    "version": "npm run changelog && git add ."
   },
   "browserslist": {
     "production": [
