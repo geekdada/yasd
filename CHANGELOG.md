@@ -1,4 +1,13 @@
-# 0.2.0 (2020-10-07)
+## [0.2.1](https://github.com/geekdada/yasd/compare/v0.2.0...v0.2.1) (2020-10-07)
+
+
+### Bug Fixes
+
+* request modal height ([c68c073](https://github.com/geekdada/yasd/commit/c68c073617121c4601747392f9e8b49a2c5212f1))
+
+
+
+# [0.2.0](https://github.com/geekdada/yasd/compare/5a661ab47d95c6b28cc06b2ef5420690010a0674...v0.2.0) (2020-10-07)
 
 
 ### Bug Fixes
