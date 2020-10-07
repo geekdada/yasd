@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React, { useCallback, useState } from 'react'
-import { Heading, Toggle, ModalProvider } from '@sumup/circuit-ui'
+import { Heading, ModalProvider, Toggle } from '@sumup/circuit-ui'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import tw from 'twin.macro'

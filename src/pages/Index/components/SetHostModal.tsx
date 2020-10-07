@@ -55,6 +55,7 @@ const SetHostModal: React.FC = () => {
         return (
           <ModalWrapper>
             <ModalHeader title="History" onClose={onClose} />
+
             <div tw="bg-gray-100 divide-y divide-gray-200 rounded overflow-hidden">
               {existingProfiles.map((profile) => {
                 return (

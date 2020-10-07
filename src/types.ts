@@ -43,7 +43,7 @@ export interface RequestItem {
   id: number
   remoteAddress: string
   inMaxSpeed: number
-  notes: string[]
+  notes?: string[]
   inCurrentSpeed: number
   failed: number
   status: 'Active' | 'Complete'
@@ -54,7 +54,7 @@ export interface RequestItem {
   outBytes: number
   sourceAddress: string
   localAddress: string
-  requestHeader: string
+  requestHeader?: string
   policyName: string
   inBytes: number
   method: string
@@ -64,9 +64,9 @@ export interface RequestItem {
   startDate: number
   setupCompletedDate: number
   outMaxSpeed: number
-  processPath: string
+  processPath?: string
   URL: string
-  timingRecords: Array<{ durationInMillisecond: number; name: string }>
+  timingRecords?: Array<{ durationInMillisecond: number; name: string }>
 }
 
 export interface Traffic {

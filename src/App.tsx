@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
+import { ModalProvider } from '@sumup/circuit-ui'
 import { find } from 'lodash-es'
 import React, { useRef } from 'react'
 import { ThemeProvider } from 'emotion-theming'
@@ -13,7 +14,6 @@ import store from 'store2'
 import { useLocation, useHistory } from 'react-router-dom'
 import ReactGA from 'react-ga'
 import { ToastContainer as OriginalToastContainer } from 'react-toastify'
-import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import FullLoading from './components/FullLoading'
@@ -120,10 +120,10 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={light}>
-      <ScrollToTop />
-      <ToastContainer />
-
       <ProfileProvider profile={currentProfile.current}>
+        <ScrollToTop />
+        <ToastContainer />
+
         <PageLayout>
           <Switch>
             <Route exact path="/">
