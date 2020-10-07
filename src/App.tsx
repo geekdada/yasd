@@ -12,7 +12,9 @@ import styled from '@emotion/styled/macro'
 import store from 'store2'
 import { useLocation, useHistory } from 'react-router-dom'
 import ReactGA from 'react-ga'
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer as OriginalToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import FullLoading from './components/FullLoading'
 import ScrollToTop from './components/ScrollToTop'
@@ -39,6 +41,56 @@ const ModulesPage = loadable(() => import('./pages/Modules'), {
 const ScriptingPage = loadable(() => import('./pages/Scripting'), {
   fallback: <FullLoading />,
 })
+const ToastContainer = styled(OriginalToastContainer)`
+  ${tw`p-2 md:p-0`}
+
+  .Toastify__toast {
+    ${tw`flex items-center px-3 py-3 bg-blue-100 rounded shadow-none`}
+  }
+  .Toastify__close-button,
+  .Toastify__toast-body {
+    ${tw`text-blue-700`}
+  }
+  .Toastify__toast-body {
+    ${tw`text-base`}
+  }
+  .Toastify__close-button {
+    ${tw`block ml-3 self-center`}
+  }
+  .Toastify__progress-bar {
+    ${tw`bg-blue-200`}
+  }
+  .Toastify__toast--error {
+    ${tw`bg-red-100`}
+
+    .Toastify__close-button, .Toastify__toast-body {
+      ${tw`text-red-700`}
+    }
+    .Toastify__progress-bar {
+      ${tw`bg-red-200`}
+    }
+  }
+  .Toastify__toast--warning {
+    ${tw`bg-orange-100 border-l-4 border-orange-500`}
+
+    .Toastify__close-button, .Toastify__toast-body {
+      ${tw`text-orange-700`}
+    }
+    .Toastify__progress-bar {
+      ${tw`bg-orange-200`}
+    }
+  }
+  .Toastify__toast--success {
+    ${tw`bg-green-100`}
+
+    .Toastify__close-button, .Toastify__toast-body {
+      ${tw`text-green-700`}
+    }
+    .Toastify__progress-bar {
+      ${tw`bg-green-200`}
+    }
+  }
+`
 
 const App: React.FC = () => {
   const location = useLocation()

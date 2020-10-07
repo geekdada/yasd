@@ -24,11 +24,23 @@ const Events: React.FC = () => {
           events.events.slice(0, 5).map((item) => {
             return (
               <div key={item.identifier} tw="py-1">
-                <div tw="text-sm leading-tight text-gray-600">
+                <div tw="text-sm leading-normal text-gray-600">
                   {item.content}
                 </div>
                 <div tw="text-xs text-gray-500 mt-1">
-                  {dayjs(item.date).format('L LTS')}
+                  {item.type === 2 && (
+                    <span
+                      css={[
+                        tw`bg-red-400 text-white rounded mr-1`,
+                        css`
+                          font-size: 0.6rem;
+                          padding: 0.1rem 0.5rem;
+                        `,
+                      ]}>
+                      ERROR
+                    </span>
+                  )}
+                  <span>{dayjs(item.date).format('L LTS')}</span>
                 </div>
               </div>
             )

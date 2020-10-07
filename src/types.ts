@@ -109,7 +109,7 @@ export interface EventList {
   events: Array<{
     identifier: string
     date: string
-    type: string
+    type: number
     allowDismiss: number
     content: string
   }>
