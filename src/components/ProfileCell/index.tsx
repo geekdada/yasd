@@ -66,6 +66,7 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
           headers: {
             'x-key': profile.key,
           },
+          timeout: 3000,
         })
         .then(() => {
           if (isMounted) setAvailable(true)

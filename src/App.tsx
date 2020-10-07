@@ -12,8 +12,10 @@ import styled from '@emotion/styled/macro'
 import store from 'store2'
 import { useLocation, useHistory } from 'react-router-dom'
 import ReactGA from 'react-ga'
+import { ToastContainer } from 'react-toastify'
 
 import FullLoading from './components/FullLoading'
+import ScrollToTop from './components/ScrollToTop'
 import { ProfileProvider } from './models/profile'
 import LandingPage from './pages/Landing'
 import IndexPage from './pages/Index'
@@ -66,6 +68,9 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={light}>
+      <ScrollToTop />
+      <ToastContainer />
+
       <ProfileProvider profile={currentProfile.current}>
         <PageLayout>
           <Switch>
