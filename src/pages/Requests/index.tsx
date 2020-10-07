@@ -39,11 +39,11 @@ const Page: React.FC = () => {
       const req = requests.requests[index]
       return (
         <div
-          key={`${req.id}-${req.status}`}
+          key={`${req.id}`}
           style={style}
           tw="flex flex-col justify-center py-2 px-3">
           <div tw="text-xs truncate">{req.URL}</div>
-          <div tw="text-sm">
+          <div tw="text-sm truncate">
             {req.policyName}({req.rule})
           </div>
           <div
