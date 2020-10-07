@@ -1,3 +1,12 @@
+## [0.2.2](https://github.com/geekdada/yasd/compare/v0.2.1...v0.2.2) (2020-10-07)
+
+
+### Features
+
+* support killing request ([55f33be](https://github.com/geekdada/yasd/commit/55f33be05a7d9dc8884adadc1cb8b6a0184cf3a1))
+
+
+
 ## [0.2.1](https://github.com/geekdada/yasd/compare/v0.2.0...v0.2.1) (2020-10-07)
 
 
