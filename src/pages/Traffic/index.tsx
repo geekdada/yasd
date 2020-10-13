@@ -58,7 +58,7 @@ const Page: React.FC = () => {
       <PageTitle
         title="Requests"
         hasAutoRefresh={true}
-        defaultAutoRefreshState={true}
+        defaultAutoRefreshState={false}
         onAuthRefreshStateChange={(newState) => setIsAutoRefresh(newState)}
       />
 
