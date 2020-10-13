@@ -146,6 +146,10 @@ const Page: React.FC = () => {
       <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
         <Heading size={'tera'}>Add new Host</Heading>
 
+        <div tw="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 text-sm px-4 py-3 mb-4 shadow-md">
+          该功能仅 Surge iOS 4.4.0 和 Surge Mac 4.0.0 以上版本支持
+        </div>
+
         <form onSubmit={onSubmit}>
           <Input
             type="text"
@@ -164,6 +168,7 @@ const Page: React.FC = () => {
             invalid={!!hasError}
             label="Host"
             placeholder="127.0.0.1"
+            validationHint="局域网内可用类似 iphone.local 的地址"
             value={host}
             onChange={({ target }) =>
               setHost((target as HTMLInputElement).value)
