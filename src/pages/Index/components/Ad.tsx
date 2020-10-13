@@ -57,7 +57,7 @@ const Ad: React.FC = () => {
           eventLabel={`IndexAd_${ad.name}`}
           to={ad.url}
           target="_blank">
-          <div tw="bg-blue-100 border border-blue-500 rounded text-blue-700 px-4 py-3 flex">
+          <div tw="bg-blue-100 border border-blue-500 rounded text-blue-700 px-4 py-3 flex items-center">
             {showDynamicAd.current && (
               <span tw="flex rounded-full bg-indigo-500 uppercase px-2 py-1 text-xs font-bold text-white mr-3">
                 AD
