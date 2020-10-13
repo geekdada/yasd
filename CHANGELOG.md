@@ -1,3 +1,12 @@
+## [0.3.1](https://github.com/geekdada/yasd/compare/v0.3.0...v0.3.1) (2020-10-13)
+
+
+### Features
+
+* add ad component ([014377f](https://github.com/geekdada/yasd/commit/014377f6def6ecf9ced64451723365941eab8be6))
+
+
+
 # [0.3.0](https://github.com/geekdada/yasd/compare/v0.2.2...v0.3.0) (2020-10-13)
 
 
