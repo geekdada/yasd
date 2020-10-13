@@ -2,8 +2,6 @@
 import { jsx } from '@emotion/core'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
-import { Heading } from '@sumup/circuit-ui'
-import { Spinner } from '@sumup/icons'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import tw from 'twin.macro'
@@ -11,6 +9,7 @@ import React, { useState } from 'react'
 import useSWR from 'swr'
 
 import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
+import PageTitle from '../../components/PageTitle'
 import { ConnectorTraffic, Traffic } from '../../types'
 import fetcher from '../../utils/fetcher'
 import TrafficDataRow from './components/TrafficDataRow'
@@ -56,21 +55,12 @@ const Page: React.FC = () => {
 
   return (
     <div tw={'relative pb-5'}>
-      <Heading
-        size={'tera'}
-        noMargin
-        tw="sticky top-0 flex items-center justify-between shadow bg-white z-10 px-3 py-3 mb-4">
-        <div>Traffic</div>
-
-        <div
-          onClick={() => setIsAutoRefresh(!isAutoRefresh)}
-          css={[
-            tw`bg-blue-500 text-white cursor-pointer w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-200 ease-in-out `,
-            isAutoRefresh && tw`bg-red-400`,
-          ]}>
-          <Spinner css={[tw`w-6 h-6`, isAutoRefresh && tw`animate-spin`]} />
-        </div>
-      </Heading>
+      <PageTitle
+        title="Requests"
+        hasAutoRefresh={true}
+        defaultAutoRefreshState={true}
+        onAuthRefreshStateChange={(newState) => setIsAutoRefresh(newState)}
+      />
 
       {traffic && (
         <TrafficWrapper>

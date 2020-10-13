@@ -1,10 +1,11 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import React, { useCallback } from 'react'
-import { Heading, RadioButton } from '@sumup/circuit-ui'
+import React from 'react'
+import { RadioButton } from '@sumup/circuit-ui'
 import styled from '@emotion/styled/macro'
 import tw from 'twin.macro'
 import useSWR, { mutate } from 'swr'
+import PageTitle from '../../components/PageTitle'
 
 import { Modules } from '../../types'
 import fetcher from '../../utils/fetcher'
@@ -37,12 +38,7 @@ const Page: React.FC = () => {
 
   return (
     <div tw="relative pb-5">
-      <Heading
-        size={'tera'}
-        noMargin
-        tw="sticky top-0 flex shadow bg-white z-10 px-3 py-3">
-        Modules
-      </Heading>
+      <PageTitle title="Modules" />
 
       <div tw="divide-y divide-gray-200">
         {modules &&

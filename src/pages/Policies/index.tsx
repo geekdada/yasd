@@ -7,6 +7,7 @@ import tw from 'twin.macro'
 import React, { createRef, RefObject, useRef } from 'react'
 import { ScrollTo } from 'react-scroll-to'
 import useSWR from 'swr'
+import BackButton from '../../components/BackButton'
 
 import { Policies, PolicyGroups } from '../../types'
 import fetcher from '../../utils/fetcher'
@@ -48,7 +49,10 @@ const Page: React.FC = () => {
         tw="sticky top-0 left-0 right-0 shadow bg-white z-10 pt-5 mb-4"
         ref={headerRef}>
         <Heading size={'tera'} noMargin tw="mb-2 px-4">
-          Policies
+          <div tw="flex">
+            <BackButton />
+            <div>Policies</div>
+          </div>
         </Heading>
 
         <div tw=" flex justify-start flex-no-wrap overflow-auto pt-3 pb-5 px-4">

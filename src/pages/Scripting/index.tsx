@@ -1,12 +1,12 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React, { useCallback, useMemo } from 'react'
-import { Heading } from '@sumup/circuit-ui'
 import styled from '@emotion/styled/macro'
 import tw from 'twin.macro'
-import useSWR, { mutate } from 'swr'
+import useSWR from 'swr'
 import { uniqBy } from 'lodash-es'
 
+import PageTitle from '../../components/PageTitle'
 import { Scriptings } from '../../types'
 import fetcher from '../../utils/fetcher'
 
@@ -28,12 +28,7 @@ const Page: React.FC = () => {
 
   return (
     <div tw="relative pb-5">
-      <Heading
-        size={'tera'}
-        noMargin
-        tw="sticky top-0 flex shadow bg-white z-10 px-3 py-3">
-        Scripting
-      </Heading>
+      <PageTitle title="脚本" />
 
       <div tw="divide-y divide-gray-200">
         {scripting &&
