@@ -1,3 +1,23 @@
+# [0.3.0](https://github.com/geekdada/yasd/compare/v0.2.2...v0.3.0) (2020-10-13)
+
+
+### Bug Fixes
+
+* style ([d968dd1](https://github.com/geekdada/yasd/commit/d968dd1290a756fe91a62fdbcfa460efba89cdce))
+* style ([edf478e](https://github.com/geekdada/yasd/commit/edf478e97ebc575dbe4450914446f2603a575e35))
+* user-scalable=no ([3089ef3](https://github.com/geekdada/yasd/commit/3089ef36e268e8b2463426faf8ec34ceef642bc8))
+
+
+### Features
+
+* add landing info ([2815978](https://github.com/geekdada/yasd/commit/2815978e97404a0d0a326a1ea993019b7b00bf8a))
+* add polyfill for smooth scrolling ([e445d5f](https://github.com/geekdada/yasd/commit/e445d5f3af5abd54a26b4150ac733ae346da847e))
+* back button ([289aec9](https://github.com/geekdada/yasd/commit/289aec90123c756308f2df4df964e90ad61d1ca4))
+* check ip address ([d6e1ee0](https://github.com/geekdada/yasd/commit/d6e1ee08bbdf978ad9b761253da1f8703fa751a3))
+* traffic page auto refresh default false ([45260b4](https://github.com/geekdada/yasd/commit/45260b4733a39dfda4c001059d10fc68c6eca9bd))
+
+
+
 ## [0.2.2](https://github.com/geekdada/yasd/compare/v0.2.1...v0.2.2) (2020-10-07)
 
 
