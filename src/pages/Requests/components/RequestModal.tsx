@@ -7,6 +7,7 @@ import dayjs from 'dayjs'
 import { basename } from 'path'
 import tw from 'twin.macro'
 import { ModalHeader, ModalWrapper } from '@sumup/circuit-ui'
+import { Search } from '@sumup/icons'
 import React, { KeyboardEvent, MouseEvent } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { toast } from 'react-toastify'
@@ -117,7 +118,15 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
               </DataRowMain>
               <DataRowMain tw="text-sm">
                 <div>远端 IP 地址</div>
-                <div>{req.remoteAddress}</div>
+                <div>
+                  <a
+                    href={`https://ip.sb/ip/${req.remoteAddress}`}
+                    target="_blank"
+                    rel="noreferrer noopener">
+                    <Search tw="inline mr-1 w-3 h-3" />
+                    {req.remoteAddress}
+                  </a>
+                </div>
               </DataRowMain>
             </DataGroup>
 
