@@ -36,9 +36,9 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
       size={'tera'}
       noMargin
       tw="sticky top-0 flex items-center justify-between shadow bg-white z-10 px-3 py-3">
-      <div tw="flex">
+      <div tw="flex items-center">
         <BackButton />
-        {props.title}
+        <div>{props.title}</div>
       </div>
 
       {props.hasAutoRefresh && (

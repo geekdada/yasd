@@ -49,7 +49,7 @@ const Page: React.FC = () => {
         tw="sticky top-0 left-0 right-0 shadow bg-white z-10 pt-5 mb-4"
         ref={headerRef}>
         <Heading size={'tera'} noMargin tw="mb-2 px-4">
-          <div tw="flex">
+          <div tw="flex items-center">
             <BackButton />
             <div>Policies</div>
           </div>

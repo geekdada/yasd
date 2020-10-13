@@ -175,14 +175,14 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
           return (
             <div
               css={[
-                tw`bg-gray-200 rounded-md px-4 py-3 cursor-pointer hover:bg-gray-300 transition-colors ease-in-out duration-200`,
+                tw`bg-gray-200 rounded-md px-3 py-3 md:px-4 md:py-3 cursor-pointer hover:bg-gray-300 transition-colors ease-in-out duration-200`,
                 selection === policy.name
                   ? tw`bg-blue-600 text-white hover:bg-blue-600`
                   : '',
               ]}
               key={policy.name}
               onClick={() => selectPolicy(policy.name)}>
-              <div tw="text-base leading-snug">{policy.name}</div>
+              <div tw="text-sm md:text-base leading-snug">{policy.name}</div>
               <div
                 css={[
                   tw`flex flex-row justify-between mt-2 text-xs text-gray-700`,
