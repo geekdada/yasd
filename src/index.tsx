@@ -19,3 +19,10 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.register()
+
+if (!('scrollBehavior' in document.documentElement.style)) {
+  // @ts-ignore
+  import('smoothscroll-polyfill').then((mod) => {
+    mod.polyfill()
+  })
+}
