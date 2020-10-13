@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import { ModalProvider } from '@sumup/circuit-ui'
 import { find } from 'lodash-es'
 import React, { useRef } from 'react'
 import { ThemeProvider } from 'emotion-theming'
@@ -98,10 +97,15 @@ const App: React.FC = () => {
   const currentProfile = useRef<Profile>()
 
   if (
-    process.env.NODE_ENV === 'production' &&
-    process.env.REACT_APP_ENABLE_GA
+    'REACT_APP_DEBUG_GA' in process.env ||
+    (process.env.NODE_ENV === 'production' && process.env.REACT_APP_ENABLE_GA)
   ) {
-    ReactGA.initialize('UA-146417304-2')
+    ReactGA.initialize('UA-146417304-2', {
+      debug: 'REACT_APP_DEBUG_GA' in process.env,
+    })
+    ReactGA.set({
+      appVersion: process.env.REACT_APP_VERSION,
+    })
     ReactGA.pageview(window.location.pathname + window.location.search)
   }
 

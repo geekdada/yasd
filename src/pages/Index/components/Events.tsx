@@ -17,7 +17,7 @@ const Events: React.FC = () => {
   const { data: events } = useSWR<EventList>('/events', fetcher)
 
   return (
-    <div tw="mx-4 p-3 bg-gray-100 rounded">
+    <div tw="p-3 bg-gray-100 rounded">
       <div tw="text-base font-medium text-gray-700">Events</div>
       <div tw="divide-y divide-gray-200 mt-1">
         {events &&

@@ -13,6 +13,7 @@ import ProfileCell from '../../components/ProfileCell'
 import { useProfile } from '../../models/profile'
 import { Capability } from '../../types'
 import fetcher from '../../utils/fetcher'
+import Ad from './components/Ad'
 import Events from './components/Events'
 import MenuTile, { MenuTileTitle } from './components/MenuTile'
 import SetHostModal from './components/SetHostModal'
@@ -163,8 +164,12 @@ const Page: React.FC = () => {
           })}
         </MenuWrapper>
 
-        <div tw="mt-4">
+        <div tw="mt-4 px-4">
           <Events />
+        </div>
+
+        <div tw="mt-4 px-4">
+          <Ad />
         </div>
       </div>
     </ModalProvider>

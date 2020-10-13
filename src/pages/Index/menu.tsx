@@ -58,11 +58,6 @@ const menu: Array<MenuItem> = [
     subTitle: '🌟',
     link: 'https://github.com/geekdada/yasd',
   },
-  {
-    title: '请我喝咖啡！',
-    subTitle: '☕️',
-    link: 'https://surgio.royli.dev/support.html',
-  },
 ]
 
 export default menu
