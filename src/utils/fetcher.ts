@@ -39,8 +39,6 @@ const fetcher = <T>(requestConfig: AxiosRequestConfig) => {
         toast.error('无法连接服务器: ' + error.message, {
           toastId: error.message,
         })
-
-        window.location.replace('/')
       } else {
         // Something happened in setting up the request that triggered an Error
         console.error('Error', error.message)

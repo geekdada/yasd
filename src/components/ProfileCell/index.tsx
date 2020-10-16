@@ -16,6 +16,7 @@ interface ProfileCellProps {
   onClick?: MouseEventHandler
   showDelete?: boolean
   onDelete?: MouseEventHandler
+  variant?: 'spread' | 'left'
 }
 
 const ProfileCell: React.FC<ProfileCellProps> = ({
@@ -24,8 +25,13 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
   onClick,
   showDelete,
   onDelete,
+  variant = 'spread',
 }) => {
   const [available, setAvailable] = useState<boolean | undefined>(undefined)
+  const variantStyle =
+    variant === 'spread'
+      ? tw`flex-row justify-between items-center`
+      : tw`flex-col justify-start items-start`
 
   const clickHandler: MouseEventHandler = (e) => {
     e.stopPropagation()
@@ -84,11 +90,10 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
   return (
     <div
       key={profile.id}
-      tw="flex flex-row justify-between items-center p-3"
-      css={[getCursorStyle()]}
+      css={[getCursorStyle(), tw`flex p-3`, variantStyle]}
       onClick={clickHandler}>
-      <div tw="truncate text-sm md:text-base">{profile.name}</div>
-      <div tw="flex items-center">
+      <div tw="truncate text-sm md:text-base leading-tight">{profile.name}</div>
+      <div css={[tw`flex items-center`, variant === 'left' && tw`mt-1`]}>
         {checkConnectivity && (
           <div className="relative flex h-3 w-3 mr-3">
             {available && (

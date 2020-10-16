@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { Heading, ModalProvider, Toggle } from '@sumup/circuit-ui'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
@@ -19,10 +19,6 @@ import MenuTile, { MenuTileTitle } from './components/MenuTile'
 import SetHostModal from './components/SetHostModal'
 import TrafficCell from './components/TrafficCell'
 import menu from './menu'
-
-const MenuWrapper = styled.div``
-
-const MenuItemWrapper = styled.div``
 
 const Page: React.FC = () => {
   const history = useHistory()
@@ -87,16 +83,8 @@ const Page: React.FC = () => {
           tw="sticky top-0 flex shadow bg-white z-10 px-3 py-3 mb-4">
           {profile && (
             <div tw="w-full flex justify-between items-center">
-              <div
-                css={[
-                  tw`w-1/2 lg:w-1/3 bg-gray-100 rounded-lg`,
-                  css`
-                    & > div {
-                      ${tw`flex-col justify-start items-start`}
-                    }
-                  `,
-                ]}>
-                <ProfileCell profile={profile} />
+              <div css={[tw`w-1/2 lg:w-1/3 bg-gray-100 rounded-lg`]}>
+                <ProfileCell variant="left" profile={profile} />
               </div>
               <SetHostModal />
             </div>
@@ -142,10 +130,10 @@ const Page: React.FC = () => {
           </DataGroup>
         )}
 
-        <MenuWrapper tw="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
+        <div tw="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
           {menu.map((item) => {
             return (
-              <MenuItemWrapper key={item.title}>
+              <div key={item.title}>
                 {item.component ? (
                   item.component
                 ) : (
@@ -159,10 +147,10 @@ const Page: React.FC = () => {
                     )}
                   </MenuTile>
                 )}
-              </MenuItemWrapper>
+              </div>
             )
           })}
-        </MenuWrapper>
+        </div>
 
         <div tw="mt-4 px-4">
           <Events />

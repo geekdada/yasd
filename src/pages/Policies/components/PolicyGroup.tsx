@@ -85,6 +85,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
     fetcher<SelectPolicyTestResult | UrlTestPolicyTestResult>({
       url: '/policy_groups/test',
       method: 'POST',
+      timeout: 30000,
       data: {
         group_name: policyGroupName,
       },

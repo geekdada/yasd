@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import { find } from 'lodash-es'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { ThemeProvider } from 'emotion-theming'
 import { light } from '@sumup/design-tokens'
 import { Switch, Route, Redirect } from 'react-router-dom'
@@ -12,12 +12,14 @@ import styled from '@emotion/styled/macro'
 import store from 'store2'
 import { useLocation, useHistory } from 'react-router-dom'
 import ReactGA from 'react-ga'
-import { ToastContainer as OriginalToastContainer } from 'react-toastify'
+import { toast, ToastContainer as OriginalToastContainer } from 'react-toastify'
+import { SWRConfig } from 'swr'
 import 'react-toastify/dist/ReactToastify.css'
 
 import FullLoading from './components/FullLoading'
 import ScrollToTop from './components/ScrollToTop'
 import { ProfileProvider } from './models/profile'
+import NetworkErrorModal from './components/NetworkErrorModal'
 import LandingPage from './pages/Landing'
 import IndexPage from './pages/Index'
 import PageLayout from './components/PageLayout'
@@ -92,6 +94,7 @@ const ToastContainer = styled(OriginalToastContainer)`
 `
 
 const App: React.FC = () => {
+  const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false)
   const location = useLocation()
   const history = useHistory()
   const currentProfile = useRef<Profile>()
@@ -123,41 +126,59 @@ const App: React.FC = () => {
   }
 
   return (
-    <ThemeProvider theme={light}>
-      <ProfileProvider profile={currentProfile.current}>
-        <ScrollToTop />
-        <ToastContainer />
+    <SWRConfig
+      value={{
+        onError: (error) => {
+          if (location.pathname !== '/') {
+            if (!error.response && error.request) {
+              // 无法连接服务器
+              setIsNetworkModalOpen(true)
+            }
+          }
+        },
+      }}>
+      <ThemeProvider theme={light}>
+        <ProfileProvider profile={currentProfile.current}>
+          <ScrollToTop />
+          <ToastContainer />
+          <NetworkErrorModal
+            isOpen={isNetworkModalOpen}
+            onClose={() => {
+              window.location.replace('/')
+            }}
+          />
 
-        <PageLayout>
-          <Switch>
-            <Route exact path="/">
-              <LandingPage />
-            </Route>
-            <Route exact path="/home">
-              <IndexPage />
-            </Route>
-            <Route exact path="/policies">
-              <PoliciesPage />
-            </Route>
-            <Route exact path="/requests">
-              <RequestsPage />
-            </Route>
-            <Route exact path="/traffic">
-              <TrafficPage />
-            </Route>
-            <Route exact path="/modules">
-              <ModulesPage />
-            </Route>
-            <Route exact path="/scripting">
-              <ScriptingPage />
-            </Route>
-            <Route path="*">
-              <Redirect to="/" />
-            </Route>
-          </Switch>
-        </PageLayout>
-      </ProfileProvider>
-    </ThemeProvider>
+          <PageLayout>
+            <Switch>
+              <Route exact path="/">
+                <LandingPage />
+              </Route>
+              <Route exact path="/home">
+                <IndexPage />
+              </Route>
+              <Route exact path="/policies">
+                <PoliciesPage />
+              </Route>
+              <Route exact path="/requests">
+                <RequestsPage />
+              </Route>
+              <Route exact path="/traffic">
+                <TrafficPage />
+              </Route>
+              <Route exact path="/modules">
+                <ModulesPage />
+              </Route>
+              <Route exact path="/scripting">
+                <ScriptingPage />
+              </Route>
+              <Route path="*">
+                <Redirect to="/" />
+              </Route>
+            </Switch>
+          </PageLayout>
+        </ProfileProvider>
+      </ThemeProvider>
+    </SWRConfig>
   )
 }
 

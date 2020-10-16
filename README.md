@@ -36,13 +36,12 @@ Right now, Surge doesn't support HTTPS API endpoints, so it's almost impossible 
 We provide both HTTP and HTTPS website:
 
 - [HTTP](http://yasd.nerdynerd.org)
-- [HTTPS](https://yasd.vercel.app)
+- [HTTPS](https://yasd.royli.dev)
 
 ## Known issues
 
 - Error handling isn't ideal, try reloading if anything snaps.
 - i18n hasn't been implemented yet (0%), my apology to those who can't read Chinese or English.
-- Ugly favicon
 
 ## Roadmap
 
