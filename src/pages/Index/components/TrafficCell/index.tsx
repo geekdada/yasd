@@ -126,7 +126,7 @@ const Index: React.FC = () => {
 
   return (
     <div>
-      <div tw="mb-3">
+      <div tw="mb-3 w-full overflow-hidden">
         <LineChart id="traffic-chart" newDatasets={newDatasets} />
       </div>
       <div tw="grid grid-cols-3 gap-4 divide-x divide-gray-200 border-solid border border-gray-200 bg-gray-100">

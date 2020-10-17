@@ -24,7 +24,12 @@ const Events: React.FC = () => {
           events.events.slice(0, 5).map((item) => {
             return (
               <div key={item.identifier} tw="py-1">
-                <div tw="text-sm leading-normal text-gray-600">
+                <div
+                  tw="text-sm leading-normal text-gray-600"
+                  css={css`
+                    word-break: break-word;
+                    overflow-wrap: break-word;
+                  `}>
                   {item.content}
                 </div>
                 <div tw="text-xs text-gray-500 mt-1">
