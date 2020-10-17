@@ -1,3 +1,12 @@
+## [0.4.1](https://github.com/geekdada/yasd/compare/v0.4.0...v0.4.1) (2020-10-17)
+
+
+### Bug Fixes
+
+* style ([a0fe066](https://github.com/geekdada/yasd/commit/a0fe066b8f68543e8758d745dc0a7a03a8fcec39))
+
+
+
 # [0.4.0](https://github.com/geekdada/yasd/compare/v0.3.2...v0.4.0) (2020-10-17)
 
 
