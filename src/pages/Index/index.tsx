@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
+import loadable from '@loadable/component'
 import React, { useCallback } from 'react'
 import { Heading, ModalProvider, Toggle } from '@sumup/circuit-ui'
 import styled from '@emotion/styled/macro'
@@ -14,10 +15,10 @@ import { useProfile } from '../../models/profile'
 import { Capability } from '../../types'
 import fetcher from '../../utils/fetcher'
 import Ad from './components/Ad'
+import TrafficCell from './components/TrafficCell'
 import Events from './components/Events'
 import MenuTile, { MenuTileTitle } from './components/MenuTile'
 import SetHostModal from './components/SetHostModal'
-import TrafficCell from './components/TrafficCell'
 import menu from './menu'
 
 const Page: React.FC = () => {
