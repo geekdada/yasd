@@ -1,3 +1,14 @@
+# [0.4.0](https://github.com/geekdada/yasd/compare/v0.3.2...v0.4.0) (2020-10-17)
+
+
+### Features
+
+* 优化体验 ([05746a8](https://github.com/geekdada/yasd/commit/05746a8e3ceb270a230c344106e732fd7f5d0aaf))
+* add traffic chart ([180caa3](https://github.com/geekdada/yasd/commit/180caa3c4eb8df1adf1411c3c8f2daf1d31e543b))
+* enable refreshWhenOffline ([438ce9e](https://github.com/geekdada/yasd/commit/438ce9e4a7e31aca28353147f03e081f5ac22948))
+
+
+
 ## [0.3.2](https://github.com/geekdada/yasd/compare/v0.3.1...v0.3.2) (2020-10-13)
 
 
