@@ -12,7 +12,7 @@ import styled from '@emotion/styled/macro'
 import store from 'store2'
 import { useLocation, useHistory } from 'react-router-dom'
 import ReactGA from 'react-ga'
-import { toast, ToastContainer as OriginalToastContainer } from 'react-toastify'
+import { ToastContainer as OriginalToastContainer } from 'react-toastify'
 import { SWRConfig } from 'swr'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -136,6 +136,7 @@ const App: React.FC = () => {
             }
           }
         },
+        refreshWhenOffline: true,
       }}>
       <ThemeProvider theme={light}>
         <ProfileProvider profile={currentProfile.current}>
