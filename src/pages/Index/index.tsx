@@ -1,11 +1,11 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import loadable from '@loadable/component'
 import React, { useCallback } from 'react'
 import { Heading, ModalProvider, Toggle } from '@sumup/circuit-ui'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import tw from 'twin.macro'
+import { delay } from 'bluebird'
 import { useHistory } from 'react-router-dom'
 import useSWR, { mutate } from 'swr'
 
@@ -42,7 +42,7 @@ const Page: React.FC = () => {
       },
     })
       .then(() => {
-        return mutate('/features/system_proxy')
+        return delay(100).then(() => mutate('/features/system_proxy'))
       })
       .catch((err) => {
         console.error(err)
@@ -58,7 +58,7 @@ const Page: React.FC = () => {
       },
     })
       .then(() => {
-        return mutate('/features/enhanced_mode')
+        return delay(100).then(() => mutate('/features/enhanced_mode'))
       })
       .catch((err) => {
         console.error(err)

@@ -58,6 +58,7 @@ export const commonChartOptions: ChartOptions = {
           },
           beginAtZero: true,
           maxTicksLimit: 4,
+          autoSkip: false,
         },
       },
     ],

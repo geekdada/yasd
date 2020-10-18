@@ -5,7 +5,6 @@ import css from '@emotion/css/macro'
 import loadable from '@loadable/component'
 import bytes from 'bytes'
 import { ChartPoint } from 'chart.js'
-import dayjs from 'dayjs'
 import useSWR from 'swr'
 import tw from 'twin.macro'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -40,9 +39,13 @@ const Data = styled.div`
 export const REFRESH_RATE = 1000
 
 const Index: React.FC = () => {
-  const { data: traffic, error: trafficError } = useSWR<Traffic>(
+  const { data: traffic, error: trafficError } = useSWR(
     '/traffic',
-    fetcher,
+    (url) =>
+      fetcher<Traffic & { nowTime: number }>(url).then((res) => {
+        res.nowTime = Date.now()
+        return res
+      }),
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
@@ -95,34 +98,19 @@ const Index: React.FC = () => {
 
   // Build datasets for chart
   useEffect(() => {
-    if (!traffic) return undefined
-
-    const aggregation: ConnectorTraffic = {
-      outCurrentSpeed: 0,
-      in: 0,
-      inCurrentSpeed: 0,
-      outMaxSpeed: 0,
-      out: 0,
-      inMaxSpeed: 0,
-    }
-
-    for (const name in traffic.interface) {
-      const conn = traffic.interface[name]
-      aggregation.outCurrentSpeed += conn.outCurrentSpeed
-      aggregation.inCurrentSpeed += conn.inCurrentSpeed
-    }
+    if (!activeInterface) return undefined
 
     setTrafficDatasets(() => {
-      const time = dayjs().toDate()
-      const newUps = [{ x: time, y: aggregation.outCurrentSpeed }]
-      const newDowns = [{ x: time, y: aggregation.inCurrentSpeed }]
+      const time = new Date()
+      const newUps = [{ x: time, y: activeInterface.outCurrentSpeed }]
+      const newDowns = [{ x: time, y: activeInterface.inCurrentSpeed }]
 
       return {
         up: newUps,
         down: newDowns,
       }
     })
-  }, [traffic])
+  }, [activeInterface])
 
   return (
     <div>

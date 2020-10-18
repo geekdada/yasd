@@ -12,7 +12,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { chartStyles, commonChartOptions } from '../chart-config'
 import { REFRESH_RATE } from '../index'
 
-const CHART_SIZE = 60
+const CHART_SIZE = 30
 
 interface LineChartProps {
   id?: string
@@ -81,7 +81,7 @@ const LineChart: React.FC<LineChartProps> = (props) => {
 
       chart.update()
     }
-  }, [chart, props])
+  }, [chart, props.newDatasets])
 
   return <canvas ref={chartRef} id={props.id} height={200} />
 }
