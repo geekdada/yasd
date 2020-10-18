@@ -50,6 +50,7 @@ const Index: React.FC = () => {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
       refreshInterval: REFRESH_RATE,
+      dedupingInterval: REFRESH_RATE,
     },
   )
   const [trafficDatasets, setTrafficDatasets] = useState<{
