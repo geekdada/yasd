@@ -1,3 +1,13 @@
+## [0.4.2](https://github.com/geekdada/yasd/compare/v0.4.1...v0.4.2) (2020-10-18)
+
+
+### Bug Fixes
+
+* chart bugs ([7871c31](https://github.com/geekdada/yasd/commit/7871c3191499dbfd6fd0e0e6367a8e3813c6c2d6))
+* faster refresh rate ([8c85d45](https://github.com/geekdada/yasd/commit/8c85d4541a6bad45252dad1c12cbe5e179dc2183))
+
+
+
 ## [0.4.1](https://github.com/geekdada/yasd/compare/v0.4.0...v0.4.1) (2020-10-17)
 
 
