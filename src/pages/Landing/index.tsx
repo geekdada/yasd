@@ -144,7 +144,7 @@ const Page: React.FC = () => {
       </Heading>
 
       <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-        <Heading size={'tera'}>Add new Host</Heading>
+        <Heading size={'tera'}>Add New Host</Heading>
 
         <div tw="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 text-sm px-4 py-3 mb-4 shadow-md">
           该功能仅 Surge iOS 4.4.0 和 Surge Mac 4.0.0 以上版本支持
@@ -196,14 +196,16 @@ const Page: React.FC = () => {
               setKey((target as HTMLInputElement).value)
             }
           />
-          <LoadingButton
-            type="submit"
-            variant="primary"
-            stretch
-            isLoading={isLoading}
-            loadingLabel={'Loading'}>
-            Done
-          </LoadingButton>
+          <div tw="mt-6">
+            <LoadingButton
+              type="submit"
+              variant="primary"
+              stretch
+              isLoading={isLoading}
+              loadingLabel={'Loading'}>
+              Done
+            </LoadingButton>
+          </div>
 
           {typeof hasError === 'string' && (
             <div tw="text-red-400 mt-4 flex items-center">

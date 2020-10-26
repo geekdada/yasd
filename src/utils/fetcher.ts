@@ -20,7 +20,7 @@ export function setServer(host: string, port: number, key: string): void {
   client.defaults.timeout = 5000
 }
 
-const fetcher = <T>(requestConfig: AxiosRequestConfig) => {
+const fetcher = <T>(requestConfig: AxiosRequestConfig): Promise<T> => {
   return client
     .request<T>(requestConfig)
     .then((res) => res.data)

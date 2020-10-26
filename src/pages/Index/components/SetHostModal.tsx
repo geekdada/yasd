@@ -84,7 +84,7 @@ const SetHostModal: React.FC = () => {
                 size="kilo"
                 variant="primary"
                 onClick={() => history.replace('/')}>
-                Add new Host
+                Add New Host
               </Button>
             </div>
           </ModalWrapper>
