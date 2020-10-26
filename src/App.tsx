@@ -43,6 +43,9 @@ const ModulesPage = loadable(() => import('./pages/Modules'), {
 const ScriptingPage = loadable(() => import('./pages/Scripting'), {
   fallback: <FullLoading />,
 })
+const EvaluatePage = loadable(() => import('./pages/Scripting/Evaluate'), {
+  fallback: <FullLoading />,
+})
 const ToastContainer = styled(OriginalToastContainer)`
   ${tw`p-2 md:p-0`}
 
@@ -173,6 +176,9 @@ const App: React.FC = () => {
               </Route>
               <Route exact path="/scripting">
                 <ScriptingPage />
+              </Route>
+              <Route exact path="/scripting/evaluate">
+                <EvaluatePage />
               </Route>
               <Route path="*">
                 <Redirect to="/" />

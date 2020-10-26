@@ -125,3 +125,9 @@ export interface Profile {
   platformVersion: string
   platformBuild: number
 }
+
+export interface EvaluateResult {
+  result: any
+  output: string
+  exception?: string
+}
