@@ -17,6 +17,7 @@ import { SWRConfig } from 'swr'
 import 'react-toastify/dist/ReactToastify.css'
 
 import FullLoading from './components/FullLoading'
+import NewVersionAlert from './components/NewVersionAlert'
 import ScrollToTop from './components/ScrollToTop'
 import { ProfileProvider } from './models/profile'
 import NetworkErrorModal from './components/NetworkErrorModal'
@@ -148,6 +149,7 @@ const App: React.FC = () => {
               window.location.replace('/')
             }}
           />
+          <NewVersionAlert />
 
           <PageLayout>
             <Switch>
