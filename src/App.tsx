@@ -18,7 +18,6 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import FullLoading from './components/FullLoading'
 import NewVersionAlert from './components/NewVersionAlert'
-import ScrollToTop from './components/ScrollToTop'
 import { ProfileProvider } from './models/profile'
 import NetworkErrorModal from './components/NetworkErrorModal'
 import LandingPage from './pages/Landing'
@@ -144,7 +143,6 @@ const App: React.FC = () => {
       }}>
       <ThemeProvider theme={light}>
         <ProfileProvider profile={currentProfile.current}>
-          <ScrollToTop />
           <ToastContainer />
           <NetworkErrorModal
             isOpen={isNetworkModalOpen}

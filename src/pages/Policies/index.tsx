@@ -48,14 +48,25 @@ const Page: React.FC = () => {
       <div
         tw="sticky top-0 left-0 right-0 shadow bg-white z-10 pt-5 mb-4"
         ref={headerRef}>
-        <Heading size={'tera'} noMargin tw="mb-2 px-4">
-          <div tw="flex items-center">
-            <BackButton />
-            <div>Policies</div>
-          </div>
-        </Heading>
+        <div
+          css={css`
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+          `}>
+          <Heading size={'tera'} noMargin tw="mb-2 px-4">
+            <div tw="flex items-center">
+              <BackButton />
+              <div>Policies</div>
+            </div>
+          </Heading>
+        </div>
 
-        <div tw=" flex justify-start flex-no-wrap overflow-auto pt-3 pb-5 px-4">
+        <div
+          tw="flex justify-start flex-no-wrap overflow-auto pt-3 pb-5"
+          css={css`
+            padding-left: calc(env(safe-area-inset-left) + 1rem);
+            padding-right: calc(env(safe-area-inset-right) + 1rem);
+          `}>
           <ScrollTo>
             {({ scroll }) => (
               <React.Fragment>
@@ -77,7 +88,8 @@ const Page: React.FC = () => {
 
       <div
         css={css`
-          ${tw`px-4`}
+          padding-left: calc(env(safe-area-inset-left) + 1rem);
+          padding-right: calc(env(safe-area-inset-right) + 1rem);
         `}>
         {policies &&
           policyGroups &&

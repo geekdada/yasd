@@ -94,73 +94,79 @@ const Page: React.FC = () => {
           )}
         </Heading>
 
-        <div tw="mb-4">
-          <TrafficCell />
-        </div>
+        <div
+          css={css`
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+          `}>
+          <div tw="mb-4">
+            <TrafficCell />
+          </div>
 
-        {profile?.platform === 'macos' && (
-          <DataGroup tw="mx-4">
-            <DataRow>
-              <DataRowMain>
-                <div tw="font-medium">System Proxy</div>
-                <div>
-                  <Toggle
-                    noMargin
-                    label=""
-                    labelChecked=""
-                    labelUnchecked=""
-                    checked={systemProxy?.enabled}
-                    onChange={() => toggleSystemProxy()}
-                  />
+          {profile?.platform === 'macos' && (
+            <DataGroup tw="mx-4">
+              <DataRow>
+                <DataRowMain>
+                  <div tw="font-medium">System Proxy</div>
+                  <div>
+                    <Toggle
+                      noMargin
+                      label=""
+                      labelChecked=""
+                      labelUnchecked=""
+                      checked={systemProxy?.enabled}
+                      onChange={() => toggleSystemProxy()}
+                    />
+                  </div>
+                </DataRowMain>
+              </DataRow>
+              <DataRow>
+                <DataRowMain>
+                  <div tw="font-medium">Enhanced Mode</div>
+                  <div>
+                    <Toggle
+                      noMargin
+                      label=""
+                      labelChecked=""
+                      labelUnchecked=""
+                      checked={enhancedMode?.enabled}
+                      onChange={() => toggleEnhancedMode()}
+                    />
+                  </div>
+                </DataRowMain>
+              </DataRow>
+            </DataGroup>
+          )}
+
+          <div tw="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
+            {menu.map((item) => {
+              return (
+                <div key={item.title}>
+                  {item.component ? (
+                    item.component
+                  ) : (
+                    <MenuTile
+                      style={item.tintColor}
+                      onClick={() => openLink(item.link)}>
+                      <MenuTileTitle title={item.title} />
+
+                      {item.subTitle && (
+                        <div tw="text-base text-gray-500">{item.subTitle}</div>
+                      )}
+                    </MenuTile>
+                  )}
                 </div>
-              </DataRowMain>
-            </DataRow>
-            <DataRow>
-              <DataRowMain>
-                <div tw="font-medium">Enhanced Mode</div>
-                <div>
-                  <Toggle
-                    noMargin
-                    label=""
-                    labelChecked=""
-                    labelUnchecked=""
-                    checked={enhancedMode?.enabled}
-                    onChange={() => toggleEnhancedMode()}
-                  />
-                </div>
-              </DataRowMain>
-            </DataRow>
-          </DataGroup>
-        )}
+              )
+            })}
+          </div>
 
-        <div tw="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
-          {menu.map((item) => {
-            return (
-              <div key={item.title}>
-                {item.component ? (
-                  item.component
-                ) : (
-                  <MenuTile
-                    style={item.tintColor}
-                    onClick={() => openLink(item.link)}>
-                    <MenuTileTitle title={item.title} />
+          <div tw="mt-4 px-4">
+            <Events />
+          </div>
 
-                    {item.subTitle && (
-                      <div tw="text-base text-gray-500">{item.subTitle}</div>
-                    )}
-                  </MenuTile>
-                )}
-              </div>
-            )
-          })}
-        </div>
-
-        <div tw="mt-4 px-4">
-          <Events />
-        </div>
-
-        <div tw="mt-4 px-4">
-          <Ad />
+          <div tw="mt-4 px-4">
+            <Ad />
+          </div>
         </div>
       </div>
     </ModalProvider>

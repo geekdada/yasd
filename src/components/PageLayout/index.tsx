@@ -5,7 +5,7 @@ import React from 'react'
 import tw from 'twin.macro'
 
 const PageLayout = styled.main`
-  ${tw`relative antialiased`}
+  ${tw`relative antialiased`};
 `
 
 export default PageLayout

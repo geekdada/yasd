@@ -81,12 +81,7 @@ const Page: React.FC = () => {
   }
 
   return (
-    <div
-      tw="relative"
-      css={css`
-        height: 100vh;
-        width: 100vw;
-      `}>
+    <div tw="fixed top-0 right-0 bottom-0 left-0 h-full">
       <div tw="w-full h-full flex flex-col">
         <PageTitle title="调试脚本" />
 
@@ -117,7 +112,13 @@ const Page: React.FC = () => {
               }}
             />
           </div>
-          <div tw="flex border-t border-solid border-gray-200 py-2 px-3">
+          <div
+            css={[
+              tw`flex items-center border-t border-solid border-gray-200 py-3 px-3`,
+              css`
+                margin-bottom: env(safe-area-inset-bottom);
+              `,
+            ]}>
             <LoadingButton
               onClick={evaluate}
               variant="primary"
@@ -128,14 +129,17 @@ const Page: React.FC = () => {
             </LoadingButton>
 
             <div
-              css={css`
-                ${tw`ml-4 pb-1`}
+              css={[
+                tw`ml-4`,
+                css`
+                  padding-bottom: 1px;
 
-                & input {
-                  border-radius: 4px;
-                  ${tw`px-2 py-1 text-sm leading-none`}
-                }
-              `}>
+                  & input {
+                    border-radius: 4px;
+                    ${tw`px-2 py-1 text-sm leading-none`}
+                  }
+                `,
+              ]}>
               <Input
                 type="number"
                 required

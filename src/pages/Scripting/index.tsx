@@ -68,54 +68,62 @@ const Page: React.FC = () => {
   }
 
   return (
-    <div
-      tw="relative"
-      css={css`
-        height: 100vh;
-        width: 100vw;
-      `}>
+    <div tw="fixed top-0 right-0 bottom-0 left-0 h-full">
       <div tw="w-full h-full flex flex-col">
         <PageTitle title="脚本" />
 
-        <div tw="h-full flex flex-col">
-          <div tw="flex-1 overflow-auto">
-            <div tw="divide-y divide-gray-200">
-              {scripting &&
-                filteredList.map((script, index) => {
-                  return (
-                    <div
-                      key={`${script.name}-${script.type}`}
-                      tw="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-100"
-                      onClick={() => openUrl(script.path)}>
-                      <div tw="flex-1">
-                        <div tw="truncate leading-normal text-gray-700">
-                          {script.name}
-                        </div>
-                        <div tw="text-sm text-gray-500">{script.type}</div>
+        <div tw="flex-1 overflow-auto">
+          <div tw="divide-y divide-gray-200">
+            {scripting &&
+              filteredList.map((script, index) => {
+                return (
+                  <div
+                    key={`${script.name}-${script.type}`}
+                    css={[
+                      tw`flex items-center justify-between py-3 cursor-pointer hover:bg-gray-100`,
+                      css`
+                        padding-left: calc(env(safe-area-inset-left) + 0.75rem);
+                        padding-right: calc(
+                          env(safe-area-inset-right) + 0.75rem
+                        );
+                      `,
+                    ]}
+                    onClick={() => openUrl(script.path)}>
+                    <div tw="flex-1">
+                      <div tw="truncate leading-normal text-gray-700">
+                        {script.name}
                       </div>
-                      <div tw="ml-2 flex items-center">
-                        {script.type === 'cron' && (
-                          <LoadingButton
-                            onClick={(e: MouseEvent) => {
-                              e.stopPropagation()
-                              evaluate(script.name, index)
-                            }}
-                            size="kilo"
-                            isLoading={isLoading === index}
-                            loadingLabel={'运行中'}
-                            tw="px-3 py-3 text-sm leading-tight">
-                            运行
-                          </LoadingButton>
-                        )}
-                      </div>
+                      <div tw="text-sm text-gray-500">{script.type}</div>
                     </div>
-                  )
-                })}
-            </div>
+                    <div tw="ml-2 flex items-center">
+                      {script.type === 'cron' && (
+                        <LoadingButton
+                          onClick={(e: MouseEvent) => {
+                            e.stopPropagation()
+                            evaluate(script.name, index)
+                          }}
+                          size="kilo"
+                          isLoading={isLoading === index}
+                          loadingLabel={'运行中'}
+                          tw="px-3 py-3 text-sm leading-tight">
+                          运行
+                        </LoadingButton>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
           </div>
+        </div>
+
+        <div
+          css={css`
+            padding-bottom: env(safe-area-inset-bottom);
+          `}>
           <div tw="border-t border-solid border-gray-200 py-2">
             <Button
               variant="tertiary"
+              size="kilo"
               onClick={() => history.push('/scripting/evaluate')}>
               调试脚本
             </Button>

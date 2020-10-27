@@ -30,7 +30,6 @@ const Page: React.FC = () => {
 
   const openRequestDetail = useCallback(
     (setModal: (modal: ModalProps) => void, req: RequestItem) => {
-      console.log(req)
       setModal({
         children({ onClose }) {
           return <RequestModal req={req} onClose={onClose} />
@@ -61,7 +60,11 @@ const Page: React.FC = () => {
               key={`${req.id}`}
               style={style}
               onClick={() => openRequestDetail(setModal, req)}
-              tw="flex flex-col justify-center py-2 px-3 cursor-pointer hover:bg-gray-100">
+              tw="flex flex-col justify-center py-2 cursor-pointer hover:bg-gray-100"
+              css={css`
+                padding-left: calc(env(safe-area-inset-left) + 0.75rem);
+                padding-right: calc(env(safe-area-inset-right) + 0.75rem);
+              `}>
               <ListItem req={req} />
             </div>
           )
@@ -80,11 +83,7 @@ const Page: React.FC = () => {
   // }, [requests])
 
   return (
-    <div
-      css={css`
-        height: 100vh;
-        width: 100vw;
-      `}>
+    <div tw="fixed top-0 right-0 bottom-0 left-0 h-full">
       <ModalProvider>
         <ModalConsumer>
           {({ setModal }) => {
