@@ -1,3 +1,12 @@
+## [0.5.2](https://github.com/geekdada/yasd/compare/v0.5.1...v0.5.2) (2020-10-27)
+
+
+### Bug Fixes
+
+* style problems with safe area ([67425c5](https://github.com/geekdada/yasd/commit/67425c590ad8cf95f5084560945396507df14cdf))
+
+
+
 ## [0.5.1](https://github.com/geekdada/yasd/compare/v0.5.0...v0.5.1) (2020-10-27)
 
 
