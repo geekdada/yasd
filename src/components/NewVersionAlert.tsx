@@ -13,10 +13,11 @@ import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import tw from 'twin.macro'
 import store from 'store2'
+import satisfies from 'semver/functions/satisfies'
 
 import { LastUsedVersion } from '../utils/constant'
 
-const currentVersion = process.env.REACT_APP_VERSION
+const currentVersion = process.env.REACT_APP_VERSION as string
 
 const NewVersionAlert: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -25,7 +26,7 @@ const NewVersionAlert: React.FC = () => {
   useEffect(() => {
     const lastUsedVersion = store.get(LastUsedVersion)
 
-    if (lastUsedVersion && lastUsedVersion !== currentVersion) {
+    if (lastUsedVersion && !satisfies(currentVersion, `~${lastUsedVersion}`)) {
       setVersionUrl(
         `https://github.com/geekdada/yasd/releases/tag/v${currentVersion}`,
       )
