@@ -147,7 +147,18 @@ const Page: React.FC = () => {
         <Heading size={'tera'}>Add New Host</Heading>
 
         <div tw="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 text-sm px-4 py-3 mb-4 shadow-md">
-          该功能仅 Surge iOS 4.4.0 和 Surge Mac 4.0.0 以上版本支持
+          <p tw="leading-normal mb-2">
+            该功能仅 Surge iOS 4.4.0 和 Surge Mac 4.0.0 以上版本支持。
+          </p>
+          <p tw="leading-normal">
+            <a
+              href="https://manual.nssurge.com/others/http-api.html#configuration"
+              target="_blank"
+              rel="noreferrer"
+              tw="border-b border-solid border-teal-500">
+              🔗 开启方式
+            </a>
+          </p>
         </div>
 
         <form onSubmit={onSubmit}>
@@ -216,25 +227,27 @@ const Page: React.FC = () => {
         </form>
       </div>
 
-      <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto mt-10">
-        <Heading size={'mega'}>History</Heading>
+      {existingProfiles.length && (
+        <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto mt-10">
+          <Heading size={'mega'}>History</Heading>
 
-        <div tw="bg-gray-100 divide-y divide-gray-200 rounded overflow-hidden">
-          {existingProfiles.map((profile) => {
-            return (
-              <div key={profile.id} tw="hover:bg-gray-200">
-                <ProfileCell
-                  profile={profile}
-                  checkConnectivity
-                  showDelete
-                  onClick={() => selectProfile(profile.id)}
-                  onDelete={() => deleteProfile(profile.id)}
-                />
-              </div>
-            )
-          })}
+          <div tw="bg-gray-100 divide-y divide-gray-200 rounded overflow-hidden">
+            {existingProfiles.map((profile) => {
+              return (
+                <div key={profile.id} tw="hover:bg-gray-200">
+                  <ProfileCell
+                    profile={profile}
+                    checkConnectivity
+                    showDelete
+                    onClick={() => selectProfile(profile.id)}
+                    onDelete={() => deleteProfile(profile.id)}
+                  />
+                </div>
+              )
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
