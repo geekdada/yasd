@@ -1,3 +1,23 @@
+# [0.5.0](https://github.com/geekdada/yasd/compare/v0.4.2...v0.5.0) (2020-10-27)
+
+
+### Bug Fixes
+
+* style ([9b903f8](https://github.com/geekdada/yasd/commit/9b903f832a2f758e6a9c4efb549bb34322b7f758))
+* style ([5ea60bb](https://github.com/geekdada/yasd/commit/5ea60bb8c910a99c1530f5491c57d910b3783884))
+
+
+### Features
+
+* double-clicking the title triggers reload ([73e6cdf](https://github.com/geekdada/yasd/commit/73e6cdf82e181013a0cb8d146012c37266ff9253))
+* evaluate cron scripts ([7de9f29](https://github.com/geekdada/yasd/commit/7de9f299d69ba0008f5805871a0ec84d7b7b7390))
+* evaluate script ([f01865b](https://github.com/geekdada/yasd/commit/f01865b88094020452947f7b769bbe67cbe2d6f7))
+* modify style ([d84113a](https://github.com/geekdada/yasd/commit/d84113ae686d61895975f322b02f895b92d6935d))
+* new version alert ([deb0c61](https://github.com/geekdada/yasd/commit/deb0c6158727c2d1ca344cfeec55780ce7c4b308))
+* optimize new version alert ([270dbec](https://github.com/geekdada/yasd/commit/270dbecdf34cea8292984601b6747c6cde6b60de))
+
+
+
 ## [0.4.2](https://github.com/geekdada/yasd/compare/v0.4.1...v0.4.2) (2020-10-18)
 
 
