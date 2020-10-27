@@ -3,7 +3,7 @@
     {
       "src": "/static/(.*)",
       "headers": { "cache-control": "public, max-age=31536000" },
-      "dest": "/build/static/$1"
+      "dest": "/static/$1"
     }
   ]
 }
