@@ -227,7 +227,7 @@ const Page: React.FC = () => {
         </form>
       </div>
 
-      {existingProfiles.length && (
+      {existingProfiles.length > 0 && (
         <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto mt-10">
           <Heading size={'mega'}>History</Heading>
 
