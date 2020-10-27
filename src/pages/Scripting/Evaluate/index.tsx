@@ -1,18 +1,19 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import css from '@emotion/css/macro'
+import loadable from '@loadable/component'
 import React, { useState } from 'react'
 import styled from '@emotion/styled/macro'
+import { IControlledCodeMirror } from 'react-codemirror2'
 import tw from 'twin.macro'
 import {
+  Input,
   LoadingButton,
   Modal,
   ModalHeader,
   ModalWrapper,
 } from '@sumup/circuit-ui'
 import { toast } from 'react-toastify'
-import { Controlled as CodeMirror } from 'react-codemirror2'
-import 'codemirror/mode/javascript/javascript'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/material.css'
 
@@ -20,11 +21,29 @@ import PageTitle from '../../../components/PageTitle'
 import { EvaluateResult } from '../../../types'
 import fetcher from '../../../utils/fetcher'
 
+const CodeMirror = loadable<IControlledCodeMirror>(
+  async () => {
+    const mod = await import('react-codemirror2').then((mod) => mod.Controlled)
+
+    // @ts-ignore
+    await import('codemirror/mode/javascript/javascript')
+
+    return mod
+  },
+  {
+    fallback: (
+      <div tw="h-full flex items-center justify-center text-sm text-gray-500">
+        Loading...
+      </div>
+    ),
+  },
+)
+
 const Page: React.FC = () => {
-  const [code, setCode] = useState('')
+  const [code, setCode] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<string>()
-  const timeout = 5
+  const [timeout, setTimeoutValue] = useState<number>(5)
 
   const evaluate = () => {
     if (isLoading) return
@@ -47,8 +66,6 @@ const Page: React.FC = () => {
       timeout: timeout * 1000 + 500,
     })
       .then((res) => {
-        console.log(res)
-
         if (res.exception) {
           toast.error(res.exception)
         } else {
@@ -100,14 +117,36 @@ const Page: React.FC = () => {
               }}
             />
           </div>
-          <div tw="border-t border-solid border-gray-200 py-2 px-3">
+          <div tw="flex border-t border-solid border-gray-200 py-2 px-3">
             <LoadingButton
               onClick={evaluate}
               variant="primary"
+              size="kilo"
               isLoading={isLoading}
               loadingLabel={'运行中'}>
               运行
             </LoadingButton>
+
+            <div
+              css={css`
+                ${tw`ml-4 pb-1`}
+
+                & input {
+                  border-radius: 4px;
+                  ${tw`px-2 py-1 text-sm leading-none`}
+                }
+              `}>
+              <Input
+                type="number"
+                required
+                noMargin
+                label="Timeout"
+                value={timeout}
+                onChange={({ target }) =>
+                  setTimeoutValue(Number((target as HTMLInputElement).value))
+                }
+              />
+            </div>
           </div>
         </div>
 
