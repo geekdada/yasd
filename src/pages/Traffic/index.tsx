@@ -17,7 +17,7 @@ import TrafficDataRow from './components/TrafficDataRow'
 dayjs.extend(relativeTime)
 
 const TrafficWrapper = styled.div`
-  ${tw`px-4`}
+  ${tw`px-4 pt-4`}
 `
 
 const Page: React.FC = () => {
