@@ -1,3 +1,12 @@
+## [0.5.1](https://github.com/geekdada/yasd/compare/v0.5.0...v0.5.1) (2020-10-27)
+
+
+### Bug Fixes
+
+* should not assert number ([537e42c](https://github.com/geekdada/yasd/commit/537e42c7bca3894649277fff16fec217c1b7825e))
+
+
+
 # [0.5.0](https://github.com/geekdada/yasd/compare/v0.4.2...v0.5.0) (2020-10-27)
 
 
