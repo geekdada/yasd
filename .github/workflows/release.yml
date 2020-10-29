@@ -31,17 +31,23 @@ jobs:
             ${{ runner.OS }}-build-
             ${{ runner.OS }}-
 
-      - name: yarn install, build
+      - name: yarn install, build, bundle
         env:
           REACT_APP_SHOW_AD: true
           REACT_APP_HASH_ROUTER: true
         run: |
           yarn install
           CI=false yarn build
+          sed -i '' 's/"\/home"/"\/#home"/g' build/manifest.json
+          tar -czf build.tar.gz ./build
 
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: release-build
-          path: |
-            build
+          upload_url: ${{ github.event.release.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./build.tar.gz
+          asset_name: build.tar.gz
+          asset_content_type: application/tar+gzip
