@@ -1,3 +1,13 @@
+# [0.6.0](https://github.com/geekdada/yasd/compare/v0.5.2...v0.6.0) (2020-10-29)
+
+
+### Features
+
+* enhance styling ([1dcdfd6](https://github.com/geekdada/yasd/commit/1dcdfd61b2d403b568dc317ab863af0b59e030c5))
+* support yasd-helper ([7a76ab4](https://github.com/geekdada/yasd/commit/7a76ab4853f070bd43ca6620127e51ab5a20dbdf))
+
+
+
 ## [0.5.2](https://github.com/geekdada/yasd/compare/v0.5.1...v0.5.2) (2020-10-27)
 
 
