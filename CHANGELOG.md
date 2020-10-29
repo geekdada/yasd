@@ -1,3 +1,12 @@
+## [0.6.2](https://github.com/geekdada/yasd/compare/v0.6.1...v0.6.2) (2020-10-29)
+
+
+### Features
+
+* support hash router ([74cf309](https://github.com/geekdada/yasd/commit/74cf30996bb7e436a25bba7a8999f47ba37973a2))
+
+
+
 ## [0.6.1](https://github.com/geekdada/yasd/compare/v0.6.0...v0.6.1) (2020-10-29)
 
 
