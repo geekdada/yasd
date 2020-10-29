@@ -1,3 +1,7 @@
+## [0.6.3](https://github.com/geekdada/yasd/compare/v0.6.2...v0.6.3) (2020-10-29)
+
+
+
 ## [0.6.2](https://github.com/geekdada/yasd/compare/v0.6.1...v0.6.2) (2020-10-29)
 
 
