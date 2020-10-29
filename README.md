@@ -38,6 +38,8 @@ We provide both HTTP and HTTPS website:
 - [HTTP](http://yasd.nerdynerd.org)
 - [HTTPS](https://yasd.royli.dev)
 
+You can also find the full bundle in [releases](https://github.com/geekdada/yasd/releases) and deploy yourself.
+
 ## Known issues
 
 - Error handling isn't ideal, try reloading if anything snaps.
