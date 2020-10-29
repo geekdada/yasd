@@ -45,10 +45,10 @@ We provide both HTTP and HTTPS website:
 
 ## Roadmap
 
-- [ ] Better PWA support
+- [x] Better PWA support
 - [ ] i18n
-- [ ] Manage and inspect requests
-- [ ] Write and debug scripts
+- [x] Manage and inspect requests
+- [x] Write and debug scripts
 - [ ] Manage DHCP devices
 - [ ] Full unit and e2e tests
 
