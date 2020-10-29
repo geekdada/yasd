@@ -1,3 +1,12 @@
+## [0.6.1](https://github.com/geekdada/yasd/compare/v0.6.0...v0.6.1) (2020-10-29)
+
+
+### Bug Fixes
+
+* pwa ([02dd437](https://github.com/geekdada/yasd/commit/02dd43740a6ddcd986fb010228c10f0351b99559))
+
+
+
 # [0.6.0](https://github.com/geekdada/yasd/compare/v0.5.2...v0.6.0) (2020-10-29)
 
 
