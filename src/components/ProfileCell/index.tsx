@@ -5,7 +5,7 @@ import React, { MouseEventHandler, useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import tw from 'twin.macro'
-import { Bin } from '@sumup/icons'
+import { Bin, PaperPlane } from '@sumup/icons'
 import { IconButton } from '@sumup/circuit-ui'
 
 import { Profile } from '../../types'
@@ -101,34 +101,55 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
   return (
     <div
       key={profile.id}
-      css={[getCursorStyle(), tw`flex p-3`, variantStyle]}
+      css={[getCursorStyle(), tw`flex p-3 justify-between`]}
       onClick={clickHandler}>
-      <div tw="truncate text-sm md:text-base leading-tight">{profile.name}</div>
-      <div css={[tw`flex items-center`, variant === 'left' && tw`mt-1`]}>
-        {checkConnectivity && (
-          <div className="relative flex h-3 w-3 mr-3">
-            {available && (
-              <span tw="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-            )}
-            <span
-              css={[
-                tw`relative inline-flex rounded-full h-3 w-3`,
-                available === undefined && tw`bg-gray-500`,
-                available === true && tw`bg-green-500`,
-                available === false && tw`bg-red-500`,
-              ]}
-            />
-          </div>
-        )}
-        <div tw="font-mono text-gray-600 text-xs md:text-sm truncate leading-tight">
-          {profile.host}:{profile.port}
+      <div css={[tw`flex w-full`, variantStyle]}>
+        <div tw="truncate text-sm md:text-base leading-tight">
+          {profile.name}
         </div>
-        {showDelete && (
+        <div css={[tw`flex items-center`, variant === 'left' && tw`mt-2`]}>
+          {checkConnectivity && (
+            <div tw="relative flex h-3 w-3 mr-3">
+              {available && (
+                <span tw="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+              )}
+              <span
+                css={[
+                  tw`relative inline-flex rounded-full h-3 w-3`,
+                  available === undefined && tw`bg-gray-500`,
+                  available === true && tw`bg-green-500`,
+                  available === false && tw`bg-red-500`,
+                ]}
+              />
+            </div>
+          )}
+          <div tw="flex items-center font-mono text-gray-600 text-xs md:text-sm truncate leading-none">
+            {!!profile.helperHost && (
+              <div
+                title={`Helper: ${profile.helperHost}:${profile.helperPort}`}
+                tw="cursor-pointer">
+                <PaperPlane
+                  css={css`
+                    width: 1rem;
+                    height: 1rem;
+                    margin-right: 0.25rem;
+                  `}
+                />
+              </div>
+            )}
+            <span>
+              {profile.host}:{profile.port}
+            </span>
+          </div>
+        </div>
+      </div>
+      {showDelete && (
+        <div tw="flex items-center ml-2">
           <IconButton
             onClick={deleteHandler}
             label={'delete profile'}
             css={[
-              tw`flex items-center justify-center w-8 h-8 rounded-full text-gray-600 ml-2`,
+              tw`flex items-center justify-center w-8 h-8 rounded-full text-gray-600`,
               css`
                 padding: 0;
 
@@ -142,8 +163,8 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
             ]}>
             <Bin />
           </IconButton>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -309,6 +309,7 @@ const Page: React.FC = () => {
                 <div key={profile.id} tw="hover:bg-gray-200">
                   <ProfileCell
                     profile={profile}
+                    variant="left"
                     checkConnectivity
                     showDelete
                     onClick={() => selectProfile(profile.id)}
