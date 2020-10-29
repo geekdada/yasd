@@ -1,11 +1,17 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { toast } from 'react-toastify'
+import set from 'lodash-es/set'
 
 const client = axios.create({
   baseURL: '/v1',
   transformRequest: [
     (data, headers) => {
-      delete headers['Content-Type']
+      if (!headers['x-surge-host']) {
+        delete headers['Content-Type']
+      } else {
+        headers['Content-Type'] = 'application/json;charset=UTF-8'
+      }
+
       if (data) {
         return JSON.stringify(data)
       }
@@ -13,11 +19,26 @@ const client = axios.create({
   ],
 })
 
-export function setServer(host: string, port: number, key: string): void {
+export function setServer(
+  host: string,
+  port: number,
+  key: string,
+  options?: {
+    helperHost: string
+    helperPort: number
+  },
+): void {
   const { protocol } = window.location
-  client.defaults.baseURL = `${protocol}//${host}:${port}/v1`
   client.defaults.headers['X-Key'] = key
   client.defaults.timeout = 5000
+
+  if (options) {
+    client.defaults.baseURL = `https://${options.helperHost}:${options.helperPort}/v1`
+    client.defaults.headers['x-surge-host'] = host
+    client.defaults.headers['x-surge-port'] = port
+  } else {
+    client.defaults.baseURL = `${protocol}//${host}:${port}/v1`
+  }
 }
 
 const fetcher = <T>(requestConfig: AxiosRequestConfig): Promise<T> => {
@@ -47,6 +68,28 @@ const fetcher = <T>(requestConfig: AxiosRequestConfig): Promise<T> => {
 
       throw error
     })
+}
+
+export const bareFetcher = <T>(
+  requestConfig: AxiosRequestConfig & { url: string },
+  options?: {
+    helperHost: string
+    helperPort: number
+  },
+): Promise<AxiosResponse<T>> => {
+  if (options) {
+    const url = new URL(requestConfig.url)
+    set(requestConfig, 'headers["x-surge-host"]', url.hostname)
+    set(requestConfig, 'headers["x-surge-port"]', url.port)
+
+    url.hostname = options.helperHost
+    url.port = `${options.helperPort}`
+    url.protocol = 'https:'
+
+    requestConfig.url = url.toString()
+  }
+
+  return axios.request<T>(requestConfig)
 }
 
 export default fetcher

@@ -9,6 +9,7 @@ import { Bin } from '@sumup/icons'
 import { IconButton } from '@sumup/circuit-ui'
 
 import { Profile } from '../../types'
+import { bareFetcher } from '../../utils/fetcher'
 
 interface ProfileCellProps {
   profile: Profile
@@ -65,15 +66,25 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
     let isMounted = true
 
     if (checkConnectivity) {
-      axios
-        .request({
-          url: `//${profile.host}:${profile.port}/v1/outbound`,
+      const options =
+        profile.helperHost && profile.helperPort
+          ? {
+              helperHost: profile.helperHost,
+              helperPort: Number(profile.helperPort),
+            }
+          : undefined
+
+      bareFetcher(
+        {
+          url: `http://${profile.host}:${profile.port}/v1/outbound`,
           method: 'GET',
           headers: {
             'x-key': profile.key,
           },
           timeout: 3000,
-        })
+        },
+        options,
+      )
         .then(() => {
           if (isMounted) setAvailable(true)
         })

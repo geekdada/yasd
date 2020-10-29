@@ -122,7 +122,15 @@ const App: React.FC = () => {
 
     if (result) {
       currentProfile.current = result
-      setServer(result.host, result.port, result.key)
+
+      if (result.helperHost && result.helperPort) {
+        setServer(result.host, result.port, result.key, {
+          helperHost: result.helperHost,
+          helperPort: result.helperPort,
+        })
+      } else {
+        setServer(result.host, result.port, result.key)
+      }
     } else {
       history.replace('/')
     }

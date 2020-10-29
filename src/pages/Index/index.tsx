@@ -85,7 +85,7 @@ const Page: React.FC = () => {
           {profile && (
             <div tw="w-full flex justify-between items-center">
               <div
-                css={[tw`w-1/2 lg:w-1/3 bg-gray-100 rounded-lg`]}
+                css={[tw`w-2/3 bg-gray-100 rounded-lg`]}
                 onDoubleClick={() => window.location.reload(true)}>
                 <ProfileCell variant="left" profile={profile} />
               </div>
