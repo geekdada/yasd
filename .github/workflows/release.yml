@@ -38,7 +38,7 @@ jobs:
         run: |
           yarn install
           CI=false yarn build
-          sed -i '' 's/"\/home"/"\/#home"/g' build/manifest.json
+          sed -i 's/"\/home"/"\/#home"/g' build/manifest.json
           tar -czf build.tar.gz ./build
 
       - name: Upload Release Asset
