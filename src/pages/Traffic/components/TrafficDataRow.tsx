@@ -4,7 +4,7 @@ import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import bytes from 'bytes'
 import tw from 'twin.macro'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { ChevronRight } from '@sumup/icons'
 import { Collapse } from 'react-collapse'
 
@@ -18,6 +18,17 @@ interface TrafficDataRowProps {
 
 const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
   const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(false)
+  const tcpStat = useMemo(() => {
+    if (!data.statistics || !data.statistics.length) return
+
+    let total = 0
+
+    data.statistics.forEach((stat) => {
+      total += stat.srtt
+    })
+
+    return Math.round(total / data.statistics.length)
+  }, [data.statistics])
 
   return (
     <DataRow
@@ -62,6 +73,12 @@ const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
               上传: {bytes(data.outMaxSpeed)}/s 下载: {bytes(data.inMaxSpeed)}/s
             </div>
           </DataRowSub>
+          {!!tcpStat && (
+            <DataRowSub>
+              <div>TCP 统计</div>
+              <div>Avg. RTT {tcpStat}ms</div>
+            </DataRowSub>
+          )}
         </div>
       </Collapse>
     </DataRow>
