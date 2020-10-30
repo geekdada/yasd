@@ -5,7 +5,9 @@ import css from '@emotion/css/macro'
 import dayjs from 'dayjs'
 import tw from 'twin.macro'
 import React from 'react'
+
 import { RequestItem } from '../../../types'
+import MethodBadge from './MethodBadge'
 
 const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
   return (
@@ -21,18 +23,11 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
             height: 1.5rem;
           `,
         ]}>
-        <div
-          css={[
-            tw`rounded px-1 text-white`,
-            css`
-              height: 1rem;
-              line-height: 1rem;
-              font-size: 0.5rem;
-            `,
-            req.status === 'Active' ? tw`bg-green-500` : tw`bg-blue-500`,
-          ]}>
-          {req.method}
-        </div>
+        <MethodBadge
+          method={req.method}
+          failed={req.failed}
+          status={req.status}
+        />
         <div tw="text-xs ml-1">#{req.id}</div>
         <div tw="text-xs ml-1">
           {dayjs.unix(req.startDate).format('HH:mm:ss')}

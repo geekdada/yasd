@@ -34,7 +34,7 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     let newList = [...requestList]
-    const pendingList = requests?.requests ?? []
+    const pendingList = requests?.requests?.slice(0, LIST_ITEMS_MAX) ?? []
 
     while (pendingList.length) {
       const request = pendingList.pop() as RequestItem
@@ -85,7 +85,7 @@ const Page: React.FC = () => {
 
         return (
           <div
-            key={`${req.id}`}
+            key={key}
             style={style}
             onClick={() => openRequestDetail(setModal, req)}
             tw="flex flex-col justify-center py-2 cursor-pointer hover:bg-gray-100"

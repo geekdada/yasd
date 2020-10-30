@@ -17,10 +17,11 @@ import 'react-tabs/style/react-tabs.css'
 import { DataGroup, DataRowMain } from '../../../components/Data'
 import { RequestItem } from '../../../types'
 import fetcher from '../../../utils/fetcher'
+import MethodBadge from './MethodBadge'
 
 const TabsWrapper = styled.div`
   .react-tabs__tab {
-    ${tw`text-sm font-medium border-none`}
+    ${tw`text-sm font-medium border-none transition-colors duration-200 ease-in-out`}
   }
   .react-tabs__tab--selected {
     ${tw`text-blue-500 bg-blue-100 border-none`}
@@ -61,7 +62,19 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
     <ModalWrapper>
       <ModalHeader title={`Detail (#${req.id})`} onClose={onClose} />
 
-      <div tw="truncate text-base font-medium mb-3">{req.URL}</div>
+      <div tw="mb-3 flex items-center">
+        <div
+          css={css`
+            padding-bottom: 0.25rem;
+          `}>
+          <MethodBadge
+            method={req.method}
+            failed={req.failed}
+            status={req.status}
+          />
+        </div>
+        <div tw="truncate text-base font-medium flex-1 ml-1">{req.URL}</div>
+      </div>
 
       <TabsWrapper>
         <Tabs>
@@ -113,24 +126,31 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
               </DataRowMain>
             </DataGroup>
 
-            <DataGroup title="IP 地址">
-              <DataRowMain tw="text-sm">
-                <div>本地 IP 地址</div>
-                <div>{req.localAddress}</div>
-              </DataRowMain>
-              <DataRowMain tw="text-sm">
-                <div>远端 IP 地址</div>
-                <div>
-                  <a
-                    href={`https://ip.sb/ip/${req.remoteAddress}`}
-                    target="_blank"
-                    rel="noreferrer noopener">
-                    <Search tw="inline mr-1 w-3 h-3" />
-                    {req.remoteAddress}
-                  </a>
-                </div>
-              </DataRowMain>
-            </DataGroup>
+            {!!req.localAddress && !!req.remoteAddress && (
+              <DataGroup title="IP 地址">
+                <DataRowMain tw="text-sm">
+                  <div>本地 IP 地址</div>
+                  <div>{req.localAddress}</div>
+                </DataRowMain>
+                <DataRowMain tw="text-sm">
+                  <div>远端 IP 地址</div>
+                  <div>
+                    <a
+                      href={`https://ip.sb/ip/${req.remoteAddress}`}
+                      target="_blank"
+                      rel="noreferrer noopener">
+                      <Search
+                        tw="inline mr-1 w-3 h-3"
+                        css={css`
+                          margin-bottom: 2px;
+                        `}
+                      />
+                      {req.remoteAddress}
+                    </a>
+                  </div>
+                </DataRowMain>
+              </DataGroup>
+            )}
 
             <DataGroup title="流量">
               <DataRowMain tw="text-sm">
