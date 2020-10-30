@@ -1,3 +1,18 @@
+## [0.6.7](https://github.com/geekdada/yasd/compare/v0.6.6...v0.6.7) (2020-10-30)
+
+
+### Bug Fixes
+
+* splice chart unused data ([958f203](https://github.com/geekdada/yasd/commit/958f2038ba21a57d4cbd4e034c8a0b82dfc56ce4))
+* style ([cb39285](https://github.com/geekdada/yasd/commit/cb39285b4f3a64df812c957e92f8cf58f24bbbe8))
+
+
+### Features
+
+* show tcp stat ([84ad28d](https://github.com/geekdada/yasd/commit/84ad28dad06c0824e75f5fc4f3c6a2eaa0b73e2b))
+
+
+
 ## [0.6.6](https://github.com/geekdada/yasd/compare/v0.6.5...v0.6.6) (2020-10-30)
 
 
