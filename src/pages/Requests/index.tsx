@@ -6,7 +6,8 @@ import { ModalConsumer, ModalProvider } from '@sumup/circuit-ui'
 import { ModalProps } from '@sumup/circuit-ui/dist/cjs/components/Modal/Modal'
 import { ListRowRenderer } from 'react-virtualized/dist/es/List'
 import tw from 'twin.macro'
-import React, { useState, useCallback } from 'react'
+import omit from 'lodash-es/omit'
+import React, { useState, useCallback, useEffect } from 'react'
 import useSWR from 'swr'
 import { List, AutoSizer } from 'react-virtualized'
 import PageTitle from '../../components/PageTitle'
@@ -15,6 +16,8 @@ import { RecentRequests, RequestItem } from '../../types'
 import fetcher from '../../utils/fetcher'
 import ListItem from './components/ListItem'
 import RequestModal from './components/RequestModal'
+
+const LIST_ITEMS_MAX = 150
 
 const Page: React.FC = () => {
   const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(true)
@@ -27,6 +30,30 @@ const Page: React.FC = () => {
       refreshInterval: isAutoRefresh ? 5000 : 0,
     },
   )
+  const [requestList, setRequestList] = useState<Array<RequestItem>>([])
+
+  useEffect(() => {
+    let newList = [...requestList]
+    const pendingList = requests?.requests ?? []
+
+    while (pendingList.length) {
+      const request = pendingList.pop() as RequestItem
+      const existingIndex = newList.findIndex((item) => item.id === request.id)
+
+      if (existingIndex >= 0) {
+        Object.assign(newList[existingIndex], omit(request, ['id']))
+      } else {
+        if (newList.length && request.id > newList[0].id) {
+          newList.unshift(request)
+        } else {
+          newList.push(request)
+        }
+      }
+    }
+
+    newList = newList.slice(0, LIST_ITEMS_MAX)
+    setRequestList(newList)
+  }, [requests])
 
   const openRequestDetail = useCallback(
     (setModal: (modal: ModalProps) => void, req: RequestItem) => {
@@ -46,6 +73,7 @@ const Page: React.FC = () => {
     setModal: (modal: ModalProps) => void,
   ) => ListRowRenderer = useCallback(
     (setModal) => {
+      // eslint-disable-next-line react/display-name
       return ({
         key, // Unique key within array of rows
         index, // Index of row within collection
@@ -53,34 +81,25 @@ const Page: React.FC = () => {
         isVisible, // This row is visible within the List (eg it is not an overscanned row)
         style, // Style object to be applied to row (to position it)
       }) => {
-        if (requests) {
-          const req = requests.requests[index]
-          return (
-            <div
-              key={`${req.id}`}
-              style={style}
-              onClick={() => openRequestDetail(setModal, req)}
-              tw="flex flex-col justify-center py-2 cursor-pointer hover:bg-gray-100"
-              css={css`
-                padding-left: calc(env(safe-area-inset-left) + 0.75rem);
-                padding-right: calc(env(safe-area-inset-right) + 0.75rem);
-              `}>
-              <ListItem req={req} />
-            </div>
-          )
-        } else {
-          return null
-        }
+        const req = requestList[index]
+
+        return (
+          <div
+            key={`${req.id}`}
+            style={style}
+            onClick={() => openRequestDetail(setModal, req)}
+            tw="flex flex-col justify-center py-2 cursor-pointer hover:bg-gray-100"
+            css={css`
+              padding-left: calc(env(safe-area-inset-left) + 0.75rem);
+              padding-right: calc(env(safe-area-inset-right) + 0.75rem);
+            `}>
+            <ListItem req={req} />
+          </div>
+        )
       }
     },
-    [requests, openRequestDetail],
+    [requestList, openRequestDetail],
   )
-
-  // useEffect(() => {
-  //   if (requests) {
-  //     RequestModal.preload()
-  //   }
-  // }, [requests])
 
   return (
     <div tw="fixed top-0 right-0 bottom-0 left-0 h-full">
@@ -101,25 +120,23 @@ const Page: React.FC = () => {
                 <div tw="flex-1">
                   <AutoSizer>
                     {({ width, height }) => {
-                      if (requests) {
-                        return (
-                          <List
-                            width={width}
-                            height={height}
-                            rowCount={requests.requests.length}
-                            rowHeight={85}
-                            rowRenderer={getRowRenderer(setModal)}
-                            style={{
-                              outline: 'none',
-                            }}
-                            css={css`
-                              & > div {
-                                ${tw`divide-y divide-gray-200`}
-                              }
-                            `}
-                          />
-                        )
-                      }
+                      return (
+                        <List
+                          width={width}
+                          height={height}
+                          rowCount={requestList.length}
+                          rowHeight={85}
+                          rowRenderer={getRowRenderer(setModal)}
+                          style={{
+                            outline: 'none',
+                          }}
+                          css={css`
+                            & > div {
+                              ${tw`divide-y divide-gray-200`}
+                            }
+                          `}
+                        />
+                      )
                     }}
                   </AutoSizer>
                 </div>

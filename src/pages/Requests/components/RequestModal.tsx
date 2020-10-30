@@ -5,6 +5,7 @@ import css from '@emotion/css/macro'
 import bytes from 'bytes'
 import dayjs from 'dayjs'
 import { basename } from 'path'
+import { mutate } from 'swr'
 import tw from 'twin.macro'
 import { ModalHeader, ModalWrapper } from '@sumup/circuit-ui'
 import { Search } from '@sumup/icons'
@@ -49,6 +50,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
     })
       .then(() => {
         toast.success('操作成功')
+        return mutate('/requests/recent')
       })
       .catch((err) => {
         console.error(err)

@@ -10,7 +10,7 @@ import { RequestItem } from '../../../types'
 const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
   return (
     <div>
-      <div tw="text-xs truncate">{req.URL}</div>
+      <div tw="text-xs truncate text-gray-700">{req.URL}</div>
       <div tw="text-sm truncate">
         {req.policyName}({req.rule})
       </div>
