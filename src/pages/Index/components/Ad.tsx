@@ -23,6 +23,9 @@ const Ad: React.FC = () => {
       axios
         .get<{ list: Array<AdData> }>(
           'https://cdn.jsdelivr.net/gh/geekdada/ad-json/ad.json',
+          {
+            timeout: 3000,
+          },
         )
         .then(({ data }) => {
           const { list } = data
