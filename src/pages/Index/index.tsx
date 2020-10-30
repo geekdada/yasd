@@ -77,7 +77,10 @@ const Page: React.FC = () => {
 
   return (
     <ModalProvider>
-      <div tw="pb-5">
+      <div
+        css={css`
+          padding-bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
+        `}>
         <Heading
           size={'tera'}
           noMargin

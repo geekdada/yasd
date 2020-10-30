@@ -86,6 +86,15 @@ export interface ConnectorTraffic {
   outMaxSpeed: number
   out: number
   inMaxSpeed: number
+  statistics?: ConnectorStat[]
+}
+
+export interface ConnectorStat {
+  rttcur: number
+  rttvar: number
+  srtt: number
+  txpackets: number
+  txretransmitpackets: number
 }
 
 export interface Capability {

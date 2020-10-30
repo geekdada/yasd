@@ -76,6 +76,10 @@ const LineChart: React.FC<LineChartProps> = (props) => {
               ),
             )
           }
+
+          if (dataset.length >= CHART_SIZE * 2) {
+            dataset.splice(0, 20)
+          }
         }
       })
 
