@@ -1,3 +1,14 @@
+## [0.6.6](https://github.com/geekdada/yasd/compare/v0.6.5...v0.6.6) (2020-10-30)
+
+
+### Bug Fixes
+
+* offline ads ([8b48d9e](https://github.com/geekdada/yasd/commit/8b48d9e30f5d6907d9f92441ef47024891030578))
+* offline polyfill ([52edd35](https://github.com/geekdada/yasd/commit/52edd35204124fbce9a4ab6ecd45b4897e705123))
+* requests will mutate in-place ([650c8f7](https://github.com/geekdada/yasd/commit/650c8f70afd95e74b0454879379f8031741c7447))
+
+
+
 ## [0.6.5](https://github.com/geekdada/yasd/compare/v0.6.4...v0.6.5) (2020-10-29)
 
 
