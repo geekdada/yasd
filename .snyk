@@ -1,0 +1,65 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.14.1
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-NODESASS-535498:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.480Z'
+  SNYK-JS-NODESASS-535502:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.480Z'
+  SNYK-JS-NODESASS-540956:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.480Z'
+  SNYK-JS-NODESASS-540958:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.480Z'
+  SNYK-JS-NODESASS-540964:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.480Z'
+  SNYK-JS-NODESASS-540974:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.480Z'
+  SNYK-JS-NODESASS-540978:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.480Z'
+  SNYK-JS-NODESASS-540980:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.480Z'
+  SNYK-JS-NODESASS-540990:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.480Z'
+  SNYK-JS-NODESASS-540992:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.480Z'
+  SNYK-JS-NODESASS-540994:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.480Z'
+  SNYK-JS-NODESASS-540996:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.480Z'
+  SNYK-JS-NODESASS-540998:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.481Z'
+  SNYK-JS-NODESASS-541000:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.481Z'
+  SNYK-JS-NODESASS-541002:
+    - node-sass:
+        reason: None given
+        expires: '2020-12-01T06:01:46.481Z'
+patch: {}
