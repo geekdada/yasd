@@ -1,3 +1,17 @@
+# [0.7.0](https://github.com/geekdada/yasd/compare/v0.6.7...v0.7.0) (2020-11-03)
+
+
+### Bug Fixes
+
+* package.json, yarn.lock & .snyk to reduce vulnerabilities ([d127eed](https://github.com/geekdada/yasd/commit/d127eedf8c9279dce4f8ff799864549a1ad08c76))
+
+
+### Features
+
+* inspect DNS and profile ([7336cb0](https://github.com/geekdada/yasd/commit/7336cb0b38d8608e038eb5bd3911bf35dd8706b8))
+
+
+
 ## [0.6.7](https://github.com/geekdada/yasd/compare/v0.6.6...v0.6.7) (2020-10-30)
 
 
