@@ -11,10 +11,10 @@ import useSWR, { mutate } from 'swr'
 
 import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
 import ProfileCell from '../../components/ProfileCell'
+import Ad from '../../components/Ad'
 import { useProfile } from '../../models/profile'
 import { Capability } from '../../types'
 import fetcher from '../../utils/fetcher'
-import Ad from './components/Ad'
 import TrafficCell from './components/TrafficCell'
 import Events from './components/Events'
 import MenuTile, { MenuTileTitle } from './components/MenuTile'
@@ -69,7 +69,7 @@ const Page: React.FC = () => {
     if (!link) return
 
     if (link.startsWith('http')) {
-      window.open(link)
+      window.open(link, '_blank', 'noopener noreferrer')
     } else {
       history.push(link)
     }

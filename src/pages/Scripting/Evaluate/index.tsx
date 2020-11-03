@@ -14,8 +14,6 @@ import {
   ModalWrapper,
 } from '@sumup/circuit-ui'
 import { toast } from 'react-toastify'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/material.css'
 
 import PageTitle from '../../../components/PageTitle'
 import { EvaluateResult } from '../../../types'
@@ -25,8 +23,14 @@ const CodeMirror = loadable<IControlledCodeMirror>(
   async () => {
     const mod = await import('react-codemirror2').then((mod) => mod.Controlled)
 
-    // @ts-ignore
-    await import('codemirror/mode/javascript/javascript')
+    await Promise.all([
+      // @ts-ignore
+      import('codemirror/lib/codemirror.css'),
+      // @ts-ignore
+      import('codemirror/theme/material.css'),
+      // @ts-ignore
+      import('codemirror/mode/javascript/javascript'),
+    ])
 
     return mod
   },
@@ -40,7 +44,7 @@ const CodeMirror = loadable<IControlledCodeMirror>(
 )
 
 const Page: React.FC = () => {
-  const [code, setCode] = useState<string>('')
+  const [code, setCode] = useState<string>('// Only supports Cron script\n')
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<string>()
   const [timeout, setTimeoutValue] = useState<number>(5)
@@ -89,7 +93,7 @@ const Page: React.FC = () => {
           <div tw="h-full overflow-auto">
             <CodeMirror
               css={[
-                tw`h-full text-sm`,
+                tw`h-full text-xs`,
                 css`
                   & > .CodeMirror {
                     height: 100%;

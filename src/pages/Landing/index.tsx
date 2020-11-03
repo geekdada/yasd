@@ -16,6 +16,7 @@ import { find } from 'lodash-es'
 import { useHistory } from 'react-router-dom'
 
 import ProfileCell from '../../components/ProfileCell'
+import Ad from '../../components/Ad'
 import useSetState from '../../hooks/use-set-state'
 import { Profile } from '../../types'
 import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
@@ -321,6 +322,10 @@ const Page: React.FC = () => {
           </div>
         </div>
       )}
+
+      <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto mt-10">
+        <Ad />
+      </div>
     </div>
   )
 }

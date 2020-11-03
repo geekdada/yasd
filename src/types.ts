@@ -1,10 +1,10 @@
 export interface Policies {
-  'policy-groups': string[]
-  proxies: string[]
+  'policy-groups': Array<string>
+  proxies: Array<string>
 }
 
 export interface PolicyGroups {
-  [name: string]: Policy[]
+  [name: string]: Array<Policy>
 }
 
 export interface Policy {
@@ -43,7 +43,7 @@ export interface RequestItem {
   id: number
   remoteAddress: string
   inMaxSpeed: number
-  notes?: string[]
+  notes?: Array<string>
   inCurrentSpeed: number
   failed: number
   status: 'Active' | 'Complete'
@@ -86,7 +86,7 @@ export interface ConnectorTraffic {
   outMaxSpeed: number
   out: number
   inMaxSpeed: number
-  statistics?: ConnectorStat[]
+  statistics?: Array<ConnectorStat>
 }
 
 export interface ConnectorStat {
@@ -102,8 +102,8 @@ export interface Capability {
 }
 
 export interface Modules {
-  enabled: string[]
-  available: string[]
+  enabled: Array<string>
+  available: Array<string>
 }
 
 export interface Scriptings {
@@ -141,4 +141,22 @@ export interface EvaluateResult {
   result: any
   output: string
   exception?: string
+}
+
+export interface DnsResult {
+  local: ReadonlyArray<{
+    data: string
+    comment: string | null
+    domain: string | null
+    source: string | null
+    server: string | null
+  }>
+  dnsCache: ReadonlyArray<{
+    timeCost: number
+    path: string
+    data: ReadonlyArray<string>
+    domain: string
+    server: string
+    expiresTime: number
+  }>
 }

@@ -46,6 +46,12 @@ const ScriptingPage = loadable(() => import('./pages/Scripting'), {
 const EvaluatePage = loadable(() => import('./pages/Scripting/Evaluate'), {
   fallback: <FullLoading />,
 })
+const DnsPage = loadable(() => import('./pages/Dns'), {
+  fallback: <FullLoading />,
+})
+const ProfilePage = loadable(() => import('./pages/Profiles/Current'), {
+  fallback: <FullLoading />,
+})
 const ToastContainer = styled(OriginalToastContainer)`
   ${tw`p-2 md:p-0`}
 
@@ -187,6 +193,12 @@ const App: React.FC = () => {
               </Route>
               <Route exact path="/scripting/evaluate">
                 <EvaluatePage />
+              </Route>
+              <Route exact path="/dns">
+                <DnsPage />
+              </Route>
+              <Route exact path="/profiles/current">
+                <ProfilePage />
               </Route>
               <Route path="*">
                 <Redirect to="/" />

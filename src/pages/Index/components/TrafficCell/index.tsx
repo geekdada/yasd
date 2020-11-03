@@ -118,24 +118,35 @@ const Index: React.FC = () => {
       <div tw="mb-3 w-full overflow-hidden">
         <LineChart id="traffic-chart" newDatasets={newDatasets} />
       </div>
-      <div tw="grid grid-cols-3 gap-4 divide-x divide-gray-200 border-solid border border-gray-200 bg-gray-100">
-        {activeInterface && (
-          <React.Fragment>
-            <Cell>
-              <Title>Upload</Title>
-              <Data>{bytes(activeInterface.outCurrentSpeed)}/s</Data>
-            </Cell>
-            <Cell>
-              <Title>Download</Title>
-              <Data>{bytes(activeInterface.inCurrentSpeed)}/s</Data>
-            </Cell>
-            <Cell>
-              <Title>Total</Title>
-              <Data>{bytes(activeInterface.in + activeInterface.out)}</Data>
-            </Cell>
-          </React.Fragment>
-        )}
-      </div>
+
+      {activeInterface ? (
+        <div tw="grid grid-cols-3 gap-4 divide-x divide-gray-200 border-solid border border-gray-200 bg-gray-100">
+          <Cell>
+            <Title>Upload</Title>
+            <Data>{bytes(activeInterface.outCurrentSpeed)}/s</Data>
+          </Cell>
+          <Cell>
+            <Title>Download</Title>
+            <Data>{bytes(activeInterface.inCurrentSpeed)}/s</Data>
+          </Cell>
+          <Cell>
+            <Title>Total</Title>
+            <Data>{bytes(activeInterface.in + activeInterface.out)}</Data>
+          </Cell>
+        </div>
+      ) : (
+        <div
+          css={[
+            tw`border border-gray-200 bg-gray-100 text-gray-700`,
+            css`
+              height: 67px;
+              line-height: 67px;
+              text-align: center;
+            `,
+          ]}>
+          Loading...
+        </div>
+      )}
     </div>
   )
 }

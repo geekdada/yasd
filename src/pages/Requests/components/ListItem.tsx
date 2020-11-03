@@ -11,7 +11,7 @@ import MethodBadge from './MethodBadge'
 
 const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
   return (
-    <div>
+    <React.Fragment>
       <div tw="text-xs truncate text-gray-700">{req.URL}</div>
       <div tw="text-sm truncate">
         {req.policyName}({req.rule})
@@ -34,7 +34,7 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
         </div>
         <div tw="text-xs ml-1">{req.status}</div>
       </div>
-    </div>
+    </React.Fragment>
   )
 }
 

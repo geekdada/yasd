@@ -5,8 +5,8 @@ import { RadioButton } from '@sumup/circuit-ui'
 import styled from '@emotion/styled/macro'
 import tw from 'twin.macro'
 import useSWR, { mutate } from 'swr'
-import PageTitle from '../../components/PageTitle'
 
+import PageTitle from '../../components/PageTitle'
 import { Modules } from '../../types'
 import fetcher from '../../utils/fetcher'
 

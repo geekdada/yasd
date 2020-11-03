@@ -36,7 +36,7 @@ const Page: React.FC = () => {
   }, [scripting])
 
   const openUrl = (path: string) => {
-    window.open(path)
+    window.open(path, '_blank', 'noopener noreferrer')
   }
 
   const evaluate = (scriptName: string, index: number) => {

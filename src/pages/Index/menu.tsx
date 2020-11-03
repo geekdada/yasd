@@ -42,6 +42,14 @@ const menu: Array<MenuItem> = [
     link: '/modules',
   },
   {
+    title: 'DNS',
+    link: '/dns',
+  },
+  {
+    title: 'Profile',
+    link: '/profiles/current',
+  },
+  {
     title: 'MitM',
     component: <CapabilityTile api="/features/mitm" title="MitM" />,
   },

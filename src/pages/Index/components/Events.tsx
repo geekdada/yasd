@@ -21,7 +21,7 @@ const Events: React.FC = () => {
       <div tw="text-base font-medium text-gray-700">Events</div>
       <div tw="divide-y divide-gray-200 mt-1">
         {events &&
-          events.events.slice(0, 5).map((item) => {
+          events.events.slice(0, 8).map((item) => {
             return (
               <div key={item.identifier} tw="py-1">
                 <div
