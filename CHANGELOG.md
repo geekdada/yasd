@@ -1,3 +1,18 @@
+## [0.7.1](https://github.com/geekdada/yasd/compare/v0.7.0...v0.7.1) (2020-11-05)
+
+
+### Bug Fixes
+
+* wrong time span ([c03468d](https://github.com/geekdada/yasd/commit/c03468d2c3da66b4b687cd60cdd4c66d02606275))
+
+
+### Features
+
+* speed up refresh rate on macos ([0ea2dea](https://github.com/geekdada/yasd/commit/0ea2dea15fdc63ad2d2ce1ff1107c3fe5d76fdf0))
+* support inspecting active requests ([de2cef0](https://github.com/geekdada/yasd/commit/de2cef038f047a50b187bd134a3fde9f6ef1cba6))
+
+
+
 # [0.7.0](https://github.com/geekdada/yasd/compare/v0.6.7...v0.7.0) (2020-11-03)
 
 
