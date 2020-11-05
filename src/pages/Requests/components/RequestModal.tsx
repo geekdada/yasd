@@ -51,7 +51,11 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
     })
       .then(() => {
         toast.success('操作成功')
-        return mutate('/requests/recent')
+
+        return Promise.all([
+          mutate('/requests/recent'),
+          mutate('/requests/active'),
+        ])
       })
       .catch((err) => {
         console.error(err)
@@ -94,17 +98,19 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
                 <div>状态</div>
                 <div>{req.status}</div>
               </DataRowMain>
+
               {req.completed === 1 && (
                 <DataRowMain tw="text-sm">
                   <div>时长</div>
                   <div>
                     {dayjs
-                      .unix(req.completedDate - req.startDate)
-                      .get('millisecond')}
+                      .unix(req.completedDate)
+                      .diff(dayjs.unix(req.startDate))}
                     ms
                   </div>
                 </DataRowMain>
               )}
+
               {req.pid !== 0 && req.processPath && (
                 <DataRowMain tw="text-sm">
                   <div>进程</div>
