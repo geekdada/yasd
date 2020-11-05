@@ -3,11 +3,18 @@ import { jsx } from '@emotion/core'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import { ModalConsumer, ModalProvider } from '@sumup/circuit-ui'
-import { ModalProps } from '@sumup/circuit-ui/dist/cjs/components/Modal/Modal'
+import { ModalProps } from '@sumup/circuit-ui/dist/es/components/Modal/Modal'
+import SelectorGroup from '@sumup/circuit-ui/dist/es/components/SelectorGroup'
 import { ListRowRenderer } from 'react-virtualized/dist/es/List'
 import tw from 'twin.macro'
 import omit from 'lodash-es/omit'
-import React, { useState, useCallback, useEffect } from 'react'
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  ChangeEvent,
+  useMemo,
+} from 'react'
 import useSWR from 'swr'
 import { List, AutoSizer } from 'react-virtualized'
 import PageTitle from '../../components/PageTitle'
@@ -21,8 +28,9 @@ const LIST_ITEMS_MAX = 150
 
 const Page: React.FC = () => {
   const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(true)
+  const [group, setGroup] = useState<'recent' | 'active'>('recent')
   const { data: requests, error: requestsError } = useSWR<RecentRequests>(
-    '/requests/recent',
+    () => '/requests/' + group,
     fetcher,
     {
       revalidateOnFocus: false,
@@ -31,29 +39,65 @@ const Page: React.FC = () => {
     },
   )
   const [requestList, setRequestList] = useState<Array<RequestItem>>([])
+  const [activeRequestList, setActiveRequestList] = useState<
+    Array<RequestItem>
+  >([])
+  const currentList = useMemo(
+    () => (group === 'recent' ? requestList : activeRequestList),
+    [group, requestList, activeRequestList],
+  )
 
   useEffect(() => {
-    let newList = [...requestList]
-    const pendingList = requests?.requests?.slice(0, LIST_ITEMS_MAX) ?? []
+    if (!requests?.requests) return
+
+    const pendingList =
+      group === 'recent'
+        ? requests.requests
+        : requests.requests.slice(0, LIST_ITEMS_MAX)
+    const now = new Date()
+    let newList = [...currentList]
 
     while (pendingList.length) {
       const request = pendingList.pop() as RequestItem
       const existingIndex = newList.findIndex((item) => item.id === request.id)
 
       if (existingIndex >= 0) {
-        Object.assign(newList[existingIndex], omit(request, ['id']))
+        newList[existingIndex] = {
+          ...newList[existingIndex],
+          ...omit(request, ['id']),
+          lastUpdated: now,
+        }
       } else {
         if (newList.length && request.id > newList[0].id) {
-          newList.unshift(request)
+          newList.unshift({
+            ...request,
+            lastUpdated: now,
+          })
         } else {
-          newList.push(request)
+          newList.push({
+            ...request,
+            lastUpdated: now,
+          })
         }
       }
     }
 
-    newList = newList.slice(0, LIST_ITEMS_MAX)
-    setRequestList(newList)
-  }, [requests])
+    if (group === 'recent') {
+      newList = newList.slice(0, LIST_ITEMS_MAX)
+    } else {
+      newList = newList
+        .filter((item) => item.lastUpdated === now)
+        .sort((a, b) => b.id - a.id)
+    }
+
+    if (group === 'recent') {
+      setRequestList(newList)
+      setActiveRequestList([])
+    } else {
+      setRequestList([])
+      setActiveRequestList(newList)
+    }
+  }, [requests, group])
 
   const openRequestDetail = useCallback(
     (setModal: (modal: ModalProps) => void, req: RequestItem) => {
@@ -81,7 +125,7 @@ const Page: React.FC = () => {
         isVisible, // This row is visible within the List (eg it is not an overscanned row)
         style, // Style object to be applied to row (to position it)
       }) => {
-        const req = requestList[index]
+        const req = currentList[index]
 
         return (
           <div
@@ -98,11 +142,11 @@ const Page: React.FC = () => {
         )
       }
     },
-    [requestList, openRequestDetail],
+    [currentList, openRequestDetail],
   )
 
   return (
-    <div tw="fixed top-0 right-0 bottom-0 left-0 h-full">
+    <div tw="fixed top-0 right-0 bottom-0 left-0 h-full overflow-hidden">
       <ModalProvider>
         <ModalConsumer>
           {({ setModal }) => {
@@ -118,27 +162,81 @@ const Page: React.FC = () => {
                 />
 
                 <div tw="flex-1">
-                  <AutoSizer>
-                    {({ width, height }) => {
-                      return (
-                        <List
-                          width={width}
-                          height={height}
-                          rowCount={requestList.length}
-                          rowHeight={85}
-                          rowRenderer={getRowRenderer(setModal)}
-                          style={{
-                            outline: 'none',
-                          }}
-                          css={css`
-                            & > div {
-                              ${tw`divide-y divide-gray-200`}
-                            }
-                          `}
-                        />
-                      )
-                    }}
-                  </AutoSizer>
+                  {currentList.length ? (
+                    <AutoSizer>
+                      {({ width, height }) => {
+                        return (
+                          <List
+                            width={width}
+                            height={height}
+                            rowCount={currentList.length}
+                            rowHeight={85}
+                            rowRenderer={getRowRenderer(setModal)}
+                            style={{
+                              outline: 'none',
+                            }}
+                            css={css`
+                              & > div {
+                                ${tw`divide-y divide-gray-200`}
+                              }
+                            `}
+                          />
+                        )
+                      }}
+                    </AutoSizer>
+                  ) : (
+                    <div tw="h-full flex items-center justify-center text-sm text-gray-500">
+                      Loading...
+                    </div>
+                  )}
+                </div>
+
+                <div
+                  css={css`
+                    padding-bottom: env(safe-area-inset-bottom);
+                  `}>
+                  <div
+                    css={[
+                      tw`flex divide-x divide-gray-200 border-t border-solid border-gray-200 py-2 px-2`,
+                      css`
+                        & > div {
+                          ${tw`mx-2`}
+                        }
+                        & > div:first-of-type {
+                          margin-left: 0;
+                        }
+                      `,
+                    ]}>
+                    <SelectorGroup
+                      css={[
+                        tw`flex justify-center items-center`,
+                        css`
+                          & label {
+                            ${tw`py-2 px-4 ml-2 my-1 text-sm`}
+                          }
+                          & label:first-of-type {
+                            margin-left: 0;
+                          }
+                        `,
+                      ]}
+                      label="choose the dns result group"
+                      name="selector-group"
+                      onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                        setGroup(event.target.value as 'recent' | 'active')
+                      }}
+                      options={[
+                        {
+                          children: 'Recent',
+                          value: 'recent',
+                        },
+                        {
+                          children: 'Active',
+                          value: 'active',
+                        },
+                      ]}
+                      value={group}
+                    />
+                  </div>
                 </div>
               </div>
             )

@@ -124,7 +124,7 @@ const Page: React.FC = () => {
   )
 
   return (
-    <div tw="fixed top-0 right-0 bottom-0 left-0 h-full">
+    <div tw="fixed top-0 right-0 bottom-0 left-0 h-full overflow-hidden">
       <div tw="w-full h-full flex flex-col">
         <PageTitle title="DNS" />
 

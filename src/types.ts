@@ -67,6 +67,7 @@ export interface RequestItem {
   processPath?: string
   URL: string
   timingRecords?: Array<{ durationInMillisecond: number; name: string }>
+  lastUpdated?: Date
 }
 
 export interface Traffic {
