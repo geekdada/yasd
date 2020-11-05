@@ -17,8 +17,9 @@ import React, {
 } from 'react'
 import useSWR from 'swr'
 import { List, AutoSizer } from 'react-virtualized'
-import PageTitle from '../../components/PageTitle'
 
+import PageTitle from '../../components/PageTitle'
+import { useProfile } from '../../models/profile'
 import { RecentRequests, RequestItem } from '../../types'
 import fetcher from '../../utils/fetcher'
 import ListItem from './components/ListItem'
@@ -27,6 +28,7 @@ import RequestModal from './components/RequestModal'
 const LIST_ITEMS_MAX = 150
 
 const Page: React.FC = () => {
+  const profile = useProfile()
   const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(true)
   const [group, setGroup] = useState<'recent' | 'active'>('recent')
   const { data: requests, error: requestsError } = useSWR<RecentRequests>(
@@ -35,7 +37,12 @@ const Page: React.FC = () => {
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
-      refreshInterval: isAutoRefresh ? 5000 : 0,
+      dedupingInterval: 1000,
+      refreshInterval: isAutoRefresh
+        ? profile?.platform === 'macos'
+          ? 1000
+          : 4000
+        : 0,
     },
   )
   const [requestList, setRequestList] = useState<Array<RequestItem>>([])
@@ -50,10 +57,7 @@ const Page: React.FC = () => {
   useEffect(() => {
     if (!requests?.requests) return
 
-    const pendingList =
-      group === 'recent'
-        ? requests.requests
-        : requests.requests.slice(0, LIST_ITEMS_MAX)
+    const pendingList = requests.requests
     const now = new Date()
     let newList = [...currentList]
 
@@ -62,11 +66,10 @@ const Page: React.FC = () => {
       const existingIndex = newList.findIndex((item) => item.id === request.id)
 
       if (existingIndex >= 0) {
-        newList[existingIndex] = {
-          ...newList[existingIndex],
+        Object.assign(newList[existingIndex], {
           ...omit(request, ['id']),
           lastUpdated: now,
-        }
+        })
       } else {
         if (newList.length && request.id > newList[0].id) {
           newList.unshift({
