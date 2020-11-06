@@ -2,6 +2,7 @@
 import { jsx } from '@emotion/core'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
+import bytes from 'bytes'
 import dayjs from 'dayjs'
 import tw from 'twin.macro'
 import React from 'react'
@@ -30,9 +31,17 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
         />
         <div tw="text-xs ml-1">#{req.id}</div>
         <div tw="text-xs ml-1">
-          {dayjs.unix(req.startDate).format('HH:mm:ss')}
+          <span> - </span>
+          <span>{dayjs.unix(req.startDate).format('HH:mm:ss')}</span>
         </div>
-        <div tw="text-xs ml-1">{req.status}</div>
+        <div tw="text-xs ml-1">
+          <span> - </span>
+          <span>{bytes(req.inBytes + req.outBytes)}</span>
+        </div>
+        <div tw="text-xs ml-1">
+          <span> - </span>
+          <span>{req.status}</span>
+        </div>
       </div>
     </React.Fragment>
   )
