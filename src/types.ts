@@ -45,10 +45,11 @@ export interface RequestItem {
   inMaxSpeed: number
   notes?: Array<string>
   inCurrentSpeed: number
-  failed: number
+  failed: 1 | 0 | boolean
   status: 'Active' | 'Complete'
   outCurrentSpeed: number
-  completed: number
+  completed: 1 | 0 | boolean
+  modified: 1 | 0 | boolean
   sourcePort: number
   completedDate: number
   outBytes: number
@@ -59,7 +60,7 @@ export interface RequestItem {
   inBytes: number
   method: string
   pid: number
-  replica: number
+  replica: 1 | 0 | boolean
   rule: string
   startDate: number
   setupCompletedDate: number

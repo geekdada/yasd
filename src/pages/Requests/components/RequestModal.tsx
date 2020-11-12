@@ -16,12 +16,13 @@ import 'react-tabs/style/react-tabs.css'
 
 import { DataGroup, DataRowMain } from '../../../components/Data'
 import { RequestItem } from '../../../types'
+import { isFalsy, isTruthy } from '../../../utils'
 import fetcher from '../../../utils/fetcher'
 import MethodBadge from './MethodBadge'
 
 const TabsWrapper = styled.div`
   .react-tabs__tab {
-    ${tw`text-sm font-medium border-none transition-colors duration-200 ease-in-out`}
+    ${tw`text-sm font-medium border-none transition-colors duration-200 ease-in-out active:shadow-none active:border-none focus:shadow-none focus:border-none`}
   }
   .react-tabs__tab--selected {
     ${tw`text-blue-500 bg-blue-100 border-none`}
@@ -66,17 +67,15 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
     <ModalWrapper>
       <ModalHeader title={`Detail (#${req.id})`} onClose={onClose} />
 
-      <div tw="mb-3 flex items-center">
-        <div
+      <div css={[tw`mb-3 flex items-center leading-normal`]}>
+        <MethodBadge
           css={css`
-            padding-bottom: 0.25rem;
-          `}>
-          <MethodBadge
-            method={req.method}
-            failed={req.failed}
-            status={req.status}
-          />
-        </div>
+            margin-top: 4px;
+          `}
+          method={req.method}
+          failed={req.failed}
+          status={req.status}
+        />
         <div tw="truncate text-base font-medium flex-1 ml-1">{req.URL}</div>
       </div>
 
@@ -99,7 +98,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
                 <div>{req.status}</div>
               </DataRowMain>
 
-              {req.completed === 1 && (
+              {isTruthy(req.completed) && (
                 <DataRowMain tw="text-sm">
                   <div>时长</div>
                   <div>
@@ -179,7 +178,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
               </pre>
             </DataGroup>
 
-            {req.completed === 0 && (
+            {isFalsy(req.completed) && req.method !== 'UDP' && (
               <DataGroup title="Action">
                 <div
                   tw="text-red-500 p-3 cursor-pointer hover:bg-gray-200"
@@ -205,7 +204,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
             <DataGroup>
               {req.timingRecords &&
                 req.timingRecords.map((item, index) => (
-                  <DataRowMain key={index}>
+                  <DataRowMain key={index} tw="text-sm">
                     <div>{item.name}</div>
                     <div>{item.durationInMillisecond}ms</div>
                   </DataRowMain>

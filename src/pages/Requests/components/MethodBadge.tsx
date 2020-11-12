@@ -4,13 +4,16 @@ import css from '@emotion/css/macro'
 import React from 'react'
 import tw from 'twin.macro'
 
+import { isTruthy } from '../../../utils'
+
 const MethodBadge: React.FC<{
-  failed: number
+  failed: 1 | 0 | boolean
   method: string
   status: string
-}> = ({ failed, method, status }) => {
+}> = ({ failed, method, status, ...args }) => {
   return (
     <div
+      {...args}
       css={[
         tw`rounded px-1 text-white inline-block`,
         css`
@@ -18,13 +21,13 @@ const MethodBadge: React.FC<{
           line-height: 1rem;
           font-size: 0.5rem;
         `,
-        failed === 1
+        isTruthy(failed)
           ? tw`bg-red-500`
           : status === 'Active'
           ? tw`bg-green-500`
           : tw`bg-blue-500`,
       ]}>
-      {method}
+      {method.toUpperCase()}
     </div>
   )
 }

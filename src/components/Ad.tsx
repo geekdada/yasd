@@ -6,6 +6,7 @@ import css from '@emotion/css/macro'
 import tw from 'twin.macro'
 import ReactGA from 'react-ga'
 import axios from 'axios'
+import dayjs from 'dayjs'
 
 interface AdData {
   id: number
@@ -19,6 +20,8 @@ const Ad: React.FC = () => {
   const [ad, setAd] = useState<AdData>()
 
   useEffect(() => {
+    let isMounted = true
+
     if (showDynamicAd.current) {
       axios
         .get<{ list: Array<AdData> }>(
@@ -32,24 +35,30 @@ const Ad: React.FC = () => {
           const adList = list.filter((item) => item.id === 20201013)
 
           if (adList.length) {
-            setAd(adList[0])
+            isMounted && setAd(adList[0])
           } else {
             throw new Error('Target ad not found')
           }
         })
         .catch(() => {
-          setAd({
-            id: 1,
-            name: '请我喝咖啡！',
-            url: 'https://surgio.royli.dev/support.html',
-          })
+          isMounted &&
+            setAd({
+              id: 1,
+              name: '请我喝咖啡！',
+              url: 'https://surgio.royli.dev/support.html',
+            })
         })
     } else {
-      setAd({
-        id: 1,
-        name: '请我喝咖啡！',
-        url: 'https://surgio.royli.dev/support.html',
-      })
+      isMounted &&
+        setAd({
+          id: 1,
+          name: '请我喝咖啡！',
+          url: 'https://surgio.royli.dev/support.html',
+        })
+    }
+
+    return () => {
+      isMounted = false
     }
   }, [])
 
