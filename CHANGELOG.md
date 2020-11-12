@@ -1,3 +1,12 @@
+## [0.7.3](https://github.com/geekdada/yasd/compare/v0.7.2...v0.7.3) (2020-11-12)
+
+
+### Bug Fixes
+
+* bugfix ([f129276](https://github.com/geekdada/yasd/commit/f129276ce8bd4363ccdb0acc1049efb3ed9db33d))
+
+
+
 ## [0.7.2](https://github.com/geekdada/yasd/compare/v0.7.1...v0.7.2) (2020-11-06)
 
 
