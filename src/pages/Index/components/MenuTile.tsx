@@ -13,20 +13,26 @@ interface MenuTileProps {
 }
 
 const MenuTile: React.FC<MenuTileProps> = (props) => {
+  const handleClick: MouseEventHandler = (e) => {
+    if (props.onClick) {
+      props.onClick(e)
+    }
+  }
+
   return (
-    <Card
-      shadow="single"
-      onClick={props.onClick}
-      css={[
-        css`
-          min-height: 8rem;
-          cursor: ${props.onClick ? 'pointer' : 'inherit'};
-        `,
-        tw`p-4`,
-        props.style || tw`bg-gray-100`,
-      ]}>
-      {props.children}
-    </Card>
+    <div onClick={handleClick} css={[props.onClick && tw`cursor-pointer`]}>
+      <Card
+        shadow="single"
+        css={[
+          css`
+            min-height: 8rem;
+          `,
+          tw`p-4`,
+          props.style || tw`bg-gray-100`,
+        ]}>
+        {props.children}
+      </Card>
+    </div>
   )
 }
 

@@ -145,77 +145,76 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
   }, [refreshSelection, isInViewport, selection])
 
   return (
-    <Card
-      shadow="single"
-      ref={targetRef}
-      tw="relative overflow-hidden px-3 md:px-4">
-      {isLoading && (
-        <LoadingOverlay>
-          <Spinner />
-        </LoadingOverlay>
-      )}
+    <div ref={targetRef}>
+      <Card shadow="single" tw="relative overflow-hidden px-3 md:px-4">
+        {isLoading && (
+          <LoadingOverlay>
+            <Spinner />
+          </LoadingOverlay>
+        )}
 
-      <Heading
-        size="kilo"
-        tw="flex flex-row justify-between items-center mb-3 md:mb-4">
-        <div>{policyGroupName}</div>
-        <IconButton
+        <Heading
           size="kilo"
-          label="test policy"
-          onClick={() => testPolicy(policyGroupName)}>
-          {isTesting ? (
-            <Spinner tw="text-gray-700 w-5 h-5" />
-          ) : (
-            <Zap tw="text-gray-700 w-5 h-5" />
-          )}
-        </IconButton>
-      </Heading>
+          tw="flex flex-row justify-between items-center mb-3 md:mb-4">
+          <div>{policyGroupName}</div>
+          <IconButton
+            size="kilo"
+            label="test policy"
+            onClick={() => testPolicy(policyGroupName)}>
+            {isTesting ? (
+              <Spinner tw="text-gray-700 w-5 h-5" />
+            ) : (
+              <Zap tw="text-gray-700 w-5 h-5" />
+            )}
+          </IconButton>
+        </Heading>
 
-      <div tw="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-        {policyGroup.map((policy) => {
-          return (
-            <div
-              css={[
-                tw`bg-gray-200 rounded-md px-3 py-3 md:px-4 md:py-3 cursor-pointer hover:bg-gray-300 transition-colors ease-in-out duration-200`,
-                selection === policy.name
-                  ? tw`bg-blue-600 text-white hover:bg-blue-600`
-                  : '',
-              ]}
-              key={policy.name}
-              onClick={() => selectPolicy(policy.name)}>
-              <div tw="text-sm md:text-base leading-snug">{policy.name}</div>
+        <div tw="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+          {policyGroup.map((policy) => {
+            return (
               <div
                 css={[
-                  tw`flex flex-row justify-between mt-2 text-xs text-gray-700`,
-                  selection === policy.name ? tw`text-white` : '',
-                ]}>
-                <div tw="text-center bg-gray-400 text-gray-700 px-1 rounded">
-                  {policy.typeDescription.toUpperCase()}
+                  tw`bg-gray-200 rounded-md px-3 py-3 md:px-4 md:py-3 cursor-pointer hover:bg-gray-300 transition-colors ease-in-out duration-200`,
+                  selection === policy.name
+                    ? tw`bg-blue-600 text-white hover:bg-blue-600`
+                    : '',
+                ]}
+                key={policy.name}
+                onClick={() => selectPolicy(policy.name)}>
+                <div tw="text-sm md:text-base leading-snug">{policy.name}</div>
+                <div
+                  css={[
+                    tw`flex flex-row justify-between mt-2 text-xs text-gray-700`,
+                    selection === policy.name ? tw`text-white` : '',
+                  ]}>
+                  <div tw="text-center bg-gray-400 text-gray-700 px-1 rounded">
+                    {policy.typeDescription.toUpperCase()}
+                  </div>
+                  {latencies[policy.name] >= 0 && (
+                    <LatencyResult
+                      css={[
+                        tw`rounded px-1`,
+                        latencyResultStyle(latencies[policy.name]),
+                      ]}>
+                      {latencies[policy.name] + 'ms'}
+                    </LatencyResult>
+                  )}
+                  {latencies[policy.name] === -1 && (
+                    <LatencyResult
+                      css={[
+                        tw`rounded px-1`,
+                        latencyResultStyle(latencies[policy.name]),
+                      ]}>
+                      Failed
+                    </LatencyResult>
+                  )}
                 </div>
-                {latencies[policy.name] >= 0 && (
-                  <LatencyResult
-                    css={[
-                      tw`rounded px-1`,
-                      latencyResultStyle(latencies[policy.name]),
-                    ]}>
-                    {latencies[policy.name] + 'ms'}
-                  </LatencyResult>
-                )}
-                {latencies[policy.name] === -1 && (
-                  <LatencyResult
-                    css={[
-                      tw`rounded px-1`,
-                      latencyResultStyle(latencies[policy.name]),
-                    ]}>
-                    Failed
-                  </LatencyResult>
-                )}
               </div>
-            </div>
-          )
-        })}
-      </div>
-    </Card>
+            )
+          })}
+        </div>
+      </Card>
+    </div>
   )
 }
 
