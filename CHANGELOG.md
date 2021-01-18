@@ -1,3 +1,14 @@
+## [0.7.4](https://github.com/geekdada/yasd/compare/v0.7.3...v0.7.4) (2021-01-18)
+
+
+### Bug Fixes
+
+* package.json & yarn.lock to reduce vulnerabilities ([a09ac6f](https://github.com/geekdada/yasd/commit/a09ac6fac52d57db8beaecc7cff258c552698236))
+* pageview ([7c4975f](https://github.com/geekdada/yasd/commit/7c4975fad4626232b5ccedad1dea47180c034e16))
+* props type ([c4b0aef](https://github.com/geekdada/yasd/commit/c4b0aef49b6b8f03d2ee6eb5f2d154a9c34e5a1a))
+
+
+
 ## [0.7.3](https://github.com/geekdada/yasd/compare/v0.7.2...v0.7.3) (2020-11-12)
 
 
