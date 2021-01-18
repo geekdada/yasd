@@ -1,3 +1,4 @@
+/** @jsx jsx */
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {
@@ -6,6 +7,8 @@ import {
   HashRouter,
   HashRouterProps,
 } from 'react-router-dom'
+import createCache from '@emotion/cache'
+import { CacheProvider, jsx } from '@emotion/core'
 
 import './index.css'
 import App from './App'
@@ -20,12 +23,17 @@ const ReactRouter: React.FC<BrowserRouterProps | HashRouterProps> = (args) => {
     </BrowserRouter>
   )
 }
+const styleCache = createCache({
+  key: 'yasd',
+})
 
 ReactDOM.render(
   <React.StrictMode>
-    <ReactRouter>
-      <App />
-    </ReactRouter>
+    <CacheProvider value={styleCache}>
+      <ReactRouter>
+        <App />
+      </ReactRouter>
+    </CacheProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 )
