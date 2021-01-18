@@ -1,3 +1,12 @@
+## [0.7.5](https://github.com/geekdada/yasd/compare/v0.7.4...v0.7.5) (2021-01-18)
+
+
+### Features
+
+* use seperate emotion instance ([d67db20](https://github.com/geekdada/yasd/commit/d67db20d7dc3ed44e3ccabe54563c10984a63e05))
+
+
+
 ## [0.7.4](https://github.com/geekdada/yasd/compare/v0.7.3...v0.7.4) (2021-01-18)
 
 
