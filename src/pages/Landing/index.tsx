@@ -25,10 +25,10 @@ import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
 const Page: React.FC = () => {
   const history = useHistory()
   const protocol = window.location.protocol
-  const [name, setName] = useState<string | undefined>()
-  const [host, setHost] = useState<string | undefined>()
-  const [port, setPort] = useState<string | undefined>()
-  const [key, setKey] = useState<string | undefined>()
+  const [name, setName] = useState('')
+  const [host, setHost] = useState('')
+  const [port, setPort] = useState('')
+  const [key, setKey] = useState('')
   const [useTls, setUseTls] = useState<boolean>(() => protocol === 'https:')
   const [
     existingProfiles,

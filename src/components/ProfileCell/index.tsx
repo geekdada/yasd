@@ -127,7 +127,7 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
             onClick={deleteHandler}
             label={'delete profile'}
             css={[
-              tw`flex items-center justify-center w-8 h-8 rounded-full text-gray-600`,
+              tw`flex items-center justify-center w-8 h-8 text-gray-600`,
               css`
                 padding: 0;
 
