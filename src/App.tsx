@@ -4,13 +4,17 @@ import { find } from 'lodash-es'
 import React, { useEffect, useRef, useState } from 'react'
 import { ThemeProvider } from 'emotion-theming'
 import { light } from '@sumup/design-tokens'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import {
+  Switch,
+  Route,
+  Redirect,
+  useLocation,
+  useHistory,
+} from 'react-router-dom'
 import loadable from '@loadable/component'
 import tw from 'twin.macro'
-import css from '@emotion/css/macro'
 import styled from '@emotion/styled/macro'
 import store from 'store2'
-import { useLocation, useHistory } from 'react-router-dom'
 import ReactGA from 'react-ga'
 import { ToastContainer as OriginalToastContainer } from 'react-toastify'
 import { SWRConfig } from 'swr'

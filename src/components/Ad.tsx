@@ -1,12 +1,9 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React, { useEffect, useRef, useState } from 'react'
-import styled from '@emotion/styled/macro'
-import css from '@emotion/css/macro'
 import tw from 'twin.macro'
 import ReactGA from 'react-ga'
 import axios from 'axios'
-import dayjs from 'dayjs'
 
 interface AdData {
   id: number
