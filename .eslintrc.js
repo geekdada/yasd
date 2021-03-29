@@ -1,5 +1,10 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
+  settings: {
+    react: {
+      version: 'detect',
+    }
+  },
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -11,6 +16,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
   ],
   rules: {
     'react/prop-types': 'off',
