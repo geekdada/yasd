@@ -1,3 +1,17 @@
+# [0.8.0](https://github.com/geekdada/yasd/compare/v0.7.5...v0.8.0) (2021-03-29)
+
+
+### Bug Fixes
+
+* ui errors ([6af447e](https://github.com/geekdada/yasd/commit/6af447efcc40b002b1147208438bb03eacb3b851))
+
+
+### Features
+
+* allow using https api ([0947305](https://github.com/geekdada/yasd/commit/09473051a4593fdb3dd4b2dea655935b7a331fcf))
+
+
+
 ## [0.7.5](https://github.com/geekdada/yasd/compare/v0.7.4...v0.7.5) (2021-01-18)
 
 
@@ -193,9 +207,9 @@
 
 ### Features
 
-* 优化体验 ([05746a8](https://github.com/geekdada/yasd/commit/05746a8e3ceb270a230c344106e732fd7f5d0aaf))
 * add traffic chart ([180caa3](https://github.com/geekdada/yasd/commit/180caa3c4eb8df1adf1411c3c8f2daf1d31e543b))
 * enable refreshWhenOffline ([438ce9e](https://github.com/geekdada/yasd/commit/438ce9e4a7e31aca28353147f03e081f5ac22948))
+* 优化体验 ([05746a8](https://github.com/geekdada/yasd/commit/05746a8e3ceb270a230c344106e732fd7f5d0aaf))
 
 
 
@@ -269,8 +283,6 @@
 
 ### Features
 
-* 功能完善 ([b738679](https://github.com/geekdada/yasd/commit/b738679c8b9da0ab08b413fd5b7aa38df32e8e01))
-* 完成功能 ([c5f2cdb](https://github.com/geekdada/yasd/commit/c5f2cdb7fe2f906d9929cc64046928d7092e0438))
 * add ga tracking ([04a7ee5](https://github.com/geekdada/yasd/commit/04a7ee55e8f1c6defc0f85a3a5fd8e5dfb9b9e3c))
 * add sponsor and github link ([2f15097](https://github.com/geekdada/yasd/commit/2f150973e17125d30b2674cb21e69eb3753aff22))
 * clicking menu tile should not triggle toggling ([163c70a](https://github.com/geekdada/yasd/commit/163c70af6d492e5fe54f71c91baca2b6133229aa))
@@ -284,6 +296,8 @@
 * show error message when error occurs ([c3f2eb0](https://github.com/geekdada/yasd/commit/c3f2eb0917446de197e565fee7f4eb9215b91422))
 * show version on header ([e7fa22c](https://github.com/geekdada/yasd/commit/e7fa22c49e0db72b44f18038ab1bddf77ba223e1))
 * traffic ([855df41](https://github.com/geekdada/yasd/commit/855df415dbea6e702dca49f4847e4ce7e7d3ea73))
+* 功能完善 ([b738679](https://github.com/geekdada/yasd/commit/b738679c8b9da0ab08b413fd5b7aa38df32e8e01))
+* 完成功能 ([c5f2cdb](https://github.com/geekdada/yasd/commit/c5f2cdb7fe2f906d9929cc64046928d7092e0438))
 
 
 
