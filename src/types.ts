@@ -135,8 +135,7 @@ export interface Profile {
   platform: 'macos' | 'ios'
   platformVersion: string
   platformBuild: number
-  helperHost?: string
-  helperPort?: number
+  tls?: boolean
 }
 
 export interface EvaluateResult {

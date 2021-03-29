@@ -9,7 +9,6 @@ import { Bin, PaperPlane } from '@sumup/icons'
 import { IconButton } from '@sumup/circuit-ui'
 
 import { Profile } from '../../types'
-import { bareFetcher } from '../../utils/fetcher'
 
 interface ProfileCellProps {
   profile: Profile
@@ -66,25 +65,17 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
     let isMounted = true
 
     if (checkConnectivity) {
-      const options =
-        profile.helperHost && profile.helperPort
-          ? {
-              helperHost: profile.helperHost,
-              helperPort: Number(profile.helperPort),
-            }
-          : undefined
-
-      bareFetcher(
-        {
-          url: `http://${profile.host}:${profile.port}/v1/outbound`,
+      axios
+        .request({
+          url: `${profile.tls ? 'https' : 'http'}://${profile.host}:${
+            profile.port
+          }/v1/outbound`,
           method: 'GET',
           headers: {
             'x-key': profile.key,
           },
           timeout: 3000,
-        },
-        options,
-      )
+        })
         .then(() => {
           if (isMounted) setAvailable(true)
         })
@@ -124,19 +115,6 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
             </div>
           )}
           <div tw="flex items-center font-mono text-gray-600 text-xs md:text-sm truncate leading-none">
-            {!!profile.helperHost && (
-              <div
-                title={`Helper: ${profile.helperHost}:${profile.helperPort}`}
-                tw="cursor-pointer">
-                <PaperPlane
-                  css={css`
-                    width: 1rem;
-                    height: 1rem;
-                    margin-right: 0.25rem;
-                  `}
-                />
-              </div>
-            )}
             <span>
               {profile.host}:{profile.port}
             </span>

@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
+import axios from 'axios'
 import React, {
   FormEventHandler,
   useCallback,
@@ -20,20 +21,15 @@ import Ad from '../../components/Ad'
 import useSetState from '../../hooks/use-set-state'
 import { Profile } from '../../types'
 import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
-import { bareFetcher } from '../../utils/fetcher'
 
 const Page: React.FC = () => {
   const history = useHistory()
   const protocol = window.location.protocol
   const [name, setName] = useState<string | undefined>()
   const [host, setHost] = useState<string | undefined>()
-  const [helperHost, setHelperHost] = useState<string | undefined>()
   const [port, setPort] = useState<string | undefined>()
-  const [helperPort, setHelperPort] = useState<string | undefined>()
   const [key, setKey] = useState<string | undefined>()
-  const [useHelper, setUseHelper] = useState<boolean>(
-    () => protocol === 'https:',
-  )
+  const [useTls, setUseTls] = useState<boolean>(() => protocol === 'https:')
   const [
     existingProfiles,
     setExistingProfiles,
@@ -84,8 +80,7 @@ const Page: React.FC = () => {
     setHost('')
     setPort('')
     setKey('')
-    setHelperHost('')
-    setHelperPort('')
+    setUseTls(protocol === 'https:')
   }
 
   const onSubmit: FormEventHandler = (e) => {
@@ -97,25 +92,15 @@ const Page: React.FC = () => {
 
     setIsLoading(true)
 
-    const options =
-      useHelper && helperHost && helperPort
-        ? {
-            helperHost,
-            helperPort: Number(helperPort),
-          }
-        : undefined
-
-    bareFetcher(
-      {
-        url: `http://${host}:${port}/v1/outbound`,
+    axios
+      .request({
+        url: `${useTls ? 'https' : 'http'}://${host}:${port}/v1/outbound`,
         method: 'GET',
         timeout: 3000,
         headers: {
           'x-key': key,
         },
-      },
-      options,
-    )
+      })
       .then((res) => {
         setHasError(false)
 
@@ -129,8 +114,7 @@ const Page: React.FC = () => {
             : 'ios',
           platformVersion: res.headers['x-surge-version'] || '',
           platformBuild: res.headers['x-surge-build'] || '',
-          helperHost: helperHost,
-          helperPort: Number(helperPort),
+          tls: useTls,
         })
 
         resetFields()
@@ -184,16 +168,8 @@ const Page: React.FC = () => {
             </a>
           </p>
           <p tw="leading-normal mb-2">
-            您已可通过 yasd-helper 实现 HTTPS 访问 Surge API。
-          </p>
-          <p tw="leading-normal">
-            <a
-              href="https://github.com/geekdada/yasd-helper"
-              target="_blank"
-              rel="noreferrer"
-              tw="border-b border-solid border-teal-500">
-              🔗 查看
-            </a>
+            Surge Mac v4.0.6 (1280) 开始已支持开启 HTTPS API，故不再支持使用
+            yasd-helper。
           </p>
         </div>
 
@@ -243,43 +219,16 @@ const Page: React.FC = () => {
               setKey((target as HTMLInputElement).value)
             }
           />
-          <div>
-            <div>
-              <Checkbox
-                disabled={protocol === 'https:'}
-                checked={useHelper}
-                onChange={() => setUseHelper((prev) => !prev)}>
-                使用 yasd-helper 中转
-              </Checkbox>
-            </div>
 
-            {useHelper && (
-              <React.Fragment>
-                <Input
-                  type="text"
-                  required={protocol === 'https:'}
-                  invalid={!!hasError}
-                  label="Helper Host"
-                  placeholder="192.168.1.2.nip.io"
-                  value={helperHost}
-                  onChange={({ target }) =>
-                    setHelperHost((target as HTMLInputElement).value)
-                  }
-                />
-                <Input
-                  type="number"
-                  required={protocol === 'https:'}
-                  invalid={!!hasError}
-                  label="Helper Port"
-                  placeholder="8443"
-                  value={helperPort}
-                  onChange={({ target }) =>
-                    setHelperPort((target as HTMLInputElement).value)
-                  }
-                />
-              </React.Fragment>
-            )}
+          <div>
+            <Checkbox
+              disabled={protocol === 'https:'}
+              checked={useTls}
+              onChange={() => setUseTls((prev) => !prev)}>
+              HTTPS（请确保开启 <code>http-api-tls</code>）
+            </Checkbox>
           </div>
+
           <div tw="mt-6">
             <LoadingButton
               type="submit"

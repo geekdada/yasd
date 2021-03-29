@@ -1,6 +1,5 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import { toast } from 'react-toastify'
-import set from 'lodash-es/set'
 
 const client = axios.create({
   baseURL: '/v1',
@@ -24,21 +23,15 @@ export function setServer(
   port: number,
   key: string,
   options?: {
-    helperHost: string
-    helperPort: number
+    tls?: boolean
   },
 ): void {
-  const { protocol } = window.location
-  client.defaults.headers['X-Key'] = key
+  const useTls = options?.tls === true
+
+  client.defaults.headers['x-key'] = key
   client.defaults.timeout = 5000
 
-  if (options) {
-    client.defaults.baseURL = `https://${options.helperHost}:${options.helperPort}/v1`
-    client.defaults.headers['x-surge-host'] = host
-    client.defaults.headers['x-surge-port'] = port
-  } else {
-    client.defaults.baseURL = `${protocol}//${host}:${port}/v1`
-  }
+  client.defaults.baseURL = `${useTls ? 'https:' : 'http:'}//${host}:${port}/v1`
 }
 
 const fetcher = <T>(requestConfig: AxiosRequestConfig): Promise<T> => {
@@ -68,28 +61,6 @@ const fetcher = <T>(requestConfig: AxiosRequestConfig): Promise<T> => {
 
       throw error
     })
-}
-
-export const bareFetcher = <T>(
-  requestConfig: AxiosRequestConfig & { url: string },
-  options?: {
-    helperHost: string
-    helperPort: number
-  },
-): Promise<AxiosResponse<T>> => {
-  if (options) {
-    const url = new URL(requestConfig.url)
-    set(requestConfig, 'headers["x-surge-host"]', url.hostname)
-    set(requestConfig, 'headers["x-surge-port"]', url.port)
-
-    url.hostname = options.helperHost
-    url.port = `${options.helperPort}`
-    url.protocol = 'https:'
-
-    requestConfig.url = url.toString()
-  }
-
-  return axios.request<T>(requestConfig)
 }
 
 export default fetcher
