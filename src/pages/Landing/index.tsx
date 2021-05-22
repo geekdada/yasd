@@ -30,11 +30,8 @@ const Page: React.FC = () => {
   const [port, setPort] = useState('')
   const [key, setKey] = useState('')
   const [useTls, setUseTls] = useState<boolean>(() => protocol === 'https:')
-  const [
-    existingProfiles,
-    setExistingProfiles,
-    getExistingProfiles,
-  ] = useSetState<Array<Profile>>([])
+  const [existingProfiles, setExistingProfiles, getExistingProfiles] =
+    useSetState<Array<Profile>>([])
   const [hasError, setHasError] = useState<boolean | string>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 

@@ -14,7 +14,7 @@ import css from '@emotion/css/macro'
 import tw from 'twin.macro'
 
 interface NetworkErrorModalProps {
-  onClose: (event: MouseEvent | KeyboardEvent) => void
+  onClose: (event?: MouseEvent | KeyboardEvent) => void
   isOpen: boolean
 }
 

@@ -38,7 +38,7 @@ const TabsWrapper = styled.div`
 
 interface RequestModalProps {
   req: RequestItem
-  onClose: (event: MouseEvent | KeyboardEvent) => void
+  onClose: (event?: MouseEvent | KeyboardEvent) => void
 }
 
 const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {

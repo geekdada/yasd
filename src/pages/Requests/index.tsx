@@ -106,7 +106,11 @@ const Page: React.FC = () => {
     (setModal: (modal: ModalProps) => void, req: RequestItem) => {
       setModal({
         children({ onClose }) {
-          return <RequestModal req={req} onClose={onClose} />
+          return onClose ? (
+            <RequestModal req={req} onClose={onClose} />
+          ) : (
+            <React.Fragment></React.Fragment>
+          )
         },
         onClose() {
           // noop
