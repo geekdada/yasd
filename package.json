@@ -130,7 +130,7 @@
     "*.{js,jsx,ts,tsx}": "eslint --ext .js,.jsx,.ts,.tsx"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": "^14"
   },
   "snyk": true
 }
