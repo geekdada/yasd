@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import tw from 'twin.macro'
 import ReactGA from 'react-ga'
 import axios from 'axios'
+import { isRunInSurge } from '../utils'
 
 interface AdData {
   id: number
@@ -18,6 +19,10 @@ const Ad: React.FC = () => {
 
   useEffect(() => {
     let isMounted = true
+
+    if (isRunInSurge()) {
+      return
+    }
 
     if (showDynamicAd.current) {
       axios
