@@ -37,7 +37,7 @@ jobs:
           REACT_APP_HASH_ROUTER: true
         run: |
           yarn install
-          CI=false yarn build
+          CI=false yarn build:release
           sed -i 's/"\/home"/"\/#home"/g' build/manifest.json
           sed -i 's/<script src=\"https:\/\/polyfill.alicdn.com\/modern\/polyfill.min.js\" crossorigin=\"anonymous\"><\/script>//g' build/index.html
           tar -czf build.tar.gz ./build

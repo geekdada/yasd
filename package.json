@@ -5,11 +5,13 @@
   "license": "MIT",
   "scripts": {
     "start": "craco start",
-    "build": "NODE_ENV=production craco build",
+    "build": "zx scripts/build.mjs release-vercel",
+    "build:release": "zx scripts/build.mjs release-ci",
+    "build:surge": "zx scripts/build.mjs surge",
     "test": "craco test --watchAll=false",
     "test:watch": "craco test",
     "test:coverage": "craco test --coverage --runInBand --watchAll=false",
-    "test:lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "test:lint": "eslint . --ext .mjs,.js,.jsx,.ts,.tsx",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "pub": "np --no-publish",
     "version": "npm run changelog && git add .",
@@ -41,7 +43,7 @@
     "@types/jest": "^26.0.15",
     "@types/loadable__component": "^5.13.0",
     "@types/lodash-es": "^4.17.3",
-    "@types/node": "^12.0.0",
+    "@types/node": "^14.0.0",
     "@types/react": "^17.0.3",
     "@types/react-collapse": "^5.0.0",
     "@types/react-dom": "^17.0.3",
@@ -104,7 +106,8 @@
     "twin.macro": "^1.11.1",
     "typescript": "^4.0.3",
     "use-is-in-viewport": "^1.0.9",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "zx": "^1.11.0"
   },
   "browserslist": {
     "production": [
@@ -127,7 +130,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint --ext .js,.jsx,.ts,.tsx"
+    "*.{js,jsx,ts,tsx}": "eslint --ext .mjs,.js,.jsx,.ts,.tsx"
   },
   "engines": {
     "node": "^14"
