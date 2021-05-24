@@ -12,6 +12,7 @@ import { find } from 'lodash-es'
 import { useHistory } from 'react-router-dom'
 
 import useSetState from '../../hooks/use-set-state'
+import { useSetProfile } from '../../models/profile'
 import { Profile } from '../../types'
 import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
 import { useAuthData } from './hooks'
@@ -31,6 +32,7 @@ const Page: React.FC = () => {
   } = useAuthData()
   const [existingProfiles, setExistingProfiles, getExistingProfiles] =
     useSetState<Array<Profile>>([])
+  const setProfile = useSetProfile()
 
   const addProfile = (config: Omit<Profile, 'id'>): Profile => {
     const profile: Profile = {
@@ -57,6 +59,8 @@ const Page: React.FC = () => {
           if (keepCredential) {
             store.set(LastUsedProfile, profile.id)
           }
+
+          setProfile(profile)
           history.replace('/home')
         }
       })

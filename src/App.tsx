@@ -23,14 +23,17 @@ import 'react-toastify/dist/ReactToastify.css'
 import FullLoading from './components/FullLoading'
 import NewVersionAlert from './components/NewVersionAlert'
 import ScrollToTop from './components/ScrollToTop'
-import { ProfileProvider } from './models/profile'
 import NetworkErrorModal from './components/NetworkErrorModal'
-import LandingPage from './pages/Landing'
+import { useProfile, useSetProfile } from './models/profile'
+import {
+  RegularLanding as LandingPage,
+  SurgeLanding as SurgeLandingPage,
+} from './pages/Landing'
 import IndexPage from './pages/Index'
 import PageLayout from './components/PageLayout'
 import { Profile } from './types'
+import { isRunInSurge } from './utils'
 import { ExistingProfiles, LastUsedProfile } from './utils/constant'
-import { setServer } from './utils/fetcher'
 
 const PoliciesPage = loadable(() => import('./pages/Policies'), {
   fallback: <FullLoading />,
@@ -120,21 +123,31 @@ const App: React.FC = () => {
   const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false)
   const location = useLocation()
   const history = useHistory()
-  const currentProfile = useRef<Profile>()
+  const setProfile = useSetProfile()
+  const profile = useProfile()
+  const [hasInit, setHasInit] = useState(false)
 
-  if (location.pathname !== '/') {
-    const existingProfiles = store.get(ExistingProfiles)
-    const lastId = store.get(LastUsedProfile)
-    const result = find<Profile>(existingProfiles, { id: lastId })
+  useEffect(
+    () => {
+      const existingProfiles = store.get(ExistingProfiles)
+      const lastId = store.get(LastUsedProfile)
+      const result = find<Profile>(existingProfiles, { id: lastId })
 
-    if (result) {
-      currentProfile.current = result
+      if (result) {
+        setProfile(result)
+      }
 
-      setServer(result.host, result.port, result.key, { tls: result.tls })
-    } else {
+      setHasInit(true)
+    },
+    // eslint-disable-next-line
+    [],
+  )
+
+  useEffect(() => {
+    if (hasInit && !profile && location.pathname !== '/') {
       history.replace('/')
     }
-  }
+  }, [hasInit, history, location.pathname, profile])
 
   useEffect(() => {
     ReactGA.pageview(location.pathname)
@@ -154,55 +167,53 @@ const App: React.FC = () => {
         refreshWhenOffline: true,
       }}>
       <ThemeProvider theme={light}>
-        <ProfileProvider profile={currentProfile.current}>
-          <ScrollToTop />
-          <ToastContainer />
-          <NetworkErrorModal
-            isOpen={isNetworkModalOpen}
-            onClose={() => {
-              window.location.replace('/')
-            }}
-          />
-          <NewVersionAlert />
+        <ScrollToTop />
+        <ToastContainer />
+        <NetworkErrorModal
+          isOpen={isNetworkModalOpen}
+          onClose={() => {
+            window.location.replace('/')
+          }}
+        />
+        <NewVersionAlert />
 
-          <PageLayout>
-            <Switch>
-              <Route exact path="/">
-                <LandingPage />
-              </Route>
-              <Route exact path="/home">
-                <IndexPage />
-              </Route>
-              <Route exact path="/policies">
-                <PoliciesPage />
-              </Route>
-              <Route exact path="/requests">
-                <RequestsPage />
-              </Route>
-              <Route exact path="/traffic">
-                <TrafficPage />
-              </Route>
-              <Route exact path="/modules">
-                <ModulesPage />
-              </Route>
-              <Route exact path="/scripting">
-                <ScriptingPage />
-              </Route>
-              <Route exact path="/scripting/evaluate">
-                <EvaluatePage />
-              </Route>
-              <Route exact path="/dns">
-                <DnsPage />
-              </Route>
-              <Route exact path="/profiles/current">
-                <ProfilePage />
-              </Route>
-              <Route path="*">
-                <Redirect to="/" />
-              </Route>
-            </Switch>
-          </PageLayout>
-        </ProfileProvider>
+        <PageLayout>
+          <Switch>
+            <Route exact path="/">
+              {isRunInSurge() ? <SurgeLandingPage /> : <LandingPage />}
+            </Route>
+            <Route exact path="/home">
+              <IndexPage />
+            </Route>
+            <Route exact path="/policies">
+              <PoliciesPage />
+            </Route>
+            <Route exact path="/requests">
+              <RequestsPage />
+            </Route>
+            <Route exact path="/traffic">
+              <TrafficPage />
+            </Route>
+            <Route exact path="/modules">
+              <ModulesPage />
+            </Route>
+            <Route exact path="/scripting">
+              <ScriptingPage />
+            </Route>
+            <Route exact path="/scripting/evaluate">
+              <EvaluatePage />
+            </Route>
+            <Route exact path="/dns">
+              <DnsPage />
+            </Route>
+            <Route exact path="/profiles/current">
+              <ProfilePage />
+            </Route>
+            <Route path="*">
+              <Redirect to="/" />
+            </Route>
+          </Switch>
+        </PageLayout>
       </ThemeProvider>
     </SWRConfig>
   )

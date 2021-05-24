@@ -1,31 +1,28 @@
 import React, { createContext, useState } from 'react'
 
 import { Profile } from '../types'
+import { setServer } from '../utils/fetcher'
 
-type ProfileContextType = {
+interface IProfileContext {
   profile?: Profile
+  setProfile: (profile: Profile) => void
 }
 
-const ProfileContext = createContext<ProfileContextType | undefined>(undefined)
-
-export const ProfileProvider: React.FC<{
-  profile?: Profile
-}> = (props) => {
-  const [profile, setProfile] = useState<Profile>()
-
-  if (profile !== props.profile) {
-    setProfile(props.profile)
-  }
-
-  return (
-    <ProfileContext.Provider value={{ profile }}>
-      {props.children}
-    </ProfileContext.Provider>
-  )
+const context: IProfileContext = {
+  setProfile(profile) {
+    setServer(profile.host, profile.port, profile.key, { tls: profile.tls })
+    this.profile = profile
+  },
 }
+
+export const ProfileContext = createContext<IProfileContext>(context)
 
 export const useProfile = (): Profile | undefined => {
   const context = React.useContext(ProfileContext)
 
   return context?.profile
+}
+
+export const useSetProfile = (): IProfileContext['setProfile'] => {
+  return context.setProfile.bind(context)
 }
