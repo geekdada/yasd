@@ -126,9 +126,19 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     const storedExistingProfiles = store.get(ExistingProfiles)
+    const lastId = store.get(LastUsedProfile)
 
     if (storedExistingProfiles) {
+      const result = find<Profile>(storedExistingProfiles, { id: lastId })
+
       setExistingProfiles(storedExistingProfiles)
+
+      if (result) {
+        profileDispatch({
+          type: 'update',
+          payload: result,
+        })
+      }
     }
   }, [setExistingProfiles])
 
