@@ -9,6 +9,7 @@ import useSWR from 'swr'
 import tw from 'twin.macro'
 import React, { useEffect, useMemo, useState } from 'react'
 
+import { useProfile } from '../../../../models/profile'
 import { ConnectorTraffic, Traffic } from '../../../../types'
 import fetcher from '../../../../utils/fetcher'
 
@@ -39,8 +40,9 @@ const Data = styled.div`
 export const REFRESH_RATE = 1000
 
 const Index: React.FC = () => {
+  const profile = useProfile()
   const { data: traffic, error: trafficError } = useSWR(
-    '/traffic',
+    profile !== undefined ? '/traffic' : null,
     (url) =>
       fetcher<Traffic & { nowTime: number }>(url).then((res) => {
         res.nowTime = Date.now()

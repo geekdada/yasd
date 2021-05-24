@@ -6,8 +6,9 @@ import { Toggle } from '@sumup/circuit-ui'
 import { useHistory } from 'react-router-dom'
 import useSWR, { mutate } from 'swr'
 import tw from 'twin.macro'
-import React, { MouseEventHandler, useCallback } from 'react'
+import React, { useCallback } from 'react'
 
+import { useProfile } from '../../../models/profile'
 import { Capability } from '../../../types'
 import fetcher from '../../../utils/fetcher'
 import MenuTile, { MenuTileContent, MenuTileTitle } from './MenuTile'
@@ -23,7 +24,11 @@ const CapabilityTile: React.FC<CapabilityTileProps> = ({
   title,
   link,
 }) => {
-  const { data: capability } = useSWR<Capability>(api, fetcher)
+  const profile = useProfile()
+  const { data: capability } = useSWR<Capability>(
+    profile !== undefined ? api : null,
+    fetcher,
+  )
   const history = useHistory()
 
   const toggle = useCallback(() => {

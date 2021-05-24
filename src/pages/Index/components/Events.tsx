@@ -8,13 +8,18 @@ import useSWR from 'swr'
 import tw from 'twin.macro'
 import React from 'react'
 
+import { useProfile } from '../../../models/profile'
 import { EventList } from '../../../types'
 import fetcher from '../../../utils/fetcher'
 
 dayjs.extend(localizedFormat)
 
 const Events: React.FC = () => {
-  const { data: events } = useSWR<EventList>('/events', fetcher)
+  const profile = useProfile()
+  const { data: events } = useSWR<EventList>(
+    profile !== undefined ? '/events' : null,
+    fetcher,
+  )
 
   return (
     <div tw="p-3 bg-gray-100 rounded">
