@@ -14,6 +14,7 @@ await (async () => {
   switch (target) {
     case 'release-vercel':
       process.env.NODE_ENV = 'production'
+      process.env.REACT_APP_USE_SW = 'true'
       await $`craco build`
 
       break
@@ -22,6 +23,7 @@ await (async () => {
       process.env.NODE_ENV = 'production'
       process.env.REACT_APP_SHOW_AD = 'true'
       process.env.REACT_APP_HASH_ROUTER = 'true'
+      process.env.REACT_APP_USE_SW = 'true'
       process.env.PUBLIC_URL = getUrlPathPrefix()
       await $`craco build`
       await changeManifest({
@@ -45,6 +47,7 @@ await (async () => {
 
     default:
       process.env.NODE_ENV = 'production'
+      process.env.REACT_APP_USE_SW = 'true'
       process.env.PUBLIC_URL = getUrlPathPrefix()
       await $`craco build`
 

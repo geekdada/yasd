@@ -38,10 +38,12 @@ ReactDOM.render(
   document.getElementById('root'),
 )
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://cra.link/PWA
-serviceWorkerRegistration.register()
+if ('REACT_APP_USE_SW' in process.env) {
+  // If you want your app to work offline and load faster, you can change
+  // unregister() to register() below. Note this comes with some pitfalls.
+  // Learn more about service workers: https://cra.link/PWA
+  serviceWorkerRegistration.register()
+}
 
 if (!('scrollBehavior' in document.documentElement.style)) {
   // @ts-ignore
