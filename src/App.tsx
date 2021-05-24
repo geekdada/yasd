@@ -24,7 +24,11 @@ import FullLoading from './components/FullLoading'
 import NewVersionAlert from './components/NewVersionAlert'
 import ScrollToTop from './components/ScrollToTop'
 import NetworkErrorModal from './components/NetworkErrorModal'
-import { useProfile, useSetProfile } from './models/profile'
+import {
+  ProfileProvider,
+  useProfile,
+  useProfileDispatch,
+} from './models/profile'
 import {
   RegularLanding as LandingPage,
   SurgeLanding as SurgeLandingPage,
@@ -123,7 +127,7 @@ const App: React.FC = () => {
   const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false)
   const location = useLocation()
   const history = useHistory()
-  const setProfile = useSetProfile()
+  const profileDispatch = useProfileDispatch()
   const profile = useProfile()
   const [hasInit, setHasInit] = useState(false)
 
@@ -134,7 +138,10 @@ const App: React.FC = () => {
       const result = find<Profile>(existingProfiles, { id: lastId })
 
       if (result) {
-        setProfile(result)
+        profileDispatch({
+          type: 'update',
+          payload: result,
+        })
       }
 
       setHasInit(true)
@@ -166,57 +173,65 @@ const App: React.FC = () => {
         },
         refreshWhenOffline: true,
       }}>
-      <ThemeProvider theme={light}>
-        <ScrollToTop />
-        <ToastContainer />
-        <NetworkErrorModal
-          isOpen={isNetworkModalOpen}
-          onClose={() => {
-            window.location.replace('/')
-          }}
-        />
-        <NewVersionAlert />
+      <ScrollToTop />
+      <ToastContainer />
+      <NetworkErrorModal
+        isOpen={isNetworkModalOpen}
+        onClose={() => {
+          window.location.replace('/')
+        }}
+      />
+      <NewVersionAlert />
 
-        <PageLayout>
-          <Switch>
-            <Route exact path="/">
-              {isRunInSurge() ? <SurgeLandingPage /> : <LandingPage />}
-            </Route>
-            <Route exact path="/home">
-              <IndexPage />
-            </Route>
-            <Route exact path="/policies">
-              <PoliciesPage />
-            </Route>
-            <Route exact path="/requests">
-              <RequestsPage />
-            </Route>
-            <Route exact path="/traffic">
-              <TrafficPage />
-            </Route>
-            <Route exact path="/modules">
-              <ModulesPage />
-            </Route>
-            <Route exact path="/scripting">
-              <ScriptingPage />
-            </Route>
-            <Route exact path="/scripting/evaluate">
-              <EvaluatePage />
-            </Route>
-            <Route exact path="/dns">
-              <DnsPage />
-            </Route>
-            <Route exact path="/profiles/current">
-              <ProfilePage />
-            </Route>
-            <Route path="*">
-              <Redirect to="/" />
-            </Route>
-          </Switch>
-        </PageLayout>
-      </ThemeProvider>
+      <PageLayout>
+        <Switch>
+          <Route exact path="/">
+            {isRunInSurge() ? <SurgeLandingPage /> : <LandingPage />}
+          </Route>
+          <Route exact path="/home">
+            <IndexPage />
+          </Route>
+          <Route exact path="/policies">
+            <PoliciesPage />
+          </Route>
+          <Route exact path="/requests">
+            <RequestsPage />
+          </Route>
+          <Route exact path="/traffic">
+            <TrafficPage />
+          </Route>
+          <Route exact path="/modules">
+            <ModulesPage />
+          </Route>
+          <Route exact path="/scripting">
+            <ScriptingPage />
+          </Route>
+          <Route exact path="/scripting/evaluate">
+            <EvaluatePage />
+          </Route>
+          <Route exact path="/dns">
+            <DnsPage />
+          </Route>
+          <Route exact path="/profiles/current">
+            <ProfilePage />
+          </Route>
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+      </PageLayout>
     </SWRConfig>
   )
 }
 
-export default App
+const AppWrapper: React.FC = () => {
+  return (
+    <ProfileProvider>
+      <ThemeProvider theme={light}>
+        <App />
+      </ThemeProvider>
+    </ProfileProvider>
+  )
+}
+
+export default AppWrapper

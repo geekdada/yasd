@@ -12,13 +12,12 @@ import { find } from 'lodash-es'
 import { useHistory } from 'react-router-dom'
 
 import useSetState from '../../hooks/use-set-state'
-import { useSetProfile } from '../../models/profile'
+import { useProfile, useProfileDispatch } from '../../models/profile'
 import { Profile } from '../../types'
 import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
 import { useAuthData } from './hooks'
 
 const Page: React.FC = () => {
-  const history = useHistory()
   const protocol = window.location.protocol
   const {
     data,
@@ -32,7 +31,9 @@ const Page: React.FC = () => {
   } = useAuthData()
   const [existingProfiles, setExistingProfiles, getExistingProfiles] =
     useSetState<Array<Profile>>([])
-  const setProfile = useSetProfile()
+  const profileDispatch = useProfileDispatch()
+  const profile = useProfile()
+  const history = useHistory()
 
   const addProfile = (config: Omit<Profile, 'id'>): Profile => {
     const profile: Profile = {
@@ -60,8 +61,10 @@ const Page: React.FC = () => {
             store.set(LastUsedProfile, profile.id)
           }
 
-          setProfile(profile)
-          history.replace('/home')
+          profileDispatch({
+            type: 'update',
+            payload: profile,
+          })
         }
       })
     },
@@ -83,7 +86,6 @@ const Page: React.FC = () => {
     }
 
     const { hostname, port } = window.location
-
     setIsLoading(true)
 
     axios
@@ -129,6 +131,12 @@ const Page: React.FC = () => {
       setExistingProfiles(storedExistingProfiles)
     }
   }, [setExistingProfiles])
+
+  useEffect(() => {
+    if (profile) {
+      history.replace('/home')
+    }
+  }, [profile, history])
 
   return (
     <div

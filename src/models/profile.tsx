@@ -1,28 +1,75 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, Dispatch, Reducer, useReducer } from 'react'
 
 import { Profile } from '../types'
 import { setServer } from '../utils/fetcher'
 
 interface IProfileContext {
   profile?: Profile
-  setProfile: (profile: Profile) => void
 }
 
-const context: IProfileContext = {
-  setProfile(profile) {
-    setServer(profile.host, profile.port, profile.key, { tls: profile.tls })
-    this.profile = profile
-  },
+type ReducerAction =
+  | {
+      type: 'update'
+      payload: Profile
+    }
+  | {
+      type: 'clear'
+    }
+
+const profileReducer: Reducer<IProfileContext, ReducerAction> = (
+  state,
+  action,
+) => {
+  switch (action.type) {
+    case 'update':
+      setServer(action.payload.host, action.payload.port, action.payload.key, {
+        tls: action.payload.tls,
+      })
+      return {
+        profile: action.payload,
+      }
+    case 'clear':
+      return {
+        profile: undefined,
+      }
+    default:
+      throw new Error()
+  }
 }
 
-export const ProfileContext = createContext<IProfileContext>(context)
+const ProfileContext = createContext<IProfileContext>({
+  profile: undefined,
+})
+
+const ProfileDispatchContext =
+  createContext<Dispatch<ReducerAction> | undefined>(undefined)
+
+export const ProfileProvider: React.FC = (props) => {
+  const [state, dispatch] = useReducer(profileReducer, {
+    profile: undefined,
+  })
+
+  return (
+    <ProfileContext.Provider value={state}>
+      <ProfileDispatchContext.Provider value={dispatch}>
+        {props.children}
+      </ProfileDispatchContext.Provider>
+    </ProfileContext.Provider>
+  )
+}
 
 export const useProfile = (): Profile | undefined => {
   const context = React.useContext(ProfileContext)
 
-  return context?.profile
+  return context.profile
 }
 
-export const useSetProfile = (): IProfileContext['setProfile'] => {
-  return context.setProfile.bind(context)
+export const useProfileDispatch = (): Dispatch<ReducerAction> => {
+  const context = React.useContext(ProfileDispatchContext)
+
+  if (!context) {
+    throw new Error()
+  }
+
+  return context
 }
