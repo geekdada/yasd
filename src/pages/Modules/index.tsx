@@ -46,7 +46,7 @@ const Page: React.FC = () => {
             return (
               <div key={mod} tw="flex items-center justify-between p-3">
                 <div tw="truncate leading-normal text-gray-700">{mod}</div>
-                <div>
+                <div tw="flex items-center">
                   <RadioButton
                     checked={isChecked(mod)}
                     onChange={() => toggle(mod, !isChecked(mod))}

@@ -6,7 +6,7 @@ import { Toggle } from '@sumup/circuit-ui'
 import { useHistory } from 'react-router-dom'
 import useSWR, { mutate } from 'swr'
 import tw from 'twin.macro'
-import React, { useCallback } from 'react'
+import React, { ChangeEventHandler, useCallback } from 'react'
 
 import { useProfile } from '../../../models/profile'
 import { Capability } from '../../../types'
@@ -31,21 +31,27 @@ const CapabilityTile: React.FC<CapabilityTileProps> = ({
   )
   const history = useHistory()
 
-  const toggle = useCallback(() => {
-    fetcher({
-      method: 'POST',
-      url: api,
-      data: {
-        enabled: !capability?.enabled,
-      },
-    })
-      .then(() => {
-        return mutate(api)
+  const toggle: ChangeEventHandler<HTMLButtonElement> = useCallback(
+    (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+
+      fetcher({
+        method: 'POST',
+        url: api,
+        data: {
+          enabled: !capability?.enabled,
+        },
       })
-      .catch((err) => {
-        console.error(err)
-      })
-  }, [api, capability])
+        .then(() => {
+          return mutate(api)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    },
+    [api, capability],
+  )
 
   return (
     <MenuTile onClick={link ? () => history.push(link) : undefined}>
@@ -55,8 +61,8 @@ const CapabilityTile: React.FC<CapabilityTileProps> = ({
         <Toggle
           noMargin
           label=""
-          labelChecked=""
-          labelUnchecked=""
+          labelChecked="on"
+          labelUnchecked="off"
           checked={capability?.enabled}
           onChange={toggle}
         />
