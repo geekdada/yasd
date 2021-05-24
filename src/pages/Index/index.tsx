@@ -1,19 +1,22 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React, { useCallback } from 'react'
-import { Heading, ModalProvider, Toggle } from '@sumup/circuit-ui'
+import { Button, Heading, ModalProvider, Toggle } from '@sumup/circuit-ui'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import tw from 'twin.macro'
 import { delay } from 'bluebird'
 import { useHistory } from 'react-router-dom'
 import useSWR, { mutate } from 'swr'
+import store, { remove } from 'store2'
 
 import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
 import ProfileCell from '../../components/ProfileCell'
 import Ad from '../../components/Ad'
 import { useProfile } from '../../models/profile'
 import { Capability } from '../../types'
+import { isRunInSurge } from '../../utils'
+import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
 import fetcher from '../../utils/fetcher'
 import TrafficCell from './components/TrafficCell'
 import Events from './components/Events'
@@ -65,6 +68,12 @@ const Page: React.FC = () => {
       })
   }, [enhancedMode])
 
+  const logout = () => {
+    store.remove(LastUsedProfile)
+    store.remove(ExistingProfiles)
+    window.location.reload()
+  }
+
   const openLink = (link?: string) => {
     if (!link) return
 
@@ -92,7 +101,16 @@ const Page: React.FC = () => {
                 onDoubleClick={() => window.location.reload(true)}>
                 <ProfileCell variant="left" profile={profile} />
               </div>
-              <SetHostModal />
+
+              {isRunInSurge() ? (
+                <div>
+                  <Button size="kilo" onClick={logout}>
+                    登出
+                  </Button>
+                </div>
+              ) : (
+                <SetHostModal />
+              )}
             </div>
           )}
         </Heading>
