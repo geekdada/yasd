@@ -3,6 +3,7 @@ import { jsx } from '@emotion/core'
 import React from 'react'
 import tw, { TwStyle } from 'twin.macro'
 
+import { isRunInSurge } from '../../utils'
 import CapabilityTile from './components/CapabilityTile'
 
 export interface MenuItem {
@@ -61,11 +62,14 @@ const menu: Array<MenuItem> = [
     title: 'Rewrite',
     component: <CapabilityTile api="/features/rewrite" title="Rewrite" />,
   },
-  {
+]
+
+if (!isRunInSurge()) {
+  menu.push({
     title: 'GitHub',
     subTitle: '🌟',
     link: 'https://github.com/geekdada/yasd',
-  },
-]
+  })
+}
 
 export default menu
