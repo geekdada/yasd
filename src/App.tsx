@@ -115,11 +115,11 @@ const ToastContainer = styled(OriginalToastContainer)`
 `
 
 if (
-  'REACT_APP_DEBUG_GA' in process.env ||
+  !!process.env.REACT_APP_DEBUG_GA ||
   (process.env.NODE_ENV === 'production' && process.env.REACT_APP_ENABLE_GA)
 ) {
   ReactGA.initialize('UA-146417304-2', {
-    debug: 'REACT_APP_DEBUG_GA' in process.env,
+    debug: !!process.env.REACT_APP_DEBUG_GA,
   })
 }
 

@@ -177,7 +177,7 @@ const Page: React.FC = () => {
                             width={width}
                             height={height}
                             rowCount={currentList.length}
-                            rowHeight={85}
+                            rowHeight={64}
                             rowRenderer={getRowRenderer(setModal)}
                             style={{
                               outline: 'none',

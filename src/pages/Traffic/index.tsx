@@ -56,7 +56,7 @@ const Page: React.FC = () => {
   return (
     <div tw={'relative pb-5'}>
       <PageTitle
-        title="Requests"
+        title="Traffic"
         hasAutoRefresh={true}
         defaultAutoRefreshState={false}
         onAuthRefreshStateChange={(newState) => setIsAutoRefresh(newState)}

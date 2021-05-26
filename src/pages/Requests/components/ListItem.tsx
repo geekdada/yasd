@@ -13,10 +13,7 @@ import MethodBadge from './MethodBadge'
 const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
   return (
     <React.Fragment>
-      <div tw="text-xs truncate text-gray-700">{req.URL}</div>
-      <div tw="text-sm truncate">
-        {req.policyName}({req.rule})
-      </div>
+      <div tw="text-sm truncate">{req.URL}</div>
       <div
         css={[
           tw`flex items-center leading-none`,
@@ -33,6 +30,12 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
         <div tw="text-xs ml-1">
           <span> - </span>
           <span>{dayjs.unix(req.startDate).format('HH:mm:ss')}</span>
+        </div>
+        <div tw="text-xs ml-1">
+          <span> - </span>
+          <span>
+            {req.policyName}({req.rule})
+          </span>
         </div>
         <div tw="text-xs ml-1">
           <span> - </span>

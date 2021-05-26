@@ -14,7 +14,7 @@ interface AdData {
 }
 
 const Ad: React.FC = () => {
-  const showDynamicAd = useRef('REACT_APP_SHOW_AD' in process.env)
+  const showDynamicAd = useRef(!!process.env.REACT_APP_SHOW_AD)
   const [ad, setAd] = useState<AdData>()
 
   useEffect(() => {

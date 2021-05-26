@@ -134,7 +134,7 @@ export interface Profile {
   name: string
   platform: 'macos' | 'ios'
   platformVersion: string
-  platformBuild: number
+  platformBuild: string
   tls?: boolean
 }
 

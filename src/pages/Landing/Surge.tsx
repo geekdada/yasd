@@ -15,7 +15,9 @@ import useSetState from '../../hooks/use-set-state'
 import { useProfile, useProfileDispatch } from '../../models/profile'
 import { Profile } from '../../types'
 import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
+import Header from './components/Header'
 import { useAuthData } from './hooks'
+import { tryHost } from './utils'
 
 const Page: React.FC = () => {
   const protocol = window.location.protocol
@@ -35,21 +37,24 @@ const Page: React.FC = () => {
   const profile = useProfile()
   const history = useHistory()
 
-  const addProfile = (config: Omit<Profile, 'id'>): Profile => {
-    const profile: Profile = {
-      ...config,
-      id: uuid(),
-    }
-    const newProfiles = [profile, ...existingProfiles]
-    setExistingProfiles(newProfiles)
+  const addProfile = useCallback(
+    (config: Omit<Profile, 'id'>): Profile => {
+      const profile: Profile = {
+        ...config,
+        id: uuid(),
+      }
+      const newProfiles = [profile, ...existingProfiles]
+      setExistingProfiles(newProfiles)
 
-    if (keepCredential) {
-      store.set(ExistingProfiles, newProfiles)
-      store.set(LastUsedProfile, profile.id)
-    }
+      if (keepCredential) {
+        store.set(ExistingProfiles, newProfiles)
+        store.set(LastUsedProfile, profile.id)
+      }
 
-    return profile
-  }
+      return profile
+    },
+    [existingProfiles, keepCredential, setExistingProfiles],
+  )
 
   const selectProfile = useCallback(
     (id: string) => {
@@ -68,61 +73,62 @@ const Page: React.FC = () => {
         }
       })
     },
-    [getExistingProfiles, history, keepCredential],
+    [getExistingProfiles, keepCredential, profileDispatch],
   )
 
-  const resetFields = () => {
+  const resetFields = useCallback(() => {
     setData((prev) => ({
       ...prev,
       key: '',
     }))
-  }
+  }, [setData])
 
-  const onSubmit: FormEventHandler = (e) => {
-    e.preventDefault()
+  const onSubmit: FormEventHandler = useCallback(
+    (e) => {
+      e.preventDefault()
 
-    if (!data.key) {
-      return
-    }
+      if (!data.key) {
+        return
+      }
 
-    const { hostname, port } = window.location
-    setIsLoading(true)
+      const { hostname, port } = window.location
+      setIsLoading(true)
 
-    axios
-      .request({
-        url: `${protocol}//${hostname}:${port}/v1/outbound`,
-        method: 'GET',
-        timeout: 3000,
-        headers: {
-          'x-key': data.key,
-        },
-      })
-      .then((res) => {
-        setHasError(false)
+      tryHost(protocol, hostname, port, data.key)
+        .then((res) => {
+          setHasError(false)
 
-        const newProfile = addProfile({
-          name: 'Surge for Mac',
-          host: hostname,
-          port: Number(port),
-          key: data.key,
-          platform: res.headers['x-system']?.includes('macOS')
-            ? 'macos'
-            : 'ios',
-          platformVersion: res.headers['x-surge-version'] || '',
-          platformBuild: res.headers['x-surge-build'] || '',
-          tls: protocol === 'https:',
+          const newProfile = addProfile({
+            name: res.name || 'Surge for Mac',
+            host: hostname,
+            port: Number(port),
+            key: data.key,
+            platform: res.platform,
+            platformVersion: res.platformVersion,
+            platformBuild: res.platformBuild,
+            tls: protocol === 'https:',
+          })
+
+          resetFields()
+          setIsLoading(false)
+          selectProfile(newProfile.id)
         })
-
-        resetFields()
-        setIsLoading(false)
-        selectProfile(newProfile.id)
-      })
-      .catch((err) => {
-        setHasError(err.message)
-        console.error(err)
-        setIsLoading(false)
-      })
-  }
+        .catch((err) => {
+          setHasError(err.message)
+          console.error(err)
+          setIsLoading(false)
+        })
+    },
+    [
+      addProfile,
+      data.key,
+      protocol,
+      resetFields,
+      selectProfile,
+      setHasError,
+      setIsLoading,
+    ],
+  )
 
   useEffect(() => {
     const storedExistingProfiles = store.get(ExistingProfiles)
@@ -140,7 +146,7 @@ const Page: React.FC = () => {
         })
       }
     }
-  }, [setExistingProfiles])
+  }, [profileDispatch, setExistingProfiles])
 
   useEffect(() => {
     if (profile) {
@@ -153,18 +159,10 @@ const Page: React.FC = () => {
       css={css`
         padding-bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
       `}>
-      <Heading
-        size={'tera'}
-        noMargin
-        tw="sticky top-0 flex shadow bg-white z-10 px-3 py-3 mb-4">
-        YASD
-        <small tw="text-xs font-normal font-mono text-gray-600 ml-3">
-          {`v${process.env.REACT_APP_VERSION}`}
-        </small>
-      </Heading>
+      <Header />
 
       <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-        <Heading size={'tera'}>添加 Surge</Heading>
+        <Heading size={'tera'}>登录</Heading>
 
         <form onSubmit={onSubmit}>
           <Input
