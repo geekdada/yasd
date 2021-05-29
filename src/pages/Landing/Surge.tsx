@@ -16,6 +16,7 @@ import store from 'store2'
 import { v4 as uuid } from 'uuid'
 import { find } from 'lodash-es'
 import { useHistory } from 'react-router-dom'
+import ChangeLanguage from '../../components/ChangeLanguage'
 
 import useSetState from '../../hooks/use-set-state'
 import { useProfile, useProfileDispatch } from '../../models/profile'
@@ -220,6 +221,10 @@ const Page: React.FC = () => {
             </div>
           )}
         </form>
+      </div>
+
+      <div>
+        <ChangeLanguage />
       </div>
     </div>
   )
