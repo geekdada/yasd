@@ -13,7 +13,7 @@
     "host": "域名或 IP 地址",
     "host_tips": "局域网内可以使用 iphone.local",
     "port": "端口",
-    "key": "秘钥",
+    "key": "密钥",
     "remember_me": "记住我",
     "https": "HTTPS (请确保开启 <code>http-api-tls</code>)",
     "confirm": "完成",
