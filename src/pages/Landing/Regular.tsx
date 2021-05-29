@@ -1,7 +1,11 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import axios from 'axios'
-import React, { FormEventHandler, useCallback, useEffect } from 'react'
+import React, {
+  ChangeEvent,
+  FormEventHandler,
+  useCallback,
+  useEffect,
+} from 'react'
 import { Heading, Input, LoadingButton, Checkbox } from '@sumup/circuit-ui'
 import { CircleWarning } from '@sumup/icons'
 import css from '@emotion/css/macro'
@@ -10,6 +14,8 @@ import store from 'store2'
 import { v4 as uuid } from 'uuid'
 import { find } from 'lodash-es'
 import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import ChangeLanguage from '../../components/ChangeLanguage'
 
 import ProfileCell from '../../components/ProfileCell'
 import Ad from '../../components/Ad'
@@ -37,6 +43,7 @@ const Page: React.FC = () => {
   const [existingProfiles, setExistingProfiles, getExistingProfiles] =
     useSetState<Array<Profile>>([])
   const profileDispatch = useProfileDispatch()
+  const { t } = useTranslation()
 
   const addProfile = useCallback(
     (config: Omit<Profile, 'id'>): Profile => {
@@ -148,6 +155,16 @@ const Page: React.FC = () => {
     ],
   )
 
+  const updateData = useCallback(
+    (key: string, value: string) => {
+      setData((prev) => ({
+        ...prev,
+        [key]: value,
+      }))
+    },
+    [setData],
+  )
+
   useEffect(() => {
     const storedExistingProfiles = store.get(ExistingProfiles)
 
@@ -164,7 +181,7 @@ const Page: React.FC = () => {
       <Header />
 
       <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-        <Heading size={'tera'}>添加 Surge</Heading>
+        <Heading size={'tera'}>{t('landing.add_new_host')}</Heading>
 
         <div tw="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 text-sm px-4 py-3 mb-4 shadow-md">
           <p tw="leading-normal mb-2">
@@ -190,52 +207,39 @@ const Page: React.FC = () => {
             type="text"
             required
             invalid={!!hasError}
-            label="Name"
+            label={t('landing.name')}
             placeholder="Mac"
-            value={data.name}
-            onChange={({ target }) =>
-              setData((prev) => ({
-                ...prev,
-                name: (target as HTMLInputElement).value,
-              }))
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              updateData('name', e.target.value)
             }
           />
           <Input
             type="text"
             required
             invalid={!!hasError}
-            label="Host"
+            label={t('landing.host')}
             placeholder="127.0.0.1"
-            validationHint="局域网内可用类似 iphone.local 的地址"
-            value={data.host}
-            onChange={({ target }) =>
-              setData((prev) => ({
-                ...prev,
-                host: (target as HTMLInputElement).value,
-              }))
+            validationHint={t('landing.host_tips')}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              updateData('host', e.target.value)
             }
           />
           <Input
             type="number"
             required
             invalid={!!hasError}
-            label="Port"
+            label={t('landing.port')}
             placeholder="6171"
-            value={data.port}
-            onChange={({ target }) =>
-              setData((prev) => ({
-                ...prev,
-                port: (target as HTMLInputElement).value,
-              }))
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              updateData('port', e.target.value)
             }
           />
           <Input
             type="text"
             required
             invalid={!!hasError}
-            label="密钥"
+            label={t('landing.key')}
             placeholder="examplekey"
-            value={data.key}
             onChange={({ target }) =>
               setData((prev) => ({
                 ...prev,
@@ -254,12 +258,12 @@ const Page: React.FC = () => {
                   useTls: !prev.useTls,
                 }))
               }>
-              HTTPS（请确保开启 <code>http-api-tls</code>）
+              <span dangerouslySetInnerHTML={{ __html: t('landing.https') }} />
             </Checkbox>
             <Checkbox
               checked={keepCredential}
               onChange={() => setKeepCredential((prev) => !prev)}>
-              保存到浏览器
+              {t('landing.remember_me')}
             </Checkbox>
           </div>
 
@@ -269,8 +273,8 @@ const Page: React.FC = () => {
               variant="primary"
               stretch
               isLoading={isLoading}
-              loadingLabel={'Loading'}>
-              Done
+              loadingLabel={t('landing.is_loading')}>
+              {t('landing.confirm')}
             </LoadingButton>
           </div>
 
@@ -285,7 +289,7 @@ const Page: React.FC = () => {
 
       {existingProfiles.length > 0 && (
         <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto mt-10">
-          <Heading size={'mega'}>History</Heading>
+          <Heading size={'mega'}>{t('landing.history')}</Heading>
 
           <div tw="bg-gray-100 divide-y divide-gray-200 rounded overflow-hidden">
             {existingProfiles.map((profile) => {
@@ -308,6 +312,10 @@ const Page: React.FC = () => {
 
       <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto mt-10">
         <Ad />
+      </div>
+
+      <div>
+        <ChangeLanguage />
       </div>
     </div>
   )

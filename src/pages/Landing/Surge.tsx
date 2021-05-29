@@ -1,10 +1,16 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import axios from 'axios'
-import React, { FormEventHandler, useCallback, useEffect } from 'react'
+import React, {
+  ChangeEvent,
+  FormEventHandler,
+  useCallback,
+  useEffect,
+} from 'react'
 import { Heading, Input, LoadingButton, Checkbox } from '@sumup/circuit-ui'
 import { CircleWarning } from '@sumup/icons'
 import css from '@emotion/css/macro'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import store from 'store2'
 import { v4 as uuid } from 'uuid'
@@ -21,6 +27,7 @@ import { tryHost } from './utils'
 
 const Page: React.FC = () => {
   const protocol = window.location.protocol
+  const { t } = useTranslation()
   const {
     data,
     setData,
@@ -130,6 +137,16 @@ const Page: React.FC = () => {
     ],
   )
 
+  const updateData = useCallback(
+    (key: string, value: string) => {
+      setData((prev) => ({
+        ...prev,
+        [key]: value,
+      }))
+    },
+    [setData],
+  )
+
   useEffect(() => {
     const storedExistingProfiles = store.get(ExistingProfiles)
     const lastId = store.get(LastUsedProfile)
@@ -162,21 +179,18 @@ const Page: React.FC = () => {
       <Header />
 
       <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-        <Heading size={'tera'}>登录</Heading>
+        <Heading size={'tera'}>{t('landing.login')}</Heading>
 
         <form onSubmit={onSubmit}>
           <Input
             type="text"
             required
             invalid={!!hasError}
-            label="密钥"
+            label={t('landing.key')}
             placeholder="examplekey"
             value={data.key}
-            onChange={({ target }) =>
-              setData((prev) => ({
-                ...prev,
-                key: (target as HTMLInputElement).value,
-              }))
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              updateData('key', e.target.value)
             }
           />
 
@@ -184,7 +198,7 @@ const Page: React.FC = () => {
             <Checkbox
               checked={keepCredential}
               onChange={() => setKeepCredential((prev) => !prev)}>
-              保存到浏览器
+              {t('landing.remember_me')}
             </Checkbox>
           </div>
 
@@ -194,8 +208,8 @@ const Page: React.FC = () => {
               variant="primary"
               stretch
               isLoading={isLoading}
-              loadingLabel={'Loading'}>
-              Done
+              loadingLabel={t('landing.is_loading')}>
+              {t('landing.confirm')}
             </LoadingButton>
           </div>
 

@@ -1,0 +1,95 @@
+{
+  "common": {
+    "on": "On",
+    "off": "Off",
+    "is_loading": "Loading",
+    "success_interaction": "Success",
+    "failed_interaction": "Failed"
+  },
+  "landing": {
+    "add_new_host": "Add New Host",
+    "login": "Login",
+    "name": "Name",
+    "host": "Host",
+    "host_tips": "Use iphone.local if you're in an intranet",
+    "port": "Port",
+    "key": "Key",
+    "remember_me": "Remember me",
+    "https": "HTTPS",
+    "confirm": "Done",
+    "is_loading": "Loading",
+    "history": "History",
+    "current": "Current"
+  },
+  "home": {
+    "logout": "Log out",
+    "system_proxy": "System Proxy",
+    "enhanced_mode": "Enhanced Mode",
+    "policies": "Policies",
+    "requests": "Requests",
+    "traffic": "Traffic",
+    "scripting": "Scripting",
+    "modules": "Modules",
+    "dns": "DNS",
+    "profile": "Profile",
+    "mitm": "MitM",
+    "http_capture": "HTTP Capture",
+    "rewrite": "Rewrite",
+    "github": "GitHub",
+    "events": "Events"
+  },
+  "traffic_cell": {
+    "upload": "Upload",
+    "download": "Download",
+    "total": "Total"
+  },
+  "policies": {
+    "test_policy": "Test policy"
+  },
+  "requests": {
+    "recent": "Recent",
+    "active": "Active",
+    "completed": "Completed",
+    "general_tab": "General",
+    "request_tab": "Request",
+    "timing_tab": "Timing",
+    "date": "Date",
+    "status": "Status",
+    "duration": "Duration",
+    "process": "Process",
+    "policy_name": "Policy",
+    "rule_name": "Rule",
+    "ip_addr": "IP Address",
+    "local_ip": "Local IP",
+    "remote_ip": "Remote IP",
+    "download": "Download",
+    "upload": "Upload",
+    "traffic": "Traffic",
+    "remark": "Remark",
+    "kill_connection_button_title": "Kill Connection",
+    "request_header_title": "Request Header"
+  },
+  "traffic": {
+    "start_time": "Start time",
+    "uptime": "Uptime"
+  },
+  "scripting": {
+    "run_script_button_title": "Run",
+    "debug_script_button_title": "Debug Script",
+    "running": "Running",
+    "result": "Result",
+    "open_script": "Open script",
+    "empty_code_error": "No code entered in the editor",
+    "editor_placeholder": "// Only supports Cron script\n// Docs: https://manual.nssurge.com/scripting/cron.html\n\n$done();",
+    "timeout": "Timeout"
+  },
+  "dns": {
+    "result": "Result",
+    "source": "Source",
+    "path": "Path",
+    "flush_dns": "Flush DNS",
+    "dynamic": "Dynamic",
+    "static": "Static",
+    "comment": "Comment"
+  }
+}

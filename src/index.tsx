@@ -1,39 +1,19 @@
 /** @jsx jsx */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {
-  BrowserRouter,
-  BrowserRouterProps,
-  HashRouter,
-  HashRouterProps,
-} from 'react-router-dom'
-import createCache from '@emotion/cache'
-import { CacheProvider, jsx } from '@emotion/core'
+import { jsx } from '@emotion/core'
 
 import './index.css'
 import App from './App'
+import AppContainer from './AppContainer'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
-
-const ReactRouter: React.FC<BrowserRouterProps | HashRouterProps> = (args) => {
-  return process.env.REACT_APP_HASH_ROUTER ? (
-    <HashRouter {...(args as HashRouterProps)}>{args.children}</HashRouter>
-  ) : (
-    <BrowserRouter {...(args as BrowserRouterProps)}>
-      {args.children}
-    </BrowserRouter>
-  )
-}
-const styleCache = createCache({
-  key: 'yasd',
-})
+import './i18n'
 
 ReactDOM.render(
   <React.StrictMode>
-    <CacheProvider value={styleCache}>
-      <ReactRouter>
-        <App />
-      </ReactRouter>
-    </CacheProvider>
+    <AppContainer>
+      <App />
+    </AppContainer>
   </React.StrictMode>,
   document.getElementById('root'),
 )

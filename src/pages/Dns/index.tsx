@@ -10,6 +10,7 @@ import React, {
   useState,
 } from 'react'
 import css from '@emotion/css/macro'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import tw from 'twin.macro'
 import useSWR, { mutate } from 'swr'
@@ -20,6 +21,7 @@ import { DnsResult } from '../../types'
 import fetcher from '../../utils/fetcher'
 
 const Page: React.FC = () => {
+  const { t } = useTranslation()
   const [group, setGroup] = useState<'dynamic' | 'static'>('dynamic')
   const { data: dnsResult, error: dnsResultError } = useSWR<DnsResult>(
     '/dns',
@@ -38,10 +40,11 @@ const Page: React.FC = () => {
       method: 'POST',
     })
       .then(() => {
-        toast.success('操作成功')
+        toast.success(t('common.success_interaction'))
         return mutate('/dns')
       })
       .catch((err) => {
+        toast.error(t('common.failed_interaction'))
         console.error(err)
       })
   }
@@ -78,10 +81,10 @@ const Page: React.FC = () => {
               DNS: {record.server}
             </div>
             <div tw="text-xs text-gray-700 leading-tight truncate">
-              Result: {record.data.join(', ')}
+              {t('dns.result')}: {record.data.join(', ')}
             </div>
             <div tw="text-xs text-gray-700 leading-tight truncate">
-              Path: {record.path}
+              {t('dns.path')}: {record.path}
             </div>
           </div>
         )
@@ -106,14 +109,14 @@ const Page: React.FC = () => {
               </div>
             )}
             <div tw="text-xs text-gray-700 leading-tight">
-              Result: {record.data ?? 'N/A'}
+              {t('dns.result')}: {record.data ?? 'N/A'}
             </div>
             <div tw="text-xs text-gray-700 leading-tight">
-              Source: {record.source ?? 'N/A'}
+              {t('dns.source')}: {record.source ?? 'N/A'}
             </div>
             {!!record.comment && (
               <div tw="text-xs text-gray-700 leading-tight">
-                {record.comment}
+                {t('dns.comment')}: {record.comment}
               </div>
             )}
           </div>
@@ -187,11 +190,11 @@ const Page: React.FC = () => {
               }}
               options={[
                 {
-                  children: 'Dynamic',
+                  children: t('dns.dynamic'),
                   value: 'dynamic',
                 },
                 {
-                  children: 'Static',
+                  children: t('dns.static'),
                   value: 'static',
                 },
               ]}
@@ -204,7 +207,7 @@ const Page: React.FC = () => {
                 variant="tertiary"
                 size="kilo"
                 onClick={flushDns}>
-                Flush DNS
+                {t('dns.flush_dns')}
               </Button>
             </div>
           </div>

@@ -3,6 +3,7 @@ import { jsx } from '@emotion/core'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import { Toggle } from '@sumup/circuit-ui'
+import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import useSWR, { mutate } from 'swr'
 import tw from 'twin.macro'
@@ -24,6 +25,7 @@ const CapabilityTile: React.FC<CapabilityTileProps> = ({
   title,
   link,
 }) => {
+  const { t } = useTranslation()
   const profile = useProfile()
   const { data: capability } = useSWR<Capability>(
     profile !== undefined ? api : null,
@@ -55,14 +57,14 @@ const CapabilityTile: React.FC<CapabilityTileProps> = ({
 
   return (
     <MenuTile onClick={link ? () => history.push(link) : undefined}>
-      <MenuTileTitle title={title} />
+      <MenuTileTitle title={t(`home.${title}`)} />
 
       <MenuTileContent css={[tw`flex justify-end`]}>
         <Toggle
           noMargin
           label=""
-          labelChecked="on"
-          labelUnchecked="off"
+          labelChecked={t('common.on')}
+          labelUnchecked={t('common.off')}
           checked={capability?.enabled}
           onChange={toggle}
         />

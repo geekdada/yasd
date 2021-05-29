@@ -3,6 +3,7 @@ import { jsx } from '@emotion/core'
 import css from '@emotion/css/macro'
 import React, { MouseEvent, useMemo, useState } from 'react'
 import styled from '@emotion/styled/macro'
+import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import tw from 'twin.macro'
@@ -21,6 +22,7 @@ import { EvaluateResult, Scriptings } from '../../types'
 import fetcher from '../../utils/fetcher'
 
 const Page: React.FC = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   const { data: scripting, error: scriptingError } = useSWR<Scriptings>(
     '/scripting',
@@ -70,7 +72,7 @@ const Page: React.FC = () => {
   return (
     <div tw="fixed top-0 right-0 bottom-0 left-0 h-full overflow-hidden">
       <div tw="w-full h-full flex flex-col">
-        <PageTitle title="脚本" />
+        <PageTitle title={t('home.scripting')} />
 
         <div tw="flex-1 overflow-auto">
           <div tw="divide-y divide-gray-200">
@@ -88,6 +90,7 @@ const Page: React.FC = () => {
                         );
                       `,
                     ]}
+                    title={t('scripting.open_script')}
                     onClick={() => openUrl(script.path)}>
                     <div tw="flex-1">
                       <div tw="truncate leading-normal text-gray-700">
@@ -104,9 +107,9 @@ const Page: React.FC = () => {
                           }}
                           size="kilo"
                           isLoading={isLoading === index}
-                          loadingLabel={'运行中'}
+                          loadingLabel={t('scripting.running')}
                           tw="px-3 py-3 text-sm leading-tight">
-                          运行
+                          {t('scripting.run_script_button_title')}
                         </LoadingButton>
                       )}
                     </div>
@@ -125,7 +128,7 @@ const Page: React.FC = () => {
               variant="tertiary"
               size="kilo"
               onClick={() => history.push('/scripting/evaluate')}>
-              调试脚本
+              {t('scripting.debug_script_button_title')}
             </Button>
           </div>
         </div>
@@ -138,7 +141,7 @@ const Page: React.FC = () => {
         }}>
         {({ onClose }) => (
           <ModalWrapper>
-            <ModalHeader title="结果" onClose={onClose} />
+            <ModalHeader title={t('scripting.result')} onClose={onClose} />
             <div>
               <pre
                 tw="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"

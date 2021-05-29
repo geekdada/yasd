@@ -4,6 +4,7 @@ import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import bytes from 'bytes'
 import dayjs from 'dayjs'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import React from 'react'
 
@@ -11,6 +12,8 @@ import { RequestItem } from '../../../types'
 import MethodBadge from './MethodBadge'
 
 const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
+  const { t } = useTranslation()
+
   return (
     <React.Fragment>
       <div tw="text-sm truncate">{req.URL}</div>
@@ -43,7 +46,7 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
         </div>
         <div tw="text-xs ml-1">
           <span> - </span>
-          <span>{req.status}</span>
+          <span>{t(`requests.${req.status.toLowerCase()}`)}</span>
         </div>
       </div>
     </React.Fragment>

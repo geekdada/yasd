@@ -5,6 +5,7 @@ import css from '@emotion/css/macro'
 import { ModalConsumer, ModalProvider } from '@sumup/circuit-ui'
 import { ModalProps } from '@sumup/circuit-ui/dist/es/components/Modal/Modal'
 import SelectorGroup from '@sumup/circuit-ui/dist/es/components/SelectorGroup'
+import { useTranslation } from 'react-i18next'
 import { ListRowRenderer } from 'react-virtualized/dist/es/List'
 import tw from 'twin.macro'
 import omit from 'lodash-es/omit'
@@ -28,6 +29,7 @@ import RequestModal from './components/RequestModal'
 const LIST_ITEMS_MAX = 150
 
 const Page: React.FC = () => {
+  const { t } = useTranslation()
   const profile = useProfile()
   const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(true)
   const [group, setGroup] = useState<'recent' | 'active'>('recent')
@@ -54,53 +56,59 @@ const Page: React.FC = () => {
     [group, requestList, activeRequestList],
   )
 
-  useEffect(() => {
-    if (!requests?.requests) return
+  useEffect(
+    () => {
+      if (!requests?.requests) return
 
-    const pendingList = requests.requests
-    const now = new Date()
-    let newList = [...currentList]
+      const pendingList = requests.requests
+      const now = new Date()
+      let newList = [...currentList]
 
-    while (pendingList.length) {
-      const request = pendingList.pop() as RequestItem
-      const existingIndex = newList.findIndex((item) => item.id === request.id)
+      while (pendingList.length) {
+        const request = pendingList.pop() as RequestItem
+        const existingIndex = newList.findIndex(
+          (item) => item.id === request.id,
+        )
 
-      if (existingIndex >= 0) {
-        Object.assign(newList[existingIndex], {
-          ...omit(request, ['id']),
-          lastUpdated: now,
-        })
-      } else {
-        if (newList.length && request.id > newList[0].id) {
-          newList.unshift({
-            ...request,
+        if (existingIndex >= 0) {
+          Object.assign(newList[existingIndex], {
+            ...omit(request, ['id']),
             lastUpdated: now,
           })
         } else {
-          newList.push({
-            ...request,
-            lastUpdated: now,
-          })
+          if (newList.length && request.id > newList[0].id) {
+            newList.unshift({
+              ...request,
+              lastUpdated: now,
+            })
+          } else {
+            newList.push({
+              ...request,
+              lastUpdated: now,
+            })
+          }
         }
       }
-    }
 
-    if (group === 'recent') {
-      newList = newList.slice(0, LIST_ITEMS_MAX)
-    } else {
-      newList = newList
-        .filter((item) => item.lastUpdated === now)
-        .sort((a, b) => b.id - a.id)
-    }
+      if (group === 'recent') {
+        newList = newList.slice(0, LIST_ITEMS_MAX)
+      } else {
+        newList = newList
+          .filter((item) => item.lastUpdated === now)
+          .sort((a, b) => b.id - a.id)
+      }
 
-    if (group === 'recent') {
-      setRequestList(newList)
-      setActiveRequestList([])
-    } else {
-      setRequestList([])
-      setActiveRequestList(newList)
-    }
-  }, [requests, group])
+      if (group === 'recent') {
+        setRequestList(newList)
+        setActiveRequestList([])
+      } else {
+        setRequestList([])
+        setActiveRequestList(newList)
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [requests, group],
+  )
 
   const openRequestDetail = useCallback(
     (setModal: (modal: ModalProps) => void, req: RequestItem) => {
@@ -160,7 +168,7 @@ const Page: React.FC = () => {
             return (
               <div tw="w-full h-full flex flex-col">
                 <PageTitle
-                  title="Requests"
+                  title={t('home.requests')}
                   hasAutoRefresh={true}
                   defaultAutoRefreshState={true}
                   onAuthRefreshStateChange={(newState) =>
@@ -193,7 +201,7 @@ const Page: React.FC = () => {
                     </AutoSizer>
                   ) : (
                     <div tw="h-full flex items-center justify-center text-sm text-gray-500">
-                      Loading...
+                      {t('common.is_loading')}...
                     </div>
                   )}
                 </div>
@@ -233,11 +241,11 @@ const Page: React.FC = () => {
                       }}
                       options={[
                         {
-                          children: 'Recent',
+                          children: t('requests.recent'),
                           value: 'recent',
                         },
                         {
-                          children: 'Active',
+                          children: t('requests.active'),
                           value: 'active',
                         },
                       ]}

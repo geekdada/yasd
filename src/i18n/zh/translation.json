@@ -1,0 +1,95 @@
+{
+  "common": {
+    "on": "开启",
+    "off": "关闭",
+    "is_loading": "加载中",
+    "success_interaction": "操作成功",
+    "failed_interaction": "操作失败"
+  },
+  "landing": {
+    "add_new_host": "添加连接",
+    "login": "登录",
+    "name": "名称",
+    "host": "域名或 IP 地址",
+    "host_tips": "局域网内可以使用 iphone.local",
+    "port": "端口",
+    "key": "秘钥",
+    "remember_me": "记住我",
+    "https": "HTTPS (请确保开启 <code>http-api-tls</code>)",
+    "confirm": "完成",
+    "is_loading": "加载中",
+    "history": "历史记录",
+    "current": "当前"
+  },
+  "home": {
+    "logout": "登出",
+    "system_proxy": "系统代理",
+    "enhanced_mode": "增强模式",
+    "policies": "策略组",
+    "requests": "最近请求",
+    "traffic": "实时统计",
+    "scripting": "脚本",
+    "modules": "模块",
+    "dns": "DNS",
+    "profile": "配置",
+    "mitm": "MitM",
+    "http_capture": "抓取流量",
+    "rewrite": "Rewrite",
+    "github": "GitHub",
+    "events": "事件"
+  },
+  "traffic_cell": {
+    "upload": "上传",
+    "download": "下载",
+    "total": "总计"
+  },
+  "policies": {
+    "test_policy": "测试"
+  },
+  "requests": {
+    "recent": "最近请求",
+    "active": "活跃",
+    "completed": "已完成",
+    "general_tab": "一般",
+    "request_tab": "请求",
+    "timing_tab": "计时",
+    "date": "日期",
+    "status": "状态",
+    "duration": "时长",
+    "process": "进程",
+    "policy_name": "策略",
+    "rule_name": "规则",
+    "ip_addr": "IP 地址",
+    "local_ip": "本地 IP 地址",
+    "remote_ip": "远端 IP 地址",
+    "download": "下载",
+    "upload": "上传",
+    "traffic": "流量",
+    "remark": "备注",
+    "kill_connection_button_title": "打断连接",
+    "request_header_title": "请求头信息"
+  },
+  "traffic": {
+    "start_time": "开启时间",
+    "uptime": "运行时长"
+  },
+  "scripting": {
+    "run_script_button_title": "运行",
+    "debug_script_button_title": "调试脚本",
+    "running": "运行中",
+    "result": "结果",
+    "open_script": "打开脚本",
+    "empty_code_error": "没有输入脚本内容",
+    "editor_placeholder": "// 仅支持 Cron 类型脚本\n// 文档: https://manual.nssurge.com/scripting/cron.html\n\n$done();",
+    "timeout": "超时时间"
+  },
+  "dns": {
+    "result": "结果",
+    "source": "来源",
+    "path": "路径",
+    "flush_dns": "刷新 DNS",
+    "dynamic": "动态记录",
+    "static": "静态记录",
+    "comment": "备注"
+  }
+}

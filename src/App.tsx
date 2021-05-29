@@ -224,14 +224,4 @@ const App: React.FC = () => {
   )
 }
 
-const AppWrapper: React.FC = () => {
-  return (
-    <ProfileProvider>
-      <ThemeProvider theme={light}>
-        <App />
-      </ThemeProvider>
-    </ProfileProvider>
-  )
-}
-
-export default AppWrapper
+export default App

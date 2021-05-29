@@ -3,6 +3,7 @@ import { jsx } from '@emotion/core'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import { Heading } from '@sumup/circuit-ui'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import React, { createRef, RefObject, useRef } from 'react'
 import { ScrollTo } from 'react-scroll-to'
@@ -18,6 +19,7 @@ const PolicyNameItem = styled.div`
 `
 
 const Page: React.FC = () => {
+  const { t } = useTranslation()
   const { data: policies, error: policiesError } = useSWR<Policies>(
     '/policies',
     fetcher,
@@ -56,7 +58,7 @@ const Page: React.FC = () => {
           <Heading size={'tera'} noMargin tw="mb-2 px-4">
             <div tw="flex items-center">
               <BackButton />
-              <div>Policies</div>
+              <div>{t('home.policies')}</div>
             </div>
           </Heading>
         </div>

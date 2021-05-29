@@ -17,56 +17,56 @@ export interface MenuItem {
 
 const menu: Array<MenuItem> = [
   {
-    title: 'Policies',
+    title: 'policies',
     link: '/policies',
   },
   {
-    title: 'Requests',
+    title: 'requests',
     link: '/requests',
   },
   {
-    title: 'Traffic',
+    title: 'traffic',
     link: '/traffic',
   },
   {
-    title: '脚本',
+    title: 'scripting',
     component: (
       <CapabilityTile
         api="/features/scripting"
-        title="脚本"
+        title="scripting"
         link="/scripting"
       />
     ),
   },
   {
-    title: 'Modules',
+    title: 'modules',
     link: '/modules',
   },
   {
-    title: 'DNS',
+    title: 'dns',
     link: '/dns',
   },
   {
-    title: 'Profile',
+    title: 'profile',
     link: '/profiles/current',
   },
   {
-    title: 'MitM',
-    component: <CapabilityTile api="/features/mitm" title="MitM" />,
+    title: 'mitm',
+    component: <CapabilityTile api="/features/mitm" title="mitm" />,
   },
   {
-    title: '抓取流量',
-    component: <CapabilityTile api="/features/capture" title="抓取流量" />,
+    title: 'http_capture',
+    component: <CapabilityTile api="/features/capture" title="http_capture" />,
   },
   {
-    title: 'Rewrite',
-    component: <CapabilityTile api="/features/rewrite" title="Rewrite" />,
+    title: 'rewrite',
+    component: <CapabilityTile api="/features/rewrite" title="rewrite" />,
   },
 ]
 
 if (!isRunInSurge()) {
   menu.push({
-    title: 'GitHub',
+    title: 'github',
     subTitle: '🌟',
     link: 'https://github.com/geekdada/yasd',
   })

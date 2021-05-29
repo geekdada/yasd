@@ -5,6 +5,7 @@ import loadable from '@loadable/component'
 import React, { useState } from 'react'
 import styled from '@emotion/styled/macro'
 import { IControlledCodeMirror } from 'react-codemirror2'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import {
   Input,
@@ -15,6 +16,7 @@ import {
 } from '@sumup/circuit-ui'
 import { toast } from 'react-toastify'
 
+import CodeMirrorLoading from '../../../components/CodeMirrorLoading'
 import PageTitle from '../../../components/PageTitle'
 import { EvaluateResult } from '../../../types'
 import fetcher from '../../../utils/fetcher'
@@ -35,16 +37,15 @@ const CodeMirror = loadable<IControlledCodeMirror>(
     return mod
   },
   {
-    fallback: (
-      <div tw="h-full flex items-center justify-center text-sm text-gray-500">
-        Loading...
-      </div>
-    ),
+    fallback: <CodeMirrorLoading />,
   },
 )
 
 const Page: React.FC = () => {
-  const [code, setCode] = useState<string>('// Only supports Cron script\n')
+  const { t } = useTranslation()
+  const [code, setCode] = useState<string>(() =>
+    t('scripting.editor_placeholder'),
+  )
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<string>()
   const [timeout, setTimeoutValue] = useState<number>(5)
@@ -53,7 +54,7 @@ const Page: React.FC = () => {
     if (isLoading) return
 
     if (!code) {
-      toast.error('没有输入脚本内容')
+      toast.error(t('scripting.empty_code_error'))
       return
     }
 
@@ -87,7 +88,7 @@ const Page: React.FC = () => {
   return (
     <div tw="fixed top-0 right-0 bottom-0 left-0 h-full overflow-hidden">
       <div tw="w-full h-full flex flex-col">
-        <PageTitle title="调试脚本" />
+        <PageTitle title={t('scripting.debug_script_button_title')} />
 
         <div tw="h-full flex flex-col overflow-hidden">
           <div tw="h-full overflow-auto">
@@ -128,8 +129,8 @@ const Page: React.FC = () => {
               variant="primary"
               size="kilo"
               isLoading={isLoading}
-              loadingLabel={'运行中'}>
-              运行
+              loadingLabel={t('scripting.running')}>
+              {t('scripting.run_script_button_title')}
             </LoadingButton>
 
             <div
@@ -148,7 +149,7 @@ const Page: React.FC = () => {
                 type="number"
                 required
                 noMargin
-                label="Timeout"
+                label={t('scripting.timeout')}
                 value={timeout}
                 onChange={({ target }) =>
                   setTimeoutValue(Number((target as HTMLInputElement).value))
@@ -165,7 +166,7 @@ const Page: React.FC = () => {
           }}>
           {({ onClose }) => (
             <ModalWrapper>
-              <ModalHeader title="结果" onClose={onClose} />
+              <ModalHeader title={t('scripting.result')} onClose={onClose} />
               <div>
                 <pre
                   tw="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"

@@ -4,11 +4,13 @@ import React, { useCallback } from 'react'
 import { Button, Heading, ModalProvider, Toggle } from '@sumup/circuit-ui'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import { delay } from 'bluebird'
 import { useHistory } from 'react-router-dom'
 import useSWR, { mutate } from 'swr'
 import store, { remove } from 'store2'
+import ChangeLanguage from '../../components/ChangeLanguage'
 
 import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
 import ProfileCell from '../../components/ProfileCell'
@@ -35,6 +37,7 @@ const Page: React.FC = () => {
     profile?.platform === 'macos' ? '/features/enhanced_mode' : null,
     fetcher,
   )
+  const { t } = useTranslation()
 
   const toggleSystemProxy = useCallback(() => {
     fetcher({
@@ -105,7 +108,7 @@ const Page: React.FC = () => {
               {isRunInSurge() ? (
                 <div>
                   <Button size="kilo" onClick={logout}>
-                    登出
+                    {t('home.logout')}
                   </Button>
                 </div>
               ) : (
@@ -128,7 +131,7 @@ const Page: React.FC = () => {
             <DataGroup tw="mx-4">
               <DataRow>
                 <DataRowMain>
-                  <div tw="font-medium">System Proxy</div>
+                  <div tw="font-medium">{t('home.system_proxy')}</div>
                   <div>
                     <Toggle
                       noMargin
@@ -143,7 +146,7 @@ const Page: React.FC = () => {
               </DataRow>
               <DataRow>
                 <DataRowMain>
-                  <div tw="font-medium">Enhanced Mode</div>
+                  <div tw="font-medium">{t('home.enhanced_mode')}</div>
                   <div>
                     <Toggle
                       noMargin
@@ -169,7 +172,7 @@ const Page: React.FC = () => {
                     <MenuTile
                       style={item.tintColor}
                       onClick={() => openLink(item.link)}>
-                      <MenuTileTitle title={item.title} />
+                      <MenuTileTitle title={t(`home.${item.title}`)} />
 
                       {item.subTitle && (
                         <div tw="text-base text-gray-500">{item.subTitle}</div>
@@ -187,6 +190,10 @@ const Page: React.FC = () => {
 
           <div tw="mt-4 px-4">
             <Ad />
+          </div>
+
+          <div>
+            <ChangeLanguage />
           </div>
         </div>
       </div>

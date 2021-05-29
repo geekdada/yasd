@@ -33,12 +33,12 @@ const LineChart: React.FC<LineChartProps> = (props) => {
         datasets: [
           {
             ...chartStyles.up,
-            label: 'Up',
+            label: 'Upload',
             data: getInitialData(),
           },
           {
             ...chartStyles.down,
-            label: 'Down',
+            label: 'Download',
             data: getInitialData(),
           },
         ],

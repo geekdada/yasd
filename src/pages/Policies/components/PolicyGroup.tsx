@@ -4,6 +4,7 @@ import styled from '@emotion/styled/macro'
 import { Card, Heading, Spinner, IconButton } from '@sumup/circuit-ui'
 import { Zap } from '@sumup/icons'
 import css from '@emotion/css/macro'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import React, { useCallback, useEffect, useState } from 'react'
 import useIsInViewport from 'use-is-in-viewport'
@@ -42,6 +43,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
   policyGroupName,
   policyGroup,
 }) => {
+  const { t } = useTranslation()
   const [isInViewport, targetRef] = useIsInViewport({ threshold: 10 })
   const [selection, setSelection] = useState<string>()
   const [latencies, setLatencies] = useState<{
@@ -159,7 +161,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
           <div>{policyGroupName}</div>
           <IconButton
             size="kilo"
-            label="test policy"
+            label={t('policies.test_policy')}
             onClick={() => testPolicy(policyGroupName)}>
             {isTesting ? (
               <Spinner tw="text-gray-700 w-5 h-5" />
