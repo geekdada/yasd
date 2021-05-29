@@ -47,12 +47,7 @@ You can also find the full bundle in [releases](https://github.com/geekdada/yasd
 
 ## Roadmap
 
-- [x] Better PWA support
-- [ ] i18n
-- [x] Manage and inspect requests
-- [x] Write and debug scripts
-- [ ] Manage DHCP devices
-- [ ] Full unit and e2e tests
+See [Roadmap](https://github.com/geekdada/yasd/projects/1)
 
 ## License
 
