@@ -11,6 +11,8 @@ await (async () => {
     throw new Error('Invalid build target.')
   }
 
+  await $`yarn verify-translation`
+
   switch (target) {
     case 'release-vercel':
       process.env.NODE_ENV = 'production'

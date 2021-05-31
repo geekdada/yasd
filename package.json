@@ -16,7 +16,8 @@
     "pub": "np --no-publish",
     "version": "npm run changelog && git add .",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect && husky install"
+    "prepare": "npm run snyk-protect && husky install",
+    "verify-translation": "zx scripts/verify-translations.mjs"
   },
   "dependencies": {
     "@commitlint/cli": "^12.0.1",

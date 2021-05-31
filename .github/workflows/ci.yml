@@ -40,7 +40,7 @@ jobs:
 
     - name: test, report coverage
       run: |
-        yarn test
+        yarn verify-translation
         yarn test:coverage
 
     - uses: codecov/codecov-action@v1
