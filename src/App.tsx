@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import { find } from 'lodash-es'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ThemeProvider } from 'emotion-theming'
 import { light } from '@sumup/design-tokens'
 import {
@@ -24,11 +24,7 @@ import FullLoading from './components/FullLoading'
 import NewVersionAlert from './components/NewVersionAlert'
 import ScrollToTop from './components/ScrollToTop'
 import NetworkErrorModal from './components/NetworkErrorModal'
-import {
-  ProfileProvider,
-  useProfile,
-  useProfileDispatch,
-} from './models/profile'
+import { useProfile, useProfileDispatch } from './models/profile'
 import {
   RegularLanding as LandingPage,
   SurgeLanding as SurgeLandingPage,
@@ -131,6 +127,15 @@ const App: React.FC = () => {
   const profile = useProfile()
   const [hasInit, setHasInit] = useState(false)
 
+  const onCloseApplication = useCallback(() => {
+    if (isRunInSurge()) {
+      store.remove(LastUsedProfile)
+      store.remove(ExistingProfiles)
+    }
+
+    window.location.replace('/')
+  }, [])
+
   useEffect(
     () => {
       const existingProfiles = store.get(ExistingProfiles)
@@ -176,10 +181,9 @@ const App: React.FC = () => {
       <ScrollToTop />
       <ToastContainer />
       <NetworkErrorModal
+        reloadButton={isRunInSurge()}
         isOpen={isNetworkModalOpen}
-        onClose={() => {
-          window.location.replace('/')
-        }}
+        onClose={onCloseApplication}
       />
       <NewVersionAlert />
 

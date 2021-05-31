@@ -17,11 +17,13 @@ import tw from 'twin.macro'
 interface NetworkErrorModalProps {
   onClose: (event?: MouseEvent | KeyboardEvent) => void
   isOpen: boolean
+  reloadButton?: boolean
 }
 
 const NetworkErrorModal: React.FC<NetworkErrorModalProps> = ({
   isOpen,
   onClose,
+  reloadButton,
 }) => {
   const { t } = useTranslation()
 
@@ -33,6 +35,16 @@ const NetworkErrorModal: React.FC<NetworkErrorModalProps> = ({
           <div tw="mb-3">{t('common.network_error_message')}</div>
           <ModalFooter align="right">
             <ButtonGroup>
+              {reloadButton ? (
+                <Button
+                  onClick={() => {
+                    window.location.reload()
+                  }}>
+                  {t('common.reload_window_retry')}
+                </Button>
+              ) : (
+                <React.Fragment></React.Fragment>
+              )}
               <Button onClick={onClose} variant="primary">
                 {t('common.exit')}
               </Button>
