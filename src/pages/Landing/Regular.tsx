@@ -235,7 +235,7 @@ const Page: React.FC = () => {
             }
           />
           <Input
-            type="text"
+            type="password"
             required
             invalid={!!hasError}
             label={t('landing.key')}

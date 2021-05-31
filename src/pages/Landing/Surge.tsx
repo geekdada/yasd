@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import axios from 'axios'
 import React, {
   ChangeEvent,
   FormEventHandler,
@@ -27,7 +26,6 @@ import { useAuthData } from './hooks'
 import { tryHost } from './utils'
 
 const Page: React.FC = () => {
-  const protocol = window.location.protocol
   const { t } = useTranslation()
   const {
     data,
@@ -91,6 +89,27 @@ const Page: React.FC = () => {
     }))
   }, [setData])
 
+  const getHost: () => {
+    protocol: string
+    hostname: string
+    port: string
+  } = useCallback(() => {
+    const protocol = window.location.protocol
+
+    if (process.env.NODE_ENV === 'production') {
+      return {
+        protocol,
+        hostname: window.location.hostname,
+        port: window.location.port,
+      }
+    }
+    return {
+      protocol: process.env.REACT_APP_PROTOCOL as string,
+      hostname: process.env.REACT_APP_HOST as string,
+      port: process.env.REACT_APP_PORT as string,
+    }
+  }, [])
+
   const onSubmit: FormEventHandler = useCallback(
     (e) => {
       e.preventDefault()
@@ -99,7 +118,7 @@ const Page: React.FC = () => {
         return
       }
 
-      const { hostname, port } = window.location
+      const { hostname, port, protocol } = getHost()
       setIsLoading(true)
 
       tryHost(protocol, hostname, port, data.key)
@@ -130,7 +149,6 @@ const Page: React.FC = () => {
     [
       addProfile,
       data.key,
-      protocol,
       resetFields,
       selectProfile,
       setHasError,
@@ -184,7 +202,7 @@ const Page: React.FC = () => {
 
         <form onSubmit={onSubmit}>
           <Input
-            type="text"
+            type="password"
             required
             invalid={!!hasError}
             label={t('landing.key')}

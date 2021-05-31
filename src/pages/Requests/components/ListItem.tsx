@@ -19,7 +19,7 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
       <div tw="text-sm truncate">{req.URL}</div>
       <div
         css={[
-          tw`flex items-center leading-none`,
+          tw`flex items-center leading-none truncate`,
           css`
             height: 1.5rem;
           `,
@@ -36,9 +36,7 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
         </div>
         <div tw="text-xs ml-1">
           <span> - </span>
-          <span>
-            {req.policyName}({req.rule})
-          </span>
+          <span>{req.policyName}</span>
         </div>
         <div tw="text-xs ml-1">
           <span> - </span>
