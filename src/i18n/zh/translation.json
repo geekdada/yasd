@@ -2,9 +2,17 @@
   "common": {
     "on": "开启",
     "off": "关闭",
+    "exit": "退出",
+    "network_error_title": "网络错误",
+    "network_error_message": "无法连接 Surge 或连接失败，请退出后重试。",
     "is_loading": "加载中",
     "success_interaction": "操作成功",
-    "failed_interaction": "操作失败"
+    "failed_interaction": "操作失败",
+    "see": "查看"
+  },
+  "new_version_alert": {
+    "title": "发现新版本！",
+    "message": "快看看更新了什么"
   },
   "landing": {
     "add_new_host": "添加连接",

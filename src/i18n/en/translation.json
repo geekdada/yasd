@@ -2,9 +2,17 @@
   "common": {
     "on": "On",
     "off": "Off",
+    "exit": "Exit",
+    "network_error_title": "Network Error",
+    "network_error_message": "Unable to connect to Surge, please exit and try again.",
     "is_loading": "Loading",
     "success_interaction": "Success",
-    "failed_interaction": "Failed"
+    "failed_interaction": "Failed",
+    "see": "See"
+  },
+  "new_version_alert": {
+    "title": "Found new version!",
+    "message": "Take a look at what's been update."
   },
   "landing": {
     "add_new_host": "Add New Host",
