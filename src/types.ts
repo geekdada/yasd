@@ -46,7 +46,12 @@ export interface RequestItem {
   notes?: Array<string>
   inCurrentSpeed: number
   failed: 1 | 0 | boolean
-  status: 'Active' | 'Complete'
+  status:
+    | 'Active'
+    | 'Completed'
+    | 'Rule Evaluating'
+    | 'DNS Lookup'
+    | 'Establishing Connection'
   outCurrentSpeed: number
   completed: 1 | 0 | boolean
   modified: 1 | 0 | boolean

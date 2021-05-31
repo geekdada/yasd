@@ -14,6 +14,9 @@ import MethodBadge from './MethodBadge'
 const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
   const { t } = useTranslation()
 
+  const formatStatusKey = (str: string): string =>
+    str.toLowerCase().replace(/\s/g, '_')
+
   return (
     <React.Fragment>
       <div tw="text-sm truncate">{req.URL}</div>
@@ -34,17 +37,19 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
           <span> - </span>
           <span>{dayjs.unix(req.startDate).format('HH:mm:ss')}</span>
         </div>
-        <div tw="text-xs ml-1">
-          <span> - </span>
-          <span>{req.policyName}</span>
-        </div>
+        {req.policyName ? (
+          <div tw="text-xs ml-1">
+            <span> - </span>
+            <span>{req.policyName}</span>
+          </div>
+        ) : null}
         <div tw="text-xs ml-1">
           <span> - </span>
           <span>{bytes(req.inBytes + req.outBytes)}</span>
         </div>
         <div tw="text-xs ml-1">
           <span> - </span>
-          <span>{t(`requests.${req.status.toLowerCase()}`)}</span>
+          <span>{t(`requests.${formatStatusKey(req.status)}`)}</span>
         </div>
       </div>
     </React.Fragment>
