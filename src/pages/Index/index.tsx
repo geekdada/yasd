@@ -192,7 +192,7 @@ const Page: React.FC = () => {
             <Ad />
           </div>
 
-          <div>
+          <div tw="mt-4 px-4">
             <ChangeLanguage />
           </div>
         </div>

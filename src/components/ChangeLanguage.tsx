@@ -29,7 +29,7 @@ const ChangeLanguage = (): JSX.Element => {
   )
 
   return (
-    <div tw="flex justify-center w-full py-8">
+    <div tw="flex justify-center w-full">
       <Select
         hideLabel
         noMargin

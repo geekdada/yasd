@@ -241,7 +241,7 @@ const Page: React.FC = () => {
         </form>
       </div>
 
-      <div>
+      <div tw="mt-10">
         <ChangeLanguage />
       </div>
     </div>

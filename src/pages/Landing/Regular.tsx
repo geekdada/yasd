@@ -314,7 +314,7 @@ const Page: React.FC = () => {
         <Ad />
       </div>
 
-      <div>
+      <div tw="mt-10">
         <ChangeLanguage />
       </div>
     </div>
