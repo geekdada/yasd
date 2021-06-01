@@ -38,8 +38,6 @@ jobs:
         run: |
           yarn install
           CI=false yarn build:release
-          sed -i 's/"\/home"/"\/#home"/g' build/manifest.json
-          tar -czf build.tar.gz ./build
 
       - name: Upload Release Asset
         id: upload-release-asset

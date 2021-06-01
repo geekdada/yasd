@@ -12,6 +12,8 @@ await (async () => {
   }
 
   await $`yarn verify-translation`
+  await clean()
+  console.info('🏗 Build artifact')
 
   switch (target) {
     case 'release-vercel':
@@ -31,6 +33,7 @@ await (async () => {
       await changeManifest({
         start_url: `${getUrlPathPrefix()}/#/home`,
       })
+      await bundleArtifact()
 
       break
 
@@ -46,6 +49,8 @@ await (async () => {
         name: 'Surge Web Dashboard',
         start_url: `${getUrlPathPrefix()}/index.html#/home`,
       })
+      await bundleArtifact()
+      await $`mv ./build.tar.gz ./yasd.tar.gz`
 
       break
 
@@ -74,6 +79,16 @@ async function changeManifest(obj = {}) {
     },
     { spaces: 2 },
   )
+}
+
+async function bundleArtifact() {
+  await $`(cd ./build; tar -czf ../build.tar.gz ./)`
+}
+
+async function clean() {
+  console.info('🧹 Clean up')
+  await $`rm -r ./build`
+  await $`rm -r ./*.tar.gz`
 }
 
 function getUrlPathPrefix() {
