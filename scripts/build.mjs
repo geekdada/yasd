@@ -42,9 +42,9 @@ await (async () => {
       process.env.PUBLIC_URL = getUrlPathPrefix()
       await $`craco build`
       await changeManifest({
-        short_name: 'Surge Dashboard',
+        short_name: 'Dashboard',
         name: 'Surge Web Dashboard',
-        start_url: `${getUrlPathPrefix()}/#/home`,
+        start_url: `${getUrlPathPrefix()}/index.html#/home`,
       })
 
       break
