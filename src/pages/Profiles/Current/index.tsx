@@ -9,6 +9,7 @@ import useSWR from 'swr'
 import tw from 'twin.macro'
 
 import CodeMirrorLoading from '../../../components/CodeMirrorLoading'
+import FixedFullscreenContainer from '../../../components/FixedFullscreenContainer'
 import PageTitle from '../../../components/PageTitle'
 import fetcher from '../../../utils/fetcher'
 
@@ -40,7 +41,7 @@ const Page: React.FC = () => {
   )
 
   return (
-    <div tw="fixed top-0 right-0 bottom-0 left-0 h-full">
+    <FixedFullscreenContainer offsetBottom={false}>
       <div tw="w-full h-full flex flex-col">
         <PageTitle title={t('home.profile')} />
 
@@ -75,7 +76,7 @@ const Page: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </FixedFullscreenContainer>
   )
 }
 

@@ -17,6 +17,7 @@ import {
 import { toast } from 'react-toastify'
 
 import CodeMirrorLoading from '../../../components/CodeMirrorLoading'
+import FixedFullscreenContainer from '../../../components/FixedFullscreenContainer'
 import PageTitle from '../../../components/PageTitle'
 import { EvaluateResult } from '../../../types'
 import fetcher from '../../../utils/fetcher'
@@ -86,7 +87,7 @@ const Page: React.FC = () => {
   }
 
   return (
-    <div tw="fixed top-0 right-0 bottom-0 left-0 h-full overflow-hidden">
+    <FixedFullscreenContainer>
       <div tw="w-full h-full flex flex-col">
         <PageTitle title={t('scripting.debug_script_button_title')} />
 
@@ -120,9 +121,6 @@ const Page: React.FC = () => {
           <div
             css={[
               tw`flex items-center border-t border-solid border-gray-200 py-3 px-3`,
-              css`
-                margin-bottom: env(safe-area-inset-bottom);
-              `,
             ]}>
             <LoadingButton
               onClick={evaluate}
@@ -180,7 +178,7 @@ const Page: React.FC = () => {
           )}
         </Modal>
       </div>
-    </div>
+    </FixedFullscreenContainer>
   )
 }
 

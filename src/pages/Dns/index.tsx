@@ -16,6 +16,7 @@ import tw from 'twin.macro'
 import useSWR, { mutate } from 'swr'
 import { List, AutoSizer, ListRowRenderer } from 'react-virtualized'
 
+import FixedFullscreenContainer from '../../components/FixedFullscreenContainer'
 import PageTitle from '../../components/PageTitle'
 import { DnsResult } from '../../types'
 import fetcher from '../../utils/fetcher'
@@ -127,7 +128,7 @@ const Page: React.FC = () => {
   )
 
   return (
-    <div tw="fixed top-0 right-0 bottom-0 left-0 h-full overflow-hidden">
+    <FixedFullscreenContainer>
       <div tw="w-full h-full flex flex-col">
         <PageTitle title="DNS" />
 
@@ -156,64 +157,59 @@ const Page: React.FC = () => {
         </div>
 
         <div
-          css={css`
-            padding-bottom: env(safe-area-inset-bottom);
-          `}>
-          <div
+          css={[
+            tw`flex divide-x divide-gray-200 border-t border-solid border-gray-200 py-2 px-2`,
+            css`
+              & > div {
+                ${tw`mx-2`}
+              }
+              & > div:first-of-type {
+                margin-left: 0;
+              }
+            `,
+          ]}>
+          <SelectorGroup
             css={[
-              tw`flex divide-x divide-gray-200 border-t border-solid border-gray-200 py-2 px-2`,
+              tw`flex justify-center items-center`,
               css`
-                & > div {
-                  ${tw`mx-2`}
+                & label {
+                  ${tw`py-2 px-4 ml-2 my-1 text-sm`}
                 }
-                & > div:first-of-type {
+                & label:first-of-type {
                   margin-left: 0;
                 }
               `,
-            ]}>
-            <SelectorGroup
-              css={[
-                tw`flex justify-center items-center`,
-                css`
-                  & label {
-                    ${tw`py-2 px-4 ml-2 my-1 text-sm`}
-                  }
-                  & label:first-of-type {
-                    margin-left: 0;
-                  }
-                `,
-              ]}
-              label="choose the dns result group"
-              name="selector-group"
-              onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                setGroup(event.target.value as 'dynamic' | 'static')
-              }}
-              options={[
-                {
-                  children: t('dns.dynamic'),
-                  value: 'dynamic',
-                },
-                {
-                  children: t('dns.static'),
-                  value: 'static',
-                },
-              ]}
-              value={group}
-            />
+            ]}
+            label="choose the dns result group"
+            name="selector-group"
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+              setGroup(event.target.value as 'dynamic' | 'static')
+            }}
+            options={[
+              {
+                children: t('dns.dynamic'),
+                value: 'dynamic',
+              },
+              {
+                children: t('dns.static'),
+                value: 'static',
+              },
+            ]}
+            value={group}
+          />
 
-            <div tw="flex items-center">
-              <Button
-                tw="font-normal"
-                variant="tertiary"
-                size="kilo"
-                onClick={flushDns}>
-                {t('dns.flush_dns')}
-              </Button>
-            </div>
+          <div tw="flex items-center">
+            <Button
+              tw="font-normal"
+              variant="tertiary"
+              size="kilo"
+              onClick={flushDns}>
+              {t('dns.flush_dns')}
+            </Button>
           </div>
         </div>
       </div>
-    </div>
+    </FixedFullscreenContainer>
   )
 }
 

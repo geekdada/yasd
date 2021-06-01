@@ -17,6 +17,7 @@ import {
   ModalWrapper,
 } from '@sumup/circuit-ui'
 
+import FixedFullscreenContainer from '../../components/FixedFullscreenContainer'
 import PageTitle from '../../components/PageTitle'
 import { EvaluateResult, Scriptings } from '../../types'
 import fetcher from '../../utils/fetcher'
@@ -70,7 +71,7 @@ const Page: React.FC = () => {
   }
 
   return (
-    <div tw="fixed top-0 right-0 bottom-0 left-0 h-full overflow-hidden">
+    <FixedFullscreenContainer>
       <div tw="w-full h-full flex flex-col">
         <PageTitle title={t('home.scripting')} />
 
@@ -119,18 +120,13 @@ const Page: React.FC = () => {
           </div>
         </div>
 
-        <div
-          css={css`
-            padding-bottom: env(safe-area-inset-bottom);
-          `}>
-          <div tw="border-t border-solid border-gray-200 py-2">
-            <Button
-              variant="tertiary"
-              size="kilo"
-              onClick={() => history.push('/scripting/evaluate')}>
-              {t('scripting.debug_script_button_title')}
-            </Button>
-          </div>
+        <div tw="border-t border-solid border-gray-200 py-2">
+          <Button
+            variant="tertiary"
+            size="kilo"
+            onClick={() => history.push('/scripting/evaluate')}>
+            {t('scripting.debug_script_button_title')}
+          </Button>
         </div>
       </div>
 
@@ -154,7 +150,7 @@ const Page: React.FC = () => {
           </ModalWrapper>
         )}
       </Modal>
-    </div>
+    </FixedFullscreenContainer>
   )
 }
 
