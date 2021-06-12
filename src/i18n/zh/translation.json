@@ -9,7 +9,8 @@
     "is_loading": "加载中",
     "success_interaction": "操作成功",
     "failed_interaction": "操作失败",
-    "see": "查看"
+    "see": "查看",
+    "save": "保存"
   },
   "new_version_alert": {
     "title": "发现新版本！",
@@ -45,7 +46,8 @@
     "http_capture": "抓取流量",
     "rewrite": "Rewrite",
     "github": "GitHub",
-    "events": "事件"
+    "events": "事件",
+    "device_management": "设备管理"
   },
   "traffic_cell": {
     "upload": "上传",
@@ -103,5 +105,25 @@
     "dynamic": "动态记录",
     "static": "静态记录",
     "comment": "备注"
+  },
+  "devices": {
+    "mac_address": "MAC 地址",
+    "vendor": "生产商",
+    "active_connections": "活跃连接数",
+    "total_connections": "所有连接数",
+    "total_bytes": "所有流量",
+    "top_host": "最多流量主机",
+    "dhcp_last_seen": "DHCP 最后一次出现",
+    "dhcp_hostname": "DHCP 主机",
+    "mode": "模式",
+    "address": "地址",
+    "name": "名称",
+    "should_handled_by_surge": "由 Surge 处理",
+    "handled_by_surge": "Surge",
+    "not_handled_by_surge": "无",
+    "gateway_mode": "网关模式",
+    "err_required": "必须输入",
+    "err_not_ip": "输入值不是 IP 地址",
+    "err_nothing_changed": "什么都没有修改"
   }
 }

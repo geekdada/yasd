@@ -31,6 +31,7 @@ const ChangeLanguage = (): JSX.Element => {
   return (
     <div tw="flex justify-center w-full">
       <Select
+        label="change language"
         hideLabel
         noMargin
         value={i18n.language}

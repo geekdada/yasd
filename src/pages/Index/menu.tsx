@@ -2,7 +2,9 @@
 import { jsx } from '@emotion/core'
 import React from 'react'
 import tw, { TwStyle } from 'twin.macro'
+import gte from 'semver/functions/gte'
 
+import { Profile } from '../../types'
 import { isRunInSurge } from '../../utils'
 import CapabilityTile from './components/CapabilityTile'
 
@@ -13,6 +15,10 @@ export interface MenuItem {
   tintColor?: TwStyle
   textColor?: TwStyle
   component?: JSX.Element
+  isEnabled?: (
+    platform: Profile['platform'] | void,
+    platformVersion: Profile['platformVersion'] | void,
+  ) => boolean
 }
 
 const menu: Array<MenuItem> = [
@@ -41,6 +47,17 @@ const menu: Array<MenuItem> = [
   {
     title: 'modules',
     link: '/modules',
+  },
+  {
+    title: 'device_management',
+    link: '/devices',
+    isEnabled: (platform, platformVersion) => {
+      return Boolean(
+        platform === 'macos' &&
+          platformVersion &&
+          gte(platformVersion, '4.0.6'),
+      )
+    },
   },
   {
     title: 'dns',

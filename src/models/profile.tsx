@@ -41,8 +41,9 @@ const ProfileContext = createContext<IProfileContext>({
   profile: undefined,
 })
 
-const ProfileDispatchContext =
-  createContext<Dispatch<ReducerAction> | undefined>(undefined)
+const ProfileDispatchContext = createContext<
+  Dispatch<ReducerAction> | undefined
+>(undefined)
 
 export const ProfileProvider: React.FC = (props) => {
   const [state, dispatch] = useReducer(profileReducer, {
@@ -62,6 +63,29 @@ export const useProfile = (): Profile | undefined => {
   const context = React.useContext(ProfileContext)
 
   return context.profile
+}
+
+export const usePlatform = (): Profile['platform'] | undefined => {
+  const context = React.useContext(ProfileContext)
+
+  return context.profile?.platform
+}
+export const usePlatformVersion = ():
+  | Profile['platformVersion']
+  | undefined => {
+  const context = React.useContext(ProfileContext)
+
+  return context.profile?.platformVersion
+}
+
+export const useSurgeHost = (): string | null => {
+  const context = React.useContext(ProfileContext)
+
+  if (!context.profile) return null
+
+  const { tls, host, port } = context.profile
+
+  return `${tls ? 'https:' : 'http:'}//${host}:${port}`
 }
 
 export const useProfileDispatch = (): Dispatch<ReducerAction> => {

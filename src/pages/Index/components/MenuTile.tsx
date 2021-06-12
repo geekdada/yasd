@@ -22,12 +22,11 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
   return (
     <div onClick={handleClick} css={[props.onClick && tw`cursor-pointer`]}>
       <Card
-        shadow="single"
         css={[
           css`
             min-height: 8rem;
           `,
-          tw`p-4`,
+          tw`p-4 border-none shadow-sm`,
           props.style || tw`bg-gray-100`,
         ]}>
         {props.children}

@@ -8,6 +8,7 @@ import tw from 'twin.macro'
 import useSWR, { mutate } from 'swr'
 import { toast } from 'react-toastify'
 
+import PageContainer from '../../components/PageContainer'
 import PageTitle from '../../components/PageTitle'
 import { Modules } from '../../types'
 import fetcher from '../../utils/fetcher'
@@ -51,7 +52,7 @@ const Page: React.FC = () => {
   )
 
   return (
-    <div tw="relative pb-5">
+    <PageContainer>
       <PageTitle title={t('home.modules')} />
 
       <div tw="divide-y divide-gray-200">
@@ -71,7 +72,7 @@ const Page: React.FC = () => {
             )
           })}
       </div>
-    </div>
+    </PageContainer>
   )
 }
 

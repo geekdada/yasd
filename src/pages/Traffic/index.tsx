@@ -10,6 +10,7 @@ import React, { useState } from 'react'
 import useSWR from 'swr'
 
 import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
+import PageContainer from '../../components/PageContainer'
 import PageTitle from '../../components/PageTitle'
 import { ConnectorTraffic, Traffic } from '../../types'
 import fetcher from '../../utils/fetcher'
@@ -56,7 +57,7 @@ const Page: React.FC = () => {
   }
 
   return (
-    <div tw={'relative pb-5'}>
+    <PageContainer>
       <PageTitle
         title={t('home.traffic')}
         hasAutoRefresh={true}
@@ -96,7 +97,7 @@ const Page: React.FC = () => {
           </DataGroup>
         </TrafficWrapper>
       )}
-    </div>
+    </PageContainer>
   )
 }
 

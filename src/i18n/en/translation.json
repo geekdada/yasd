@@ -9,7 +9,8 @@
     "is_loading": "Loading",
     "success_interaction": "Success",
     "failed_interaction": "Failed",
-    "see": "See"
+    "see": "See",
+    "save": "Save"
   },
   "new_version_alert": {
     "title": "Found new version!",
@@ -45,7 +46,8 @@
     "http_capture": "HTTP Capture",
     "rewrite": "Rewrite",
     "github": "GitHub",
-    "events": "Events"
+    "events": "Events",
+    "device_management": "Device Management"
   },
   "traffic_cell": {
     "upload": "Upload",
@@ -103,5 +105,25 @@
     "dynamic": "Dynamic",
     "static": "Static",
     "comment": "Comment"
+  },
+  "devices": {
+    "mac_address": "MAC Address",
+    "vendor": "Manufacturer",
+    "active_connections": "Active Connections",
+    "total_connections": "Total Connections",
+    "total_bytes": "Total Traffic",
+    "top_host": "Top Host",
+    "dhcp_last_seen": "DHCP Last Seen",
+    "dhcp_hostname": "DHCP Hostname",
+    "mode": "Mode",
+    "address": "Address",
+    "name": "Name",
+    "should_handled_by_surge": "Handled by Surge",
+    "handled_by_surge": "Surge",
+    "not_handled_by_surge": "None",
+    "gateway_mode": "Gateway",
+    "err_required": "Required",
+    "err_not_ip": "Input value is not an IP address",
+    "err_nothing_changed": "Nothing changed"
   }
 }

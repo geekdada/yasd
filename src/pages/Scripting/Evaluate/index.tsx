@@ -88,96 +88,94 @@ const Page: React.FC = () => {
 
   return (
     <FixedFullscreenContainer>
-      <div tw="w-full h-full flex flex-col">
-        <PageTitle title={t('scripting.debug_script_button_title')} />
+      <PageTitle title={t('scripting.debug_script_button_title')} />
 
-        <div tw="h-full flex flex-col overflow-hidden">
-          <div tw="h-full overflow-auto">
-            <CodeMirror
-              css={[
-                tw`h-full text-xs`,
-                css`
-                  & > .CodeMirror {
-                    height: 100%;
-                    font-family: Menlo, Monaco, Consolas, 'Liberation Mono',
-                      'Courier New', monospace;
-                  }
-                `,
-              ]}
-              value={code}
-              options={{
-                mode: 'javascript',
-                theme: 'material',
-                lineNumbers: true,
-                tabSize: 2,
-                indentWithTabs: false,
-                lineWrapping: true,
-              }}
-              onBeforeChange={(editor, data, value) => {
-                setCode(value)
-              }}
-            />
-          </div>
+      <div tw="h-full flex flex-col overflow-hidden">
+        <div tw="h-full overflow-auto">
+          <CodeMirror
+            css={[
+              tw`h-full text-xs`,
+              css`
+                & > .CodeMirror {
+                  height: 100%;
+                  font-family: Menlo, Monaco, Consolas, 'Liberation Mono',
+                    'Courier New', monospace;
+                }
+              `,
+            ]}
+            value={code}
+            options={{
+              mode: 'javascript',
+              theme: 'material',
+              lineNumbers: true,
+              tabSize: 2,
+              indentWithTabs: false,
+              lineWrapping: true,
+            }}
+            onBeforeChange={(editor, data, value) => {
+              setCode(value)
+            }}
+          />
+        </div>
+        <div
+          css={[
+            tw`flex items-center border-t border-solid border-gray-200 py-3 px-3`,
+          ]}>
+          <LoadingButton
+            onClick={evaluate}
+            variant="primary"
+            size="kilo"
+            isLoading={isLoading}
+            loadingLabel={t('scripting.running')}>
+            {t('scripting.run_script_button_title')}
+          </LoadingButton>
+
           <div
             css={[
-              tw`flex items-center border-t border-solid border-gray-200 py-3 px-3`,
-            ]}>
-            <LoadingButton
-              onClick={evaluate}
-              variant="primary"
-              size="kilo"
-              isLoading={isLoading}
-              loadingLabel={t('scripting.running')}>
-              {t('scripting.run_script_button_title')}
-            </LoadingButton>
+              tw`ml-4`,
+              css`
+                padding-bottom: 1px;
 
-            <div
-              css={[
-                tw`ml-4`,
-                css`
-                  padding-bottom: 1px;
-
-                  & input {
-                    border-radius: 4px;
-                    ${tw`px-2 py-1 text-sm leading-none`}
-                  }
-                `,
-              ]}>
-              <Input
-                type="number"
-                required
-                noMargin
-                label={t('scripting.timeout')}
-                value={timeout}
-                onChange={({ target }) =>
-                  setTimeoutValue(Number((target as HTMLInputElement).value))
+                & input {
+                  border-radius: 4px;
+                  ${tw`px-2 py-1 text-sm leading-none`}
                 }
-              />
-            </div>
+              `,
+            ]}>
+            <Input
+              type="number"
+              required
+              noMargin
+              label={t('scripting.timeout')}
+              value={timeout}
+              onChange={({ target }) =>
+                setTimeoutValue(Number((target as HTMLInputElement).value))
+              }
+            />
           </div>
         </div>
-
-        <Modal
-          isOpen={!!result}
-          onClose={() => {
-            setResult('')
-          }}>
-          {({ onClose }) => (
-            <ModalWrapper>
-              <ModalHeader title={t('scripting.result')} onClose={onClose} />
-              <div>
-                <pre
-                  tw="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
-                  css={css`
-                    min-height: 7rem;
-                  `}>
-                  {result}
-                </pre>
-              </div>
-            </ModalWrapper>
-          )}
-        </Modal>
       </div>
+
+      <Modal
+        isOpen={!!result}
+        onClose={() => {
+          setResult('')
+        }}>
+        {({ onClose }) => (
+          <ModalWrapper>
+            <ModalHeader title={t('scripting.result')} onClose={onClose} />
+            <div>
+              <pre
+                tw="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
+                css={css`
+                  min-height: 7rem;
+                `}>
+                {result}
+              </pre>
+            </div>
+          </ModalWrapper>
+        )}
+      </Modal>
     </FixedFullscreenContainer>
   )
 }

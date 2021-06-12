@@ -166,3 +166,37 @@ export interface DnsResult {
     expiresTime: number
   }>
 }
+
+export interface DeviceInfo {
+  activeConnections: number
+  currentSpeed: number
+  displayIPAddress: string
+  hasProxyConnection: boolean
+  hasTCPConnection: boolean
+  identifier: string
+  name: string
+  physicalAddress: string
+  sourceIP: string
+  topHostBySingleConnectionTraffic: string
+  totalBytes: number
+  totalConnections: number
+  vendor: string
+  dhcpDevice?: DHCPDevice
+}
+
+export interface DHCPDevice {
+  assignedIP?: string
+  currentIP?: string
+  dhcpHostname: string
+  dhcpLastSeen?: string
+  handledBySurge: 0 | 1
+  displayName?: string
+  icon?: string
+  physicalAddress: string
+  shouldHandledBySurge: 0 | 1
+  waitingToReconnect: 0 | 1
+}
+
+export interface DevicesResult {
+  devices: ReadonlyArray<DeviceInfo>
+}

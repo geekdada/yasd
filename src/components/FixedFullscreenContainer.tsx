@@ -23,7 +23,7 @@ const FixedFullscreenContainer: React.FC<{
             `
           : '',
       ]}>
-      {props.children}
+      <div tw="w-full h-full flex flex-col">{props.children}</div>
     </div>
   )
 }

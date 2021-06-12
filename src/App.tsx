@@ -56,6 +56,9 @@ const EvaluatePage = loadable(() => import('./pages/Scripting/Evaluate'), {
 const DnsPage = loadable(() => import('./pages/Dns'), {
   fallback: <FullLoading />,
 })
+const DevicesPage = loadable(() => import('./pages/Devices'), {
+  fallback: <FullLoading />,
+})
 const ProfilePage = loadable(() => import('./pages/Profiles/Current'), {
   fallback: <FullLoading />,
 })
@@ -215,6 +218,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/dns">
             <DnsPage />
+          </Route>
+          <Route exact path="/devices">
+            <DevicesPage />
           </Route>
           <Route exact path="/profiles/current">
             <ProfilePage />

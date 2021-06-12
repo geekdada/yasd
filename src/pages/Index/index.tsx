@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React, { useCallback } from 'react'
-import { Button, Heading, ModalProvider, Toggle } from '@sumup/circuit-ui'
+import { Button, Heading, Toggle } from '@sumup/circuit-ui'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import { useTranslation } from 'react-i18next'
@@ -9,13 +9,17 @@ import tw from 'twin.macro'
 import { delay } from 'bluebird'
 import { useHistory } from 'react-router-dom'
 import useSWR, { mutate } from 'swr'
-import store, { remove } from 'store2'
-import ChangeLanguage from '../../components/ChangeLanguage'
+import store from 'store2'
 
+import ChangeLanguage from '../../components/ChangeLanguage'
 import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
 import ProfileCell from '../../components/ProfileCell'
 import Ad from '../../components/Ad'
-import { useProfile } from '../../models/profile'
+import {
+  usePlatform,
+  usePlatformVersion,
+  useProfile,
+} from '../../models/profile'
 import { Capability } from '../../types'
 import { isRunInSurge } from '../../utils'
 import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
@@ -38,6 +42,8 @@ const Page: React.FC = () => {
     fetcher,
   )
   const { t } = useTranslation()
+  const platform = usePlatform()
+  const platformVersion = usePlatformVersion()
 
   const toggleSystemProxy = useCallback(() => {
     fetcher({
@@ -88,7 +94,7 @@ const Page: React.FC = () => {
   }
 
   return (
-    <ModalProvider>
+    <React.Fragment>
       <div
         css={css`
           padding-bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
@@ -164,6 +170,13 @@ const Page: React.FC = () => {
 
           <div tw="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
             {menu.map((item) => {
+              if (
+                typeof item.isEnabled === 'function' &&
+                !item.isEnabled(platform, platformVersion)
+              ) {
+                return null
+              }
+
               return (
                 <div key={item.title}>
                   {item.component ? (
@@ -197,7 +210,7 @@ const Page: React.FC = () => {
           </div>
         </div>
       </div>
-    </ModalProvider>
+    </React.Fragment>
   )
 }
 

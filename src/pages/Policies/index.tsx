@@ -8,8 +8,9 @@ import tw from 'twin.macro'
 import React, { createRef, RefObject, useRef } from 'react'
 import { ScrollTo } from 'react-scroll-to'
 import useSWR from 'swr'
-import BackButton from '../../components/BackButton'
 
+import BackButton from '../../components/BackButton'
+import PageContainer from '../../components/PageContainer'
 import { Policies, PolicyGroups } from '../../types'
 import fetcher from '../../utils/fetcher'
 import PolicyGroup from './components/PolicyGroup'
@@ -46,7 +47,7 @@ const Page: React.FC = () => {
   }
 
   return (
-    <div tw="relative pb-5">
+    <PageContainer>
       <div
         tw="sticky top-0 left-0 right-0 shadow bg-white z-10 pt-5 mb-4"
         ref={headerRef}>
@@ -106,7 +107,7 @@ const Page: React.FC = () => {
             )
           })}
       </div>
-    </div>
+    </PageContainer>
   )
 }
 

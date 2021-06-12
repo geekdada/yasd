@@ -71,7 +71,8 @@ const Page: React.FC = () => {
             style={style}
             onClick={() => openIpDetail(record.data[0])}
             css={[
-              tw`flex flex-col justify-center py-2 cursor-pointer hover:bg-gray-100`,
+              tw`flex flex-col justify-center py-2`,
+              tw`cursor-pointer hover:bg-gray-100`,
               css`
                 padding-left: calc(env(safe-area-inset-left) + 0.75rem);
                 padding-right: calc(env(safe-area-inset-right) + 0.75rem);
@@ -129,84 +130,82 @@ const Page: React.FC = () => {
 
   return (
     <FixedFullscreenContainer>
-      <div tw="w-full h-full flex flex-col">
-        <PageTitle title="DNS" />
+      <PageTitle title="DNS" />
 
-        <div tw="flex-1">
-          <AutoSizer>
-            {({ width, height }) => {
-              return (
-                <List
-                  width={width}
-                  height={height}
-                  rowCount={list.length}
-                  rowHeight={85}
-                  rowRenderer={rowRenderer}
-                  style={{
-                    outline: 'none',
-                  }}
-                  css={css`
-                    & > div {
-                      ${tw`divide-y divide-gray-200`}
-                    }
-                  `}
-                />
-              )
-            }}
-          </AutoSizer>
-        </div>
+      <div tw="flex-1">
+        <AutoSizer>
+          {({ width, height }) => {
+            return (
+              <List
+                width={width}
+                height={height}
+                rowCount={list.length}
+                rowHeight={85}
+                rowRenderer={rowRenderer}
+                style={{
+                  outline: 'none',
+                }}
+                css={css`
+                  & > div {
+                    ${tw`divide-y divide-gray-200`}
+                  }
+                `}
+              />
+            )
+          }}
+        </AutoSizer>
+      </div>
 
-        <div
+      <div
+        css={[
+          tw`flex divide-x divide-gray-200 border-t border-solid border-gray-200 py-2 px-2`,
+          css`
+            & > div {
+              ${tw`mx-2`}
+            }
+            & > div:first-of-type {
+              margin-left: 0;
+            }
+          `,
+        ]}>
+        <SelectorGroup
           css={[
-            tw`flex divide-x divide-gray-200 border-t border-solid border-gray-200 py-2 px-2`,
+            tw`flex justify-center items-center`,
             css`
-              & > div {
-                ${tw`mx-2`}
+              & label {
+                ${tw`py-2 px-4 ml-2 my-1 text-sm`}
               }
-              & > div:first-of-type {
+              & label:first-of-type {
                 margin-left: 0;
               }
             `,
-          ]}>
-          <SelectorGroup
-            css={[
-              tw`flex justify-center items-center`,
-              css`
-                & label {
-                  ${tw`py-2 px-4 ml-2 my-1 text-sm`}
-                }
-                & label:first-of-type {
-                  margin-left: 0;
-                }
-              `,
-            ]}
-            label="choose the dns result group"
-            name="selector-group"
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              setGroup(event.target.value as 'dynamic' | 'static')
-            }}
-            options={[
-              {
-                children: t('dns.dynamic'),
-                value: 'dynamic',
-              },
-              {
-                children: t('dns.static'),
-                value: 'static',
-              },
-            ]}
-            value={group}
-          />
+          ]}
+          label="choose the dns result group"
+          name="selector-group"
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            setGroup(event.target.value as 'dynamic' | 'static')
+          }}
+          options={[
+            {
+              children: t('dns.dynamic'),
+              value: 'dynamic',
+            },
+            {
+              children: t('dns.static'),
+              value: 'static',
+            },
+          ]}
+          value={group}
+        />
 
-          <div tw="flex items-center">
-            <Button
-              tw="font-normal"
-              variant="tertiary"
-              size="kilo"
-              onClick={flushDns}>
-              {t('dns.flush_dns')}
-            </Button>
-          </div>
+        <div tw="flex items-center">
+          <Button
+            tw="font-normal"
+            variant="tertiary"
+            size="kilo"
+            onClick={flushDns}>
+            {t('dns.flush_dns')}
+          </Button>
         </div>
       </div>
     </FixedFullscreenContainer>

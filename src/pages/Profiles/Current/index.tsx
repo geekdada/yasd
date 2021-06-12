@@ -42,38 +42,36 @@ const Page: React.FC = () => {
 
   return (
     <FixedFullscreenContainer offsetBottom={false}>
-      <div tw="w-full h-full flex flex-col">
-        <PageTitle title={t('home.profile')} />
+      <PageTitle title={t('home.profile')} />
 
-        <div tw="h-full flex flex-col overflow-hidden">
-          <div tw="h-full overflow-auto">
-            <CodeMirror
-              css={[
-                tw`h-full text-xs`,
-                css`
-                  & > .CodeMirror {
-                    padding-bottom: env(safe-area-inset-bottom);
-                    height: 100%;
-                    font-family: Menlo, Monaco, Consolas, 'Liberation Mono',
-                      'Courier New', monospace;
-                  }
-                `,
-              ]}
-              value={profile?.profile ?? `${t('common.is_loading')}...`}
-              options={{
-                mode: 'properties',
-                theme: 'material',
-                lineNumbers: true,
-                tabSize: 2,
-                indentWithTabs: false,
-                lineWrapping: true,
-                readOnly: 'nocursor',
-              }}
-              onBeforeChange={() => {
-                // noop
-              }}
-            />
-          </div>
+      <div tw="h-full flex flex-col overflow-hidden">
+        <div tw="h-full overflow-auto">
+          <CodeMirror
+            css={[
+              tw`h-full text-xs`,
+              css`
+                & > .CodeMirror {
+                  padding-bottom: env(safe-area-inset-bottom);
+                  height: 100%;
+                  font-family: Menlo, Monaco, Consolas, 'Liberation Mono',
+                    'Courier New', monospace;
+                }
+              `,
+            ]}
+            value={profile?.profile ?? `${t('common.is_loading')}...`}
+            options={{
+              mode: 'properties',
+              theme: 'material',
+              lineNumbers: true,
+              tabSize: 2,
+              indentWithTabs: false,
+              lineWrapping: true,
+              readOnly: 'nocursor',
+            }}
+            onBeforeChange={() => {
+              // noop
+            }}
+          />
         </div>
       </div>
     </FixedFullscreenContainer>

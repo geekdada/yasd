@@ -1,5 +1,6 @@
 import createCache from '@emotion/cache'
 import { CacheProvider } from '@emotion/core'
+import { ModalProvider } from '@sumup/circuit-ui'
 import { light } from '@sumup/design-tokens'
 import { ThemeProvider } from 'emotion-theming'
 import React, { Suspense } from 'react'
@@ -33,7 +34,9 @@ const AppContainer: React.FC = () => {
         <ReactRouter>
           <ProfileProvider>
             <ThemeProvider theme={light}>
-              <App />
+              <ModalProvider>
+                <App />
+              </ModalProvider>
             </ThemeProvider>
           </ProfileProvider>
         </ReactRouter>
