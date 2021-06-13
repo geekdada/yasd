@@ -23,7 +23,7 @@ await (async () => {
     }
   }
 
-  console.info('🌎 Translation files is good to go!')
+  console.info('🌎 Translation files are good to go!')
 })()
 
 function walkKeys(arr, currKey, obj) {

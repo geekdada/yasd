@@ -13,7 +13,7 @@ await (async () => {
 
   await $`yarn verify-translation`
   await clean()
-  console.info('🏗 Build artifact')
+  console.info('🚧 Build artifact')
 
   switch (target) {
     case 'release-vercel':
