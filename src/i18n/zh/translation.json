@@ -12,6 +12,10 @@
     "see": "查看",
     "save": "保存"
   },
+  "form": {
+    "err_invalid": "无效的输入内容",
+    "err_required": "必须输入"
+  },
   "new_version_alert": {
     "title": "发现新版本！",
     "message": "快看看更新了什么"
