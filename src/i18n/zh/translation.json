@@ -25,7 +25,7 @@
     "port": "端口",
     "key": "密钥",
     "remember_me": "记住我",
-    "https": "HTTPS (请确保开启 <code>http-api-tls</code>)",
+    "https": "HTTPS (请确保开启 http-api-tls)",
     "confirm": "完成",
     "is_loading": "加载中",
     "history": "历史记录",

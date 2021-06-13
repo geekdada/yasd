@@ -1,99 +1,87 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import React, {
-  ChangeEvent,
-  FormEventHandler,
-  useCallback,
-  useEffect,
-} from 'react'
+import React, { useEffect } from 'react'
 import { Heading, Input, LoadingButton, Checkbox } from '@sumup/circuit-ui'
-import { CircleWarning } from '@sumup/icons'
 import css from '@emotion/css/macro'
+import { useForm, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import store from 'store2'
 import { v4 as uuid } from 'uuid'
 import { find } from 'lodash-es'
 import { useHistory } from 'react-router-dom'
-import ChangeLanguage from '../../components/ChangeLanguage'
 
+import ChangeLanguage from '../../components/ChangeLanguage'
 import useSetState from '../../hooks/use-set-state'
 import { useProfile, useProfileDispatch } from '../../models/profile'
 import { Profile } from '../../types'
 import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
+import { getValidationHint } from '../../utils/validation'
 import Header from './components/Header'
 import { useAuthData } from './hooks'
+import { SurgeFormFields } from './types'
 import { tryHost } from './utils'
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
-  const {
-    data,
-    setData,
-    hasError,
-    setHasError,
-    isLoading,
-    setIsLoading,
-    keepCredential,
-    setKeepCredential,
-  } = useAuthData()
+  const { isLoading, setIsLoading } = useAuthData()
   const [existingProfiles, setExistingProfiles, getExistingProfiles] =
     useSetState<Array<Profile>>([])
   const profileDispatch = useProfileDispatch()
   const profile = useProfile()
   const history = useHistory()
-
-  const addProfile = useCallback(
-    (config: Omit<Profile, 'id'>): Profile => {
-      const profile: Profile = {
-        ...config,
-        id: uuid(),
-      }
-      const newProfiles = [profile, ...existingProfiles]
-      setExistingProfiles(newProfiles)
-
-      if (keepCredential) {
-        store.set(ExistingProfiles, newProfiles)
-        store.set(LastUsedProfile, profile.id)
-      }
-
-      return profile
+  const {
+    getValues,
+    register,
+    handleSubmit,
+    control,
+    clearErrors,
+    setError,
+    formState: { errors },
+  } = useForm<SurgeFormFields>({
+    defaultValues: {
+      keepCredential: false,
     },
-    [existingProfiles, keepCredential, setExistingProfiles],
-  )
+  })
 
-  const selectProfile = useCallback(
-    (id: string) => {
-      getExistingProfiles().then((profiles) => {
-        const profile = find(profiles, { id })
+  const addProfile = (config: Omit<Profile, 'id'>): Profile => {
+    const profile: Profile = {
+      ...config,
+      id: uuid(),
+    }
+    const newProfiles = [profile, ...existingProfiles]
+    setExistingProfiles(newProfiles)
 
-        if (profile) {
-          if (keepCredential) {
-            store.set(LastUsedProfile, profile.id)
-          }
+    if (getValues('keepCredential')) {
+      store.set(ExistingProfiles, newProfiles)
+      store.set(LastUsedProfile, profile.id)
+    }
 
-          profileDispatch({
-            type: 'update',
-            payload: profile,
-          })
+    return profile
+  }
+
+  const selectProfile = (id: string) => {
+    getExistingProfiles().then((profiles) => {
+      const profile = find(profiles, { id })
+
+      if (profile) {
+        if (getValues('keepCredential')) {
+          store.set(LastUsedProfile, profile.id)
         }
-      })
-    },
-    [getExistingProfiles, keepCredential, profileDispatch],
-  )
 
-  const resetFields = useCallback(() => {
-    setData((prev) => ({
-      ...prev,
-      key: '',
-    }))
-  }, [setData])
+        profileDispatch({
+          type: 'update',
+          payload: profile,
+        })
+      }
+    })
+  }
 
   const getHost: () => {
     protocol: string
     hostname: string
     port: string
-  } = useCallback(() => {
+  } = () => {
     const protocol = window.location.protocol
 
     if (process.env.NODE_ENV === 'production') {
@@ -108,63 +96,43 @@ const Page: React.FC = () => {
       hostname: process.env.REACT_APP_HOST as string,
       port: process.env.REACT_APP_PORT as string,
     }
-  }, [])
+  }
 
-  const onSubmit: FormEventHandler = useCallback(
-    (e) => {
-      e.preventDefault()
+  const onSubmit = (data: SurgeFormFields) => {
+    if (!data.key) {
+      return
+    }
 
-      if (!data.key) {
-        return
-      }
+    const { hostname, port, protocol } = getHost()
+    setIsLoading(true)
 
-      const { hostname, port, protocol } = getHost()
-      setIsLoading(true)
+    tryHost(protocol, hostname, port, data.key)
+      .then((res) => {
+        clearErrors()
 
-      tryHost(protocol, hostname, port, data.key)
-        .then((res) => {
-          setHasError(false)
-
-          const newProfile = addProfile({
-            name: res.name || 'Surge for Mac',
-            host: hostname,
-            port: Number(port),
-            key: data.key,
-            platform: res.platform,
-            platformVersion: res.platformVersion,
-            platformBuild: res.platformBuild,
-            tls: protocol === 'https:',
-          })
-
-          resetFields()
-          setIsLoading(false)
-          selectProfile(newProfile.id)
+        const newProfile = addProfile({
+          name: res.name || 'Surge for Mac',
+          host: hostname,
+          port: Number(port),
+          key: data.key,
+          platform: res.platform,
+          platformVersion: res.platformVersion,
+          platformBuild: res.platformBuild,
+          tls: protocol === 'https:',
         })
-        .catch((err) => {
-          setHasError(err.message)
-          console.error(err)
-          setIsLoading(false)
-        })
-    },
-    [
-      addProfile,
-      data.key,
-      resetFields,
-      selectProfile,
-      setHasError,
-      setIsLoading,
-    ],
-  )
 
-  const updateData = useCallback(
-    (key: string, value: string) => {
-      setData((prev) => ({
-        ...prev,
-        [key]: value,
-      }))
-    },
-    [setData],
-  )
+        setIsLoading(false)
+        selectProfile(newProfile.id)
+      })
+      .catch((err) => {
+        setError('key', {
+          type: 'invalid',
+          message: err.message,
+        })
+        console.error(err)
+        setIsLoading(false)
+      })
+  }
 
   useEffect(() => {
     const storedExistingProfiles = store.get(ExistingProfiles)
@@ -200,25 +168,31 @@ const Page: React.FC = () => {
       <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
         <Heading size={'tera'}>{t('landing.login')}</Heading>
 
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Input
             type="password"
-            required
-            invalid={!!hasError}
+            invalid={!!errors?.key}
+            validationHint={getValidationHint(
+              {
+                required: t('devices.err_required'),
+              },
+              errors?.key,
+            )}
             label={t('landing.key')}
             placeholder="examplekey"
-            value={data.key}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              updateData('key', e.target.value)
-            }
+            {...register('key', { required: true })}
           />
 
           <div>
-            <Checkbox
-              checked={keepCredential}
-              onChange={() => setKeepCredential((prev) => !prev)}>
-              {t('landing.remember_me')}
-            </Checkbox>
+            <Controller
+              name="keepCredential"
+              control={control}
+              render={({ field }) => (
+                <Checkbox checked={field.value} onChange={field.onChange}>
+                  {t('landing.remember_me')}
+                </Checkbox>
+              )}
+            />
           </div>
 
           <div tw="mt-6">
@@ -231,13 +205,6 @@ const Page: React.FC = () => {
               {t('landing.confirm')}
             </LoadingButton>
           </div>
-
-          {typeof hasError === 'string' && (
-            <div tw="text-red-400 mt-4 flex items-center">
-              <CircleWarning tw="mr-2" />
-              {hasError}
-            </div>
-          )}
         </form>
       </div>
 

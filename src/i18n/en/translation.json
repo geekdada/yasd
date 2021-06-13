@@ -12,6 +12,10 @@
     "see": "See",
     "save": "Save"
   },
+  "form": {
+    "err_invalid": "Invalid value",
+    "err_required": "Required"
+  },
   "new_version_alert": {
     "title": "Found new version!",
     "message": "Take a look at what's been update."

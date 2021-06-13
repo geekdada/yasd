@@ -16,5 +16,5 @@ export function getValidationHint(
     }
   }
 
-  return undefined
+  return fieldError.message
 }

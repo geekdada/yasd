@@ -3,7 +3,7 @@ import axios from 'axios'
 export async function tryHost(
   protocol: string,
   hostname: string,
-  port: string,
+  port: string | number,
   key: string,
 ): Promise<{
   name?: string
