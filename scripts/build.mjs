@@ -13,7 +13,7 @@ await (async () => {
 
   await $`yarn verify-translation`
   await clean()
-  console.info('🚧 Build artifact')
+  console.info('🚧  Build artifact')
 
   switch (target) {
     case 'release-vercel':
@@ -86,7 +86,7 @@ async function bundleArtifact() {
 }
 
 async function clean() {
-  console.info('🧹 Clean up')
+  console.info('🧹  Clean up')
   await $`rm -r ./build`
   await $`rm -r ./*.tar.gz`
 }

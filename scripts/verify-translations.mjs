@@ -18,12 +18,12 @@ await (async () => {
 
     for (const key of keys) {
       if (!get(json, key)) {
-        throw new Error(`Cannot find '${key}' for translation '${lang}'.`)
+        throw new Error(`⚠️  Cannot find '${key}' for translation '${lang}'.`)
       }
     }
   }
 
-  console.info('🌎 Translation files are good to go!')
+  console.info('🌎  Translation files are good to go!')
 })()
 
 function walkKeys(arr, currKey, obj) {
