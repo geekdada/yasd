@@ -1,15 +1,8 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import css from '@emotion/css/macro'
-import React, {
-  MouseEvent,
-  KeyboardEvent,
-  useState,
-  ChangeEvent,
-  FormEventHandler,
-} from 'react'
+import React, { MouseEvent, KeyboardEvent, useState } from 'react'
 import {
-  Button,
   ButtonGroup,
   Input,
   LoadingButton,
@@ -52,11 +45,12 @@ const DeviceSettingsModal = ({
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm<FormData>({
     defaultValues: {
       name: dhcpDevice.displayName,
       address: dhcpDevice.assignedIP || dhcpDevice.currentIP,
-      shouldHandledBySurge: Boolean(dhcpDevice.handledBySurge),
+      shouldHandledBySurge: Boolean(dhcpDevice.shouldHandledBySurge),
     },
   })
   const { dirtyFields } = useFormState({
@@ -107,6 +101,7 @@ const DeviceSettingsModal = ({
       setIsLoading(false)
 
       if (err) {
+        reset()
         console.error(err)
         toast.error(t('common.failed_interaction') + `: ${err.message}`)
         return
@@ -120,7 +115,10 @@ const DeviceSettingsModal = ({
 
   return (
     <ModalWrapper>
-      <ModalHeader title={title} onClose={onClose} />
+      <ModalHeader
+        title={`${t('devices.modify')} ${title}`}
+        onClose={onClose}
+      />
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div tw="pb-5">
@@ -165,7 +163,7 @@ const DeviceSettingsModal = ({
               <Toggle
                 disabled={isLoading}
                 noMargin
-                label={t('devices.should_handled_by_surge')}
+                label={t('devices.handled_by_surge')}
                 labelChecked="on"
                 labelUnchecked="off"
                 checked={field.value}

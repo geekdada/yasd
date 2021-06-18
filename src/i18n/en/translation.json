@@ -122,12 +122,17 @@
     "mode": "Mode",
     "address": "Address",
     "name": "Name",
-    "should_handled_by_surge": "Handled by Surge",
-    "handled_by_surge": "Surge",
+    "handled_by_surge": "Handled by Surge",
     "not_handled_by_surge": "None",
+    "proxy_and_gateway_mode": "Proxy & Gateway",
     "gateway_mode": "Gateway",
+    "proxy_mode": "Proxy",
     "err_required": "Required",
     "err_not_ip": "Input value is not an IP address",
-    "err_nothing_changed": "Nothing changed"
+    "err_nothing_changed": "Nothing changed",
+    "waiting": "Waiting",
+    "device_settings": "Device Settings",
+    "view_requests": "View Requests",
+    "modify": "Modify"
   }
 }

@@ -119,15 +119,20 @@
     "top_host": "最多流量主机",
     "dhcp_last_seen": "DHCP 最后一次出现",
     "dhcp_hostname": "DHCP 主机",
-    "mode": "模式",
+    "mode": "接管模式",
     "address": "地址",
     "name": "名称",
-    "should_handled_by_surge": "由 Surge 处理",
-    "handled_by_surge": "Surge",
+    "handled_by_surge": "由 Surge 接管",
     "not_handled_by_surge": "无",
+    "proxy_and_gateway_mode": "代理和网关模式",
     "gateway_mode": "网关模式",
+    "proxy_mode": "代理模式",
     "err_required": "必须输入",
     "err_not_ip": "输入值不是 IP 地址",
-    "err_nothing_changed": "什么都没有修改"
+    "err_nothing_changed": "什么都没有修改",
+    "waiting": "等待",
+    "device_settings": "设备设定",
+    "view_requests": "查看连接",
+    "modify": "修改"
   }
 }

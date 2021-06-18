@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import { ModalConsumer, useModal } from '@sumup/circuit-ui'
 import SelectorGroup from '@sumup/circuit-ui/dist/es/components/SelectorGroup'
@@ -17,6 +16,7 @@ import React, {
 } from 'react'
 import useSWR from 'swr'
 import { List, AutoSizer } from 'react-virtualized'
+import { useLocation } from 'react-router-dom'
 
 import FixedFullscreenContainer from '../../components/FixedFullscreenContainer'
 import PageTitle from '../../components/PageTitle'
@@ -27,6 +27,10 @@ import ListItem from './components/ListItem'
 import RequestModal from './components/RequestModal'
 
 const LIST_ITEMS_MAX = 150
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search)
+}
 
 const Page: React.FC = () => {
   const { setModal } = useModal()
@@ -56,6 +60,8 @@ const Page: React.FC = () => {
     () => (group === 'recent' ? requestList : activeRequestList),
     [group, requestList, activeRequestList],
   )
+  const query = useQuery()
+  const sourceIp = useMemo<string | null>(() => query.get('source'), [query])
 
   useEffect(
     () => {
@@ -92,10 +98,24 @@ const Page: React.FC = () => {
       }
 
       if (group === 'recent') {
-        newList = newList.slice(0, LIST_ITEMS_MAX)
+        newList = newList
+          .filter((request) => {
+            if (sourceIp) {
+              return sourceIp === request.localAddress
+            }
+            return true
+          })
+          .slice(0, LIST_ITEMS_MAX)
       } else {
         newList = newList
-          .filter((item) => item.lastUpdated === now)
+          .filter((request) => {
+            if (sourceIp) {
+              return (
+                request.lastUpdated === now && sourceIp === request.localAddress
+              )
+            }
+            return request.lastUpdated === now
+          })
           .sort((a, b) => b.id - a.id)
       }
 
@@ -108,7 +128,7 @@ const Page: React.FC = () => {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [requests, group],
+    [requests, group, sourceIp],
   )
 
   const openRequestDetail = useCallback(
@@ -118,7 +138,7 @@ const Page: React.FC = () => {
           return onClose ? (
             <RequestModal req={req} onClose={onClose} />
           ) : (
-            <React.Fragment></React.Fragment>
+            <React.Fragment />
           )
         },
         onClose() {

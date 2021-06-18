@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import { Toggle } from '@sumup/circuit-ui'
 import { useTranslation } from 'react-i18next'
