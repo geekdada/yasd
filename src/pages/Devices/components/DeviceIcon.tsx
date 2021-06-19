@@ -8,7 +8,7 @@ import tw from 'twin.macro'
 import { useSurgeHost } from '../../../models/profile'
 
 interface DeviceIconProps {
-  icon: string
+  icon?: string
 }
 
 const DeviceIcon = ({ icon }: DeviceIconProps): JSX.Element => {
@@ -22,8 +22,8 @@ const DeviceIcon = ({ icon }: DeviceIconProps): JSX.Element => {
         margin-right: 0.7rem;
       `}>
       <Image
-        src={`${surgeHost}/resources/devices-icon?id=${icon}`}
-        alt={icon}
+        src={`${surgeHost}/resources/devices-icon?id=${icon || 'default'}`}
+        alt=""
       />
     </div>
   )

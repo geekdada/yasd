@@ -119,7 +119,7 @@
     "top_host": "Top Host",
     "dhcp_last_seen": "DHCP Last Seen",
     "dhcp_hostname": "DHCP Hostname",
-    "mode": "Mode",
+    "mode": "Takeover Mode",
     "address": "Address",
     "name": "Name",
     "handled_by_surge": "Handled by Surge",

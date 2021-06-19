@@ -101,10 +101,10 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
     <DataRow tw="hover:bg-gray-100 cursor-pointer" onClick={onClick}>
       <DataRowMain>
         <div tw="flex items-center w-full overflow-hidden">
-          {device?.dhcpDevice?.icon && surgeHost ? (
+          {surgeHost ? (
             <VersionSupport macos="4.1.1" ios="4.11.0">
               <div tw="flex-1">
-                <DeviceIcon icon={device.dhcpDevice.icon} />
+                <DeviceIcon icon={device.dhcpDevice?.icon} />
               </div>
             </VersionSupport>
           ) : (

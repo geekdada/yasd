@@ -15,6 +15,7 @@ import ChangeLanguage from '../../components/ChangeLanguage'
 import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
 import ProfileCell from '../../components/ProfileCell'
 import Ad from '../../components/Ad'
+import VersionSupport from '../../components/VersionSupport'
 import {
   usePlatform,
   usePlatformVersion,
@@ -133,7 +134,7 @@ const Page: React.FC = () => {
             <TrafficCell />
           </div>
 
-          {profile?.platform === 'macos' && (
+          <VersionSupport macos="0.0.0">
             <DataGroup tw="mx-4">
               <DataRow>
                 <DataRowMain>
@@ -166,7 +167,7 @@ const Page: React.FC = () => {
                 </DataRowMain>
               </DataRow>
             </DataGroup>
-          )}
+          </VersionSupport>
 
           <div tw="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
             {menu.map((item) => {
