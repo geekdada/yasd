@@ -23,21 +23,17 @@
 
 ## What is Surge Web Dashboard?
 
-We are happy to annouce Surge Web Dashboard (formerly YASD) has joined Surge!
+We are happy to announce Surge Web Dashboard (formerly YASD) has joined Surge! This project will remain open-source and active.
 
 Starting from Surge iOS 4.4.0 and Surge Mac 4.0.0, Surge added support for [HTTP API](https://manual.nssurge.com/others/http-api.html), which makes it possible to control Surge from a browser.
 
 You can use Surge Web Dashboard to control policies, inspect requests and more from another device!
 
-## What happened to YASD?
-
-YASD used to be the name of this project. After becoming a part of Surge, the name changed to Surge Web Dashboard. This project will remain open-source and active.
-
 ## How-to
 
-Surge has Surge Web Dashboard built in now, you can turn it on in advance settings (it may requires a subscription to activate built-in Surge Web Dashboard).
+Surge has Surge Web Dashboard built in now, you can turn it on in advance settings (it may require a subscription to activate built-in Surge Web Dashboard).
 
-We also provide standalone version so you can manage all Surge instances at one place (it may requires a subscription to activate HTTP API).
+We also provide standalone version, so you can manage all Surge instances at one place (it may require a subscription to activate HTTP API).
 
 - [HTTP](http://yasd.nerdynerd.org)
 - [HTTPS](https://yasd.royli.dev)
