@@ -1,3 +1,39 @@
+# [1.0.0](https://github.com/geekdada/yasd/compare/v0.8.0...v1.0.0) (2021-06-20)
+
+
+### Bug Fixes
+
+* 未初始化成功时不请求API ([4456b3d](https://github.com/geekdada/yasd/commit/4456b3d183535fc68ca9b480471007ad80807bf5))
+* add more options when the network is failing ([7238b78](https://github.com/geekdada/yasd/commit/7238b785845434e9435cca73ad3ea21409008158))
+* bugfix ([90aa9d5](https://github.com/geekdada/yasd/commit/90aa9d5a4e5827647e4678c6ed33f6ed27e6d7f4))
+* bugfix ([f7a6f03](https://github.com/geekdada/yasd/commit/f7a6f03ff3ab3a36e077a703f523c50d4cabfd4c))
+* bugfix ([4b2b2eb](https://github.com/geekdada/yasd/commit/4b2b2eb141ba3030b9f0c495fe4d7c51d1593502))
+* bugfix ([a8f8ed0](https://github.com/geekdada/yasd/commit/a8f8ed075b44387f61f989d846507f5e12d33fb8))
+* bugs ([11a4f91](https://github.com/geekdada/yasd/commit/11a4f9101758bad4890585b80d76311b70475d06))
+* change spacing of language chooser ([30471e0](https://github.com/geekdada/yasd/commit/30471e037a14ab7f20ef25f52574e8db0caa9ac0))
+* eslint error ([ad95f18](https://github.com/geekdada/yasd/commit/ad95f180a1222072804aeb871fd5f9c5eec174d8))
+* profile store ([d941a94](https://github.com/geekdada/yasd/commit/d941a945b256de4abfba670410fcb12a8d83abe9))
+* translations ([b1c56dc](https://github.com/geekdada/yasd/commit/b1c56dcee1c2d8dc917c14860cb32e45ad9b9f80))
+* typo ([597942e](https://github.com/geekdada/yasd/commit/597942e99ea7cc32d24ae93c07879b596ba94617))
+
+
+### Features
+
+* 登出按钮 ([04b5118](https://github.com/geekdada/yasd/commit/04b51187e616bece093402f86f9b4f1f36ac305f))
+* 去除所有站外引用 ([278e333](https://github.com/geekdada/yasd/commit/278e3334ceb48d983569109b5c5eeb8621942e4a)), closes [#6](https://github.com/geekdada/yasd/issues/6)
+* 完善设备管理选项 ([61ef327](https://github.com/geekdada/yasd/commit/61ef3279833f15ece96687a476ae358b052fbbaf))
+* 修改界面 ([fd155c4](https://github.com/geekdada/yasd/commit/fd155c4262df6b735f2366ccf69341625abbc784))
+* 在 Surge 环境下隐藏广告 ([8c8df4c](https://github.com/geekdada/yasd/commit/8c8df4c4a8909be8e1bff21b3d6ec051e27167f2))
+* 支持两种场景的登入流程 ([0afad09](https://github.com/geekdada/yasd/commit/0afad09afd8a6c3033aa2b624570493ef82ebb22))
+* add i18n support ([0502009](https://github.com/geekdada/yasd/commit/05020094bec566eedd612f6629ff277a09ac778c))
+* add missing translations for request status ([c713f01](https://github.com/geekdada/yasd/commit/c713f01dabf0116e3f1407d0cac15bcc6aa0c302))
+* add new translation ([f83052c](https://github.com/geekdada/yasd/commit/f83052c5424ab60bac1047a039e524ad6a31dc4a))
+* device management ([070aee1](https://github.com/geekdada/yasd/commit/070aee1a8eaa21da67fadfd8eb5fb8058b5d8b8b))
+* surge 环境落地页自动登录 ([2e3cbcc](https://github.com/geekdada/yasd/commit/2e3cbcc99c4a7d80d48c2628e2eb2b8bc3c25986))
+* use black texts over white background status bar ([25ce672](https://github.com/geekdada/yasd/commit/25ce67254730f2b531a0c854736742e3b672c793))
+
+
+
 # [0.8.0](https://github.com/geekdada/yasd/compare/v0.7.5...v0.8.0) (2021-03-29)
 
 
@@ -207,9 +243,9 @@
 
 ### Features
 
+* 优化体验 ([05746a8](https://github.com/geekdada/yasd/commit/05746a8e3ceb270a230c344106e732fd7f5d0aaf))
 * add traffic chart ([180caa3](https://github.com/geekdada/yasd/commit/180caa3c4eb8df1adf1411c3c8f2daf1d31e543b))
 * enable refreshWhenOffline ([438ce9e](https://github.com/geekdada/yasd/commit/438ce9e4a7e31aca28353147f03e081f5ac22948))
-* 优化体验 ([05746a8](https://github.com/geekdada/yasd/commit/05746a8e3ceb270a230c344106e732fd7f5d0aaf))
 
 
 
@@ -283,6 +319,8 @@
 
 ### Features
 
+* 功能完善 ([b738679](https://github.com/geekdada/yasd/commit/b738679c8b9da0ab08b413fd5b7aa38df32e8e01))
+* 完成功能 ([c5f2cdb](https://github.com/geekdada/yasd/commit/c5f2cdb7fe2f906d9929cc64046928d7092e0438))
 * add ga tracking ([04a7ee5](https://github.com/geekdada/yasd/commit/04a7ee55e8f1c6defc0f85a3a5fd8e5dfb9b9e3c))
 * add sponsor and github link ([2f15097](https://github.com/geekdada/yasd/commit/2f150973e17125d30b2674cb21e69eb3753aff22))
 * clicking menu tile should not triggle toggling ([163c70a](https://github.com/geekdada/yasd/commit/163c70af6d492e5fe54f71c91baca2b6133229aa))
@@ -296,8 +334,6 @@
 * show error message when error occurs ([c3f2eb0](https://github.com/geekdada/yasd/commit/c3f2eb0917446de197e565fee7f4eb9215b91422))
 * show version on header ([e7fa22c](https://github.com/geekdada/yasd/commit/e7fa22c49e0db72b44f18038ab1bddf77ba223e1))
 * traffic ([855df41](https://github.com/geekdada/yasd/commit/855df415dbea6e702dca49f4847e4ce7e7d3ea73))
-* 功能完善 ([b738679](https://github.com/geekdada/yasd/commit/b738679c8b9da0ab08b413fd5b7aa38df32e8e01))
-* 完成功能 ([c5f2cdb](https://github.com/geekdada/yasd/commit/c5f2cdb7fe2f906d9929cc64046928d7092e0438))
 
 
 
