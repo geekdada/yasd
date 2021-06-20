@@ -175,7 +175,7 @@ export interface DeviceInfo {
   hasTCPConnection: boolean
   identifier: string
   name: string
-  physicalAddress: string
+  physicalAddress?: string
   sourceIP: string
   topHostBySingleConnectionTraffic: string
   totalBytes: number

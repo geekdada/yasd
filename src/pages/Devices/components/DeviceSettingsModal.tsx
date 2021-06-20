@@ -90,7 +90,6 @@ const DeviceSettingsModal = ({
           method: 'POST',
           url: '/devices',
           data: payload,
-          timeout: 20000,
         }).then((res) => {
           if (res.error) {
             throw new Error(res.error)

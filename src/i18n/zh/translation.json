@@ -7,6 +7,7 @@
     "network_error_title": "网络错误",
     "network_error_message": "无法连接 Surge 或连接失败，请重试。",
     "is_loading": "加载中",
+    "no_data": "无数据",
     "success_interaction": "操作成功",
     "failed_interaction": "操作失败",
     "see": "查看",

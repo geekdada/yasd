@@ -37,7 +37,7 @@ const Page = (): JSX.Element => {
       <div tw="divide-y divide-gray-200">
         {devices?.devices &&
           devices.devices.map((device) => (
-            <div key={device.physicalAddress}>
+            <div key={device.identifier}>
               <DeviceItem device={device} />
             </div>
           ))}

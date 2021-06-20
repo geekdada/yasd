@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import css from '@emotion/css/macro'
-import { ModalConsumer, useModal } from '@sumup/circuit-ui'
+import { useModal } from '@sumup/circuit-ui'
 import SelectorGroup from '@sumup/circuit-ui/dist/es/components/SelectorGroup'
 import { useTranslation } from 'react-i18next'
 import { ListRowRenderer } from 'react-virtualized/dist/es/List'
@@ -14,7 +14,7 @@ import React, {
   ChangeEvent,
   useMemo,
 } from 'react'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 import { List, AutoSizer } from 'react-virtualized'
 import { useLocation } from 'react-router-dom'
 
@@ -38,20 +38,17 @@ const Page: React.FC = () => {
   const profile = useProfile()
   const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(true)
   const [group, setGroup] = useState<'recent' | 'active'>('recent')
-  const { data: requests, error: requestsError } = useSWR<RecentRequests>(
-    () => '/requests/' + group,
-    fetcher,
-    {
+  const { data: recentRequestsResponse, error: requestsError } =
+    useSWR<RecentRequests>(() => '/requests/' + group, fetcher, {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
       dedupingInterval: 1000,
       refreshInterval: isAutoRefresh
         ? profile?.platform === 'macos'
-          ? 1000
+          ? 2000
           : 4000
         : 0,
-    },
-  )
+    })
   const [requestList, setRequestList] = useState<Array<RequestItem>>([])
   const [activeRequestList, setActiveRequestList] = useState<
     Array<RequestItem>
@@ -65,9 +62,9 @@ const Page: React.FC = () => {
 
   useEffect(
     () => {
-      if (!requests?.requests) return
+      if (!recentRequestsResponse?.requests) return
 
-      const pendingList = requests.requests
+      const pendingList = [...recentRequestsResponse.requests]
       const now = new Date()
       let newList = [...currentList]
 
@@ -101,7 +98,7 @@ const Page: React.FC = () => {
         newList = newList
           .filter((request) => {
             if (sourceIp) {
-              return sourceIp === request.localAddress
+              return sourceIp === request.sourceAddress
             }
             return true
           })
@@ -111,7 +108,8 @@ const Page: React.FC = () => {
           .filter((request) => {
             if (sourceIp) {
               return (
-                request.lastUpdated === now && sourceIp === request.localAddress
+                request.lastUpdated === now &&
+                sourceIp === request.sourceAddress
               )
             }
             return request.lastUpdated === now
@@ -128,7 +126,7 @@ const Page: React.FC = () => {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [requests, group, sourceIp],
+    [recentRequestsResponse, group, sourceIp],
   )
 
   const openRequestDetail = useCallback(
@@ -187,30 +185,36 @@ const Page: React.FC = () => {
         />
 
         <div tw="flex-1">
-          {currentList.length ? (
-            <AutoSizer>
-              {({ width, height }) => {
-                return (
-                  <List
-                    width={width}
-                    height={height}
-                    rowCount={currentList.length}
-                    rowHeight={64}
-                    rowRenderer={rowRenderer}
-                    style={{
-                      outline: 'none',
-                    }}
-                    css={css`
-                      & > div {
-                        ${tw`divide-y divide-gray-200`}
-                      }
-                    `}
-                  />
-                )
-              }}
-            </AutoSizer>
+          {recentRequestsResponse ? (
+            currentList.length ? (
+              <AutoSizer>
+                {({ width, height }) => {
+                  return (
+                    <List
+                      width={width}
+                      height={height}
+                      rowCount={currentList.length}
+                      rowHeight={64}
+                      rowRenderer={rowRenderer}
+                      style={{
+                        outline: 'none',
+                      }}
+                      css={css`
+                        & > div {
+                          ${tw`divide-y divide-gray-200`}
+                        }
+                      `}
+                    />
+                  )
+                }}
+              </AutoSizer>
+            ) : (
+              <div tw="h-full flex items-center justify-center text-base text-gray-500">
+                {t('common.no_data')}
+              </div>
+            )
           ) : (
-            <div tw="h-full flex items-center justify-center text-sm text-gray-500">
+            <div tw="h-full flex items-center justify-center text-base text-gray-500">
               {t('common.is_loading')}...
             </div>
           )}
@@ -243,7 +247,11 @@ const Page: React.FC = () => {
             label="choose the dns result group"
             name="selector-group"
             onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              setGroup(event.target.value as 'recent' | 'active')
+              setGroup(() => {
+                const newState = event.target.value as 'recent' | 'active'
+                mutate('/requests/' + newState)
+                return newState
+              })
             }}
             options={[
               {

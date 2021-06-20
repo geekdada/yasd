@@ -137,7 +137,7 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
       <div tw="pb-3">
         <DataRowSub>
           <div>{t('devices.mac_address')}</div>
-          <div>{device.physicalAddress}</div>
+          <div>{device.physicalAddress || 'N/A'}</div>
         </DataRowSub>
         <DataRowSub>
           <div>{t('devices.vendor')}</div>
