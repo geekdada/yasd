@@ -5,11 +5,12 @@ import css from '@emotion/css/macro'
 import bytes from 'bytes'
 import dayjs from 'dayjs'
 import { basename } from 'path'
+import { useTranslation } from 'react-i18next'
 import { mutate } from 'swr'
 import tw from 'twin.macro'
 import { ModalHeader, ModalWrapper } from '@sumup/circuit-ui'
 import { Search } from '@sumup/icons'
-import React, { KeyboardEvent, MouseEvent } from 'react'
+import React, { KeyboardEvent, MouseEvent, useCallback } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { toast } from 'react-toastify'
 import 'react-tabs/style/react-tabs.css'
@@ -42,26 +43,32 @@ interface RequestModalProps {
 }
 
 const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
-  const killRequest = (id: number) => {
-    fetcher({
-      url: '/requests/kill',
-      method: 'POST',
-      data: {
-        id,
-      },
-    })
-      .then(() => {
-        toast.success('操作成功')
+  const { t } = useTranslation()
 
-        return Promise.all([
-          mutate('/requests/recent'),
-          mutate('/requests/active'),
-        ])
+  const killRequest = useCallback(
+    (id: number) => {
+      fetcher({
+        url: '/requests/kill',
+        method: 'POST',
+        data: {
+          id,
+        },
       })
-      .catch((err) => {
-        console.error(err)
-      })
-  }
+        .then(() => {
+          toast.success(t('common.success_interaction'))
+
+          return Promise.all([
+            mutate('/requests/recent'),
+            mutate('/requests/active'),
+          ])
+        })
+        .catch((err) => {
+          toast.error(t('common.failed_interaction'))
+          console.error(err)
+        })
+    },
+    [t],
+  )
 
   return (
     <ModalWrapper>
@@ -82,25 +89,25 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
       <TabsWrapper>
         <Tabs>
           <TabList>
-            <Tab>General</Tab>
-            <Tab>Request</Tab>
-            <Tab>计时</Tab>
+            <Tab>{t('requests.general_tab')}</Tab>
+            <Tab>{t('requests.request_tab')}</Tab>
+            <Tab>{t('requests.timing_tab')}</Tab>
           </TabList>
 
           <TabPanel>
             <DataGroup>
               <DataRowMain tw="text-sm">
-                <div>日期</div>
+                <div>{t('requests.date')}</div>
                 <div>{dayjs.unix(req.startDate).format('L LTS')}</div>
               </DataRowMain>
               <DataRowMain tw="text-sm">
-                <div>状态</div>
+                <div>{t('requests.status')}</div>
                 <div>{req.status}</div>
               </DataRowMain>
 
               {isTruthy(req.completed) && (
                 <DataRowMain tw="text-sm">
-                  <div>时长</div>
+                  <div>{t('requests.duration')}</div>
                   <div>
                     {dayjs
                       .unix(req.completedDate)
@@ -112,7 +119,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
 
               {req.pid !== 0 && req.processPath && (
                 <DataRowMain tw="text-sm">
-                  <div>进程</div>
+                  <div>{t('requests.process')}</div>
                   <div>
                     {trimPath(req.processPath)}({req.pid})
                   </div>
@@ -122,23 +129,23 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
 
             <DataGroup>
               <DataRowMain tw="text-sm">
-                <div>策略</div>
+                <div>{t('requests.policy_name')}</div>
                 <div>{req.policyName}</div>
               </DataRowMain>
               <DataRowMain tw="text-sm">
-                <div>规则</div>
+                <div>{t('requests.rule_name')}</div>
                 <div>{req.rule}</div>
               </DataRowMain>
             </DataGroup>
 
             {!!req.localAddress && !!req.remoteAddress && (
-              <DataGroup title="IP 地址">
+              <DataGroup title={t('requests.ip_addr')}>
                 <DataRowMain tw="text-sm">
-                  <div>本地 IP 地址</div>
+                  <div>{t('requests.local_ip')}</div>
                   <div>{req.localAddress}</div>
                 </DataRowMain>
                 <DataRowMain tw="text-sm">
-                  <div>远端 IP 地址</div>
+                  <div>{t('requests.remote_ip')}</div>
                   <div>
                     <a
                       href={`https://ip.sb/ip/${req.remoteAddress}`}
@@ -157,18 +164,18 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
               </DataGroup>
             )}
 
-            <DataGroup title="流量">
+            <DataGroup title={t('requests.traffic')}>
               <DataRowMain tw="text-sm">
-                <div>下载</div>
+                <div>{t('requests.download')}</div>
                 <div>{bytes(req.inBytes)}</div>
               </DataRowMain>
               <DataRowMain tw="text-sm">
-                <div>上传</div>
+                <div>{t('requests.upload')}</div>
                 <div>{bytes(req.outBytes)}</div>
               </DataRowMain>
             </DataGroup>
 
-            <DataGroup title="备注">
+            <DataGroup title={t('requests.remark')}>
               <pre
                 tw="font-mono text-xs text-gray-600 leading-tight p-3 whitespace-pre-wrap break-words"
                 css={css`
@@ -183,14 +190,14 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
                 <div
                   tw="text-red-500 p-3 cursor-pointer hover:bg-gray-200"
                   onClick={() => killRequest(req.id)}>
-                  Kill Connection...
+                  {t('requests.kill_connection_button_title')}...
                 </div>
               </DataGroup>
             )}
           </TabPanel>
 
           <TabPanel>
-            <DataGroup title="Request Header">
+            <DataGroup title={t('requests.request_header_title')}>
               <pre
                 tw="font-mono text-xs text-gray-600 leading-tight p-3 whitespace-pre-wrap break-words"
                 css={css`

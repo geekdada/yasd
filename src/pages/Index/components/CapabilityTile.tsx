@@ -1,13 +1,14 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import { Toggle } from '@sumup/circuit-ui'
+import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import useSWR, { mutate } from 'swr'
 import tw from 'twin.macro'
-import React, { MouseEventHandler, useCallback } from 'react'
+import React, { ChangeEventHandler, useCallback } from 'react'
 
+import { useProfile } from '../../../models/profile'
 import { Capability } from '../../../types'
 import fetcher from '../../../utils/fetcher'
 import MenuTile, { MenuTileContent, MenuTileTitle } from './MenuTile'
@@ -23,35 +24,46 @@ const CapabilityTile: React.FC<CapabilityTileProps> = ({
   title,
   link,
 }) => {
-  const { data: capability } = useSWR<Capability>(api, fetcher)
+  const { t } = useTranslation()
+  const profile = useProfile()
+  const { data: capability } = useSWR<Capability>(
+    profile !== undefined ? api : null,
+    fetcher,
+  )
   const history = useHistory()
 
-  const toggle = useCallback(() => {
-    fetcher({
-      method: 'POST',
-      url: api,
-      data: {
-        enabled: !capability?.enabled,
-      },
-    })
-      .then(() => {
-        return mutate(api)
+  const toggle: ChangeEventHandler<HTMLButtonElement> = useCallback(
+    (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+
+      fetcher({
+        method: 'POST',
+        url: api,
+        data: {
+          enabled: !capability?.enabled,
+        },
       })
-      .catch((err) => {
-        console.error(err)
-      })
-  }, [api, capability])
+        .then(() => {
+          return mutate(api)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    },
+    [api, capability],
+  )
 
   return (
     <MenuTile onClick={link ? () => history.push(link) : undefined}>
-      <MenuTileTitle title={title} />
+      <MenuTileTitle title={t(`home.${title}`)} />
 
       <MenuTileContent css={[tw`flex justify-end`]}>
         <Toggle
           noMargin
           label=""
-          labelChecked=""
-          labelUnchecked=""
+          labelChecked={t('common.on')}
+          labelUnchecked={t('common.off')}
           checked={capability?.enabled}
           onChange={toggle}
         />

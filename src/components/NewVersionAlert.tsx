@@ -11,6 +11,7 @@ import {
 } from '@sumup/circuit-ui'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import store from 'store2'
 import satisfies from 'semver/functions/satisfies'
@@ -22,6 +23,7 @@ const currentVersion = process.env.REACT_APP_VERSION as string
 const NewVersionAlert: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [versionUrl, setVersionUrl] = useState<string>()
+  const { t } = useTranslation()
 
   useEffect(() => {
     const lastUsedVersion = store.get(LastUsedVersion)
@@ -44,13 +46,13 @@ const NewVersionAlert: React.FC = () => {
       }}>
       {({ onClose }) => (
         <ModalWrapper>
-          <ModalHeader title="发现新版本" onClose={onClose} />
-          <div tw="mb-3">快看看更新了什么</div>
+          <ModalHeader title={t('new_version_alert.title')} onClose={onClose} />
+          <div tw="mb-3">{t('new_version_alert.message')}</div>
           <ModalFooter align="right">
             <ButtonGroup>
               <a href={versionUrl} target="_blank" rel="noreferrer">
                 <Button variant="primary" onClick={onClose}>
-                  查看
+                  {t('common.see')}
                 </Button>
               </a>
             </ButtonGroup>

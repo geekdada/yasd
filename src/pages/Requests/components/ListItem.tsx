@@ -4,6 +4,7 @@ import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import bytes from 'bytes'
 import dayjs from 'dayjs'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import React from 'react'
 
@@ -11,15 +12,17 @@ import { RequestItem } from '../../../types'
 import MethodBadge from './MethodBadge'
 
 const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
+  const { t } = useTranslation()
+
+  const formatStatusKey = (str: string): string =>
+    str.toLowerCase().replace(/\s/g, '_')
+
   return (
     <React.Fragment>
-      <div tw="text-xs truncate text-gray-700">{req.URL}</div>
-      <div tw="text-sm truncate">
-        {req.policyName}({req.rule})
-      </div>
+      <div tw="text-sm truncate">{req.URL}</div>
       <div
         css={[
-          tw`flex items-center leading-none`,
+          tw`flex items-center leading-none truncate`,
           css`
             height: 1.5rem;
           `,
@@ -34,13 +37,19 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
           <span> - </span>
           <span>{dayjs.unix(req.startDate).format('HH:mm:ss')}</span>
         </div>
+        {req.policyName ? (
+          <div tw="text-xs ml-1">
+            <span> - </span>
+            <span>{req.policyName}</span>
+          </div>
+        ) : null}
         <div tw="text-xs ml-1">
           <span> - </span>
           <span>{bytes(req.inBytes + req.outBytes)}</span>
         </div>
         <div tw="text-xs ml-1">
           <span> - </span>
-          <span>{req.status}</span>
+          <span>{t(`requests.${formatStatusKey(req.status)}`)}</span>
         </div>
       </div>
     </React.Fragment>

@@ -12,6 +12,8 @@
 
 # production
 /build
+/build.tar.gz
+/yasd.tar.gz
 
 # misc
 .DS_Store

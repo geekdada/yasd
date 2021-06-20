@@ -5,6 +5,7 @@ import loadable from '@loadable/component'
 import React, { useState } from 'react'
 import styled from '@emotion/styled/macro'
 import { IControlledCodeMirror } from 'react-codemirror2'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import {
   Input,
@@ -15,6 +16,8 @@ import {
 } from '@sumup/circuit-ui'
 import { toast } from 'react-toastify'
 
+import CodeMirrorLoading from '../../../components/CodeMirrorLoading'
+import FixedFullscreenContainer from '../../../components/FixedFullscreenContainer'
 import PageTitle from '../../../components/PageTitle'
 import { EvaluateResult } from '../../../types'
 import fetcher from '../../../utils/fetcher'
@@ -35,16 +38,15 @@ const CodeMirror = loadable<IControlledCodeMirror>(
     return mod
   },
   {
-    fallback: (
-      <div tw="h-full flex items-center justify-center text-sm text-gray-500">
-        Loading...
-      </div>
-    ),
+    fallback: <CodeMirrorLoading />,
   },
 )
 
 const Page: React.FC = () => {
-  const [code, setCode] = useState<string>('// Only supports Cron script\n')
+  const { t } = useTranslation()
+  const [code, setCode] = useState<string>(() =>
+    t('scripting.editor_placeholder'),
+  )
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<string>()
   const [timeout, setTimeoutValue] = useState<number>(5)
@@ -53,7 +55,7 @@ const Page: React.FC = () => {
     if (isLoading) return
 
     if (!code) {
-      toast.error('没有输入脚本内容')
+      toast.error(t('scripting.empty_code_error'))
       return
     }
 
@@ -85,101 +87,96 @@ const Page: React.FC = () => {
   }
 
   return (
-    <div tw="fixed top-0 right-0 bottom-0 left-0 h-full overflow-hidden">
-      <div tw="w-full h-full flex flex-col">
-        <PageTitle title="调试脚本" />
+    <FixedFullscreenContainer>
+      <PageTitle title={t('scripting.debug_script_button_title')} />
 
-        <div tw="h-full flex flex-col overflow-hidden">
-          <div tw="h-full overflow-auto">
-            <CodeMirror
-              css={[
-                tw`h-full text-xs`,
-                css`
-                  & > .CodeMirror {
-                    height: 100%;
-                    font-family: Menlo, Monaco, Consolas, 'Liberation Mono',
-                      'Courier New', monospace;
-                  }
-                `,
-              ]}
-              value={code}
-              options={{
-                mode: 'javascript',
-                theme: 'material',
-                lineNumbers: true,
-                tabSize: 2,
-                indentWithTabs: false,
-                lineWrapping: true,
-              }}
-              onBeforeChange={(editor, data, value) => {
-                setCode(value)
-              }}
-            />
-          </div>
+      <div tw="h-full flex flex-col overflow-hidden">
+        <div tw="h-full overflow-auto">
+          <CodeMirror
+            css={[
+              tw`h-full text-xs`,
+              css`
+                & > .CodeMirror {
+                  height: 100%;
+                  font-family: Menlo, Monaco, Consolas, 'Liberation Mono',
+                    'Courier New', monospace;
+                }
+              `,
+            ]}
+            value={code}
+            options={{
+              mode: 'javascript',
+              theme: 'material',
+              lineNumbers: true,
+              tabSize: 2,
+              indentWithTabs: false,
+              lineWrapping: true,
+            }}
+            onBeforeChange={(editor, data, value) => {
+              setCode(value)
+            }}
+          />
+        </div>
+        <div
+          css={[
+            tw`flex items-center border-t border-solid border-gray-200 py-3 px-3`,
+          ]}>
+          <LoadingButton
+            onClick={evaluate}
+            variant="primary"
+            size="kilo"
+            isLoading={isLoading}
+            loadingLabel={t('scripting.running')}>
+            {t('scripting.run_script_button_title')}
+          </LoadingButton>
+
           <div
             css={[
-              tw`flex items-center border-t border-solid border-gray-200 py-3 px-3`,
+              tw`ml-4`,
               css`
-                margin-bottom: env(safe-area-inset-bottom);
+                padding-bottom: 1px;
+
+                & input {
+                  border-radius: 4px;
+                  ${tw`px-2 py-1 text-sm leading-none`}
+                }
               `,
             ]}>
-            <LoadingButton
-              onClick={evaluate}
-              variant="primary"
-              size="kilo"
-              isLoading={isLoading}
-              loadingLabel={'运行中'}>
-              运行
-            </LoadingButton>
-
-            <div
-              css={[
-                tw`ml-4`,
-                css`
-                  padding-bottom: 1px;
-
-                  & input {
-                    border-radius: 4px;
-                    ${tw`px-2 py-1 text-sm leading-none`}
-                  }
-                `,
-              ]}>
-              <Input
-                type="number"
-                required
-                noMargin
-                label="Timeout"
-                value={timeout}
-                onChange={({ target }) =>
-                  setTimeoutValue(Number((target as HTMLInputElement).value))
-                }
-              />
-            </div>
+            <Input
+              type="number"
+              required
+              noMargin
+              label={t('scripting.timeout')}
+              value={timeout}
+              onChange={({ target }) =>
+                setTimeoutValue(Number((target as HTMLInputElement).value))
+              }
+            />
           </div>
         </div>
-
-        <Modal
-          isOpen={!!result}
-          onClose={() => {
-            setResult('')
-          }}>
-          {({ onClose }) => (
-            <ModalWrapper>
-              <ModalHeader title="结果" onClose={onClose} />
-              <div>
-                <pre
-                  tw="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
-                  css={css`
-                    min-height: 7rem;
-                  `}>
-                  {result}
-                </pre>
-              </div>
-            </ModalWrapper>
-          )}
-        </Modal>
       </div>
-    </div>
+
+      <Modal
+        isOpen={!!result}
+        onClose={() => {
+          setResult('')
+        }}>
+        {({ onClose }) => (
+          <ModalWrapper>
+            <ModalHeader title={t('scripting.result')} onClose={onClose} />
+            <div>
+              <pre
+                tw="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
+                css={css`
+                  min-height: 7rem;
+                `}>
+                {result}
+              </pre>
+            </div>
+          </ModalWrapper>
+        )}
+      </Modal>
+    </FixedFullscreenContainer>
   )
 }
 

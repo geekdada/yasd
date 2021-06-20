@@ -46,7 +46,12 @@ export interface RequestItem {
   notes?: Array<string>
   inCurrentSpeed: number
   failed: 1 | 0 | boolean
-  status: 'Active' | 'Complete'
+  status:
+    | 'Active'
+    | 'Completed'
+    | 'Rule Evaluating'
+    | 'DNS Lookup'
+    | 'Establishing Connection'
   outCurrentSpeed: number
   completed: 1 | 0 | boolean
   modified: 1 | 0 | boolean
@@ -134,7 +139,7 @@ export interface Profile {
   name: string
   platform: 'macos' | 'ios'
   platformVersion: string
-  platformBuild: number
+  platformBuild: string
   tls?: boolean
 }
 
@@ -160,4 +165,38 @@ export interface DnsResult {
     server: string
     expiresTime: number
   }>
+}
+
+export interface DeviceInfo {
+  activeConnections: number
+  currentSpeed: number
+  displayIPAddress: string
+  hasProxyConnection: boolean
+  hasTCPConnection: boolean
+  identifier: string
+  name: string
+  physicalAddress?: string
+  sourceIP: string
+  topHostBySingleConnectionTraffic: string
+  totalBytes: number
+  totalConnections: number
+  vendor: string
+  dhcpDevice?: DHCPDevice
+}
+
+export interface DHCPDevice {
+  assignedIP?: string
+  currentIP?: string
+  dhcpHostname: string
+  dhcpLastSeen?: string
+  handledBySurge: 0 | 1
+  displayName?: string
+  icon?: string
+  physicalAddress: string
+  shouldHandledBySurge: 0 | 1
+  waitingToReconnect: 0 | 1
+}
+
+export interface DevicesResult {
+  devices: ReadonlyArray<DeviceInfo>
 }

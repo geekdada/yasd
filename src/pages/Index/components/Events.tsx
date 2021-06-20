@@ -4,21 +4,28 @@ import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
+import { useTranslation } from 'react-i18next'
 import useSWR from 'swr'
 import tw from 'twin.macro'
 import React from 'react'
 
+import { useProfile } from '../../../models/profile'
 import { EventList } from '../../../types'
 import fetcher from '../../../utils/fetcher'
 
 dayjs.extend(localizedFormat)
 
 const Events: React.FC = () => {
-  const { data: events } = useSWR<EventList>('/events', fetcher)
+  const { t } = useTranslation()
+  const profile = useProfile()
+  const { data: events } = useSWR<EventList>(
+    profile !== undefined ? '/events' : null,
+    fetcher,
+  )
 
   return (
     <div tw="p-3 bg-gray-100 rounded">
-      <div tw="text-base font-medium text-gray-700">Events</div>
+      <div tw="text-base font-medium text-gray-700">{t('home.events')}</div>
       <div tw="divide-y divide-gray-200 mt-1">
         {events &&
           events.events.slice(0, 8).map((item) => {

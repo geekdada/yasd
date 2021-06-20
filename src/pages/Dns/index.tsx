@@ -10,16 +10,19 @@ import React, {
   useState,
 } from 'react'
 import css from '@emotion/css/macro'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import tw from 'twin.macro'
 import useSWR, { mutate } from 'swr'
 import { List, AutoSizer, ListRowRenderer } from 'react-virtualized'
 
+import FixedFullscreenContainer from '../../components/FixedFullscreenContainer'
 import PageTitle from '../../components/PageTitle'
 import { DnsResult } from '../../types'
 import fetcher from '../../utils/fetcher'
 
 const Page: React.FC = () => {
+  const { t } = useTranslation()
   const [group, setGroup] = useState<'dynamic' | 'static'>('dynamic')
   const { data: dnsResult, error: dnsResultError } = useSWR<DnsResult>(
     '/dns',
@@ -38,10 +41,11 @@ const Page: React.FC = () => {
       method: 'POST',
     })
       .then(() => {
-        toast.success('操作成功')
+        toast.success(t('common.success_interaction'))
         return mutate('/dns')
       })
       .catch((err) => {
+        toast.error(t('common.failed_interaction'))
         console.error(err)
       })
   }
@@ -67,7 +71,8 @@ const Page: React.FC = () => {
             style={style}
             onClick={() => openIpDetail(record.data[0])}
             css={[
-              tw`flex flex-col justify-center py-2 cursor-pointer hover:bg-gray-100`,
+              tw`flex flex-col justify-center py-2`,
+              tw`cursor-pointer hover:bg-gray-100`,
               css`
                 padding-left: calc(env(safe-area-inset-left) + 0.75rem);
                 padding-right: calc(env(safe-area-inset-right) + 0.75rem);
@@ -78,10 +83,10 @@ const Page: React.FC = () => {
               DNS: {record.server}
             </div>
             <div tw="text-xs text-gray-700 leading-tight truncate">
-              Result: {record.data.join(', ')}
+              {t('dns.result')}: {record.data.join(', ')}
             </div>
             <div tw="text-xs text-gray-700 leading-tight truncate">
-              Path: {record.path}
+              {t('dns.path')}: {record.path}
             </div>
           </div>
         )
@@ -106,14 +111,14 @@ const Page: React.FC = () => {
               </div>
             )}
             <div tw="text-xs text-gray-700 leading-tight">
-              Result: {record.data ?? 'N/A'}
+              {t('dns.result')}: {record.data ?? 'N/A'}
             </div>
             <div tw="text-xs text-gray-700 leading-tight">
-              Source: {record.source ?? 'N/A'}
+              {t('dns.source')}: {record.source ?? 'N/A'}
             </div>
             {!!record.comment && (
               <div tw="text-xs text-gray-700 leading-tight">
-                {record.comment}
+                {t('dns.comment')}: {record.comment}
               </div>
             )}
           </div>
@@ -124,93 +129,86 @@ const Page: React.FC = () => {
   )
 
   return (
-    <div tw="fixed top-0 right-0 bottom-0 left-0 h-full overflow-hidden">
-      <div tw="w-full h-full flex flex-col">
-        <PageTitle title="DNS" />
+    <FixedFullscreenContainer>
+      <PageTitle title="DNS" />
 
-        <div tw="flex-1">
-          <AutoSizer>
-            {({ width, height }) => {
-              return (
-                <List
-                  width={width}
-                  height={height}
-                  rowCount={list.length}
-                  rowHeight={85}
-                  rowRenderer={rowRenderer}
-                  style={{
-                    outline: 'none',
-                  }}
-                  css={css`
-                    & > div {
-                      ${tw`divide-y divide-gray-200`}
-                    }
-                  `}
-                />
-              )
-            }}
-          </AutoSizer>
-        </div>
-
-        <div
-          css={css`
-            padding-bottom: env(safe-area-inset-bottom);
-          `}>
-          <div
-            css={[
-              tw`flex divide-x divide-gray-200 border-t border-solid border-gray-200 py-2 px-2`,
-              css`
-                & > div {
-                  ${tw`mx-2`}
-                }
-                & > div:first-of-type {
-                  margin-left: 0;
-                }
-              `,
-            ]}>
-            <SelectorGroup
-              css={[
-                tw`flex justify-center items-center`,
-                css`
-                  & label {
-                    ${tw`py-2 px-4 ml-2 my-1 text-sm`}
+      <div tw="flex-1">
+        <AutoSizer>
+          {({ width, height }) => {
+            return (
+              <List
+                width={width}
+                height={height}
+                rowCount={list.length}
+                rowHeight={85}
+                rowRenderer={rowRenderer}
+                style={{
+                  outline: 'none',
+                }}
+                css={css`
+                  & > div {
+                    ${tw`divide-y divide-gray-200`}
                   }
-                  & label:first-of-type {
-                    margin-left: 0;
-                  }
-                `,
-              ]}
-              label="choose the dns result group"
-              name="selector-group"
-              onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                setGroup(event.target.value as 'dynamic' | 'static')
-              }}
-              options={[
-                {
-                  children: 'Dynamic',
-                  value: 'dynamic',
-                },
-                {
-                  children: 'Static',
-                  value: 'static',
-                },
-              ]}
-              value={group}
-            />
+                `}
+              />
+            )
+          }}
+        </AutoSizer>
+      </div>
 
-            <div tw="flex items-center">
-              <Button
-                tw="font-normal"
-                variant="tertiary"
-                size="kilo"
-                onClick={flushDns}>
-                Flush DNS
-              </Button>
-            </div>
-          </div>
+      <div
+        css={[
+          tw`flex divide-x divide-gray-200 border-t border-solid border-gray-200 py-2 px-2`,
+          css`
+            & > div {
+              ${tw`mx-2`}
+            }
+            & > div:first-of-type {
+              margin-left: 0;
+            }
+          `,
+        ]}>
+        <SelectorGroup
+          css={[
+            tw`flex justify-center items-center`,
+            css`
+              & label {
+                ${tw`py-2 px-4 ml-2 my-1 text-sm`}
+              }
+              & label:first-of-type {
+                margin-left: 0;
+              }
+            `,
+          ]}
+          label="choose the dns result group"
+          name="selector-group"
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            setGroup(event.target.value as 'dynamic' | 'static')
+          }}
+          options={[
+            {
+              children: t('dns.dynamic'),
+              value: 'dynamic',
+            },
+            {
+              children: t('dns.static'),
+              value: 'static',
+            },
+          ]}
+          value={group}
+        />
+
+        <div tw="flex items-center">
+          <Button
+            tw="font-normal"
+            variant="tertiary"
+            size="kilo"
+            onClick={flushDns}>
+            {t('dns.flush_dns')}
+          </Button>
         </div>
       </div>
-    </div>
+    </FixedFullscreenContainer>
   )
 }
 

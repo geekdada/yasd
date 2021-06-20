@@ -4,11 +4,13 @@ import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import React, { useState } from 'react'
 import useSWR from 'swr'
 
 import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
+import PageContainer from '../../components/PageContainer'
 import PageTitle from '../../components/PageTitle'
 import { ConnectorTraffic, Traffic } from '../../types'
 import fetcher from '../../utils/fetcher'
@@ -21,6 +23,7 @@ const TrafficWrapper = styled.div`
 `
 
 const Page: React.FC = () => {
+  const { t } = useTranslation()
   const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(false)
   const { data: traffic, error: trafficError } = useSWR<Traffic>(
     '/traffic',
@@ -54,9 +57,9 @@ const Page: React.FC = () => {
   }
 
   return (
-    <div tw={'relative pb-5'}>
+    <PageContainer>
       <PageTitle
-        title="Requests"
+        title={t('home.traffic')}
         hasAutoRefresh={true}
         defaultAutoRefreshState={false}
         onAuthRefreshStateChange={(newState) => setIsAutoRefresh(newState)}
@@ -67,13 +70,13 @@ const Page: React.FC = () => {
           <DataGroup>
             <DataRow>
               <DataRowMain>
-                <div>开启时间</div>
+                <div>{t('traffic.start_time')}</div>
                 <div>{dayjs.unix(traffic.startTime).format()}</div>
               </DataRowMain>
             </DataRow>
             <DataRow>
               <DataRowMain>
-                <div>启动时长</div>
+                <div>{t('traffic.uptime')}</div>
                 <div>{dayjs.unix(traffic.startTime).toNow(true)}</div>
               </DataRowMain>
             </DataRow>
@@ -94,7 +97,7 @@ const Page: React.FC = () => {
           </DataGroup>
         </TrafficWrapper>
       )}
-    </div>
+    </PageContainer>
   )
 }
 

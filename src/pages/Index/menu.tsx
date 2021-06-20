@@ -2,7 +2,10 @@
 import { jsx } from '@emotion/core'
 import React from 'react'
 import tw, { TwStyle } from 'twin.macro'
+import gte from 'semver/functions/gte'
 
+import { Profile } from '../../types'
+import { isRunInSurge } from '../../utils'
 import CapabilityTile from './components/CapabilityTile'
 
 export interface MenuItem {
@@ -12,60 +15,78 @@ export interface MenuItem {
   tintColor?: TwStyle
   textColor?: TwStyle
   component?: JSX.Element
+  isEnabled?: (
+    platform: Profile['platform'] | void,
+    platformVersion: Profile['platformVersion'] | void,
+  ) => boolean
 }
 
 const menu: Array<MenuItem> = [
   {
-    title: 'Policies',
+    title: 'policies',
     link: '/policies',
   },
   {
-    title: 'Requests',
+    title: 'requests',
     link: '/requests',
   },
   {
-    title: 'Traffic',
+    title: 'traffic',
     link: '/traffic',
   },
   {
-    title: '脚本',
+    title: 'scripting',
     component: (
       <CapabilityTile
         api="/features/scripting"
-        title="脚本"
+        title="scripting"
         link="/scripting"
       />
     ),
   },
   {
-    title: 'Modules',
+    title: 'modules',
     link: '/modules',
   },
   {
-    title: 'DNS',
+    title: 'device_management',
+    link: '/devices',
+    isEnabled: (platform, platformVersion) => {
+      return Boolean(
+        platform === 'macos' &&
+          platformVersion &&
+          gte(platformVersion, '4.0.6'),
+      )
+    },
+  },
+  {
+    title: 'dns',
     link: '/dns',
   },
   {
-    title: 'Profile',
+    title: 'profile',
     link: '/profiles/current',
   },
   {
-    title: 'MitM',
-    component: <CapabilityTile api="/features/mitm" title="MitM" />,
+    title: 'mitm',
+    component: <CapabilityTile api="/features/mitm" title="mitm" />,
   },
   {
-    title: '抓取流量',
-    component: <CapabilityTile api="/features/capture" title="抓取流量" />,
+    title: 'http_capture',
+    component: <CapabilityTile api="/features/capture" title="http_capture" />,
   },
   {
-    title: 'Rewrite',
-    component: <CapabilityTile api="/features/rewrite" title="Rewrite" />,
-  },
-  {
-    title: 'GitHub',
-    subTitle: '🌟',
-    link: 'https://github.com/geekdada/yasd',
+    title: 'rewrite',
+    component: <CapabilityTile api="/features/rewrite" title="rewrite" />,
   },
 ]
+
+if (!isRunInSurge()) {
+  menu.push({
+    title: 'github',
+    subTitle: '🌟',
+    link: 'https://github.com/geekdada/yasd',
+  })
+}
 
 export default menu

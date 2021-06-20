@@ -1,0 +1,139 @@
+{
+  "common": {
+    "on": "On",
+    "off": "Off",
+    "exit": "Exit",
+    "reload_window_retry": "Reload and retry",
+    "network_error_title": "Network Error",
+    "network_error_message": "Unable to connect to Surge, please try again.",
+    "is_loading": "Loading",
+    "no_data": "No data",
+    "success_interaction": "Success",
+    "failed_interaction": "Failed",
+    "see": "See",
+    "save": "Save"
+  },
+  "form": {
+    "err_invalid": "Invalid value",
+    "err_required": "Required"
+  },
+  "new_version_alert": {
+    "title": "Found new version!",
+    "message": "Take a look at what's been update."
+  },
+  "landing": {
+    "add_new_host": "Add New Host",
+    "login": "Login",
+    "name": "Name",
+    "host": "Host",
+    "host_tips": "Use iphone.local if you're in an intranet",
+    "port": "Port",
+    "key": "Key",
+    "remember_me": "Remember me",
+    "https": "HTTPS",
+    "confirm": "Done",
+    "is_loading": "Loading",
+    "history": "History",
+    "current": "Current"
+  },
+  "home": {
+    "logout": "Log out",
+    "system_proxy": "System Proxy",
+    "enhanced_mode": "Enhanced Mode",
+    "policies": "Policies",
+    "requests": "Requests",
+    "traffic": "Traffic",
+    "scripting": "Scripting",
+    "modules": "Modules",
+    "dns": "DNS",
+    "profile": "Profile",
+    "mitm": "MitM",
+    "http_capture": "HTTP Capture",
+    "rewrite": "Rewrite",
+    "github": "GitHub",
+    "events": "Events",
+    "device_management": "Device Management"
+  },
+  "traffic_cell": {
+    "upload": "Upload",
+    "download": "Download",
+    "total": "Total"
+  },
+  "policies": {
+    "test_policy": "Test policy"
+  },
+  "requests": {
+    "recent": "Recent",
+    "active": "Active",
+    "completed": "Completed",
+    "rule_evaluating": "Rule Evaluating",
+    "dns_lookup": "DNS Lookup",
+    "establishing_connection": "Establishing Connection",
+    "general_tab": "General",
+    "request_tab": "Request",
+    "timing_tab": "Timing",
+    "date": "Date",
+    "status": "Status",
+    "duration": "Duration",
+    "process": "Process",
+    "policy_name": "Policy",
+    "rule_name": "Rule",
+    "ip_addr": "IP Address",
+    "local_ip": "Local IP",
+    "remote_ip": "Remote IP",
+    "download": "Download",
+    "upload": "Upload",
+    "traffic": "Traffic",
+    "remark": "Remark",
+    "kill_connection_button_title": "Kill Connection",
+    "request_header_title": "Request Header"
+  },
+  "traffic": {
+    "start_time": "Start time",
+    "uptime": "Uptime"
+  },
+  "scripting": {
+    "run_script_button_title": "Run",
+    "debug_script_button_title": "Debug Script",
+    "running": "Running",
+    "result": "Result",
+    "open_script": "Open script",
+    "empty_code_error": "No code entered in the editor",
+    "editor_placeholder": "// Only supports Cron script\n// Docs: https://manual.nssurge.com/scripting/cron.html\n\n$done();",
+    "timeout": "Timeout"
+  },
+  "dns": {
+    "result": "Result",
+    "source": "Source",
+    "path": "Path",
+    "flush_dns": "Flush DNS",
+    "dynamic": "Dynamic",
+    "static": "Static",
+    "comment": "Comment"
+  },
+  "devices": {
+    "mac_address": "MAC Address",
+    "vendor": "Manufacturer",
+    "active_connections": "Active Connections",
+    "total_connections": "Total Connections",
+    "total_bytes": "Total Traffic",
+    "top_host": "Top Host",
+    "dhcp_last_seen": "DHCP Last Seen",
+    "dhcp_hostname": "DHCP Hostname",
+    "mode": "Takeover Mode",
+    "address": "Address",
+    "name": "Name",
+    "handled_by_surge": "Handled by Surge",
+    "not_handled_by_surge": "None",
+    "proxy_and_gateway_mode": "Proxy & Gateway",
+    "gateway_mode": "Gateway",
+    "proxy_mode": "Proxy",
+    "err_required": "Required",
+    "err_not_ip": "Input value is not an IP address",
+    "err_nothing_changed": "Nothing changed",
+    "waiting": "Waiting",
+    "device_settings": "Device Settings",
+    "view_requests": "View Requests",
+    "modify": "Modify"
+  }
+}

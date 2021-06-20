@@ -4,9 +4,7 @@
   </a>
 </p>
 
-# Yet Another Surge Dashboard
-
-> STILL IN ALPHA
+# Surge Web Dashboard (formerly YASD)
 
 ![Github Actions][github-actions-image]
 [![Test coverage][codecov-image]][codecov-url]
@@ -23,36 +21,28 @@
 
 [中文](/README_zh-CN.md) | [English](/README.md)
 
-## What is YASD?
+## What is Surge Web Dashboard?
 
-Starts from Surge iOS 4.4.0 and Surge Mac 4.0.0, you may use [HTTP API](https://manual.nssurge.com/others/http-api.html) to control Surge. YASD provides a way to interact with Surge's HTTP API, enabling you to control Surge from another device or outside your house.
+We are happy to announce Surge Web Dashboard (formerly YASD) has joined Surge! This project will remain open-source and active.
 
-YASD isn't in its final shape, so please be patient if you find anything you aren't happy with 😎.
+Starting from Surge iOS 4.4.0 and Surge Mac 4.0.0, Surge added support for [HTTP API](https://manual.nssurge.com/others/http-api.html), which makes it possible to control Surge from a browser.
+
+You can use Surge Web Dashboard to control policies, inspect requests and more from another device!
 
 ## How-to
 
-Right now, Surge doesn't support HTTPS API endpoints, so it's almost impossible to use HTTPS. If you find a way to proxy the HTTP API with HTTPS, you will be able to take advantages of many useful features such as the PWA.
+Surge has Surge Web Dashboard built in now, you can turn it on in advance settings (it may require a subscription to activate built-in Surge Web Dashboard).
 
-We provide both HTTP and HTTPS website:
+We also provide standalone version, so you can manage all Surge instances at one place (it may require a subscription to activate HTTP API).
 
 - [HTTP](http://yasd.nerdynerd.org)
 - [HTTPS](https://yasd.royli.dev)
 
 You can also find the full bundle in [releases](https://github.com/geekdada/yasd/releases) and deploy yourself.
 
-## Known issues
-
-- Error handling isn't ideal, try reloading if anything snaps.
-- i18n hasn't been implemented yet (0%), my apology to those who can't read Chinese or English.
-
 ## Roadmap
 
-- [x] Better PWA support
-- [ ] i18n
-- [x] Manage and inspect requests
-- [x] Write and debug scripts
-- [ ] Manage DHCP devices
-- [ ] Full unit and e2e tests
+See [Roadmap](https://github.com/geekdada/yasd/projects/1)
 
 ## License
 

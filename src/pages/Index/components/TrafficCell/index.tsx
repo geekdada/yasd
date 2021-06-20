@@ -5,10 +5,12 @@ import css from '@emotion/css/macro'
 import loadable from '@loadable/component'
 import bytes from 'bytes'
 import { ChartPoint } from 'chart.js'
+import { useTranslation } from 'react-i18next'
 import useSWR from 'swr'
 import tw from 'twin.macro'
 import React, { useEffect, useMemo, useState } from 'react'
 
+import { useProfile } from '../../../../models/profile'
 import { ConnectorTraffic, Traffic } from '../../../../types'
 import fetcher from '../../../../utils/fetcher'
 
@@ -39,8 +41,10 @@ const Data = styled.div`
 export const REFRESH_RATE = 1000
 
 const Index: React.FC = () => {
+  const { t } = useTranslation()
+  const profile = useProfile()
   const { data: traffic, error: trafficError } = useSWR(
-    '/traffic',
+    profile !== undefined ? '/traffic' : null,
     (url) =>
       fetcher<Traffic & { nowTime: number }>(url).then((res) => {
         res.nowTime = Date.now()
@@ -64,15 +68,15 @@ const Index: React.FC = () => {
   const newDatasets = useMemo(() => {
     return [
       {
-        label: 'Up',
+        label: 'Upload',
         data: trafficDatasets.up,
       },
       {
-        label: 'Down',
+        label: 'Download',
         data: trafficDatasets.down,
       },
     ]
-  }, [trafficDatasets])
+  }, [t, trafficDatasets.down, trafficDatasets.up])
 
   const activeInterface = useMemo(() => {
     if (!traffic) return undefined
@@ -122,15 +126,15 @@ const Index: React.FC = () => {
       {activeInterface ? (
         <div tw="grid grid-cols-3 gap-4 divide-x divide-gray-200 border-solid border border-gray-200 bg-gray-100">
           <Cell>
-            <Title>Upload</Title>
+            <Title>{t('traffic_cell.upload')}</Title>
             <Data>{bytes(activeInterface.outCurrentSpeed)}/s</Data>
           </Cell>
           <Cell>
-            <Title>Download</Title>
+            <Title>{t('traffic_cell.download')}</Title>
             <Data>{bytes(activeInterface.inCurrentSpeed)}/s</Data>
           </Cell>
           <Cell>
-            <Title>Total</Title>
+            <Title>{t('traffic_cell.total')}</Title>
             <Data>{bytes(activeInterface.in + activeInterface.out)}</Data>
           </Cell>
         </div>
@@ -144,7 +148,7 @@ const Index: React.FC = () => {
               text-align: center;
             `,
           ]}>
-          Loading...
+          {t('common.is_loading')}...
         </div>
       )}
     </div>

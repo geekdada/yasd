@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import { find } from 'lodash-es'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ThemeProvider } from 'emotion-theming'
 import { light } from '@sumup/design-tokens'
 import {
@@ -23,14 +23,17 @@ import 'react-toastify/dist/ReactToastify.css'
 import FullLoading from './components/FullLoading'
 import NewVersionAlert from './components/NewVersionAlert'
 import ScrollToTop from './components/ScrollToTop'
-import { ProfileProvider } from './models/profile'
 import NetworkErrorModal from './components/NetworkErrorModal'
-import LandingPage from './pages/Landing'
+import { useProfile, useProfileDispatch } from './models/profile'
+import {
+  RegularLanding as LandingPage,
+  SurgeLanding as SurgeLandingPage,
+} from './pages/Landing'
 import IndexPage from './pages/Index'
 import PageLayout from './components/PageLayout'
 import { Profile } from './types'
+import { isRunInSurge } from './utils'
 import { ExistingProfiles, LastUsedProfile } from './utils/constant'
-import { setServer } from './utils/fetcher'
 
 const PoliciesPage = loadable(() => import('./pages/Policies'), {
   fallback: <FullLoading />,
@@ -51,6 +54,9 @@ const EvaluatePage = loadable(() => import('./pages/Scripting/Evaluate'), {
   fallback: <FullLoading />,
 })
 const DnsPage = loadable(() => import('./pages/Dns'), {
+  fallback: <FullLoading />,
+})
+const DevicesPage = loadable(() => import('./pages/Devices'), {
   fallback: <FullLoading />,
 })
 const ProfilePage = loadable(() => import('./pages/Profiles/Current'), {
@@ -108,11 +114,11 @@ const ToastContainer = styled(OriginalToastContainer)`
 `
 
 if (
-  'REACT_APP_DEBUG_GA' in process.env ||
+  !!process.env.REACT_APP_DEBUG_GA ||
   (process.env.NODE_ENV === 'production' && process.env.REACT_APP_ENABLE_GA)
 ) {
   ReactGA.initialize('UA-146417304-2', {
-    debug: 'REACT_APP_DEBUG_GA' in process.env,
+    debug: !!process.env.REACT_APP_DEBUG_GA,
   })
 }
 
@@ -120,21 +126,43 @@ const App: React.FC = () => {
   const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false)
   const location = useLocation()
   const history = useHistory()
-  const currentProfile = useRef<Profile>()
+  const profileDispatch = useProfileDispatch()
+  const profile = useProfile()
+  const [hasInit, setHasInit] = useState(false)
 
-  if (location.pathname !== '/') {
-    const existingProfiles = store.get(ExistingProfiles)
-    const lastId = store.get(LastUsedProfile)
-    const result = find<Profile>(existingProfiles, { id: lastId })
+  const onCloseApplication = useCallback(() => {
+    if (isRunInSurge()) {
+      store.remove(LastUsedProfile)
+      store.remove(ExistingProfiles)
+    }
 
-    if (result) {
-      currentProfile.current = result
+    window.location.replace('/')
+  }, [])
 
-      setServer(result.host, result.port, result.key, { tls: result.tls })
-    } else {
+  useEffect(
+    () => {
+      const existingProfiles = store.get(ExistingProfiles)
+      const lastId = store.get(LastUsedProfile)
+      const result = find<Profile>(existingProfiles, { id: lastId })
+
+      if (result) {
+        profileDispatch({
+          type: 'update',
+          payload: result,
+        })
+      }
+
+      setHasInit(true)
+    },
+    // eslint-disable-next-line
+    [],
+  )
+
+  useEffect(() => {
+    if (hasInit && !profile && location.pathname !== '/') {
       history.replace('/')
     }
-  }
+  }, [hasInit, history, location.pathname, profile])
 
   useEffect(() => {
     ReactGA.pageview(location.pathname)
@@ -153,57 +181,55 @@ const App: React.FC = () => {
         },
         refreshWhenOffline: true,
       }}>
-      <ThemeProvider theme={light}>
-        <ProfileProvider profile={currentProfile.current}>
-          <ScrollToTop />
-          <ToastContainer />
-          <NetworkErrorModal
-            isOpen={isNetworkModalOpen}
-            onClose={() => {
-              window.location.replace('/')
-            }}
-          />
-          <NewVersionAlert />
+      <ScrollToTop />
+      <ToastContainer />
+      <NetworkErrorModal
+        reloadButton={isRunInSurge()}
+        isOpen={isNetworkModalOpen}
+        onClose={onCloseApplication}
+      />
+      <NewVersionAlert />
 
-          <PageLayout>
-            <Switch>
-              <Route exact path="/">
-                <LandingPage />
-              </Route>
-              <Route exact path="/home">
-                <IndexPage />
-              </Route>
-              <Route exact path="/policies">
-                <PoliciesPage />
-              </Route>
-              <Route exact path="/requests">
-                <RequestsPage />
-              </Route>
-              <Route exact path="/traffic">
-                <TrafficPage />
-              </Route>
-              <Route exact path="/modules">
-                <ModulesPage />
-              </Route>
-              <Route exact path="/scripting">
-                <ScriptingPage />
-              </Route>
-              <Route exact path="/scripting/evaluate">
-                <EvaluatePage />
-              </Route>
-              <Route exact path="/dns">
-                <DnsPage />
-              </Route>
-              <Route exact path="/profiles/current">
-                <ProfilePage />
-              </Route>
-              <Route path="*">
-                <Redirect to="/" />
-              </Route>
-            </Switch>
-          </PageLayout>
-        </ProfileProvider>
-      </ThemeProvider>
+      <PageLayout>
+        <Switch>
+          <Route exact path="/">
+            {isRunInSurge() ? <SurgeLandingPage /> : <LandingPage />}
+          </Route>
+          <Route exact path="/home">
+            <IndexPage />
+          </Route>
+          <Route exact path="/policies">
+            <PoliciesPage />
+          </Route>
+          <Route exact path="/requests">
+            <RequestsPage />
+          </Route>
+          <Route exact path="/traffic">
+            <TrafficPage />
+          </Route>
+          <Route exact path="/modules">
+            <ModulesPage />
+          </Route>
+          <Route exact path="/scripting">
+            <ScriptingPage />
+          </Route>
+          <Route exact path="/scripting/evaluate">
+            <EvaluatePage />
+          </Route>
+          <Route exact path="/dns">
+            <DnsPage />
+          </Route>
+          <Route exact path="/devices">
+            <DevicesPage />
+          </Route>
+          <Route exact path="/profiles/current">
+            <ProfilePage />
+          </Route>
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+      </PageLayout>
     </SWRConfig>
   )
 }

@@ -9,7 +9,7 @@ export const DataGroup: React.FC<{ title?: string }> = (props) => {
   return (
     <div>
       {props.title && (
-        <div tw="text-gray-600 text-sm leading-normal px-3 mb-1 truncate">
+        <div tw="text-gray-600 text-sm leading-normal px-3 mb-1 truncate lg:text-base lg:leading-relaxed">
           {props.title}
         </div>
       )}
@@ -31,7 +31,7 @@ export const DataRowMain = styled.div`
 `
 
 export const DataRowSub = styled.div`
-  ${tw`flex items-center justify-between px-3 leading-normal text-xs text-gray-800`}
+  ${tw`flex items-center justify-between px-3 leading-normal text-xs text-gray-800 lg:text-sm lg:leading-relaxed`}
 
   & > div:last-of-type {
     ${tw`text-gray-600`}

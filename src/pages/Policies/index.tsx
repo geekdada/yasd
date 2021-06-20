@@ -3,12 +3,14 @@ import { jsx } from '@emotion/core'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import { Heading } from '@sumup/circuit-ui'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import React, { createRef, RefObject, useRef } from 'react'
 import { ScrollTo } from 'react-scroll-to'
 import useSWR from 'swr'
-import BackButton from '../../components/BackButton'
 
+import BackButton from '../../components/BackButton'
+import PageContainer from '../../components/PageContainer'
 import { Policies, PolicyGroups } from '../../types'
 import fetcher from '../../utils/fetcher'
 import PolicyGroup from './components/PolicyGroup'
@@ -18,6 +20,7 @@ const PolicyNameItem = styled.div`
 `
 
 const Page: React.FC = () => {
+  const { t } = useTranslation()
   const { data: policies, error: policiesError } = useSWR<Policies>(
     '/policies',
     fetcher,
@@ -44,7 +47,7 @@ const Page: React.FC = () => {
   }
 
   return (
-    <div tw="relative pb-5">
+    <PageContainer>
       <div
         tw="sticky top-0 left-0 right-0 shadow bg-white z-10 pt-5 mb-4"
         ref={headerRef}>
@@ -56,7 +59,7 @@ const Page: React.FC = () => {
           <Heading size={'tera'} noMargin tw="mb-2 px-4">
             <div tw="flex items-center">
               <BackButton />
-              <div>Policies</div>
+              <div>{t('home.policies')}</div>
             </div>
           </Heading>
         </div>
@@ -104,7 +107,7 @@ const Page: React.FC = () => {
             )
           })}
       </div>
-    </div>
+    </PageContainer>
   )
 }
 

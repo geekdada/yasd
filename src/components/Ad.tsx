@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import tw from 'twin.macro'
 import ReactGA from 'react-ga'
 import axios from 'axios'
+import { isRunInSurge } from '../utils'
 
 interface AdData {
   id: number
@@ -13,11 +14,15 @@ interface AdData {
 }
 
 const Ad: React.FC = () => {
-  const showDynamicAd = useRef('REACT_APP_SHOW_AD' in process.env)
+  const showDynamicAd = useRef(!!process.env.REACT_APP_SHOW_AD)
   const [ad, setAd] = useState<AdData>()
 
   useEffect(() => {
     let isMounted = true
+
+    if (isRunInSurge()) {
+      return
+    }
 
     if (showDynamicAd.current) {
       axios

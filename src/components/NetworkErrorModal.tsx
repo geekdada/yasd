@@ -11,27 +11,42 @@ import {
 } from '@sumup/circuit-ui'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 
 interface NetworkErrorModalProps {
   onClose: (event?: MouseEvent | KeyboardEvent) => void
   isOpen: boolean
+  reloadButton?: boolean
 }
 
 const NetworkErrorModal: React.FC<NetworkErrorModalProps> = ({
   isOpen,
   onClose,
+  reloadButton,
 }) => {
+  const { t } = useTranslation()
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       {({ onClose }) => (
         <ModalWrapper>
-          <ModalHeader title="网络错误" />
-          <div tw="mb-3">YASD 无法连接 Surge 或连接失败，请退出后重试</div>
+          <ModalHeader title={t('common.network_error_title')} />
+          <div tw="mb-3">{t('common.network_error_message')}</div>
           <ModalFooter align="right">
             <ButtonGroup>
+              {reloadButton ? (
+                <Button
+                  onClick={() => {
+                    window.location.reload()
+                  }}>
+                  {t('common.reload_window_retry')}
+                </Button>
+              ) : (
+                <React.Fragment></React.Fragment>
+              )}
               <Button onClick={onClose} variant="primary">
-                退出
+                {t('common.exit')}
               </Button>
             </ButtonGroup>
           </ModalFooter>

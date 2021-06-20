@@ -41,8 +41,8 @@ const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
       key={name}
       onClick={() => setIsDetailsOpen(!isDetailsOpen)}>
       <DataRowMain>
-        <div tw="truncate flex-1 text-sm">{name}</div>
-        <div tw="flex items-center ml-3 text-sm">
+        <div tw="truncate flex-1 text-sm lg:text-base">{name}</div>
+        <div tw="flex items-center ml-3 text-sm lg:text-base">
           <div>总计 {bytes(data.in + data.out)}</div>
           <ChevronRight
             css={[

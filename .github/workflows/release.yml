@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: [12]
+        node-version: [14]
 
     steps:
       - uses: actions/checkout@v1
@@ -32,15 +32,9 @@ jobs:
             ${{ runner.OS }}-
 
       - name: yarn install, build, bundle
-        env:
-          REACT_APP_SHOW_AD: true
-          REACT_APP_HASH_ROUTER: true
         run: |
           yarn install
-          CI=false yarn build
-          sed -i 's/"\/home"/"\/#home"/g' build/manifest.json
-          sed -i 's/<script src=\"https:\/\/polyfill.alicdn.com\/modern\/polyfill.min.js\" crossorigin=\"anonymous\"><\/script>//g' build/index.html
-          tar -czf build.tar.gz ./build
+          CI=false yarn build:release
 
       - name: Upload Release Asset
         id: upload-release-asset

@@ -5,6 +5,7 @@ import { find } from 'lodash-es'
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import store from 'store2'
 import { useHistory } from 'react-router-dom'
@@ -23,6 +24,7 @@ import { Profile } from '../../../types'
 import { ExistingProfiles, LastUsedProfile } from '../../../utils/constant'
 
 const SetHostModal: React.FC = () => {
+  const { t } = useTranslation()
   const [existingProfiles, setExistingProfiles] = useState<Array<Profile>>([])
   const { setModal } = useModal()
   const currentProfile = useProfile()
@@ -54,7 +56,7 @@ const SetHostModal: React.FC = () => {
       children: ({ onClose }) => {
         return (
           <ModalWrapper>
-            <ModalHeader title="History" onClose={onClose} />
+            <ModalHeader title={t('landing.history')} onClose={onClose} />
 
             <div tw="bg-gray-100 divide-y divide-gray-200 rounded overflow-hidden">
               {existingProfiles.map((profile) => {
@@ -64,7 +66,7 @@ const SetHostModal: React.FC = () => {
                     tw="flex flex-row items-center hover:bg-gray-200">
                     {profile.id === currentProfile?.id && (
                       <Badge variant="success" tw="ml-3 text-xs md:text-sm">
-                        当前
+                        {t('landing.current')}
                       </Badge>
                     )}
                     <div tw="flex-1">
@@ -84,7 +86,7 @@ const SetHostModal: React.FC = () => {
                 size="kilo"
                 variant="primary"
                 onClick={() => history.replace('/')}>
-                Add New Host
+                {t('landing.add_new_host')}
               </Button>
             </div>
           </ModalWrapper>
