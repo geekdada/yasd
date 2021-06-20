@@ -32,9 +32,6 @@ jobs:
             ${{ runner.OS }}-
 
       - name: yarn install, build, bundle
-        env:
-          REACT_APP_SHOW_AD: true
-          REACT_APP_HASH_ROUTER: true
         run: |
           yarn install
           CI=false yarn build:release
