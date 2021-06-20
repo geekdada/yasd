@@ -87,8 +87,8 @@ async function bundleArtifact() {
 
 async function clean() {
   console.info('🧹  Clean up')
-  await $`rm -r ./build`
-  await $`rm -r ./*.tar.gz`
+  await $`rimraf ./build`
+  await $`rimraf ./*.tar.gz`
 }
 
 function getUrlPathPrefix() {
