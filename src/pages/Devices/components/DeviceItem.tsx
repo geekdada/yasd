@@ -25,6 +25,22 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
   const surgeHost = useSurgeHost()
   const history = useHistory()
 
+  const onDeviceSettingsClick = useCallback(() => {
+    setModal({
+      children({ onClose }) {
+        return onClose && device.dhcpDevice ? (
+          <DeviceSettingsModal
+            title={device.dhcpDevice.displayName || device.name}
+            dhcpDevice={device.dhcpDevice}
+            onClose={onClose}
+          />
+        ) : (
+          <React.Fragment />
+        )
+      },
+    })
+  }, [device.dhcpDevice, device.name, setModal])
+
   const onClick = useCallback(() => {
     const actions = [
       {
@@ -40,21 +56,7 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
       actions.push({
         id: 'device_settings',
         title: 'devices.device_settings',
-        onClick: () => {
-          setModal({
-            children({ onClose }) {
-              return onClose && device.dhcpDevice ? (
-                <DeviceSettingsModal
-                  title={device.dhcpDevice.displayName || device.name}
-                  dhcpDevice={device.dhcpDevice}
-                  onClose={onClose}
-                />
-              ) : (
-                <React.Fragment />
-              )
-            },
-          })
-        },
+        onClick: onDeviceSettingsClick,
       })
     }
 
@@ -71,7 +73,14 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
         )
       },
     })
-  }, [device, setModal])
+  }, [
+    device.dhcpDevice,
+    device.displayIPAddress,
+    device.name,
+    onDeviceSettingsClick,
+    setModal,
+    history,
+  ])
 
   const gateway = useMemo<boolean>(() => {
     const { hasTCPConnection } = device

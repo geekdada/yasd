@@ -11,7 +11,6 @@ import {
   HashRouterProps,
 } from 'react-router-dom'
 
-import App from './App'
 import { ProfileProvider } from './models/profile'
 
 const ReactRouter: React.FC<BrowserRouterProps | HashRouterProps> = (args) => {
@@ -27,16 +26,14 @@ const styleCache = createCache({
   key: 'yasd',
 })
 
-const AppContainer: React.FC = () => {
+const AppContainer: React.FC = ({ children }) => {
   return (
-    <Suspense fallback={<div></div>}>
+    <Suspense fallback={<div />}>
       <CacheProvider value={styleCache}>
         <ReactRouter>
           <ProfileProvider>
             <ThemeProvider theme={light}>
-              <ModalProvider>
-                <App />
-              </ModalProvider>
+              <ModalProvider>{children}</ModalProvider>
             </ThemeProvider>
           </ProfileProvider>
         </ReactRouter>
