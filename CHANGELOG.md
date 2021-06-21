@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/geekdada/yasd/compare/v1.0.0...v1.0.1) (2021-06-21)
+
+
+### Bug Fixes
+
+* modals sometimes not close after the route changes ([f5f6595](https://github.com/geekdada/yasd/commit/f5f65958463360310d743eb1797edc4977c099f5))
+
+
+
 # [1.0.0](https://github.com/geekdada/yasd/compare/v0.8.0...v1.0.0) (2021-06-20)
 
 
