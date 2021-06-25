@@ -2,7 +2,6 @@
 import { jsx } from '@emotion/core'
 import React, { useCallback } from 'react'
 import { Button, Heading, Toggle } from '@sumup/circuit-ui'
-import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
@@ -13,11 +12,11 @@ import store from 'store2'
 
 import ChangeLanguage from '../../components/ChangeLanguage'
 import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
-import ProfileCell from '../../components/ProfileCell'
 import Ad from '../../components/Ad'
 import VersionSupport from '../../components/VersionSupport'
 import {
   usePlatform,
+  usePlatformBuild,
   usePlatformVersion,
   useProfile,
 } from '../../models/profile'
@@ -25,6 +24,7 @@ import { Capability } from '../../types'
 import { isRunInSurge } from '../../utils'
 import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
 import fetcher from '../../utils/fetcher'
+import HostInfo from './components/HostInfo'
 import TrafficCell from './components/TrafficCell'
 import Events from './components/Events'
 import MenuTile, { MenuTileTitle } from './components/MenuTile'
@@ -45,6 +45,7 @@ const Page: React.FC = () => {
   const { t } = useTranslation()
   const platform = usePlatform()
   const platformVersion = usePlatformVersion()
+  const platformBuild = usePlatformBuild()
 
   const toggleSystemProxy = useCallback(() => {
     fetcher({
@@ -107,9 +108,9 @@ const Page: React.FC = () => {
           {profile && (
             <div tw="w-full flex justify-between items-center">
               <div
-                css={[tw`w-2/3 bg-gray-100 rounded-lg`]}
+                tw="w-2/3"
                 onDoubleClick={() => window.location.reload(true)}>
-                <ProfileCell variant="left" profile={profile} />
+                <HostInfo />
               </div>
 
               {isRunInSurge() ? (
@@ -208,6 +209,15 @@ const Page: React.FC = () => {
 
           <div tw="mt-4 px-4">
             <ChangeLanguage />
+          </div>
+
+          <div tw="text-center mt-4 text-sm">
+            {Boolean(platform && platformBuild && platformVersion) && (
+              <code tw="px-4 py-2 rounded bg-gray-100 text-gray-500">
+                v{process.env.REACT_APP_VERSION} - {platform} v{platformVersion}
+                ({platformBuild})
+              </code>
+            )}
           </div>
         </div>
       </div>

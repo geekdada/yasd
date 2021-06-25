@@ -77,6 +77,11 @@ export const usePlatformVersion = ():
 
   return context.profile?.platformVersion
 }
+export const usePlatformBuild = (): Profile['platformBuild'] | undefined => {
+  const context = React.useContext(ProfileContext)
+
+  return context.profile?.platformBuild
+}
 
 export const useSurgeHost = (): string | null => {
   const context = React.useContext(ProfileContext)
