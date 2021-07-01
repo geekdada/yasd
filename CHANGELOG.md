@@ -1,3 +1,17 @@
+## [1.0.3](https://github.com/geekdada/yasd/compare/v1.0.2...v1.0.3) (2021-07-01)
+
+
+### Bug Fixes
+
+* speed test latency ([0144992](https://github.com/geekdada/yasd/commit/01449929cb2a47bad6f407db389552a96ddbabd0))
+
+
+### Features
+
+* use toggle ([b718e6b](https://github.com/geekdada/yasd/commit/b718e6b610addf4e9732f831717d38c8fe20012e))
+
+
+
 ## [1.0.2](https://github.com/geekdada/yasd/compare/v1.0.1...v1.0.2) (2021-06-25)
 
 
