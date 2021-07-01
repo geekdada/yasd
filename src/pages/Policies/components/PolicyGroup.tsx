@@ -102,7 +102,9 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
           Object.keys(testResult).forEach((key) => {
             const result = testResult[key]
 
-            latencies[key] = result.receive ?? -1
+            latencies[key] = result.receive
+              ? Number(result.receive.toFixed(0))
+              : -1
           })
           setSelection((res as UrlTestPolicyTestResult).winner)
         } else {
@@ -110,7 +112,9 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
           Object.keys(testResult).forEach((key) => {
             const result = testResult[key]
 
-            latencies[key] = result.receive ?? -1
+            latencies[key] = result.receive
+              ? Number(result.receive.toFixed(0))
+              : -1
           })
         }
 

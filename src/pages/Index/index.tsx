@@ -184,9 +184,7 @@ const Page: React.FC = () => {
                   {item.component ? (
                     item.component
                   ) : (
-                    <MenuTile
-                      style={item.tintColor}
-                      onClick={() => openLink(item.link)}>
+                    <MenuTile onClick={() => openLink(item.link)}>
                       <MenuTileTitle title={t(`home.${item.title}`)} />
 
                       {item.subTitle && (

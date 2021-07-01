@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React from 'react'
-import tw, { TwStyle } from 'twin.macro'
 import gte from 'semver/functions/gte'
 
 import { Profile } from '../../types'
@@ -12,8 +11,6 @@ export interface MenuItem {
   title: string
   subTitle?: string
   link?: string
-  tintColor?: TwStyle
-  textColor?: TwStyle
   component?: JSX.Element
   isEnabled?: (
     platform: Profile['platform'] | void,
