@@ -1,8 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React, { useCallback, useState } from 'react'
-import { RadioButton } from '@sumup/circuit-ui'
-import styled from '@emotion/styled/macro'
+import { Toggle } from '@sumup/circuit-ui'
 import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import useSWR, { mutate } from 'swr'
@@ -62,7 +61,11 @@ const Page: React.FC = () => {
               <div key={mod} tw="flex items-center justify-between p-3">
                 <div tw="truncate leading-normal text-gray-700">{mod}</div>
                 <div tw="flex items-center">
-                  <RadioButton
+                  <Toggle
+                    noMargin
+                    label=""
+                    labelChecked="on"
+                    labelUnchecked="off"
                     disabled={isLoading}
                     checked={isChecked(mod)}
                     onChange={() => toggle(mod, !isChecked(mod))}
