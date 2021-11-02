@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/geekdada/yasd/compare/v1.0.3...v1.1.0) (2021-11-02)
+
+
+### Features
+
+* support new benchmark api ([a23006a](https://github.com/geekdada/yasd/commit/a23006a4cc8c4f503be405a3d0bb3367790ee7f7))
+
+
+
 ## [1.0.3](https://github.com/geekdada/yasd/compare/v1.0.2...v1.0.3) (2021-07-01)
 
 
