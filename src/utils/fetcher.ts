@@ -64,3 +64,4 @@ const fetcher = <T>(requestConfig: AxiosRequestConfig): Promise<T> => {
 }
 
 export default fetcher
+export { client as httpClient }

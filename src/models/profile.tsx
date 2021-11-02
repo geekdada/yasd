@@ -2,6 +2,7 @@ import React, { createContext, Dispatch, Reducer, useReducer } from 'react'
 
 import { Profile } from '../types'
 import { setServer } from '../utils/fetcher'
+import { updateStoredProfile } from '../utils/store'
 
 interface IProfileContext {
   profile?: Profile
@@ -14,6 +15,12 @@ type ReducerAction =
     }
   | {
       type: 'clear'
+    }
+  | {
+      type: 'updatePlatformVersion'
+      payload: {
+        platformVersion: Profile['platformVersion']
+      }
     }
 
 const profileReducer: Reducer<IProfileContext, ReducerAction> = (
@@ -32,6 +39,25 @@ const profileReducer: Reducer<IProfileContext, ReducerAction> = (
       return {
         profile: undefined,
       }
+    case 'updatePlatformVersion': {
+      if (!state.profile) {
+        throw new Error(
+          'updatePlatformVersion cannot be dispatched if the profile is absent.',
+        )
+      }
+
+      const profile = state.profile
+      const updated = {
+        ...profile,
+        platformVersion: action.payload.platformVersion,
+      }
+
+      updateStoredProfile(updated.id, updated)
+
+      return {
+        profile: updated,
+      }
+    }
     default:
       throw new Error()
   }

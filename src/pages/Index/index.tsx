@@ -1,9 +1,10 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { Button, Heading, Toggle } from '@sumup/circuit-ui'
 import css from '@emotion/css/macro'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 import tw from 'twin.macro'
 import { delay } from 'bluebird'
 import { useHistory } from 'react-router-dom'
@@ -19,11 +20,12 @@ import {
   usePlatformBuild,
   usePlatformVersion,
   useProfile,
+  useProfileDispatch,
 } from '../../models/profile'
 import { Capability } from '../../types'
 import { isRunInSurge } from '../../utils'
 import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
-import fetcher from '../../utils/fetcher'
+import fetcher, { httpClient } from '../../utils/fetcher'
 import HostInfo from './components/HostInfo'
 import TrafficCell from './components/TrafficCell'
 import Events from './components/Events'
@@ -34,6 +36,7 @@ import menu from './menu'
 const Page: React.FC = () => {
   const history = useHistory()
   const profile = useProfile()
+  const profileDispatch = useProfileDispatch()
   const { data: systemProxy } = useSWR<Capability>(
     profile?.platform === 'macos' ? '/features/system_proxy' : null,
     fetcher,
@@ -46,6 +49,7 @@ const Page: React.FC = () => {
   const platform = usePlatform()
   const platformVersion = usePlatformVersion()
   const platformBuild = usePlatformBuild()
+  const isFirstShown = useRef(true)
 
   const toggleSystemProxy = useCallback(() => {
     fetcher({
@@ -94,6 +98,36 @@ const Page: React.FC = () => {
       history.push(link)
     }
   }
+
+  useEffect(() => {
+    if (!profile?.platform || !isFirstShown.current) {
+      return
+    }
+
+    httpClient
+      .request({
+        url: '/environment',
+        method: 'GET',
+      })
+      .then((res) => {
+        const currentPlatformVersion = res.headers['x-surge-version']
+
+        if (currentPlatformVersion !== platformVersion) {
+          profileDispatch({
+            type: 'updatePlatformVersion',
+            payload: {
+              platformVersion: currentPlatformVersion,
+            },
+          })
+        }
+
+        isFirstShown.current = false
+      })
+      .catch((err) => {
+        console.error(err)
+        toast.error(t('common.surge_too_old'))
+      })
+  }, [platformVersion, profile?.platform, profileDispatch, t])
 
   return (
     <React.Fragment>

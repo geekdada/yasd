@@ -11,7 +11,8 @@
     "success_interaction": "Success",
     "failed_interaction": "Failed",
     "see": "See",
-    "save": "Save"
+    "save": "Save",
+    "surge_too_old": "Your Surge is too old, please upgrade in order to use this application!"
   },
   "form": {
     "err_invalid": "Invalid value",

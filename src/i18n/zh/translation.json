@@ -11,7 +11,8 @@
     "success_interaction": "操作成功",
     "failed_interaction": "操作失败",
     "see": "查看",
-    "save": "保存"
+    "save": "保存",
+    "surge_too_old": "您的 Surge 版本过低，请考虑升级 Surge 以使用本程序！"
   },
   "form": {
     "err_invalid": "无效的输入内容",
