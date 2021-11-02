@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/geekdada/yasd/compare/v1.1.0...v1.1.1) (2021-11-02)
+
+
+### Bug Fixes
+
+* version in local storage isn't up-to-date ([1a3e401](https://github.com/geekdada/yasd/commit/1a3e40153fe3704d36ae316e23754286ef275976))
+
+
+
 # [1.1.0](https://github.com/geekdada/yasd/compare/v1.0.3...v1.1.0) (2021-11-02)
 
 
