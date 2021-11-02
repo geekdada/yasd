@@ -100,16 +100,19 @@ const Page: React.FC = () => {
       <div
         css={css`
           padding-bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
-        `}>
+        `}
+      >
         <Heading
           size={'tera'}
           noMargin
-          tw="sticky top-0 flex shadow bg-white z-10 px-3 py-3 mb-4">
+          tw="sticky top-0 flex shadow bg-white z-10 px-3 py-3 mb-4"
+        >
           {profile && (
             <div tw="w-full flex justify-between items-center">
               <div
                 tw="w-2/3"
-                onDoubleClick={() => window.location.reload(true)}>
+                onDoubleClick={() => window.location.reload(true)}
+              >
                 <HostInfo />
               </div>
 
@@ -130,7 +133,8 @@ const Page: React.FC = () => {
           css={css`
             padding-left: env(safe-area-inset-left);
             padding-right: env(safe-area-inset-right);
-          `}>
+          `}
+        >
           <div tw="mb-4">
             <TrafficCell />
           </div>

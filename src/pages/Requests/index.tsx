@@ -166,7 +166,8 @@ const Page: React.FC = () => {
           css={css`
             padding-left: calc(env(safe-area-inset-left) + 0.75rem);
             padding-right: calc(env(safe-area-inset-right) + 0.75rem);
-          `}>
+          `}
+        >
           <ListItem req={req} />
         </div>
       )
@@ -231,7 +232,8 @@ const Page: React.FC = () => {
                 margin-left: 0;
               }
             `,
-          ]}>
+          ]}
+        >
           <SelectorGroup
             css={[
               tw`flex justify-center items-center`,

@@ -143,7 +143,8 @@ const Page: React.FC = () => {
     <div
       css={css`
         padding-bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
-      `}>
+      `}
+    >
       <Header />
 
       <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
@@ -158,7 +159,8 @@ const Page: React.FC = () => {
               href="https://manual.nssurge.com/others/http-api.html#configuration"
               target="_blank"
               rel="noreferrer"
-              tw="border-b border-solid border-teal-500">
+              tw="border-b border-solid border-teal-500"
+            >
               🔗 开启方式
             </a>
           </p>
@@ -225,7 +227,8 @@ const Page: React.FC = () => {
                 <Checkbox
                   disabled={protocol === 'https:'}
                   checked={field.value}
-                  onChange={field.onChange}>
+                  onChange={field.onChange}
+                >
                   {t('landing.https')}
                 </Checkbox>
               )}
@@ -247,7 +250,8 @@ const Page: React.FC = () => {
               variant="primary"
               stretch
               isLoading={isLoading}
-              loadingLabel={t('landing.is_loading')}>
+              loadingLabel={t('landing.is_loading')}
+            >
               {t('landing.confirm')}
             </LoadingButton>
           </div>

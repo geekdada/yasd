@@ -93,7 +93,8 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
     <div
       key={profile.id}
       css={[getCursorStyle(), tw`flex p-3 justify-between`]}
-      onClick={clickHandler}>
+      onClick={clickHandler}
+    >
       <div css={[tw`flex w-full`, variantStyle]}>
         <div tw="truncate text-sm md:text-base leading-tight">
           {profile.name}
@@ -138,7 +139,8 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
                   ${tw`text-gray-700`}
                 }
               `,
-            ]}>
+            ]}
+          >
             <Bin />
           </IconButton>
         </div>

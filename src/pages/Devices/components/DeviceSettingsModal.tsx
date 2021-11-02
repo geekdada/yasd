@@ -178,7 +178,8 @@ const DeviceSettingsModal = ({
               isLoading={isLoading}
               variant="primary"
               as="submit"
-              loadingLabel={t('common.is_loading')}>
+              loadingLabel={t('common.is_loading')}
+            >
               {t('common.save')}
             </LoadingButton>
           </ButtonGroup>

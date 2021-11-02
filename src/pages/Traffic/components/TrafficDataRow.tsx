@@ -39,7 +39,8 @@ const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
         }
       `}
       key={name}
-      onClick={() => setIsDetailsOpen(!isDetailsOpen)}>
+      onClick={() => setIsDetailsOpen(!isDetailsOpen)}
+    >
       <DataRowMain>
         <div tw="truncate flex-1 text-sm lg:text-base">{name}</div>
         <div tw="flex items-center ml-3 text-sm lg:text-base">

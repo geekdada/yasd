@@ -26,7 +26,8 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
           css`
             height: 1.5rem;
           `,
-        ]}>
+        ]}
+      >
         <MethodBadge
           method={req.method}
           failed={req.failed}

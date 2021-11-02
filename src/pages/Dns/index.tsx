@@ -77,7 +77,8 @@ const Page: React.FC = () => {
                 padding-left: calc(env(safe-area-inset-left) + 0.75rem);
                 padding-right: calc(env(safe-area-inset-right) + 0.75rem);
               `,
-            ]}>
+            ]}
+          >
             <div tw="text-sm truncate">{record.domain}</div>
             <div tw="text-xs text-gray-700 leading-tight">
               DNS: {record.server}
@@ -103,7 +104,8 @@ const Page: React.FC = () => {
                 padding-left: calc(env(safe-area-inset-left) + 0.75rem);
                 padding-right: calc(env(safe-area-inset-right) + 0.75rem);
               `,
-            ]}>
+            ]}
+          >
             <div tw="text-sm truncate">{record.domain}</div>
             {!!record.server && (
               <div tw="text-xs text-gray-700 leading-tight">
@@ -167,7 +169,8 @@ const Page: React.FC = () => {
               margin-left: 0;
             }
           `,
-        ]}>
+        ]}
+      >
         <SelectorGroup
           css={[
             tw`flex justify-center items-center`,
@@ -203,7 +206,8 @@ const Page: React.FC = () => {
             tw="font-normal"
             variant="tertiary"
             size="kilo"
-            onClick={flushDns}>
+            onClick={flushDns}
+          >
             {t('dns.flush_dns')}
           </Button>
         </div>

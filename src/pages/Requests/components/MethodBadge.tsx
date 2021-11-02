@@ -26,7 +26,8 @@ const MethodBadge: React.FC<{
           : status === 'Active'
           ? tw`bg-green-500`
           : tw`bg-blue-500`,
-      ]}>
+      ]}
+    >
       {method.toUpperCase()}
     </div>
   )

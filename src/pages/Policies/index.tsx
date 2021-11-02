@@ -50,12 +50,14 @@ const Page: React.FC = () => {
     <PageContainer>
       <div
         tw="sticky top-0 left-0 right-0 shadow bg-white z-10 pt-5 mb-4"
-        ref={headerRef}>
+        ref={headerRef}
+      >
         <div
           css={css`
             padding-left: env(safe-area-inset-left);
             padding-right: env(safe-area-inset-right);
-          `}>
+          `}
+        >
           <Heading size={'tera'} noMargin tw="mb-2 px-4">
             <div tw="flex items-center">
               <BackButton />
@@ -69,7 +71,8 @@ const Page: React.FC = () => {
           css={css`
             padding-left: calc(env(safe-area-inset-left) + 1rem);
             padding-right: calc(env(safe-area-inset-right) + 1rem);
-          `}>
+          `}
+        >
           <ScrollTo>
             {({ scroll }) => (
               <React.Fragment>
@@ -79,7 +82,8 @@ const Page: React.FC = () => {
                       key={policy}
                       onClick={() =>
                         scroll({ y: getRefTop(refs[index]), smooth: true })
-                      }>
+                      }
+                    >
                       {policy}
                     </PolicyNameItem>
                   ))}
@@ -93,7 +97,8 @@ const Page: React.FC = () => {
         css={css`
           padding-left: calc(env(safe-area-inset-left) + 1rem);
           padding-right: calc(env(safe-area-inset-right) + 1rem);
-        `}>
+        `}
+      >
         {policies &&
           policyGroups &&
           policies['policy-groups'].map((policy, index) => {

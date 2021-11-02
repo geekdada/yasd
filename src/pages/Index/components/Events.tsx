@@ -36,7 +36,8 @@ const Events: React.FC = () => {
                   css={css`
                     word-break: break-word;
                     overflow-wrap: break-word;
-                  `}>
+                  `}
+                >
                   {item.content}
                 </div>
                 <div tw="text-xs text-gray-500 mt-1">
@@ -48,7 +49,8 @@ const Events: React.FC = () => {
                           font-size: 0.6rem;
                           padding: 0.1rem 0.5rem;
                         `,
-                      ]}>
+                      ]}
+                    >
                       ERROR
                     </span>
                   )}

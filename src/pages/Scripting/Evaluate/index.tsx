@@ -120,13 +120,15 @@ const Page: React.FC = () => {
         <div
           css={[
             tw`flex items-center border-t border-solid border-gray-200 py-3 px-3`,
-          ]}>
+          ]}
+        >
           <LoadingButton
             onClick={evaluate}
             variant="primary"
             size="kilo"
             isLoading={isLoading}
-            loadingLabel={t('scripting.running')}>
+            loadingLabel={t('scripting.running')}
+          >
             {t('scripting.run_script_button_title')}
           </LoadingButton>
 
@@ -141,7 +143,8 @@ const Page: React.FC = () => {
                   ${tw`px-2 py-1 text-sm leading-none`}
                 }
               `,
-            ]}>
+            ]}
+          >
             <Input
               type="number"
               required
@@ -160,7 +163,8 @@ const Page: React.FC = () => {
         isOpen={!!result}
         onClose={() => {
           setResult('')
-        }}>
+        }}
+      >
         {({ onClose }) => (
           <ModalWrapper>
             <ModalHeader title={t('scripting.result')} onClose={onClose} />
@@ -169,7 +173,8 @@ const Page: React.FC = () => {
                 tw="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
                 css={css`
                   min-height: 7rem;
-                `}>
+                `}
+              >
                 {result}
               </pre>
             </div>

@@ -39,7 +39,8 @@ const NetworkErrorModal: React.FC<NetworkErrorModalProps> = ({
                 <Button
                   onClick={() => {
                     window.location.reload()
-                  }}>
+                  }}
+                >
                   {t('common.reload_window_retry')}
                 </Button>
               ) : (

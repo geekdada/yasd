@@ -150,7 +150,8 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
                     <a
                       href={`https://ip.sb/ip/${req.remoteAddress}`}
                       target="_blank"
-                      rel="noreferrer noopener">
+                      rel="noreferrer noopener"
+                    >
                       <Search
                         tw="inline mr-1 w-3 h-3"
                         css={css`
@@ -180,7 +181,8 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
                 tw="font-mono text-xs text-gray-600 leading-tight p-3 whitespace-pre-wrap break-words"
                 css={css`
                   min-height: 7rem;
-                `}>
+                `}
+              >
                 {req.notes && req.notes.join('\n')}
               </pre>
             </DataGroup>
@@ -189,7 +191,8 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
               <DataGroup title="Action">
                 <div
                   tw="text-red-500 p-3 cursor-pointer hover:bg-gray-200"
-                  onClick={() => killRequest(req.id)}>
+                  onClick={() => killRequest(req.id)}
+                >
                   {t('requests.kill_connection_button_title')}...
                 </div>
               </DataGroup>
@@ -202,7 +205,8 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, onClose }) => {
                 tw="font-mono text-xs text-gray-600 leading-tight p-3 whitespace-pre-wrap break-words"
                 css={css`
                   min-height: 7rem;
-                `}>
+                `}
+              >
                 {req.requestHeader || ''}
               </pre>
             </DataGroup>

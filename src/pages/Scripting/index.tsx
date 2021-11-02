@@ -89,7 +89,8 @@ const Page: React.FC = () => {
                     `,
                   ]}
                   title={t('scripting.open_script')}
-                  onClick={() => openUrl(script.path)}>
+                  onClick={() => openUrl(script.path)}
+                >
                   <div tw="flex-1">
                     <div tw="truncate leading-normal text-gray-700">
                       {script.name}
@@ -106,7 +107,8 @@ const Page: React.FC = () => {
                         size="kilo"
                         isLoading={isLoading === index}
                         loadingLabel={t('scripting.running')}
-                        tw="px-3 py-3 text-sm leading-tight">
+                        tw="px-3 py-3 text-sm leading-tight"
+                      >
                         {t('scripting.run_script_button_title')}
                       </LoadingButton>
                     )}
@@ -121,7 +123,8 @@ const Page: React.FC = () => {
         <Button
           variant="tertiary"
           size="kilo"
-          onClick={() => history.push('/scripting/evaluate')}>
+          onClick={() => history.push('/scripting/evaluate')}
+        >
           {t('scripting.debug_script_button_title')}
         </Button>
       </div>
@@ -130,7 +133,8 @@ const Page: React.FC = () => {
         isOpen={!!evaluateResult}
         onClose={() => {
           setEvaluateResult(undefined)
-        }}>
+        }}
+      >
         {({ onClose }) => (
           <ModalWrapper>
             <ModalHeader title={t('scripting.result')} onClose={onClose} />
@@ -139,7 +143,8 @@ const Page: React.FC = () => {
                 tw="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
                 css={css`
                   min-height: 7rem;
-                `}>
+                `}
+              >
                 {evaluateResult}
               </pre>
             </div>

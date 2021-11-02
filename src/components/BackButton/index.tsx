@@ -17,7 +17,8 @@ const BackButton: React.FC = () => {
       tw="w-8 h-8 mr-3 self-center"
       css={css`
         padding: 0.3rem;
-      `}>
+      `}
+    >
       <ChevronLeft />
     </IconButton>
   )

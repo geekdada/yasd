@@ -1,9 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import { find } from 'lodash-es'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { ThemeProvider } from 'emotion-theming'
-import { light } from '@sumup/design-tokens'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   Switch,
   Route,
@@ -180,7 +178,8 @@ const App: React.FC = () => {
           }
         },
         refreshWhenOffline: true,
-      }}>
+      }}
+    >
       <ScrollToTop />
       <ToastContainer />
       <NetworkErrorModal

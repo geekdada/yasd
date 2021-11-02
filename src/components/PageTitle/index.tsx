@@ -44,12 +44,14 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
         isSticky ? tw`sticky top-0` : '',
         tw`flex items-center justify-between shadow bg-white z-10 px-3 py-3`,
         css``,
-      ]}>
+      ]}
+    >
       <div
         tw="flex items-center"
         css={css`
           padding-left: env(safe-area-inset-left);
-        `}>
+        `}
+      >
         <BackButton />
         <div>{props.title}</div>
       </div>
@@ -63,7 +65,8 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
             css`
               margin-right: env(safe-area-inset-right);
             `,
-          ]}>
+          ]}
+        >
           <Spinner css={[tw`w-6 h-6`, isAutoRefresh && tw`animate-spin`]} />
         </div>
       )}

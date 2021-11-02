@@ -22,7 +22,8 @@ const FixedFullscreenContainer: React.FC<{
               padding-bottom: env(safe-area-inset-bottom);
             `
           : '',
-      ]}>
+      ]}
+    >
       <div tw="w-full h-full flex flex-col">{props.children}</div>
     </div>
   )

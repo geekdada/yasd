@@ -24,7 +24,8 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
       css={[
         props.onClick &&
           tw`cursor-pointer transform transition-transform duration-100 active:scale-95`,
-      ]}>
+      ]}
+    >
       <Card
         css={[
           css`
@@ -33,7 +34,8 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
           `,
           tw`p-4 border-none shadow-sm bg-gray-100 transition-colors duration-150 ease-in-out`,
           props.onClick && tw`hover:bg-gray-200 active:bg-gray-200`,
-        ]}>
+        ]}
+      >
         {props.children}
       </Card>
     </div>

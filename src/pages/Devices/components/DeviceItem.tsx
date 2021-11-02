@@ -129,7 +129,8 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
             <div
               css={css`
                 white-space: nowrap;
-              `}>
+              `}
+            >
               {t('devices.waiting')}
             </div>
           ) : (

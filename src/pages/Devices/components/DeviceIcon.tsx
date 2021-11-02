@@ -20,7 +20,8 @@ const DeviceIcon = ({ icon }: DeviceIconProps): JSX.Element => {
         width: 45px;
         height: 45px;
         margin-right: 0.7rem;
-      `}>
+      `}
+    >
       <Image
         src={`${surgeHost}/resources/devices-icon?id=${icon || 'default'}`}
         alt=""

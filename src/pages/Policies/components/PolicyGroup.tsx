@@ -161,12 +161,14 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
 
         <Heading
           size="kilo"
-          tw="flex flex-row justify-between items-center mb-3 md:mb-4">
+          tw="flex flex-row justify-between items-center mb-3 md:mb-4"
+        >
           <div>{policyGroupName}</div>
           <IconButton
             size="kilo"
             label={t('policies.test_policy')}
-            onClick={() => testPolicy(policyGroupName)}>
+            onClick={() => testPolicy(policyGroupName)}
+          >
             {isTesting ? (
               <Spinner tw="text-gray-700 w-5 h-5" />
             ) : (
@@ -186,13 +188,15 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
                     : '',
                 ]}
                 key={policy.name}
-                onClick={() => selectPolicy(policy.name)}>
+                onClick={() => selectPolicy(policy.name)}
+              >
                 <div tw="text-sm md:text-base leading-snug">{policy.name}</div>
                 <div
                   css={[
                     tw`flex flex-row justify-between mt-2 text-xs text-gray-700`,
                     selection === policy.name ? tw`text-white` : '',
-                  ]}>
+                  ]}
+                >
                   <div tw="text-center bg-gray-400 text-gray-700 px-1 rounded">
                     {policy.typeDescription.toUpperCase()}
                   </div>
@@ -201,7 +205,8 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
                       css={[
                         tw`rounded px-1`,
                         latencyResultStyle(latencies[policy.name]),
-                      ]}>
+                      ]}
+                    >
                       {latencies[policy.name] + 'ms'}
                     </LatencyResult>
                   )}
@@ -210,7 +215,8 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
                       css={[
                         tw`rounded px-1`,
                         latencyResultStyle(latencies[policy.name]),
-                      ]}>
+                      ]}
+                    >
                       Failed
                     </LatencyResult>
                   )}

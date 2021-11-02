@@ -63,7 +63,8 @@ const SetHostModal: React.FC = () => {
                 return (
                   <div
                     key={profile.id}
-                    tw="flex flex-row items-center hover:bg-gray-200">
+                    tw="flex flex-row items-center hover:bg-gray-200"
+                  >
                     {profile.id === currentProfile?.id && (
                       <Badge variant="success" tw="ml-3 text-xs md:text-sm">
                         {t('landing.current')}
@@ -85,7 +86,8 @@ const SetHostModal: React.FC = () => {
               <Button
                 size="kilo"
                 variant="primary"
-                onClick={() => history.replace('/')}>
+                onClick={() => history.replace('/')}
+              >
                 {t('landing.add_new_host')}
               </Button>
             </div>

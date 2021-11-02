@@ -42,7 +42,8 @@ const ActionsModal = ({
             stretch
             key={action.id}
             onClick={action.onClick}
-            variant="primary">
+            variant="primary"
+          >
             {t(action.title)}
           </Button>
         ))}

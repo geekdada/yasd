@@ -162,7 +162,8 @@ const Page: React.FC = () => {
     <div
       css={css`
         padding-bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
-      `}>
+      `}
+    >
       <Header />
 
       <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
@@ -201,7 +202,8 @@ const Page: React.FC = () => {
               variant="primary"
               stretch
               isLoading={isLoading}
-              loadingLabel={t('landing.is_loading')}>
+              loadingLabel={t('landing.is_loading')}
+            >
               {t('landing.confirm')}
             </LoadingButton>
           </div>

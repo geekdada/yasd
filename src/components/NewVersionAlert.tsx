@@ -43,7 +43,8 @@ const NewVersionAlert: React.FC = () => {
       isOpen={isOpen}
       onClose={() => {
         setIsOpen(false)
-      }}>
+      }}
+    >
       {({ onClose }) => (
         <ModalWrapper>
           <ModalHeader title={t('new_version_alert.title')} onClose={onClose} />

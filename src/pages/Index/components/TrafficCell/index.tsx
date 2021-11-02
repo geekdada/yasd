@@ -20,7 +20,8 @@ const LineChart = loadable(() => import('./components/LineChart'), {
       tw="flex items-center justify-center text-sm text-gray-500"
       css={css`
         height: 200px;
-      `}>
+      `}
+    >
       Loading...
     </div>
   ),
@@ -147,7 +148,8 @@ const Index: React.FC = () => {
               line-height: 67px;
               text-align: center;
             `,
-          ]}>
+          ]}
+        >
           {t('common.is_loading')}...
         </div>
       )}
