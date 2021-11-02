@@ -10,6 +10,8 @@ export interface PolicyGroups {
 export interface Policy {
   name: string
   typeDescription: string
+  isGroup?: boolean
+  lineHash?: string
 }
 
 export interface SelectPolicyTestResult {
@@ -199,4 +201,13 @@ export interface DHCPDevice {
 
 export interface DevicesResult {
   devices: ReadonlyArray<DeviceInfo>
+}
+
+export interface BenchmarkResult {
+  lastTestScoreInMS: number
+  lastTestDate: number
+}
+
+export interface PolicyBenchmarkResults {
+  [key: string]: BenchmarkResult
 }

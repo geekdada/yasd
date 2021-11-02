@@ -12,7 +12,7 @@ import { find } from 'lodash-es'
 import { useHistory } from 'react-router-dom'
 
 import ChangeLanguage from '../../components/ChangeLanguage'
-import useSetState from '../../hooks/use-set-state'
+import { useSetState } from '../../hooks'
 import { useProfile, useProfileDispatch } from '../../models/profile'
 import { Profile } from '../../types'
 import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'

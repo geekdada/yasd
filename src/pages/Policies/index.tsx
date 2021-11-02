@@ -14,6 +14,7 @@ import PageContainer from '../../components/PageContainer'
 import { Policies, PolicyGroups } from '../../types'
 import fetcher from '../../utils/fetcher'
 import PolicyGroup from './components/PolicyGroup'
+import { usePolicyPerformance } from './usePolicyPerformance'
 
 const PolicyNameItem = styled.div`
   ${tw`flex-shrink-0 bg-gray-200 rounded-md px-3 py-2 mr-3 overflow-hidden cursor-pointer hover:bg-gray-300 transition-colors ease-in-out duration-200`}
@@ -34,6 +35,7 @@ const Page: React.FC = () => {
     return createRef<HTMLDivElement>()
   })
   const headerRef = useRef<HTMLDivElement>(null)
+  const { data: policyPerformanceResults } = usePolicyPerformance()
 
   const getRefTop = (ref: RefObject<HTMLDivElement>): number => {
     const ele = ref.current
@@ -107,6 +109,7 @@ const Page: React.FC = () => {
                 <PolicyGroup
                   policyGroupName={policy}
                   policyGroup={policyGroups[policy]}
+                  policyPerformanceResults={policyPerformanceResults}
                 />
               </div>
             )

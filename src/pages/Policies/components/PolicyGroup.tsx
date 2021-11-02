@@ -13,12 +13,15 @@ import {
   Policy,
   SelectPolicyTestResult,
   UrlTestPolicyTestResult,
+  PolicyBenchmarkResults,
 } from '../../../types'
 import fetcher from '../../../utils/fetcher'
+import { mutatePolicyPerformanceResults } from '../usePolicyPerformance'
 
 interface PolicyGroupProps {
   policyGroupName: string
   policyGroup: Policy[]
+  policyPerformanceResults?: PolicyBenchmarkResults
 }
 
 const LoadingOverlay = styled.div`
@@ -42,6 +45,7 @@ const latencyResultStyle = (latency: number) => {
 const PolicyGroup: React.FC<PolicyGroupProps> = ({
   policyGroupName,
   policyGroup,
+  policyPerformanceResults,
 }) => {
   const { t } = useTranslation()
   const [isInViewport, targetRef] = useIsInViewport({ threshold: 10 })
@@ -97,6 +101,11 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
           [name: string]: number
         } = {}
 
+        if (policyPerformanceResults) {
+          mutatePolicyPerformanceResults()
+          return
+        }
+
         if (res.winner) {
           const testResult = (res as UrlTestPolicyTestResult).results[0].data
           Object.keys(testResult).forEach((key) => {
@@ -135,6 +144,31 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
   }, [policyGroupName])
 
   useEffect(() => {
+    if (!policyPerformanceResults) {
+      return
+    }
+
+    const latencies: {
+      [name: string]: number
+    } = {}
+
+    policyGroup.forEach((policy) => {
+      Object.keys(policyPerformanceResults).forEach((key) => {
+        if (policy.lineHash === key) {
+          latencies[policy.name] =
+            policyPerformanceResults[key].lastTestScoreInMS === 0
+              ? -1
+              : Number(
+                  policyPerformanceResults[key].lastTestScoreInMS.toFixed(0),
+                )
+        }
+      })
+    })
+
+    setLatencies(latencies)
+  }, [policyGroup, policyPerformanceResults])
+
+  useEffect(() => {
     let isMounted = true
 
     if (isInViewport && !selection) {
@@ -152,7 +186,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
 
   return (
     <div ref={targetRef}>
-      <Card shadow="single" tw="relative overflow-hidden px-3 md:px-4">
+      <Card tw="relative overflow-hidden px-3 md:px-4">
         {isLoading && (
           <LoadingOverlay>
             <Spinner />

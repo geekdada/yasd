@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
-const useSetState = <State = any>(initialState: State | (() => State)) => {
+export const useSetState = <State = any>(
+  initialState: State | (() => State),
+) => {
   const [state, setState] = useState<State>(initialState)
 
   const getState = async (): Promise<State> => {
@@ -21,5 +23,3 @@ const useSetState = <State = any>(initialState: State | (() => State)) => {
     typeof getState,
   ]
 }
-
-export default useSetState

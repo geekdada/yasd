@@ -1,9 +1,8 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React from 'react'
-import gte from 'semver/functions/gte'
 
-import { usePlatform, usePlatformVersion } from '../models/profile'
+import { useVersionSupport } from '../hooks'
 
 interface VersionSupportProps {
   macos?: string
@@ -15,16 +14,9 @@ const VersionSupport: React.FC<VersionSupportProps> = ({
   ios,
   children,
 }) => {
-  const platform = usePlatform()
-  const platformVersion = usePlatformVersion()
+  const isSupported = useVersionSupport({ macos, ios })
 
-  if (!platform || !platformVersion) return null
-
-  if (macos && platform === 'macos' && gte(platformVersion, macos)) {
-    return <React.Fragment>{children}</React.Fragment>
-  }
-
-  if (ios && platform === 'ios' && gte(platformVersion, ios)) {
+  if (isSupported) {
     return <React.Fragment>{children}</React.Fragment>
   }
 

@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 
-import useSetState from './use-set-state'
+import { useSetState } from './useSetState'
 
 describe('useSetState', () => {
   type State = { a: string; b: string }

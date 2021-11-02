@@ -109,10 +109,7 @@ const Page: React.FC = () => {
         >
           {profile && (
             <div tw="w-full flex justify-between items-center">
-              <div
-                tw="w-2/3"
-                onDoubleClick={() => window.location.reload(true)}
-              >
+              <div tw="w-2/3" onDoubleClick={() => window.location.reload()}>
                 <HostInfo />
               </div>
 
