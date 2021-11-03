@@ -1,7 +1,8 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import { find } from 'lodash-es'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Switch,
   Route,
@@ -14,7 +15,7 @@ import tw from 'twin.macro'
 import styled from '@emotion/styled/macro'
 import store from 'store2'
 import ReactGA from 'react-ga'
-import { ToastContainer as OriginalToastContainer } from 'react-toastify'
+import { toast, ToastContainer as OriginalToastContainer } from 'react-toastify'
 import { SWRConfig } from 'swr'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -22,7 +23,11 @@ import FullLoading from './components/FullLoading'
 import NewVersionAlert from './components/NewVersionAlert'
 import ScrollToTop from './components/ScrollToTop'
 import NetworkErrorModal from './components/NetworkErrorModal'
-import { useProfile, useProfileDispatch } from './models/profile'
+import {
+  usePlatformVersion,
+  useProfile,
+  useProfileDispatch,
+} from './models/profile'
 import {
   RegularLanding as LandingPage,
   SurgeLanding as SurgeLandingPage,
@@ -31,7 +36,12 @@ import IndexPage from './pages/Index'
 import PageLayout from './components/PageLayout'
 import { Profile } from './types'
 import { isRunInSurge } from './utils'
-import { ExistingProfiles, LastUsedProfile } from './utils/constant'
+import {
+  ExistingProfiles,
+  LastUsedLanguage,
+  LastUsedProfile,
+} from './utils/constant'
+import { httpClient } from './utils/fetcher'
 
 const PoliciesPage = loadable(() => import('./pages/Policies'), {
   fallback: <FullLoading />,
@@ -121,12 +131,15 @@ if (
 }
 
 const App: React.FC = () => {
+  const { t, i18n } = useTranslation()
   const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false)
   const location = useLocation()
   const history = useHistory()
   const profileDispatch = useProfileDispatch()
   const profile = useProfile()
   const [hasInit, setHasInit] = useState(false)
+  const isCurrentVersionFetched = useRef(true)
+  const platformVersion = usePlatformVersion()
 
   const onCloseApplication = useCallback(() => {
     if (isRunInSurge()) {
@@ -165,6 +178,48 @@ const App: React.FC = () => {
   useEffect(() => {
     ReactGA.pageview(location.pathname)
   }, [location.pathname])
+
+  useEffect(() => {
+    const language: string | null = store.get(LastUsedLanguage)
+
+    if (language && language !== i18n.language) {
+      i18n.changeLanguage(language)
+    }
+  }, [i18n])
+
+  useEffect(() => {
+    if (
+      !profile?.platform ||
+      !isCurrentVersionFetched.current ||
+      location.pathname === '/'
+    ) {
+      return
+    }
+
+    httpClient
+      .request({
+        url: '/environment',
+        method: 'GET',
+      })
+      .then((res) => {
+        const currentPlatformVersion = res.headers['x-surge-version']
+
+        if (currentPlatformVersion !== platformVersion) {
+          profileDispatch({
+            type: 'updatePlatformVersion',
+            payload: {
+              platformVersion: currentPlatformVersion,
+            },
+          })
+        }
+
+        isCurrentVersionFetched.current = false
+      })
+      .catch((err) => {
+        console.error(err)
+        toast.error(t('common.surge_too_old'))
+      })
+  }, [location, platformVersion, profile?.platform, profileDispatch, t])
 
   return (
     <SWRConfig
