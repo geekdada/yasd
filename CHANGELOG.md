@@ -1,3 +1,19 @@
+## [1.1.2](https://github.com/geekdada/yasd/compare/v1.1.1...v1.1.2) (2021-11-03)
+
+
+### Bug Fixes
+
+* bugfix ([a3ba485](https://github.com/geekdada/yasd/commit/a3ba48567e967c735619ec75c9029a2b7dd6534b))
+
+
+### Features
+
+* allow force refresh the page in index page ([125b74d](https://github.com/geekdada/yasd/commit/125b74daea327d1c7e7850667022fb9c005a3b02))
+* remember the language choice ([7d48e43](https://github.com/geekdada/yasd/commit/7d48e434667a0a3766cd9d727dd10f2559262497))
+* update translations ([86ed610](https://github.com/geekdada/yasd/commit/86ed610ad8732e442a627d7c114e4543f9c4c6ea))
+
+
+
 ## [1.1.1](https://github.com/geekdada/yasd/compare/v1.1.0...v1.1.1) (2021-11-02)
 
 
