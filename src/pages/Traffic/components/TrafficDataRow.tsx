@@ -3,6 +3,7 @@ import { jsx } from '@emotion/core'
 import styled from '@emotion/styled/macro'
 import css from '@emotion/css/macro'
 import bytes from 'bytes'
+import { useTranslation } from 'react-i18next'
 import tw from 'twin.macro'
 import React, { useMemo, useState } from 'react'
 import { ChevronRight } from '@sumup/icons'
@@ -17,6 +18,7 @@ interface TrafficDataRowProps {
 }
 
 const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
+  const { t } = useTranslation()
   const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(false)
   const tcpStat = useMemo(() => {
     if (!data.statistics || !data.statistics.length) return
@@ -44,7 +46,9 @@ const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
       <DataRowMain>
         <div tw="truncate flex-1 text-sm lg:text-base">{name}</div>
         <div tw="flex items-center ml-3 text-sm lg:text-base">
-          <div>总计 {bytes(data.in + data.out)}</div>
+          <div>
+            {t('traffic.total')} {bytes(data.in + data.out)}
+          </div>
           <ChevronRight
             css={[
               tw`ml-2 w-5 h-5 transition-transform duration-200 ease-in-out`,
@@ -53,31 +57,45 @@ const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
           />
         </div>
       </DataRowMain>
+
       <Collapse isOpened={isDetailsOpen}>
         <div tw="pb-3">
           <DataRowSub>
-            <div>流量</div>
+            <div>{t('traffic.traffic')}</div>
             <div>
-              上传: {bytes(data.out)} 下载: {bytes(data.in)}
+              <span>{`${t('traffic.upload')}: ${bytes(data.out)}`}</span>
+              <span> </span>
+              <span>{`${t('traffic.download')}: ${bytes(data.in)}`}</span>
             </div>
           </DataRowSub>
           <DataRowSub>
-            <div>当前速度</div>
+            <div>{t('traffic.current_speed')}</div>
             <div>
-              上传: {bytes(data.outCurrentSpeed)}/s 下载:{' '}
-              {bytes(data.inCurrentSpeed)}/s
+              <span>{`${t('traffic.upload')}: ${bytes(
+                data.outCurrentSpeed,
+              )}/s`}</span>
+              <span> </span>
+              <span>{`${t('traffic.download')}: ${bytes(
+                data.inCurrentSpeed,
+              )}/s`}</span>
             </div>
           </DataRowSub>
           <DataRowSub>
-            <div>最高速度</div>
+            <div>{t('traffic.maximum_speed')}</div>
             <div>
-              上传: {bytes(data.outMaxSpeed)}/s 下载: {bytes(data.inMaxSpeed)}/s
+              <span>{`${t('traffic.upload')}: ${bytes(
+                data.outMaxSpeed,
+              )}/s`}</span>
+              <span> </span>
+              <span>{`${t('traffic.download')}: ${bytes(
+                data.inMaxSpeed,
+              )}/s`}</span>
             </div>
           </DataRowSub>
           {!!tcpStat && (
             <DataRowSub>
-              <div>TCP 统计</div>
-              <div>Avg. RTT {tcpStat}ms</div>
+              <div>{t('traffic.tcp_summary')}</div>
+              <div>{`${t('traffic.avg_rtt')} ${tcpStat}ms`}</div>
             </DataRowSub>
           )}
         </div>

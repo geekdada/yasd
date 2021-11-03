@@ -91,7 +91,15 @@
   },
   "traffic": {
     "start_time": "开启时间",
-    "uptime": "运行时长"
+    "uptime": "运行时长",
+    "total": "总计",
+    "traffic": "流量",
+    "upload": "上传",
+    "download": "下载",
+    "current_speed": "当前速度",
+    "maximum_speed": "最高速度",
+    "tcp_summary": "TCP 统计",
+    "avg_rtt": "平均 RTT"
   },
   "scripting": {
     "run_script_button_title": "运行",

@@ -91,7 +91,15 @@
   },
   "traffic": {
     "start_time": "Start time",
-    "uptime": "Uptime"
+    "uptime": "Uptime",
+    "total": "Total",
+    "traffic": "Traffic",
+    "upload": "Upload",
+    "download": "Download",
+    "current_speed": "Current speed",
+    "maximum_speed": "Maximum speed",
+    "tcp_summary": "TCP summary",
+    "avg_rtt": "Avg. RTT"
   },
   "scripting": {
     "run_script_button_title": "Run",
