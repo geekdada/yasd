@@ -144,3 +144,11 @@ export function unregister() {
       })
   }
 }
+
+export async function unregisterAsync() {
+  if ('serviceWorker' in navigator) {
+    return navigator.serviceWorker.ready.then((registration) => {
+      return registration.unregister()
+    })
+  }
+}

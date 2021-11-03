@@ -1,6 +1,6 @@
 import useSWR, { mutate } from 'swr'
-import { useVersionSupport } from '../../hooks'
 
+import { useVersionSupport } from '../../hooks'
 import { PolicyBenchmarkResults } from '../../types'
 import fetcher from '../../utils/fetcher'
 
@@ -9,7 +9,7 @@ export const mutatePolicyPerformanceResults = () =>
 
 export const usePolicyPerformance = () => {
   const isSupported = useVersionSupport({
-    ios: '0.0.0',
+    ios: '4.9.5',
     macos: '4.2.4',
   })
   const { data, error } = useSWR<PolicyBenchmarkResults>(

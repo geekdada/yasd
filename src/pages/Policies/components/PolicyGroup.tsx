@@ -102,12 +102,17 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
         } = {}
 
         if (policyPerformanceResults) {
-          mutatePolicyPerformanceResults()
-          return
+          return Promise.all([
+            refreshSelection().then((policy) => {
+              setSelection(policy)
+            }),
+            mutatePolicyPerformanceResults(),
+          ])
         }
 
         if (res.winner) {
           const testResult = (res as UrlTestPolicyTestResult).results[0].data
+
           Object.keys(testResult).forEach((key) => {
             const result = testResult[key]
 
@@ -115,6 +120,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
               ? Number(result.receive.toFixed(0))
               : -1
           })
+
           setSelection((res as UrlTestPolicyTestResult).winner)
         } else {
           const testResult = res as SelectPolicyTestResult
