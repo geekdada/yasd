@@ -13,7 +13,6 @@ import { useTranslation } from 'react-i18next'
 
 import ChangeLanguage from '../../components/ChangeLanguage'
 import ProfileCell from '../../components/ProfileCell'
-import Ad from '../../components/Ad'
 import { useSetState } from '../../hooks'
 import { useProfileDispatch } from '../../models/profile'
 import { Profile } from '../../types'
@@ -280,10 +279,6 @@ const Page: React.FC = () => {
           </div>
         </div>
       )}
-
-      <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto mt-10">
-        <Ad />
-      </div>
 
       <div tw="mt-10">
         <ChangeLanguage />
