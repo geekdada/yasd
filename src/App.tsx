@@ -43,6 +43,9 @@ import {
 } from './utils/constant'
 import { httpClient } from './utils/fetcher'
 
+const DashboardPage = loadable(() => import('./pages/Dashboard'), {
+  fallback: <FullLoading />,
+})
 const PoliciesPage = loadable(() => import('./pages/Policies'), {
   fallback: <FullLoading />,
 })
@@ -251,6 +254,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/home">
             <IndexPage />
+          </Route>
+          <Route exact path="/dashboard">
+            <DashboardPage />
           </Route>
           <Route exact path="/policies">
             <PoliciesPage />

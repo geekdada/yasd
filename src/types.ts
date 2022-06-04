@@ -172,6 +172,8 @@ export interface DnsResult {
 export interface DeviceInfo {
   activeConnections: number
   currentSpeed: number
+  currentInSpeed: number
+  currentOutSpeed: number
   displayIPAddress: string
   hasProxyConnection: boolean
   hasTCPConnection: boolean
