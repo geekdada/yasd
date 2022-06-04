@@ -41,6 +41,7 @@
     "logout": "Log out",
     "system_proxy": "System Proxy",
     "enhanced_mode": "Enhanced Mode",
+    "dashboard": "Dashboard",
     "policies": "Policies",
     "requests": "Requests",
     "traffic": "Traffic",

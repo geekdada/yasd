@@ -20,6 +20,10 @@ export interface MenuItem {
 
 const menu: Array<MenuItem> = [
   {
+    title: 'dashboard',
+    link: '/dashboard',
+  },
+  {
     title: 'policies',
     link: '/policies',
   },
@@ -77,13 +81,5 @@ const menu: Array<MenuItem> = [
     component: <CapabilityTile api="/features/rewrite" title="rewrite" />,
   },
 ]
-
-if (!isRunInSurge()) {
-  menu.push({
-    title: 'github',
-    subTitle: '🌟',
-    link: 'https://github.com/geekdada/yasd',
-  })
-}
 
 export default menu

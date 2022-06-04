@@ -12,7 +12,6 @@ import store from 'store2'
 
 import ChangeLanguage from '../../components/ChangeLanguage'
 import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
-import Ad from '../../components/Ad'
 import VersionSupport from '../../components/VersionSupport'
 import {
   usePlatform,
@@ -200,10 +199,6 @@ const Page: React.FC = () => {
 
           <div tw="mt-4 px-4">
             <Events />
-          </div>
-
-          <div tw="mt-4 px-4">
-            <Ad />
           </div>
 
           <div tw="mt-4 px-4">
