@@ -148,7 +148,7 @@
     "*.{js,jsx,ts,tsx}": "eslint --ext .mjs,.js,.jsx,.ts,.tsx"
   },
   "engines": {
-    "node": ">=14"
+    "node": "^16.18.0"
   },
   "snyk": true
 }
