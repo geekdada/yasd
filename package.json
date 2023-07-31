@@ -15,7 +15,7 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "pub": "np --no-publish",
     "version": "npm run changelog && git add .",
-    "snyk-protect": "snyk protect",
+    "snyk-protect": "snyk-protect",
     "prepare": "npm run snyk-protect && husky install",
     "verify-translation": "zx scripts/verify-translations.mjs"
   },
@@ -28,6 +28,7 @@
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
     "@loadable/component": "^5.14.1",
+    "@snyk/protect": "^1.1198.0",
     "@sumup/circuit-ui": "^2.2.2",
     "@sumup/collector": "^1.0.1",
     "@sumup/design-tokens": "^2.0.1",
@@ -46,7 +47,7 @@
     "@types/jest": "^26.0.15",
     "@types/loadable__component": "^5.13.0",
     "@types/lodash-es": "^4.17.3",
-    "@types/node": "^14.0.0",
+    "@types/node": "^18.0.0",
     "@types/react": "^17.0.3",
     "@types/react-collapse": "^5.0.0",
     "@types/react-dom": "^17.0.3",
@@ -113,7 +114,6 @@
     "rimraf": "^3.0.2",
     "semver": "^7.3.2",
     "smoothscroll-polyfill": "^0.4.4",
-    "snyk": "^1.511.0",
     "store2": "^2.12.0",
     "swr": "^0.5.4",
     "tailwindcss": "^1.9.6",
@@ -148,7 +148,7 @@
     "*.{js,jsx,ts,tsx}": "eslint --ext .mjs,.js,.jsx,.ts,.tsx"
   },
   "engines": {
-    "node": "^16.18.0"
+    "node": ">=18.0.0"
   },
   "snyk": true
 }
