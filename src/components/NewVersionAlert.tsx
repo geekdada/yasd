@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@sumup/circuit-ui'
 import satisfies from 'semver/functions/satisfies'
 import store from 'store2'
 
+import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import {
   Dialog,
+  DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -40,19 +41,21 @@ const NewVersionAlert: React.FC = () => {
         setIsOpen(open)
       }}
     >
-      <DialogHeader>
-        <DialogTitle>{t('new_version_alert.title')}</DialogTitle>
-      </DialogHeader>
-      <div className="mb-3">{t('new_version_alert.message')}</div>
-      <DialogFooter>
-        <ButtonGroup>
-          <a href={versionUrl} target="_blank" rel="noreferrer">
-            <Button variant="primary" onClick={() => setIsOpen(false)}>
-              {t('common.see')}
-            </Button>
-          </a>
-        </ButtonGroup>
-      </DialogFooter>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t('new_version_alert.title')}</DialogTitle>
+        </DialogHeader>
+        <div className="mb-3">{t('new_version_alert.message')}</div>
+        <DialogFooter>
+          <ButtonGroup>
+            <a href={versionUrl} target="_blank" rel="noreferrer">
+              <Button onClick={() => setIsOpen(false)}>
+                {t('common.see')}
+              </Button>
+            </a>
+          </ButtonGroup>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   )
 }

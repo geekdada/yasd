@@ -1,23 +1,29 @@
-import React, { MouseEvent, KeyboardEvent, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm, Controller, useFormState } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import { ButtonGroup, Input, Toggle, Headline } from '@sumup/circuit-ui'
+import { ButtonGroup, Input, Toggle } from '@sumup/circuit-ui'
 import { to } from 'await-to-js'
-import isIP from 'is-ip'
+import { isIP } from 'is-ip'
 import { mutate } from 'swr'
 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { DHCPDevice } from '@/types'
 import fetcher from '@/utils/fetcher'
 import { getValidationHint } from '@/utils/validation'
 
-interface DeviceSettingsModalProps {
+type DeviceSettingsModalProps = {
   title: string
   dhcpDevice: DHCPDevice
-  onClose: (event?: MouseEvent | KeyboardEvent) => void
-}
+  onClose: () => void
+} & Omit<React.ComponentPropsWithoutRef<typeof Dialog>, 'children'>
 
-interface FormData {
+type FormData = {
   name: string
   address: string
   shouldHandledBySurge: boolean
@@ -27,6 +33,7 @@ const DeviceSettingsModal = ({
   title,
   dhcpDevice,
   onClose,
+  ...props
 }: DeviceSettingsModalProps): JSX.Element => {
   const {
     register,
@@ -101,78 +108,82 @@ const DeviceSettingsModal = ({
   }
 
   return (
-    <div>
-      <Headline as="h2" size="two">{`${t(
-        'devices.modify',
-      )} ${title}`}</Headline>
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="pb-5">
-          <Input
-            invalid={!!errors?.name}
-            disabled={isLoading}
-            validationHint={getValidationHint(
-              {
-                required: t('devices.err_required'),
-              },
-              errors?.name,
-            )}
-            label={t('devices.name')}
-            as="input"
-            defaultValue={dhcpDevice.displayName}
-            {...register('name', { required: true })}
-          />
-          <Input
-            invalid={!!errors?.address}
-            disabled={isLoading}
-            validationHint={getValidationHint(
-              {
-                required: t('devices.err_required'),
-                isIP: t('devices.err_not_ip'),
-              },
-              errors?.address,
-            )}
-            label={t('devices.address')}
-            as="input"
-            defaultValue={dhcpDevice.assignedIP || dhcpDevice.currentIP}
-            {...register('address', {
-              required: true,
-              validate: {
-                isIP: (val) => isIP(val),
-              },
-            })}
-          />
-          <Controller
-            name="shouldHandledBySurge"
-            control={control}
-            render={({ field }) => (
-              <Toggle
-                disabled={isLoading}
-                label={t('devices.handled_by_surge')}
-                checkedLabel="on"
-                uncheckedLabel="off"
-                checked={field.value}
-                onChange={() => field.onChange(!field.value)}
-              />
-            )}
-          />
-        </div>
+    <Dialog {...props}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{`${t('devices.modify')} ${title}`}</DialogTitle>
+        </DialogHeader>
 
         <div>
-          <ButtonGroup
-            align="right"
-            actions={{
-              primary: {
-                children: t('common.save'),
-                isLoading,
-                as: 'submit',
-                loadingLabel: t('common.is_loading'),
-              },
-            }}
-          />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="pb-5">
+              <Input
+                invalid={!!errors?.name}
+                disabled={isLoading}
+                validationHint={getValidationHint(
+                  {
+                    required: t('devices.err_required'),
+                  },
+                  errors?.name,
+                )}
+                label={t('devices.name')}
+                as="input"
+                defaultValue={dhcpDevice.displayName}
+                {...register('name', { required: true })}
+              />
+              <Input
+                invalid={!!errors?.address}
+                disabled={isLoading}
+                validationHint={getValidationHint(
+                  {
+                    required: t('devices.err_required'),
+                    isIP: t('devices.err_not_ip'),
+                  },
+                  errors?.address,
+                )}
+                label={t('devices.address')}
+                as="input"
+                defaultValue={dhcpDevice.assignedIP || dhcpDevice.currentIP}
+                {...register('address', {
+                  required: true,
+                  validate: {
+                    isIP: (val) => isIP(val),
+                  },
+                })}
+              />
+              <Controller
+                name="shouldHandledBySurge"
+                control={control}
+                render={({ field }) => (
+                  <Toggle
+                    disabled={isLoading}
+                    label={t('devices.handled_by_surge')}
+                    checkedLabel="checked"
+                    uncheckedLabel="unchecked"
+                    checked={field.value}
+                    onChange={() => field.onChange(!field.value)}
+                  />
+                )}
+              />
+            </div>
+
+            <div>
+              <ButtonGroup
+                align="right"
+                actions={{
+                  primary: {
+                    children: t('common.save'),
+                    isLoading,
+                    as: 'submit',
+                    loadingLabel: t('common.is_loading'),
+                  },
+                }}
+              />
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+      </DialogContent>
+    </Dialog>
   )
 }
 

@@ -1,5 +1,3 @@
-import { basename } from 'path'
-
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
@@ -9,6 +7,7 @@ import styled from '@emotion/styled'
 import { Search } from '@sumup/icons'
 import bytes from 'bytes'
 import dayjs from 'dayjs'
+import { basename } from 'path-browserify'
 import { mutate } from 'swr'
 import tw from 'twin.macro'
 

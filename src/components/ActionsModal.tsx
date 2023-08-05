@@ -1,26 +1,39 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Headline } from '@sumup/circuit-ui'
+import { Button } from '@sumup/circuit-ui'
 
-interface Action {
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+
+export type Action = {
   id: number | string
   title: string
   onClick: () => void
 }
 
-interface ActionsModalProps {
+type ActionsModalProps = {
   title: string
   actions: ReadonlyArray<Action>
-}
+} & Omit<React.ComponentPropsWithoutRef<typeof Dialog>, 'children'>
 
-const ActionsModal = ({ title, actions }: ActionsModalProps): JSX.Element => {
+const ActionsModal = ({
+  title,
+  actions,
+  ...props
+}: ActionsModalProps): JSX.Element => {
   const { t } = useTranslation()
 
   return (
-    <div>
-      <Headline as="h2" size="two">
-        {title}
-      </Headline>
+    <Dialog {...props}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+      </DialogContent>
 
       <div className="space-y-5 pb-5">
         {actions.map((action) => (
@@ -34,7 +47,7 @@ const ActionsModal = ({ title, actions }: ActionsModalProps): JSX.Element => {
           </Button>
         ))}
       </div>
-    </div>
+    </Dialog>
   )
 }
 

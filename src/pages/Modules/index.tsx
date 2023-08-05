@@ -58,9 +58,9 @@ const Page: React.FC = () => {
                 </div>
                 <div className="flex items-center">
                   <Toggle
-                    label=""
-                    checkedLabel="on"
-                    uncheckedLabel="off"
+                    label="toggle"
+                    checkedLabel="checked"
+                    uncheckedLabel="unchecked"
                     disabled={isLoading}
                     checked={isChecked(mod)}
                     onChange={() => toggle(mod, !isChecked(mod))}

@@ -1,67 +1,60 @@
 import bytes from 'bytes'
 import { ChartOptions } from 'chart.js'
+import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm'
 
 export const commonChartOptions: ChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
-  responsiveAnimationDuration: 0,
-  animation: {
-    duration: 500,
-  },
-  title: {
-    display: false,
-  },
-  legend: {
-    display: true,
-    position: 'bottom',
-    labels: {
-      fontColor: '#ccc',
-      boxWidth: 20,
+  plugins: {
+    title: {
+      display: false,
     },
-  },
-  tooltips: {
-    enabled: false,
+    legend: {
+      display: true,
+      position: 'bottom',
+      labels: {
+        color: '#ccc',
+        boxWidth: 20,
+      },
+    },
+    tooltip: {
+      enabled: false,
+    },
   },
   hover: {
     mode: 'nearest',
     intersect: true,
-    animationDuration: 0,
+  },
+  animation: {
+    duration: 500,
   },
   scales: {
-    xAxes: [
-      {
-        display: false,
-        type: 'time',
-        distribution: 'series',
-        gridLines: {
-          display: false,
-          drawTicks: false,
-        },
-        ticks: {
-          autoSkip: false,
-        },
+    x: {
+      type: 'timeseries',
+      display: false,
+      ticks: {
+        autoSkip: false,
       },
-    ],
-    yAxes: [
-      {
+    },
+    y: {
+      display: true,
+      beginAtZero: true,
+      grid: {
         display: true,
-        gridLines: {
-          display: true,
-          color: '#c2c2c2',
-          borderDash: [3, 6],
-          drawBorder: false,
-          drawTicks: false,
-        },
-        ticks: {
-          callback(value: number): string {
-            return bytes(value, { decimalPlaces: 0 }) + '/s '
-          },
-          beginAtZero: true,
-          maxTicksLimit: 4,
-          autoSkip: false,
-        },
+        color: '#c2c2c2',
+        drawTicks: false,
       },
-    ],
+      border: {
+        dash: [3, 6],
+        display: false,
+      },
+      ticks: {
+        callback(value): string {
+          return bytes(value as number, { decimalPlaces: 0 }) + '/s '
+        },
+        maxTicksLimit: 4,
+      },
+    },
   },
 }
 

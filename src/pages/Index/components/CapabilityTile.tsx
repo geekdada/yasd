@@ -57,7 +57,7 @@ const CapabilityTile: React.FC<CapabilityTileProps> = ({
 
       <MenuTileContent className="flex justify-end">
         <Toggle
-          label=""
+          label="toggle"
           checkedLabel={t('common.on')}
           uncheckedLabel={t('common.off')}
           checked={capability?.enabled}

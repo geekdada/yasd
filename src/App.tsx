@@ -229,42 +229,21 @@ const App: React.FC = () => {
       <PageLayout>
         <Suspense fallback={<FullLoading />}>
           <Routes>
-            <Route path="/">
-              {isRunInSurge() ? <SurgeLandingPage /> : <LandingPage />}
-            </Route>
-            <Route path="/home">
-              <IndexPage />
-            </Route>
-            <Route path="/policies">
-              <PoliciesPage />
-            </Route>
-            <Route path="/requests">
-              <RequestsPage />
-            </Route>
-            <Route path="/traffic">
-              <TrafficPage />
-            </Route>
-            <Route path="/modules">
-              <ModulesPage />
-            </Route>
-            <Route path="/scripting">
-              <ScriptingPage />
-            </Route>
-            <Route path="/scripting/evaluate">
-              <EvaluatePage />
-            </Route>
-            <Route path="/dns">
-              <DnsPage />
-            </Route>
-            <Route path="/devices">
-              <DevicesPage />
-            </Route>
-            <Route path="/profiles/current">
-              <ProfilePage />
-            </Route>
-            <Route path="*">
-              <Navigate to="/" replace />
-            </Route>
+            <Route
+              path="/"
+              element={isRunInSurge() ? <SurgeLandingPage /> : <LandingPage />}
+            />
+            <Route path="/home" element={<IndexPage />} />
+            <Route path="/policies" element={<PoliciesPage />} />
+            <Route path="/requests" element={<RequestsPage />} />
+            <Route path="/traffic" element={<TrafficPage />} />
+            <Route path="/modules" element={<ModulesPage />} />
+            <Route path="/scripting" element={<ScriptingPage />} />
+            <Route path="/scripting/evaluate" element={<EvaluatePage />} />
+            <Route path="/dns" element={<DnsPage />} />
+            <Route path="/devices" element={<DevicesPage />} />
+            <Route path="/profiles/current" element={<ProfilePage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
       </PageLayout>

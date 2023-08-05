@@ -1,27 +1,27 @@
-import React, { MouseEventHandler } from 'react'
+import React from 'react'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { Card, Headline } from '@sumup/circuit-ui'
 import tw from 'twin.macro'
 
-import { cn } from '../../../utils/shadcn'
+import { cn } from '@/utils/shadcn'
 
 interface MenuTileProps {
   children: React.ReactNode
-  onClick?: MouseEventHandler
+  onClick?: () => void
   link?: string
 }
 
 const MenuTile: React.FC<MenuTileProps> = (props) => {
-  const handleClick: MouseEventHandler = (e) => {
+  const handleClick = () => {
     if (props.onClick) {
-      props.onClick(e)
+      props.onClick()
     }
   }
 
   return (
     <div
-      onClick={handleClick}
+      onClick={() => handleClick()}
       css={[
         props.onClick &&
           tw`cursor-pointer transform transition-transform duration-100 active:scale-95`,

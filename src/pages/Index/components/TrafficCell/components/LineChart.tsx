@@ -1,84 +1,80 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Chart, { ChartPoint } from 'chart.js'
+import { Chart } from 'chart.js/auto'
 import dayjs from 'dayjs'
-import get from 'lodash-es/get'
-import set from 'lodash-es/set'
+// import get from 'lodash-es/get'
+// import set from 'lodash-es/set'
 
 import { chartStyles, commonChartOptions } from '../chart-config'
-import { REFRESH_RATE } from '../index'
-
-const CHART_SIZE = 30
+import { REFRESH_RATE, CHART_SIZE } from '../constants'
+import { ChartPoint } from '../types'
 
 interface LineChartProps {
-  id?: string
+  id: string
   newDatasets: Array<{ data: ChartPoint[]; label: string }>
 }
 
 const LineChart: React.FC<LineChartProps> = (props) => {
-  const chartRef = useRef<HTMLCanvasElement>(null)
-  const [chart, setChart] = useState<Chart>()
+  const chartRef = useRef<HTMLCanvasElement | null>(null)
+  const [chart, setChart] = useState<Chart | null>(null)
 
   useEffect(() => {
-    if (!chartRef.current) return
+    let chartInstance: Chart | null = null
 
-    const c = new Chart(chartRef.current, {
-      type: 'line',
-      options: commonChartOptions,
-      data: {
-        datasets: [
-          {
-            ...chartStyles.up,
-            label: 'Upload',
-            data: getInitialData(),
-          },
-          {
-            ...chartStyles.down,
-            label: 'Download',
-            data: getInitialData(),
-          },
-        ],
-      },
-    })
+    if (chartRef.current) {
+      chartInstance = new Chart(chartRef.current, {
+        type: 'line',
+        options: commonChartOptions,
+        data: {
+          datasets: [
+            {
+              ...chartStyles.up,
+              label: 'Upload',
+              data: getInitialData(),
+            },
+            {
+              ...chartStyles.down,
+              label: 'Download',
+              data: getInitialData(),
+            },
+          ],
+        },
+      }) as Chart
 
-    setChart(c)
+      setChart(chartInstance)
+    }
 
     return () => {
-      if (c) {
-        c.destroy()
+      if (chartInstance) {
+        chartInstance.destroy()
       }
+      setChart(null)
     }
   }, [])
 
   useEffect(() => {
-    if (chart) {
-      props.newDatasets.forEach((newDataset, idx) => {
-        if (chart.data.datasets) {
-          const dataset = chart.data.datasets[idx].data as ChartPoint[]
+    if (!chart) {
+      return
+    }
 
-          newDataset.data.forEach((newCp) => {
-            if (dataset.findIndex((cp) => cp.x === newCp.x) < 0) {
-              dataset.push(newCp)
-            }
-          })
+    props.newDatasets.forEach((newDataset, idx) => {
+      if (chart.data.datasets) {
+        const dataset = chart.data.datasets[idx].data as ChartPoint[]
 
-          if (dataset.length >= CHART_SIZE) {
-            set(
-              chart,
-              'config.options.scales.xAxes[0].ticks.min',
-              get(
-                chart,
-                `data.datasets[${idx}].data[${dataset.length - CHART_SIZE}].x`,
-              ),
-            )
+        newDataset.data.forEach((newCp) => {
+          if (dataset.findIndex((cp) => cp.x === newCp.x) < 0) {
+            dataset.unshift(newCp)
           }
-
-          if (dataset.length >= CHART_SIZE * 2) {
-            dataset.splice(0, 20)
+          if (dataset.length > CHART_SIZE) {
+            dataset.splice(CHART_SIZE, 1)
           }
-        }
-      })
+        })
+      }
+    })
 
+    try {
       chart.update()
+    } catch (err) {
+      console.error(err)
     }
   }, [chart, props.newDatasets])
 
@@ -90,7 +86,7 @@ function getInitialData(): ChartPoint[] {
 
   for (let i = 0; i < CHART_SIZE; i++) {
     const time = dayjs()
-      .subtract((CHART_SIZE - i) * REFRESH_RATE, 'millisecond')
+      .subtract(i * REFRESH_RATE, 'millisecond')
       .toDate()
 
     result.push({ x: time, y: 0 })

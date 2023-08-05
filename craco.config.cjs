@@ -24,8 +24,10 @@ const config = {
   babel: {
     plugins: ['babel-plugin-macros', '@emotion/babel-plugin'],
     presets: [
-      '@babel/preset-react',
-      { runtime: 'automatic', importSource: '@emotion/react' },
+      [
+        '@babel/preset-react',
+        { runtime: 'automatic', importSource: '@emotion/react' },
+      ],
     ],
   },
 }

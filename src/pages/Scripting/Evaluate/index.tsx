@@ -17,20 +17,7 @@ import {
 import { EvaluateResult } from '@/types'
 import fetcher from '@/utils/fetcher'
 
-const CodeMirror = lazy(async () => {
-  const mod = await import('react-codemirror2').then((mod) => mod.Controlled)
-
-  await Promise.all([
-    // @ts-ignore
-    import('codemirror/lib/codemirror.css'),
-    // @ts-ignore
-    import('codemirror/theme/material.css'),
-    // @ts-ignore
-    import('codemirror/mode/javascript/javascript'),
-  ])
-
-  return { default: mod }
-})
+const CodeMirror = lazy(() => import('@/components/CodeMirror'))
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
@@ -84,25 +71,7 @@ const Page: React.FC = () => {
         <div className="h-full overflow-auto">
           <Suspense fallback={<CodeMirrorLoading />}>
             <CodeMirror
-              className="h-full text-xs"
-              css={[
-                css`
-                  & > .CodeMirror {
-                    height: 100%;
-                    font-family: Menlo, Monaco, Consolas, 'Liberation Mono',
-                      'Courier New', monospace;
-                  }
-                `,
-              ]}
               value={code}
-              options={{
-                mode: 'javascript',
-                theme: 'material',
-                lineNumbers: true,
-                tabSize: 2,
-                indentWithTabs: false,
-                lineWrapping: true,
-              }}
               onBeforeChange={(editor, data, value) => {
                 setCode(value)
               }}

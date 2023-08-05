@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom'
 import createCache from '@emotion/cache'
 import { CacheProvider, ThemeProvider } from '@emotion/react'
-import { ModalProvider } from '@sumup/circuit-ui'
+import { BaseStyles } from '@sumup/circuit-ui'
 import { light } from '@sumup/design-tokens'
 
 import { ProfileProvider } from './models/profile'
@@ -32,7 +32,8 @@ const AppContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
         <ReactRouter>
           <ProfileProvider>
             <ThemeProvider theme={light}>
-              <ModalProvider>{children}</ModalProvider>
+              <BaseStyles />
+              {children}
             </ThemeProvider>
           </ProfileProvider>
         </ReactRouter>

@@ -139,38 +139,38 @@ const Page: React.FC = () => {
 
   return (
     <div
+      className="space-y-6 md:space-y-10"
       css={css`
         padding-bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
       `}
     >
       <Header />
 
-      <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
+      <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto space-y-6 md:space-y-10">
         <Headline as="h2" size="two">
           {t('landing.add_new_host')}
         </Headline>
 
-        <div className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 text-sm px-4 py-3 mb-4 shadow-md">
-          <p className="leading-normal mb-2">
+        <div className="bg-blue-100 border-t-4 border-blue-500 rounded-b text-blue-900 text-sm px-4 py-3 mb-4 shadow-md space-y-4">
+          <p className="leading-normal">
             该功能仅 Surge iOS 4.4.0 和 Surge Mac 4.0.0 以上版本支持。
           </p>
-          <p className="leading-normal mb-4">
+          <p className="leading-normal">
             <a
               href="https://manual.nssurge.com/others/http-api.html#configuration"
               target="_blank"
               rel="noreferrer"
-              className="border-b border-solid border-teal-500"
+              className="border-b border-solid border-blue-500"
             >
               🔗 开启方式
             </a>
           </p>
-          <p className="leading-normal mb-2">
-            Surge Mac v4.0.6 (1280) 开始已支持开启 HTTPS API，故不再支持使用
-            yasd-helper。
-          </p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="space-y-4 md:space-y-6"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Input
             type="text"
             invalid={!!errors?.name}
@@ -244,7 +244,7 @@ const Page: React.FC = () => {
             />
           </div>
 
-          <div className="mt-6">
+          <div>
             <Button
               type="submit"
               variant="primary"
@@ -259,12 +259,12 @@ const Page: React.FC = () => {
       </div>
 
       {existingProfiles.length > 0 && (
-        <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto mt-10">
+        <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto space-y-4 md:space-y-6">
           <Headline as="h3" size="four">
             {t('landing.history')}
           </Headline>
 
-          <div className="bg-gray-100 divide-y divide-gray-200 rounded overflow-hidden">
+          <div className="bg-gray-100 divide-y divide-gray-200 rounded overflow-hidden space-y-4 md:space-y-6">
             {existingProfiles.map((profile) => {
               return (
                 <div key={profile.id} className="hover:bg-gray-200">
@@ -283,11 +283,11 @@ const Page: React.FC = () => {
         </div>
       )}
 
-      <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto mt-10">
+      <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
         <Ad />
       </div>
 
-      <div className="mt-10">
+      <div>
         <ChangeLanguage />
       </div>
     </div>
