@@ -1,22 +1,20 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
 import React, { useEffect } from 'react'
-import { Heading, Input, LoadingButton, Checkbox } from '@sumup/circuit-ui'
-import css from '@emotion/css/macro'
 import { useForm, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
+import { useNavigate } from 'react-router-dom'
+import { css } from '@emotion/react'
+import { Headline, Input, Button, Checkbox } from '@sumup/circuit-ui'
+import { find } from 'lodash-es'
 import store from 'store2'
 import { v4 as uuid } from 'uuid'
-import { find } from 'lodash-es'
-import { useHistory } from 'react-router-dom'
 
-import ChangeLanguage from '../../components/ChangeLanguage'
-import { useSetState } from '../../hooks'
-import { useProfile, useProfileDispatch } from '../../models/profile'
-import { Profile } from '../../types'
-import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
-import { getValidationHint } from '../../utils/validation'
+import ChangeLanguage from '@/components/ChangeLanguage'
+import { useSetState } from '@/hooks'
+import { useProfile, useProfileDispatch } from '@/models/profile'
+import { Profile } from '@/types'
+import { ExistingProfiles, LastUsedProfile } from '@/utils/constant'
+import { getValidationHint } from '@/utils/validation'
+
 import Header from './components/Header'
 import { useAuthData } from './hooks'
 import { SurgeFormFields } from './types'
@@ -29,7 +27,7 @@ const Page: React.FC = () => {
     useSetState<Array<Profile>>([])
   const profileDispatch = useProfileDispatch()
   const profile = useProfile()
-  const history = useHistory()
+  const navigate = useNavigate()
   const {
     getValues,
     register,
@@ -154,9 +152,9 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     if (profile) {
-      history.replace('/home')
+      navigate('/home', { replace: true })
     }
-  }, [profile, history])
+  }, [profile, navigate])
 
   return (
     <div
@@ -166,8 +164,10 @@ const Page: React.FC = () => {
     >
       <Header />
 
-      <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-        <Heading size={'tera'}>{t('landing.login')}</Heading>
+      <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
+        <Headline as="h2" size="two">
+          {t('landing.login')}
+        </Headline>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input
@@ -196,8 +196,8 @@ const Page: React.FC = () => {
             />
           </div>
 
-          <div tw="mt-6">
-            <LoadingButton
+          <div className="mt-6">
+            <Button
               type="submit"
               variant="primary"
               stretch
@@ -205,12 +205,12 @@ const Page: React.FC = () => {
               loadingLabel={t('landing.is_loading')}
             >
               {t('landing.confirm')}
-            </LoadingButton>
+            </Button>
           </div>
         </form>
       </div>
 
-      <div tw="mt-10">
+      <div className="mt-10">
         <ChangeLanguage />
       </div>
     </div>

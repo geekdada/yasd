@@ -1,31 +1,29 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import React, { useCallback, useEffect } from 'react'
-import { Heading, Input, LoadingButton, Checkbox } from '@sumup/circuit-ui'
-import css from '@emotion/css/macro'
+import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import tw from 'twin.macro'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { css } from '@emotion/react'
+import { Headline, Input, Button, Checkbox } from '@sumup/circuit-ui'
+import { find } from 'lodash-es'
 import store from 'store2'
 import { v4 as uuid } from 'uuid'
-import { find } from 'lodash-es'
-import { useHistory } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 
-import ChangeLanguage from '../../components/ChangeLanguage'
-import ProfileCell from '../../components/ProfileCell'
-import Ad from '../../components/Ad'
-import { useSetState } from '../../hooks'
-import { useProfileDispatch } from '../../models/profile'
-import { Profile } from '../../types'
-import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
-import { getValidationHint } from '../../utils/validation'
+import Ad from '@/components/Ad'
+import ChangeLanguage from '@/components/ChangeLanguage'
+import ProfileCell from '@/components/ProfileCell'
+import { useSetState } from '@/hooks'
+import { useProfileDispatch } from '@/models/profile'
+import { Profile } from '@/types'
+import { ExistingProfiles, LastUsedProfile } from '@/utils/constant'
+import { getValidationHint } from '@/utils/validation'
+
 import Header from './components/Header'
 import { useAuthData } from './hooks'
 import { RegularFormFields } from './types'
 import { tryHost } from './utils'
 
 const Page: React.FC = () => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const protocol = window.location.protocol
   const { isLoading, setIsLoading } = useAuthData()
   const [existingProfiles, setExistingProfiles, getExistingProfiles] =
@@ -77,7 +75,7 @@ const Page: React.FC = () => {
           type: 'update',
           payload: profile,
         })
-        history.replace('/home')
+        navigate('/home', { replace: true })
       }
     })
   }
@@ -147,24 +145,26 @@ const Page: React.FC = () => {
     >
       <Header />
 
-      <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-        <Heading size={'tera'}>{t('landing.add_new_host')}</Heading>
+      <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
+        <Headline as="h2" size="two">
+          {t('landing.add_new_host')}
+        </Headline>
 
-        <div tw="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 text-sm px-4 py-3 mb-4 shadow-md">
-          <p tw="leading-normal mb-2">
+        <div className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 text-sm px-4 py-3 mb-4 shadow-md">
+          <p className="leading-normal mb-2">
             该功能仅 Surge iOS 4.4.0 和 Surge Mac 4.0.0 以上版本支持。
           </p>
-          <p tw="leading-normal mb-4">
+          <p className="leading-normal mb-4">
             <a
               href="https://manual.nssurge.com/others/http-api.html#configuration"
               target="_blank"
               rel="noreferrer"
-              tw="border-b border-solid border-teal-500"
+              className="border-b border-solid border-teal-500"
             >
               🔗 开启方式
             </a>
           </p>
-          <p tw="leading-normal mb-2">
+          <p className="leading-normal mb-2">
             Surge Mac v4.0.6 (1280) 开始已支持开启 HTTPS API，故不再支持使用
             yasd-helper。
           </p>
@@ -244,8 +244,8 @@ const Page: React.FC = () => {
             />
           </div>
 
-          <div tw="mt-6">
-            <LoadingButton
+          <div className="mt-6">
+            <Button
               type="submit"
               variant="primary"
               stretch
@@ -253,19 +253,21 @@ const Page: React.FC = () => {
               loadingLabel={t('landing.is_loading')}
             >
               {t('landing.confirm')}
-            </LoadingButton>
+            </Button>
           </div>
         </form>
       </div>
 
       {existingProfiles.length > 0 && (
-        <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto mt-10">
-          <Heading size={'mega'}>{t('landing.history')}</Heading>
+        <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto mt-10">
+          <Headline as="h3" size="four">
+            {t('landing.history')}
+          </Headline>
 
-          <div tw="bg-gray-100 divide-y divide-gray-200 rounded overflow-hidden">
+          <div className="bg-gray-100 divide-y divide-gray-200 rounded overflow-hidden">
             {existingProfiles.map((profile) => {
               return (
-                <div key={profile.id} tw="hover:bg-gray-200">
+                <div key={profile.id} className="hover:bg-gray-200">
                   <ProfileCell
                     profile={profile}
                     variant="left"
@@ -281,11 +283,11 @@ const Page: React.FC = () => {
         </div>
       )}
 
-      <div tw="max-w-xs sm:max-w-sm md:max-w-md mx-auto mt-10">
+      <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto mt-10">
         <Ad />
       </div>
 
-      <div tw="mt-10">
+      <div className="mt-10">
         <ChangeLanguage />
       </div>
     </div>

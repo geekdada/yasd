@@ -1,13 +1,16 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { Select } from '@sumup/circuit-ui'
-import { ChangeEventHandler, useCallback, useEffect, useState } from 'react'
+import React, {
+  ChangeEventHandler,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import { useTranslation } from 'react-i18next'
+import { css } from '@emotion/react'
+import { Select } from '@sumup/circuit-ui'
 import store from 'store2'
 import tw from 'twin.macro'
-import css from '@emotion/css/macro'
 
-import { LastUsedLanguage } from '../utils/constant'
+import { LastUsedLanguage } from '@/utils/constant'
 
 const ChangeLanguage = (): JSX.Element => {
   const { i18n } = useTranslation()
@@ -33,11 +36,10 @@ const ChangeLanguage = (): JSX.Element => {
   )
 
   return (
-    <div tw="flex justify-center w-full">
+    <div className="flex justify-center w-full">
       <Select
         label="change language"
         hideLabel
-        noMargin
         value={i18n.language}
         options={options}
         onChange={onChange}

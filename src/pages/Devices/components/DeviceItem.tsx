@@ -1,21 +1,20 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { useModal } from '@sumup/circuit-ui'
-import { useHistory } from 'react-router-dom'
-import { noop } from 'lodash-es'
 import React, { useCallback, useMemo } from 'react'
-import css from '@emotion/css/macro'
 import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
+import { useNavigate } from 'react-router-dom'
+import { css } from '@emotion/react'
+import { useModal } from '@sumup/circuit-ui'
+import { ChevronRight } from '@sumup/icons'
 import bytes from 'bytes'
 import dayjs from 'dayjs'
-import { ChevronRight } from '@sumup/icons'
+import tw from 'twin.macro'
 
-import ActionsModal from '../../../components/ActionsModal'
-import { DataRow, DataRowMain, DataRowSub } from '../../../components/Data'
-import VersionSupport from '../../../components/VersionSupport'
-import { useSurgeHost } from '../../../models/profile'
-import { DeviceInfo } from '../../../types'
+import ActionsModal from '@/components/ActionsModal'
+import { DataRow, DataRowMain, DataRowSub } from '@/components/Data'
+import VersionSupport from '@/components/VersionSupport'
+import { useSurgeHost } from '@/models/profile'
+import { DeviceInfo } from '@/types'
+import { OnClose } from '@/types/ui'
+
 import DeviceIcon from './DeviceIcon'
 import DeviceSettingsModal from './DeviceSettingsModal'
 
@@ -23,11 +22,11 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
   const { t } = useTranslation()
   const { setModal } = useModal()
   const surgeHost = useSurgeHost()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const onDeviceSettingsClick = useCallback(() => {
     setModal({
-      children({ onClose }) {
+      children: ({ onClose }: { onClose?: OnClose }) => {
         return onClose && device.dhcpDevice ? (
           <DeviceSettingsModal
             title={device.dhcpDevice.displayName || device.name}
@@ -47,7 +46,7 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
         id: 'view_requests',
         title: 'devices.view_requests',
         onClick: () => {
-          history.push(`/requests?source=${device.displayIPAddress}`)
+          navigate(`/requests?source=${device.displayIPAddress}`)
         },
       },
     ]
@@ -61,25 +60,20 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
     }
 
     setModal({
-      children({ onClose }) {
-        return onClose ? (
-          <ActionsModal
-            title={device?.dhcpDevice?.displayName || device.name}
-            actions={actions}
-            onClose={onClose}
-          />
-        ) : (
-          <React.Fragment />
-        )
-      },
+      children: () => (
+        <ActionsModal
+          title={device?.dhcpDevice?.displayName || device.name}
+          actions={actions}
+        />
+      ),
     })
   }, [
     device.dhcpDevice,
     device.displayIPAddress,
     device.name,
-    onDeviceSettingsClick,
     setModal,
-    history,
+    navigate,
+    onDeviceSettingsClick,
   ])
 
   const gateway = useMemo<boolean>(() => {
@@ -107,24 +101,26 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
   }, [device.dhcpDevice])
 
   return (
-    <DataRow tw="hover:bg-gray-100 cursor-pointer" onClick={onClick}>
+    <DataRow className="hover:bg-gray-100 cursor-pointer" onClick={onClick}>
       <DataRowMain>
-        <div tw="flex items-center w-full overflow-hidden">
+        <div className="flex items-center w-full overflow-hidden">
           {surgeHost ? (
             <VersionSupport macos="4.1.1" ios="4.11.0">
-              <div tw="flex-1">
+              <div className="flex-1">
                 <DeviceIcon icon={device.dhcpDevice?.icon} />
               </div>
             </VersionSupport>
           ) : (
             <React.Fragment />
           )}
-          <div tw="w-full overflow-hidden">
-            <div tw="truncate pr-5">{device.name}</div>
-            <div tw="text-sm text-gray-600">{device.displayIPAddress}</div>
+          <div className="w-full overflow-hidden">
+            <div className="truncate pr-5">{device.name}</div>
+            <div className="text-sm text-gray-600">
+              {device.displayIPAddress}
+            </div>
           </div>
         </div>
-        <div tw="flex items-center flex-1 font-bold">
+        <div className="flex items-center flex-1 font-bold">
           {waitingToReconnect ? (
             <div
               css={css`
@@ -139,12 +135,12 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
             )
           )}
 
-          <div tw="ml-3">
+          <div className="ml-3">
             <ChevronRight />
           </div>
         </div>
       </DataRowMain>
-      <div tw="pb-3">
+      <div className="pb-3">
         <DataRowSub>
           <div>{t('devices.mac_address')}</div>
           <div>{device.physicalAddress || 'N/A'}</div>

@@ -1,15 +1,14 @@
-import createCache from '@emotion/cache'
-import { CacheProvider } from '@emotion/core'
-import { ModalProvider } from '@sumup/circuit-ui'
-import { light } from '@sumup/design-tokens'
-import { ThemeProvider } from 'emotion-theming'
-import React, { Suspense } from 'react'
+import React, { ReactNode, Suspense } from 'react'
 import {
   BrowserRouter,
   BrowserRouterProps,
   HashRouter,
   HashRouterProps,
 } from 'react-router-dom'
+import createCache from '@emotion/cache'
+import { CacheProvider, ThemeProvider } from '@emotion/react'
+import { ModalProvider } from '@sumup/circuit-ui'
+import { light } from '@sumup/design-tokens'
 
 import { ProfileProvider } from './models/profile'
 
@@ -26,7 +25,7 @@ const styleCache = createCache({
   key: 'yasd',
 })
 
-const AppContainer: React.FC = ({ children }) => {
+const AppContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <Suspense fallback={<div />}>
       <CacheProvider value={styleCache}>

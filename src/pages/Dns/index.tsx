@@ -1,7 +1,3 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { Button } from '@sumup/circuit-ui'
-import SelectorGroup from '@sumup/circuit-ui/dist/es/components/SelectorGroup'
 import React, {
   ChangeEvent,
   MouseEventHandler,
@@ -9,12 +5,13 @@ import React, {
   useMemo,
   useState,
 } from 'react'
-import css from '@emotion/css/macro'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import tw from 'twin.macro'
-import useSWR, { mutate } from 'swr'
 import { List, AutoSizer, ListRowRenderer } from 'react-virtualized'
+import { css } from '@emotion/react'
+import { Button, SelectorGroup } from '@sumup/circuit-ui'
+import useSWR, { mutate } from 'swr'
+import tw from 'twin.macro'
 
 import FixedFullscreenContainer from '../../components/FixedFullscreenContainer'
 import PageTitle from '../../components/PageTitle'
@@ -35,7 +32,7 @@ const Page: React.FC = () => {
     return dnsResult?.local ?? []
   }, [dnsResult, group])
 
-  const flushDns: MouseEventHandler = () => {
+  const flushDns = () => {
     fetcher({
       url: '/dns/flush',
       method: 'POST',
@@ -70,23 +67,20 @@ const Page: React.FC = () => {
             key={key}
             style={style}
             onClick={() => openIpDetail(record.data[0])}
-            css={[
-              tw`flex flex-col justify-center py-2`,
-              tw`cursor-pointer hover:bg-gray-100`,
-              css`
-                padding-left: calc(env(safe-area-inset-left) + 0.75rem);
-                padding-right: calc(env(safe-area-inset-right) + 0.75rem);
-              `,
-            ]}
+            className="flex flex-col justify-center py-2 cursor-pointer hover:bg-gray-100"
+            css={css`
+              padding-left: calc(env(safe-area-inset-left) + 0.75rem);
+              padding-right: calc(env(safe-area-inset-right) + 0.75rem);
+            `}
           >
-            <div tw="text-sm truncate">{record.domain}</div>
-            <div tw="text-xs text-gray-700 leading-tight">
+            <div className="text-sm truncate">{record.domain}</div>
+            <div className="text-xs text-gray-700 leading-tight">
               DNS: {record.server}
             </div>
-            <div tw="text-xs text-gray-700 leading-tight truncate">
+            <div className="text-xs text-gray-700 leading-tight truncate">
               {t('dns.result')}: {record.data.join(', ')}
             </div>
-            <div tw="text-xs text-gray-700 leading-tight truncate">
+            <div className="text-xs text-gray-700 leading-tight truncate">
               {t('dns.path')}: {record.path}
             </div>
           </div>
@@ -98,28 +92,26 @@ const Page: React.FC = () => {
           <div
             key={key}
             style={style}
-            css={[
-              tw`flex flex-col justify-center py-2`,
-              css`
-                padding-left: calc(env(safe-area-inset-left) + 0.75rem);
-                padding-right: calc(env(safe-area-inset-right) + 0.75rem);
-              `,
-            ]}
+            className="flex flex-col justify-center py-2"
+            css={css`
+              padding-left: calc(env(safe-area-inset-left) + 0.75rem);
+              padding-right: calc(env(safe-area-inset-right) + 0.75rem);
+            `}
           >
-            <div tw="text-sm truncate">{record.domain}</div>
+            <div className="text-sm truncate">{record.domain}</div>
             {!!record.server && (
-              <div tw="text-xs text-gray-700 leading-tight">
+              <div className="text-xs text-gray-700 leading-tight">
                 DNS: {record.server}
               </div>
             )}
-            <div tw="text-xs text-gray-700 leading-tight">
+            <div className="text-xs text-gray-700 leading-tight">
               {t('dns.result')}: {record.data ?? 'N/A'}
             </div>
-            <div tw="text-xs text-gray-700 leading-tight">
+            <div className="text-xs text-gray-700 leading-tight">
               {t('dns.source')}: {record.source ?? 'N/A'}
             </div>
             {!!record.comment && (
-              <div tw="text-xs text-gray-700 leading-tight">
+              <div className="text-xs text-gray-700 leading-tight">
                 {t('dns.comment')}: {record.comment}
               </div>
             )}
@@ -127,14 +119,14 @@ const Page: React.FC = () => {
         )
       }
     },
-    [group, list],
+    [group, list, t],
   )
 
   return (
     <FixedFullscreenContainer>
       <PageTitle title="DNS" />
 
-      <div tw="flex-1">
+      <div className="flex-1">
         <AutoSizer>
           {({ width, height }) => {
             return (
@@ -159,30 +151,26 @@ const Page: React.FC = () => {
       </div>
 
       <div
-        css={[
-          tw`flex divide-x divide-gray-200 border-t border-solid border-gray-200 py-2 px-2`,
-          css`
-            & > div {
-              ${tw`mx-2`}
-            }
-            & > div:first-of-type {
-              margin-left: 0;
-            }
-          `,
-        ]}
+        className="flex divide-x divide-gray-200 border-t border-solid border-gray-200 py-2 px-2"
+        css={css`
+          & > div {
+            ${tw`mx-2`}
+          }
+          & > div:first-of-type {
+            margin-left: 0;
+          }
+        `}
       >
         <SelectorGroup
-          css={[
-            tw`flex justify-center items-center`,
-            css`
-              & label {
-                ${tw`py-2 px-4 ml-2 my-1 text-sm`}
-              }
-              & label:first-of-type {
-                margin-left: 0;
-              }
-            `,
-          ]}
+          className="flex justify-center items-center"
+          css={css`
+            & label {
+              ${tw`py-2 px-4 ml-2 my-1 text-sm`}
+            }
+            & label:first-of-type {
+              margin-left: 0;
+            }
+          `}
           label="choose the dns result group"
           name="selector-group"
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
@@ -201,9 +189,9 @@ const Page: React.FC = () => {
           value={group}
         />
 
-        <div tw="flex items-center">
+        <div className="flex items-center">
           <Button
-            tw="font-normal"
+            className="font-normal"
             variant="tertiary"
             size="kilo"
             onClick={flushDns}

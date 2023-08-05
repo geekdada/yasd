@@ -1,17 +1,6 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { noop } from 'lodash-es'
-import { KeyboardEvent, MouseEvent } from 'react'
-import css from '@emotion/css/macro'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
-import {
-  ButtonGroup,
-  Button,
-  ModalFooter,
-  ModalHeader,
-  ModalWrapper,
-} from '@sumup/circuit-ui'
+import { Button, Headline } from '@sumup/circuit-ui'
 
 interface Action {
   id: number | string
@@ -21,22 +10,19 @@ interface Action {
 
 interface ActionsModalProps {
   title: string
-  onClose: (event?: MouseEvent | KeyboardEvent) => void
   actions: ReadonlyArray<Action>
 }
 
-const ActionsModal = ({
-  title,
-  onClose,
-  actions,
-}: ActionsModalProps): JSX.Element => {
+const ActionsModal = ({ title, actions }: ActionsModalProps): JSX.Element => {
   const { t } = useTranslation()
 
   return (
-    <ModalWrapper>
-      <ModalHeader title={title} onClose={onClose} />
+    <div>
+      <Headline as="h2" size="two">
+        {title}
+      </Headline>
 
-      <div tw="space-y-5 pb-5">
+      <div className="space-y-5 pb-5">
         {actions.map((action) => (
           <Button
             stretch
@@ -48,7 +34,7 @@ const ActionsModal = ({
           </Button>
         ))}
       </div>
-    </ModalWrapper>
+    </div>
   )
 }
 

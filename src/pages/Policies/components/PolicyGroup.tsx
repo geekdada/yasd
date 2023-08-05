@@ -1,12 +1,9 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import styled from '@emotion/styled/macro'
-import { Card, Heading, Spinner, IconButton } from '@sumup/circuit-ui'
-import { Zap } from '@sumup/icons'
-import css from '@emotion/css/macro'
-import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
 import React, { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import styled from '@emotion/styled'
+import { Card, Headline, Spinner, IconButton } from '@sumup/circuit-ui'
+import { FlashOn } from '@sumup/icons'
+import tw from 'twin.macro'
 import useIsInViewport from 'use-is-in-viewport'
 
 import {
@@ -192,16 +189,17 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
 
   return (
     <div ref={targetRef}>
-      <Card tw="relative overflow-hidden px-3 md:px-4">
+      <Card className="relative overflow-hidden px-3 md:px-4">
         {isLoading && (
           <LoadingOverlay>
             <Spinner />
           </LoadingOverlay>
         )}
 
-        <Heading
-          size="kilo"
-          tw="flex flex-row justify-between items-center mb-3 md:mb-4"
+        <Headline
+          size="four"
+          as="h4"
+          className="flex flex-row justify-between items-center mb-3 md:mb-4"
         >
           <div>{policyGroupName}</div>
           <IconButton
@@ -210,14 +208,14 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
             onClick={() => testPolicy(policyGroupName)}
           >
             {isTesting ? (
-              <Spinner tw="text-gray-700 w-5 h-5" />
+              <Spinner className="text-gray-700 w-5 h-5" />
             ) : (
-              <Zap tw="text-gray-700 w-5 h-5" />
+              <FlashOn className="text-gray-700 w-5 h-5" />
             )}
           </IconButton>
-        </Heading>
+        </Headline>
 
-        <div tw="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
           {policyGroup.map((policy) => {
             return (
               <div
@@ -230,14 +228,16 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
                 key={policy.name}
                 onClick={() => selectPolicy(policy.name)}
               >
-                <div tw="text-sm md:text-base leading-snug">{policy.name}</div>
+                <div className="text-sm md:text-base leading-snug">
+                  {policy.name}
+                </div>
                 <div
                   css={[
                     tw`flex flex-row justify-between mt-2 text-xs text-gray-700`,
                     selection === policy.name ? tw`text-white` : '',
                   ]}
                 >
-                  <div tw="text-center bg-gray-400 text-gray-700 px-1 rounded">
+                  <div className="text-center bg-gray-400 text-gray-700 px-1 rounded">
                     {policy.typeDescription.toUpperCase()}
                   </div>
                   {latencies[policy.name] >= 0 && (

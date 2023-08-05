@@ -1,5 +1,5 @@
-import axios, { AxiosRequestConfig } from 'axios'
 import { toast } from 'react-toastify'
+import axios, { AxiosRequestConfig } from 'axios'
 
 const client = axios.create({
   baseURL: '/v1',

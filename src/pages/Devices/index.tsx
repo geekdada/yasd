@@ -1,15 +1,13 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
 import React, { useState } from 'react'
-import css from '@emotion/css/macro'
-import tw from 'twin.macro'
 import { useTranslation } from 'react-i18next'
 import useSWR from 'swr'
+import tw from 'twin.macro'
 
 import PageContainer from '../../components/PageContainer'
 import PageTitle from '../../components/PageTitle'
 import { DevicesResult } from '../../types'
 import fetcher from '../../utils/fetcher'
+
 import DeviceItem from './components/DeviceItem'
 
 const Page = (): JSX.Element => {
@@ -34,7 +32,7 @@ const Page = (): JSX.Element => {
         onAuthRefreshStateChange={(newState) => setIsAutoRefresh(newState)}
       />
 
-      <div tw="divide-y divide-gray-200">
+      <div className="divide-y divide-gray-200">
         {devices?.devices &&
           devices.devices.map((device) => (
             <div key={device.identifier}>

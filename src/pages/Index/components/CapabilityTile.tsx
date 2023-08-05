@@ -1,16 +1,15 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import css from '@emotion/css/macro'
-import { Toggle } from '@sumup/circuit-ui'
+import React, { ChangeEventHandler, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { css } from '@emotion/react'
+import { Toggle } from '@sumup/circuit-ui'
 import useSWR, { mutate } from 'swr'
 import tw from 'twin.macro'
-import React, { ChangeEventHandler, useCallback } from 'react'
 
 import { useProfile } from '../../../models/profile'
 import { Capability } from '../../../types'
 import fetcher from '../../../utils/fetcher'
+
 import MenuTile, { MenuTileContent, MenuTileTitle } from './MenuTile'
 
 interface CapabilityTileProps {
@@ -30,7 +29,7 @@ const CapabilityTile: React.FC<CapabilityTileProps> = ({
     profile !== undefined ? api : null,
     fetcher,
   )
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const toggle: ChangeEventHandler<HTMLButtonElement> = useCallback(
     (e) => {
@@ -55,15 +54,14 @@ const CapabilityTile: React.FC<CapabilityTileProps> = ({
   )
 
   return (
-    <MenuTile onClick={link ? () => history.push(link) : undefined}>
+    <MenuTile onClick={link ? () => navigate(link) : undefined}>
       <MenuTileTitle title={t(`home.${title}`)} />
 
-      <MenuTileContent css={[tw`flex justify-end`]}>
+      <MenuTileContent className="flex justify-end">
         <Toggle
-          noMargin
           label=""
-          labelChecked={t('common.on')}
-          labelUnchecked={t('common.off')}
+          checkedLabel={t('common.on')}
+          uncheckedLabel={t('common.off')}
           checked={capability?.enabled}
           onChange={toggle}
         />

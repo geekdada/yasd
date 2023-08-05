@@ -4,7 +4,7 @@ export function getValidationHint(
   typeMap: {
     [key in keyof RegisterOptions]?: string
   } & {
-    [key: string]: any
+    [key: string]: string | undefined
   },
   fieldError?: FieldError,
 ): string | undefined {

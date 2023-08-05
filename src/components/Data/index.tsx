@@ -1,19 +1,22 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import css from '@emotion/css/macro'
-import styled from '@emotion/styled/macro'
-import tw from 'twin.macro'
 import React from 'react'
+import styled from '@emotion/styled'
+import tw from 'twin.macro'
 
-export const DataGroup: React.FC<{ title?: string }> = (props) => {
+import { cn } from '@/utils/shadcn'
+
+export const DataGroup: React.FC<{
+  title?: string
+  children: React.ReactNode
+  className?: string
+}> = (props) => {
   return (
-    <div>
+    <div className={cn(props.className)}>
       {props.title && (
-        <div tw="text-gray-600 text-sm leading-normal px-3 mb-1 truncate lg:text-base lg:leading-relaxed">
+        <div className="text-gray-600 text-sm leading-normal px-3 mb-1 truncate lg:text-base lg:leading-relaxed">
           {props.title}
         </div>
       )}
-      <div tw="divide-y divide-gray-200 bg-gray-100 rounded-lg mb-4 overflow-hidden">
+      <div className="divide-y divide-gray-200 bg-gray-100 rounded-lg mb-4 overflow-hidden">
         {props.children}
       </div>
     </div>

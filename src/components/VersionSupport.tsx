@@ -1,5 +1,3 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
 import React from 'react'
 
 import { useVersionSupport } from '../hooks'
@@ -7,6 +5,7 @@ import { useVersionSupport } from '../hooks'
 interface VersionSupportProps {
   macos?: string
   ios?: string
+  children: React.ReactNode
 }
 
 const VersionSupport: React.FC<VersionSupportProps> = ({

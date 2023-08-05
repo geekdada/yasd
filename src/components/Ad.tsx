@@ -1,9 +1,6 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
 import React, { useEffect, useRef, useState } from 'react'
-import tw from 'twin.macro'
-import ReactGA from 'react-ga'
 import axios from 'axios'
+
 import { isRunInSurge } from '../utils'
 
 interface AdData {
@@ -67,21 +64,17 @@ const Ad: React.FC = () => {
   return (
     <React.Fragment>
       {ad && (
-        <ReactGA.OutboundLink
-          eventLabel={`IndexAd_${ad.name}`}
-          to={ad.url}
-          target="_blank"
-        >
-          <div tw="bg-blue-100 border border-blue-500 rounded text-blue-700 px-4 py-3 flex items-center">
+        <a href={ad.url} target="_blank" rel="noreferrer">
+          <div className="bg-blue-100 border border-blue-500 rounded text-blue-700 px-4 py-3 flex items-center">
             {showDynamicAd.current && (
-              <span tw="flex rounded-full bg-indigo-500 uppercase px-2 py-1 text-xs font-bold text-white mr-3">
+              <span className="flex rounded-full bg-indigo-500 uppercase px-2 py-1 text-xs font-bold text-white mr-3">
                 AD
               </span>
             )}
 
             <span>{ad.name}</span>
           </div>
-        </ReactGA.OutboundLink>
+        </a>
       )}
     </React.Fragment>
   )

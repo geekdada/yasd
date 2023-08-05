@@ -1,21 +1,18 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import axios from 'axios'
-import React, { MouseEventHandler, useEffect, useState } from 'react'
-import styled from '@emotion/styled/macro'
-import css from '@emotion/css/macro'
-import tw from 'twin.macro'
-import { Bin, PaperPlane } from '@sumup/icons'
+import React, { useEffect, useState } from 'react'
+import { css } from '@emotion/react'
 import { IconButton } from '@sumup/circuit-ui'
+import axios from 'axios'
+import { Trash2 } from 'lucide-react'
+import tw from 'twin.macro'
 
-import { Profile } from '../../types'
+import { Profile } from '@/types'
 
 interface ProfileCellProps {
   profile: Profile
   checkConnectivity?: boolean
-  onClick?: MouseEventHandler
+  onClick?: () => void
+  onDelete?: () => void
   showDelete?: boolean
-  onDelete?: MouseEventHandler
   variant?: 'spread' | 'left'
 }
 
@@ -33,21 +30,15 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
       ? tw`flex-row justify-between items-center`
       : tw`flex-col justify-start items-start`
 
-  const clickHandler: MouseEventHandler = (e) => {
-    e.stopPropagation()
-    e.preventDefault()
-
+  const clickHandler = () => {
     if (available && onClick) {
-      onClick(e)
+      onClick()
     }
   }
 
-  const deleteHandler: MouseEventHandler = (e) => {
-    e.stopPropagation()
-    e.preventDefault()
-
+  const deleteHandler = () => {
     if (onDelete) {
-      onDelete(e)
+      onDelete()
     }
   }
 
@@ -93,17 +84,21 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
     <div
       key={profile.id}
       css={[getCursorStyle(), tw`flex p-3 justify-between`]}
-      onClick={clickHandler}
+      onClick={(e) => {
+        e.stopPropagation()
+        e.preventDefault()
+        clickHandler()
+      }}
     >
       <div css={[tw`flex w-full`, variantStyle]}>
-        <div tw="truncate text-sm md:text-base leading-tight">
+        <div className="truncate text-sm md:text-base leading-tight">
           {profile.name}
         </div>
         <div css={[tw`flex items-center`, variant === 'left' && tw`mt-2`]}>
           {checkConnectivity && (
-            <div tw="relative flex h-3 w-3 mr-3">
+            <div className="relative flex h-3 w-3 mr-3">
               {available && (
-                <span tw="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
               )}
               <span
                 css={[
@@ -115,7 +110,7 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
               />
             </div>
           )}
-          <div tw="flex items-center font-mono text-gray-600 text-xs md:text-sm truncate leading-none">
+          <div className="flex items-center font-mono text-gray-600 text-xs md:text-sm truncate leading-none">
             <span>
               {profile.host}:{profile.port}
             </span>
@@ -123,9 +118,13 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
         </div>
       </div>
       {showDelete && (
-        <div tw="flex items-center ml-2">
+        <div className="flex items-center ml-2">
           <IconButton
-            onClick={deleteHandler}
+            onClick={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              deleteHandler()
+            }}
             label={'delete profile'}
             css={[
               tw`flex items-center justify-center w-8 h-8 text-gray-600`,
@@ -141,7 +140,7 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
               `,
             ]}
           >
-            <Bin />
+            <Trash2 />
           </IconButton>
         </div>
       )}

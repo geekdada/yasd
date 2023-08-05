@@ -1,13 +1,11 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import styled from '@emotion/styled/macro'
-import css from '@emotion/css/macro'
+import React, { useEffect, useRef, useState } from 'react'
+import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 import Chart, { ChartPoint } from 'chart.js'
 import dayjs from 'dayjs'
-import tw from 'twin.macro'
-import set from 'lodash-es/set'
 import get from 'lodash-es/get'
-import React, { useEffect, useRef, useState } from 'react'
+import set from 'lodash-es/set'
+import tw from 'twin.macro'
 
 import { chartStyles, commonChartOptions } from '../chart-config'
 import { REFRESH_RATE } from '../index'

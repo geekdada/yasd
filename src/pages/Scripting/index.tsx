@@ -1,30 +1,27 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import css from '@emotion/css/macro'
-import React, { MouseEvent, useMemo, useState } from 'react'
-import styled from '@emotion/styled/macro'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import tw from 'twin.macro'
-import useSWR from 'swr'
+import { css } from '@emotion/react'
+import { Button } from '@sumup/circuit-ui'
 import { uniqBy } from 'lodash-es'
-import {
-  Button,
-  LoadingButton,
-  Modal,
-  ModalHeader,
-  ModalWrapper,
-} from '@sumup/circuit-ui'
+import useSWR from 'swr'
+import tw from 'twin.macro'
 
-import FixedFullscreenContainer from '../../components/FixedFullscreenContainer'
-import PageTitle from '../../components/PageTitle'
-import { EvaluateResult, Scriptings } from '../../types'
-import fetcher from '../../utils/fetcher'
+import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
+import PageTitle from '@/components/PageTitle'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { EvaluateResult, Scriptings } from '@/types'
+import fetcher from '@/utils/fetcher'
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { data: scripting, error: scriptingError } = useSWR<Scriptings>(
     '/scripting',
     fetcher,
@@ -74,8 +71,8 @@ const Page: React.FC = () => {
     <FixedFullscreenContainer>
       <PageTitle title={t('home.scripting')} />
 
-      <div tw="flex-1 overflow-auto">
-        <div tw="divide-y divide-gray-200">
+      <div className="flex-1 overflow-auto">
+        <div className="divide-y divide-gray-200">
           {scripting &&
             filteredList.map((script, index) => {
               return (
@@ -91,26 +88,26 @@ const Page: React.FC = () => {
                   title={t('scripting.open_script')}
                   onClick={() => openUrl(script.path)}
                 >
-                  <div tw="flex-1">
-                    <div tw="truncate leading-normal text-gray-700">
+                  <div className="flex-1">
+                    <div className="truncate leading-normal text-gray-700">
                       {script.name}
                     </div>
-                    <div tw="text-sm text-gray-500">{script.type}</div>
+                    <div className="text-sm text-gray-500">{script.type}</div>
                   </div>
-                  <div tw="ml-2 flex items-center">
+                  <div className="ml-2 flex items-center">
                     {script.type === 'cron' && (
-                      <LoadingButton
-                        onClick={(e: MouseEvent) => {
+                      <Button
+                        onClick={(e) => {
                           e.stopPropagation()
                           evaluate(script.name, index)
                         }}
                         size="kilo"
                         isLoading={isLoading === index}
                         loadingLabel={t('scripting.running')}
-                        tw="px-3 py-3 text-sm leading-tight"
+                        className="px-3 py-3 text-sm leading-tight"
                       >
                         {t('scripting.run_script_button_title')}
-                      </LoadingButton>
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -119,38 +116,40 @@ const Page: React.FC = () => {
         </div>
       </div>
 
-      <div tw="border-t border-solid border-gray-200 py-2">
+      <div className="border-t border-solid border-gray-200 py-2">
         <Button
           variant="tertiary"
           size="kilo"
-          onClick={() => history.push('/scripting/evaluate')}
+          onClick={() => navigate('/scripting/evaluate')}
         >
           {t('scripting.debug_script_button_title')}
         </Button>
       </div>
 
-      <Modal
-        isOpen={!!evaluateResult}
-        onClose={() => {
-          setEvaluateResult(undefined)
+      <Dialog
+        open={!!evaluateResult}
+        onOpenChange={(open) => {
+          if (!open) {
+            setEvaluateResult(undefined)
+          }
         }}
       >
-        {({ onClose }) => (
-          <ModalWrapper>
-            <ModalHeader title={t('scripting.result')} onClose={onClose} />
-            <div>
-              <pre
-                tw="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
-                css={css`
-                  min-height: 7rem;
-                `}
-              >
-                {evaluateResult}
-              </pre>
-            </div>
-          </ModalWrapper>
-        )}
-      </Modal>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t('scripting.result')}</DialogTitle>
+          </DialogHeader>
+          <div>
+            <pre
+              className="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
+              css={css`
+                min-height: 7rem;
+              `}
+            >
+              {evaluateResult}
+            </pre>
+          </div>
+        </DialogContent>
+      </Dialog>
     </FixedFullscreenContainer>
   )
 }

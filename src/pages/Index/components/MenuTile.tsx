@@ -1,12 +1,13 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import styled from '@emotion/styled/macro'
-import css from '@emotion/css/macro'
-import { Card, Heading } from '@sumup/circuit-ui'
-import tw from 'twin.macro'
 import React, { MouseEventHandler } from 'react'
+import { css } from '@emotion/react'
+import styled from '@emotion/styled'
+import { Card, Headline } from '@sumup/circuit-ui'
+import tw from 'twin.macro'
+
+import { cn } from '../../../utils/shadcn'
 
 interface MenuTileProps {
+  children: React.ReactNode
   onClick?: MouseEventHandler
   link?: string
 }
@@ -27,13 +28,15 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
       ]}
     >
       <Card
+        className={cn(
+          'p-4 border-none shadow-sm bg-gray-100 transition-colors duration-150 ease-in-out',
+          props.onClick && 'hover:bg-gray-200 active:bg-gray-200',
+        )}
         css={[
           css`
             user-select: none;
             min-height: 8rem;
           `,
-          tw`p-4 border-none shadow-sm bg-gray-100 transition-colors duration-150 ease-in-out`,
-          props.onClick && tw`hover:bg-gray-200 active:bg-gray-200`,
         ]}
       >
         {props.children}
@@ -46,9 +49,9 @@ export const MenuTileContent = styled.div``
 
 export const MenuTileTitle: React.FC<{ title: string }> = ({ title }) => {
   return (
-    <Heading size={'mega'} noMargin tw="text-gray-800">
+    <Headline size="four" as="h4" className="text-gray-800">
       {title}
-    </Heading>
+    </Headline>
   )
 }
 

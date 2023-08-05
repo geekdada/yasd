@@ -1,8 +1,15 @@
-import React, { createContext, Dispatch, Reducer, useReducer } from 'react'
+import React, {
+  useContext,
+  createContext,
+  Dispatch,
+  ReactNode,
+  Reducer,
+  useReducer,
+} from 'react'
 
-import { Profile } from '../types'
-import { setServer } from '../utils/fetcher'
-import { updateStoredProfile } from '../utils/store'
+import { Profile } from '@/types'
+import { setServer } from '@/utils/fetcher'
+import { updateStoredProfile } from '@/utils/store'
 
 interface IProfileContext {
   profile?: Profile
@@ -71,7 +78,7 @@ const ProfileDispatchContext = createContext<
   Dispatch<ReducerAction> | undefined
 >(undefined)
 
-export const ProfileProvider: React.FC = (props) => {
+export const ProfileProvider: React.FC<{ children: ReactNode }> = (props) => {
   const [state, dispatch] = useReducer(profileReducer, {
     profile: undefined,
   })
@@ -86,31 +93,31 @@ export const ProfileProvider: React.FC = (props) => {
 }
 
 export const useProfile = (): Profile | undefined => {
-  const context = React.useContext(ProfileContext)
+  const context = useContext(ProfileContext)
 
   return context.profile
 }
 
 export const usePlatform = (): Profile['platform'] | undefined => {
-  const context = React.useContext(ProfileContext)
+  const context = useContext(ProfileContext)
 
   return context.profile?.platform
 }
 export const usePlatformVersion = ():
   | Profile['platformVersion']
   | undefined => {
-  const context = React.useContext(ProfileContext)
+  const context = useContext(ProfileContext)
 
   return context.profile?.platformVersion
 }
 export const usePlatformBuild = (): Profile['platformBuild'] | undefined => {
-  const context = React.useContext(ProfileContext)
+  const context = useContext(ProfileContext)
 
   return context.profile?.platformBuild
 }
 
 export const useSurgeHost = (): string | null => {
-  const context = React.useContext(ProfileContext)
+  const context = useContext(ProfileContext)
 
   if (!context.profile) return null
 
@@ -120,7 +127,7 @@ export const useSurgeHost = (): string | null => {
 }
 
 export const useProfileDispatch = (): Dispatch<ReducerAction> => {
-  const context = React.useContext(ProfileDispatchContext)
+  const context = useContext(ProfileDispatchContext)
 
   if (!context) {
     throw new Error()

@@ -1,18 +1,16 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
 import React, { useCallback } from 'react'
-import { Button, Heading, Toggle } from '@sumup/circuit-ui'
-import css from '@emotion/css/macro'
 import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
+import { useNavigate } from 'react-router-dom'
+import { css } from '@emotion/react'
+import { Button, Headline, Toggle } from '@sumup/circuit-ui'
 import { delay } from 'bluebird'
-import { useHistory } from 'react-router-dom'
-import useSWR, { mutate } from 'swr'
 import store from 'store2'
+import useSWR, { mutate } from 'swr'
+import tw from 'twin.macro'
 
+import Ad from '../../components/Ad'
 import ChangeLanguage from '../../components/ChangeLanguage'
 import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
-import Ad from '../../components/Ad'
 import VersionSupport from '../../components/VersionSupport'
 import {
   usePlatform,
@@ -24,15 +22,16 @@ import { Capability } from '../../types'
 import { forceRefresh, isRunInSurge } from '../../utils'
 import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
 import fetcher from '../../utils/fetcher'
-import HostInfo from './components/HostInfo'
-import TrafficCell from './components/TrafficCell'
+
 import Events from './components/Events'
+import HostInfo from './components/HostInfo'
 import MenuTile, { MenuTileTitle } from './components/MenuTile'
 import SetHostModal from './components/SetHostModal'
+import TrafficCell from './components/TrafficCell'
 import menu from './menu'
 
 const Page: React.FC = () => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const profile = useProfile()
   const { data: systemProxy } = useSWR<Capability>(
     profile?.platform === 'macos' ? '/features/system_proxy' : null,
@@ -91,7 +90,7 @@ const Page: React.FC = () => {
     if (link.startsWith('http')) {
       window.open(link, '_blank', 'noopener noreferrer')
     } else {
-      history.push(link)
+      navigate(link)
     }
   }
 
@@ -102,14 +101,14 @@ const Page: React.FC = () => {
           padding-bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
         `}
       >
-        <Heading
-          size={'tera'}
-          noMargin
-          tw="sticky top-0 flex shadow bg-white z-10 px-3 py-3 mb-4"
+        <Headline
+          size="two"
+          as="h2"
+          className="sticky top-0 flex shadow bg-white z-10 px-3 py-3 mb-4"
         >
           {profile && (
-            <div tw="w-full flex justify-between items-center">
-              <div tw="w-2/3" onDoubleClick={forceRefresh}>
+            <div className="w-full flex justify-between items-center">
+              <div className="w-2/3" onDoubleClick={forceRefresh}>
                 <HostInfo />
               </div>
 
@@ -124,7 +123,7 @@ const Page: React.FC = () => {
               )}
             </div>
           )}
-        </Heading>
+        </Headline>
 
         <div
           css={css`
@@ -132,21 +131,20 @@ const Page: React.FC = () => {
             padding-right: env(safe-area-inset-right);
           `}
         >
-          <div tw="mb-4">
+          <div className="mb-4">
             <TrafficCell />
           </div>
 
           <VersionSupport macos="0.0.0">
-            <DataGroup tw="mx-4">
+            <DataGroup className="mx-4">
               <DataRow>
                 <DataRowMain>
-                  <div tw="font-medium">{t('home.system_proxy')}</div>
+                  <div className="font-medium">{t('home.system_proxy')}</div>
                   <div>
                     <Toggle
-                      noMargin
                       label=""
-                      labelChecked=""
-                      labelUnchecked=""
+                      checkedLabel=""
+                      uncheckedLabel=""
                       checked={systemProxy?.enabled}
                       onChange={() => toggleSystemProxy()}
                     />
@@ -155,13 +153,12 @@ const Page: React.FC = () => {
               </DataRow>
               <DataRow>
                 <DataRowMain>
-                  <div tw="font-medium">{t('home.enhanced_mode')}</div>
+                  <div className="font-medium">{t('home.enhanced_mode')}</div>
                   <div>
                     <Toggle
-                      noMargin
                       label=""
-                      labelChecked=""
-                      labelUnchecked=""
+                      checkedLabel=""
+                      uncheckedLabel=""
                       checked={enhancedMode?.enabled}
                       onChange={() => toggleEnhancedMode()}
                     />
@@ -171,7 +168,7 @@ const Page: React.FC = () => {
             </DataGroup>
           </VersionSupport>
 
-          <div tw="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
             {menu.map((item) => {
               if (
                 typeof item.isEnabled === 'function' &&
@@ -189,7 +186,9 @@ const Page: React.FC = () => {
                       <MenuTileTitle title={t(`home.${item.title}`)} />
 
                       {item.subTitle && (
-                        <div tw="text-base text-gray-500">{item.subTitle}</div>
+                        <div className="text-base text-gray-500">
+                          {item.subTitle}
+                        </div>
                       )}
                     </MenuTile>
                   )}
@@ -198,21 +197,21 @@ const Page: React.FC = () => {
             })}
           </div>
 
-          <div tw="mt-4 px-4">
+          <div className="mt-4 px-4">
             <Events />
           </div>
 
-          <div tw="mt-4 px-4">
+          <div className="mt-4 px-4">
             <Ad />
           </div>
 
-          <div tw="mt-4 px-4">
+          <div className="mt-4 px-4">
             <ChangeLanguage />
           </div>
 
-          <div tw="text-center mt-4 text-sm">
+          <div className="text-center mt-4 text-sm">
             {Boolean(platform && platformBuild && platformVersion) && (
-              <code tw="px-4 py-2 rounded bg-gray-100 text-gray-500">
+              <code className="px-4 py-2 rounded bg-gray-100 text-gray-500">
                 v{process.env.REACT_APP_VERSION} - {platform} v{platformVersion}
                 ({platformBuild})
               </code>

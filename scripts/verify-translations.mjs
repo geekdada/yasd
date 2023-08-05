@@ -1,7 +1,8 @@
 /* global $ */
 
-import fs from 'fs-extra'
 import { join } from 'path'
+
+import fs from 'fs-extra'
 import get from 'lodash-es/get.js'
 
 await (async () => {

@@ -1,13 +1,11 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import styled from '@emotion/styled/macro'
-import css from '@emotion/css/macro'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
-import { useTranslation } from 'react-i18next'
 import useSWR from 'swr'
 import tw from 'twin.macro'
-import React from 'react'
 
 import { useProfile } from '../../../models/profile'
 import { EventList } from '../../../types'
@@ -24,15 +22,17 @@ const Events: React.FC = () => {
   )
 
   return (
-    <div tw="p-3 bg-gray-100 rounded">
-      <div tw="text-base font-medium text-gray-700">{t('home.events')}</div>
-      <div tw="divide-y divide-gray-200 mt-1">
+    <div className="p-3 bg-gray-100 rounded">
+      <div className="text-base font-medium text-gray-700">
+        {t('home.events')}
+      </div>
+      <div className="divide-y divide-gray-200 mt-1">
         {events &&
           events.events.slice(0, 8).map((item) => {
             return (
-              <div key={item.identifier} tw="py-1">
+              <div key={item.identifier} className="py-1">
                 <div
-                  tw="text-sm leading-normal text-gray-600"
+                  className="text-sm leading-normal text-gray-600"
                   css={css`
                     word-break: break-word;
                     overflow-wrap: break-word;
@@ -40,7 +40,7 @@ const Events: React.FC = () => {
                 >
                   {item.content}
                 </div>
-                <div tw="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-gray-500 mt-1">
                   {item.type === 2 && (
                     <span
                       css={[

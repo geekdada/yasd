@@ -1,18 +1,17 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import styled from '@emotion/styled/macro'
-import css from '@emotion/css/macro'
-import { Heading } from '@sumup/circuit-ui'
-import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
 import React, { createRef, RefObject, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ScrollTo } from 'react-scroll-to'
+import { css } from '@emotion/react'
+import styled from '@emotion/styled'
+import { Headline } from '@sumup/circuit-ui'
 import useSWR from 'swr'
+import tw from 'twin.macro'
 
 import BackButton from '../../components/BackButton'
 import PageContainer from '../../components/PageContainer'
 import { Policies, PolicyGroups } from '../../types'
 import fetcher from '../../utils/fetcher'
+
 import PolicyGroup from './components/PolicyGroup'
 import { usePolicyPerformance } from './usePolicyPerformance'
 
@@ -51,7 +50,7 @@ const Page: React.FC = () => {
   return (
     <PageContainer>
       <div
-        tw="sticky top-0 left-0 right-0 shadow bg-white z-10 pt-5 mb-4"
+        className="sticky top-0 left-0 right-0 shadow bg-white z-10 pt-5 mb-4"
         ref={headerRef}
       >
         <div
@@ -60,16 +59,16 @@ const Page: React.FC = () => {
             padding-right: env(safe-area-inset-right);
           `}
         >
-          <Heading size={'tera'} noMargin tw="mb-2 px-4">
-            <div tw="flex items-center">
+          <Headline as="h2" size="two" className="mb-2 px-4">
+            <div className="flex items-center">
               <BackButton />
               <div>{t('home.policies')}</div>
             </div>
-          </Heading>
+          </Headline>
         </div>
 
         <div
-          tw="flex justify-start flex-no-wrap overflow-auto pt-3 pb-5"
+          className="flex justify-start flex-no-wrap overflow-auto pt-3 pb-5"
           css={css`
             padding-left: calc(env(safe-area-inset-left) + 1rem);
             padding-right: calc(env(safe-area-inset-right) + 1rem);
@@ -105,7 +104,7 @@ const Page: React.FC = () => {
           policyGroups &&
           policies['policy-groups'].map((policy, index) => {
             return (
-              <div tw="mb-4" key={policy} ref={refs[index]}>
+              <div className="mb-4" key={policy} ref={refs[index]}>
                 <PolicyGroup
                   policyGroupName={policy}
                   policyGroup={policyGroups[policy]}

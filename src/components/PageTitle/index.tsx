@@ -1,11 +1,11 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { Heading } from '@sumup/circuit-ui'
-import { Spinner } from '@sumup/icons'
 import React, { useEffect, useMemo, useState } from 'react'
-import styled from '@emotion/styled/macro'
-import css from '@emotion/css/macro'
-import tw from 'twin.macro'
+import { css } from '@emotion/react'
+import styled from '@emotion/styled'
+import { ReloadIcon } from '@radix-ui/react-icons'
+import { Headline, Spinner } from '@sumup/circuit-ui'
+
+import { cn } from '@/utils/shadcn'
+
 import BackButton from '../BackButton'
 
 interface PageTitleProps {
@@ -29,25 +29,19 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
     if (props.hasAutoRefresh && props.onAuthRefreshStateChange) {
       props.onAuthRefreshStateChange(isAutoRefresh)
     }
-  }, [
-    isAutoRefresh,
-    props,
-    props.hasAutoRefresh,
-    props.onAuthRefreshStateChange,
-  ])
+  }, [isAutoRefresh, props])
 
   return (
-    <Heading
-      size={'tera'}
-      noMargin
-      css={[
-        isSticky ? tw`sticky top-0` : '',
-        tw`flex items-center justify-between shadow bg-white z-10 px-3 py-3`,
-        css``,
-      ]}
+    <Headline
+      as="h2"
+      size="two"
+      className={cn(
+        isSticky ? 'sticky top-0' : '',
+        'flex items-center justify-between shadow bg-white z-10 px-3 py-3',
+      )}
     >
       <div
-        tw="flex items-center"
+        className="flex items-center"
         css={css`
           padding-left: env(safe-area-inset-left);
         `}
@@ -59,18 +53,22 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
       {props.hasAutoRefresh && (
         <div
           onClick={() => setIsAutoRefresh(!isAutoRefresh)}
+          className={cn(
+            'bg-blue-500 text-white cursor-pointer w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-200 ease-in-out',
+            isAutoRefresh && 'bg-red-400',
+          )}
           css={[
-            tw`bg-blue-500 text-white cursor-pointer w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-200 ease-in-out`,
-            isAutoRefresh && tw`bg-red-400`,
             css`
               margin-right: env(safe-area-inset-right);
             `,
           ]}
         >
-          <Spinner css={[tw`w-6 h-6`, isAutoRefresh && tw`animate-spin`]} />
+          <ReloadIcon
+            className={cn('w-6 h-6', isAutoRefresh && 'animate-spin')}
+          />
         </div>
       )}
-    </Heading>
+    </Headline>
   )
 }
 

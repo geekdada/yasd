@@ -1,39 +1,42 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { find } from 'lodash-es'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  lazy,
+  Suspense,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-  Switch,
+  Routes,
   Route,
-  Redirect,
+  Navigate,
   useLocation,
-  useHistory,
+  useNavigate,
 } from 'react-router-dom'
-import loadable from '@loadable/component'
-import tw from 'twin.macro'
-import styled from '@emotion/styled/macro'
-import store from 'store2'
-import ReactGA from 'react-ga'
 import { toast, ToastContainer as OriginalToastContainer } from 'react-toastify'
+import styled from '@emotion/styled'
+import loadable from '@loadable/component'
+import { find } from 'lodash-es'
+import store from 'store2'
 import { SWRConfig } from 'swr'
+import tw from 'twin.macro'
 import 'react-toastify/dist/ReactToastify.css'
 
 import FullLoading from './components/FullLoading'
-import NewVersionAlert from './components/NewVersionAlert'
-import ScrollToTop from './components/ScrollToTop'
 import NetworkErrorModal from './components/NetworkErrorModal'
+import NewVersionAlert from './components/NewVersionAlert'
+import PageLayout from './components/PageLayout'
 import {
   usePlatformVersion,
   useProfile,
   useProfileDispatch,
 } from './models/profile'
+import IndexPage from './pages/Index'
 import {
   RegularLanding as LandingPage,
   SurgeLanding as SurgeLandingPage,
 } from './pages/Landing'
-import IndexPage from './pages/Index'
-import PageLayout from './components/PageLayout'
 import { Profile } from './types'
 import { isRunInSurge } from './utils'
 import {
@@ -43,33 +46,15 @@ import {
 } from './utils/constant'
 import { httpClient } from './utils/fetcher'
 
-const PoliciesPage = loadable(() => import('./pages/Policies'), {
-  fallback: <FullLoading />,
-})
-const RequestsPage = loadable(() => import('./pages/Requests'), {
-  fallback: <FullLoading />,
-})
-const TrafficPage = loadable(() => import('./pages/Traffic'), {
-  fallback: <FullLoading />,
-})
-const ModulesPage = loadable(() => import('./pages/Modules'), {
-  fallback: <FullLoading />,
-})
-const ScriptingPage = loadable(() => import('./pages/Scripting'), {
-  fallback: <FullLoading />,
-})
-const EvaluatePage = loadable(() => import('./pages/Scripting/Evaluate'), {
-  fallback: <FullLoading />,
-})
-const DnsPage = loadable(() => import('./pages/Dns'), {
-  fallback: <FullLoading />,
-})
-const DevicesPage = loadable(() => import('./pages/Devices'), {
-  fallback: <FullLoading />,
-})
-const ProfilePage = loadable(() => import('./pages/Profiles/Current'), {
-  fallback: <FullLoading />,
-})
+const PoliciesPage = lazy(() => import('./pages/Policies'))
+const RequestsPage = lazy(() => import('./pages/Requests'))
+const TrafficPage = lazy(() => import('./pages/Traffic'))
+const ModulesPage = lazy(() => import('./pages/Modules'))
+const ScriptingPage = lazy(() => import('./pages/Scripting'))
+const EvaluatePage = lazy(() => import('./pages/Scripting/Evaluate'))
+const DnsPage = lazy(() => import('./pages/Dns'))
+const DevicesPage = lazy(() => import('./pages/Devices'))
+const ProfilePage = lazy(() => import('./pages/Profiles/Current'))
 const ToastContainer = styled(OriginalToastContainer)`
   ${tw`p-2 md:p-0`}
 
@@ -125,16 +110,15 @@ if (
   !!process.env.REACT_APP_DEBUG_GA ||
   (process.env.NODE_ENV === 'production' && process.env.REACT_APP_ENABLE_GA)
 ) {
-  ReactGA.initialize('UA-146417304-2', {
-    debug: !!process.env.REACT_APP_DEBUG_GA,
-  })
+  // Enable Sashimi Analytics
+  // Use process.env.REACT_APP_DEBUG_GA to enable debug mode
 }
 
 const App: React.FC = () => {
   const { t, i18n } = useTranslation()
   const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false)
   const location = useLocation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const profileDispatch = useProfileDispatch()
   const profile = useProfile()
   const [hasInit, setHasInit] = useState(false)
@@ -171,12 +155,12 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (hasInit && !profile && location.pathname !== '/') {
-      history.replace('/')
+      navigate('/', { replace: true })
     }
-  }, [hasInit, history, location.pathname, profile])
+  }, [hasInit, location, navigate, profile])
 
   useEffect(() => {
-    ReactGA.pageview(location.pathname)
+    // Log page view
   }, [location.pathname])
 
   useEffect(() => {
@@ -235,7 +219,6 @@ const App: React.FC = () => {
         refreshWhenOffline: true,
       }}
     >
-      <ScrollToTop />
       <ToastContainer />
       <NetworkErrorModal
         reloadButton={isRunInSurge()}
@@ -245,44 +228,46 @@ const App: React.FC = () => {
       <NewVersionAlert />
 
       <PageLayout>
-        <Switch>
-          <Route exact path="/">
-            {isRunInSurge() ? <SurgeLandingPage /> : <LandingPage />}
-          </Route>
-          <Route exact path="/home">
-            <IndexPage />
-          </Route>
-          <Route exact path="/policies">
-            <PoliciesPage />
-          </Route>
-          <Route exact path="/requests">
-            <RequestsPage />
-          </Route>
-          <Route exact path="/traffic">
-            <TrafficPage />
-          </Route>
-          <Route exact path="/modules">
-            <ModulesPage />
-          </Route>
-          <Route exact path="/scripting">
-            <ScriptingPage />
-          </Route>
-          <Route exact path="/scripting/evaluate">
-            <EvaluatePage />
-          </Route>
-          <Route exact path="/dns">
-            <DnsPage />
-          </Route>
-          <Route exact path="/devices">
-            <DevicesPage />
-          </Route>
-          <Route exact path="/profiles/current">
-            <ProfilePage />
-          </Route>
-          <Route path="*">
-            <Redirect to="/" />
-          </Route>
-        </Switch>
+        <Suspense fallback={<FullLoading />}>
+          <Routes>
+            <Route path="/">
+              {isRunInSurge() ? <SurgeLandingPage /> : <LandingPage />}
+            </Route>
+            <Route path="/home">
+              <IndexPage />
+            </Route>
+            <Route path="/policies">
+              <PoliciesPage />
+            </Route>
+            <Route path="/requests">
+              <RequestsPage />
+            </Route>
+            <Route path="/traffic">
+              <TrafficPage />
+            </Route>
+            <Route path="/modules">
+              <ModulesPage />
+            </Route>
+            <Route path="/scripting">
+              <ScriptingPage />
+            </Route>
+            <Route path="/scripting/evaluate">
+              <EvaluatePage />
+            </Route>
+            <Route path="/dns">
+              <DnsPage />
+            </Route>
+            <Route path="/devices">
+              <DevicesPage />
+            </Route>
+            <Route path="/profiles/current">
+              <ProfilePage />
+            </Route>
+            <Route path="*">
+              <Navigate to="/" replace />
+            </Route>
+          </Routes>
+        </Suspense>
       </PageLayout>
     </SWRConfig>
   )

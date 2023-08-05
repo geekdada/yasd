@@ -1,21 +1,21 @@
-/** @jsx jsx */
 import React from 'react'
-import ReactDOM from 'react-dom'
-import { jsx } from '@emotion/core'
+import ReactDOM from 'react-dom/client'
 
-import './index.css'
+import './styles/shadcn.css'
+import './styles/global.css'
 import App from './App'
 import AppContainer from './AppContainer'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import './i18n'
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+
+root.render(
   <React.StrictMode>
     <AppContainer>
       <App />
     </AppContainer>
   </React.StrictMode>,
-  document.getElementById('root'),
 )
 
 if (process.env.REACT_APP_USE_SW) {

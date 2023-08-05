@@ -1,8 +1,6 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { Image } from '@sumup/circuit-ui'
 import React from 'react'
-import css from '@emotion/css/macro'
+import { css } from '@emotion/react'
+import { Image } from '@sumup/circuit-ui'
 import tw from 'twin.macro'
 
 import { useSurgeHost } from '../../../models/profile'

@@ -1,16 +1,14 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
 import React, { useCallback, useState } from 'react'
-import { Toggle } from '@sumup/circuit-ui'
 import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
-import useSWR, { mutate } from 'swr'
 import { toast } from 'react-toastify'
+import { Toggle } from '@sumup/circuit-ui'
+import useSWR, { mutate } from 'swr'
+import tw from 'twin.macro'
 
-import PageContainer from '../../components/PageContainer'
-import PageTitle from '../../components/PageTitle'
-import { Modules } from '../../types'
-import fetcher from '../../utils/fetcher'
+import PageContainer from '@/components/PageContainer'
+import PageTitle from '@/components/PageTitle'
+import { Modules } from '@/types'
+import fetcher from '@/utils/fetcher'
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
@@ -54,18 +52,19 @@ const Page: React.FC = () => {
     <PageContainer>
       <PageTitle title={t('home.modules')} />
 
-      <div tw="divide-y divide-gray-200">
+      <div className="divide-y divide-gray-200">
         {modules &&
           modules.available.map((mod) => {
             return (
-              <div key={mod} tw="flex items-center justify-between p-3">
-                <div tw="truncate leading-normal text-gray-700">{mod}</div>
-                <div tw="flex items-center">
+              <div key={mod} className="flex items-center justify-between p-3">
+                <div className="truncate leading-normal text-gray-700">
+                  {mod}
+                </div>
+                <div className="flex items-center">
                   <Toggle
-                    noMargin
                     label=""
-                    labelChecked="on"
-                    labelUnchecked="off"
+                    checkedLabel="on"
+                    uncheckedLabel="off"
                     disabled={isLoading}
                     checked={isChecked(mod)}
                     onChange={() => toggle(mod, !isChecked(mod))}

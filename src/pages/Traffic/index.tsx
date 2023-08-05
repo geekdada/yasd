@@ -1,19 +1,18 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import styled from '@emotion/styled/macro'
-import css from '@emotion/css/macro'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
-import React, { useState } from 'react'
 import useSWR from 'swr'
+import tw from 'twin.macro'
 
 import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
 import PageContainer from '../../components/PageContainer'
 import PageTitle from '../../components/PageTitle'
 import { ConnectorTraffic, Traffic } from '../../types'
 import fetcher from '../../utils/fetcher'
+
 import TrafficDataRow from './components/TrafficDataRow'
 
 dayjs.extend(relativeTime)

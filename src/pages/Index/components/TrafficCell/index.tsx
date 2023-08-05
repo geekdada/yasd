@@ -1,43 +1,31 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import styled from '@emotion/styled/macro'
-import css from '@emotion/css/macro'
+import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 import loadable from '@loadable/component'
 import bytes from 'bytes'
 import { ChartPoint } from 'chart.js'
-import { useTranslation } from 'react-i18next'
 import useSWR from 'swr'
 import tw from 'twin.macro'
-import React, { useEffect, useMemo, useState } from 'react'
 
-import { useProfile } from '../../../../models/profile'
-import { ConnectorTraffic, Traffic } from '../../../../types'
-import fetcher from '../../../../utils/fetcher'
+import { useProfile } from '@/models/profile'
+import { ConnectorTraffic, Traffic } from '@/types'
+import fetcher from '@/utils/fetcher'
 
-const LineChart = loadable(() => import('./components/LineChart'), {
-  fallback: (
-    <div
-      tw="flex items-center justify-center text-sm text-gray-500"
-      css={css`
-        height: 200px;
-      `}
-    >
-      Loading...
-    </div>
-  ),
-})
-
-const Cell = styled.div`
-  ${tw`px-4 py-3`}
-`
-
-const Title = styled.div`
-  ${tw`text-xs md:text-sm text-gray-500 leading-relaxed font-medium`}
-`
-
-const Data = styled.div`
-  ${tw`text-base md:text-lg text-gray-700 leading-normal`}
-`
+const LineChart = lazy(() => import('./components/LineChart'))
+const Cell = tw.div`px-4 py-3`
+const Title = tw.div`text-xs md:text-sm text-gray-500 leading-relaxed font-medium`
+const Data = tw.div`text-base md:text-lg text-gray-700 leading-normal`
+const LineChartLoader = () => (
+  <div
+    className="flex items-center justify-center text-sm text-gray-500"
+    css={css`
+      height: 200px;
+    `}
+  >
+    Loading...
+  </div>
+)
 
 export const REFRESH_RATE = 1000
 
@@ -77,7 +65,7 @@ const Index: React.FC = () => {
         data: trafficDatasets.down,
       },
     ]
-  }, [t, trafficDatasets.down, trafficDatasets.up])
+  }, [trafficDatasets.down, trafficDatasets.up])
 
   const activeInterface = useMemo(() => {
     if (!traffic) return undefined
@@ -120,12 +108,14 @@ const Index: React.FC = () => {
 
   return (
     <div>
-      <div tw="mb-3 w-full overflow-hidden">
-        <LineChart id="traffic-chart" newDatasets={newDatasets} />
+      <div className="mb-3 w-full overflow-hidden">
+        <Suspense fallback={<LineChartLoader />}>
+          <LineChart id="traffic-chart" newDatasets={newDatasets} />
+        </Suspense>
       </div>
 
       {activeInterface ? (
-        <div tw="grid grid-cols-3 gap-4 divide-x divide-gray-200 border-solid border border-gray-200 bg-gray-100">
+        <div className="grid grid-cols-3 gap-4 divide-x divide-gray-200 border-solid border border-gray-200 bg-gray-100">
           <Cell>
             <Title>{t('traffic_cell.upload')}</Title>
             <Data>{bytes(activeInterface.outCurrentSpeed)}/s</Data>
@@ -141,14 +131,12 @@ const Index: React.FC = () => {
         </div>
       ) : (
         <div
-          css={[
-            tw`border border-gray-200 bg-gray-100 text-gray-700`,
-            css`
-              height: 67px;
-              line-height: 67px;
-              text-align: center;
-            `,
-          ]}
+          className="border border-gray-200 bg-gray-100 text-gray-700"
+          css={css`
+            height: 67px;
+            line-height: 67px;
+            text-align: center;
+          `}
         >
           {t('common.is_loading')}...
         </div>

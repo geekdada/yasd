@@ -1,27 +1,22 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import css from '@emotion/css/macro'
 import React, { MouseEvent, KeyboardEvent, useState } from 'react'
+import { useForm, Controller, useFormState } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 import {
   ButtonGroup,
   Input,
-  LoadingButton,
-  ModalFooter,
-  ModalHeader,
-  ModalWrapper,
+  useModal,
   Toggle,
+  Headline,
 } from '@sumup/circuit-ui'
-import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
-import { useForm, Controller, useFormState } from 'react-hook-form'
+import { to } from 'await-to-js'
 import isIP from 'is-ip'
-import to from 'await-to-js'
-import { toast } from 'react-toastify'
 import { mutate } from 'swr'
+import tw from 'twin.macro'
 
-import { DHCPDevice } from '../../../types'
-import fetcher from '../../../utils/fetcher'
-import { getValidationHint } from '../../../utils/validation'
+import { DHCPDevice } from '@/types'
+import fetcher from '@/utils/fetcher'
+import { getValidationHint } from '@/utils/validation'
 
 interface DeviceSettingsModalProps {
   title: string
@@ -113,14 +108,13 @@ const DeviceSettingsModal = ({
   }
 
   return (
-    <ModalWrapper>
-      <ModalHeader
-        title={`${t('devices.modify')} ${title}`}
-        onClose={onClose}
-      />
+    <div>
+      <Headline as="h2" size="two">{`${t(
+        'devices.modify',
+      )} ${title}`}</Headline>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div tw="pb-5">
+        <div className="pb-5">
           <Input
             invalid={!!errors?.name}
             disabled={isLoading}
@@ -161,10 +155,9 @@ const DeviceSettingsModal = ({
             render={({ field }) => (
               <Toggle
                 disabled={isLoading}
-                noMargin
                 label={t('devices.handled_by_surge')}
-                labelChecked="on"
-                labelUnchecked="off"
+                checkedLabel="on"
+                uncheckedLabel="off"
                 checked={field.value}
                 onChange={() => field.onChange(!field.value)}
               />
@@ -172,20 +165,21 @@ const DeviceSettingsModal = ({
           />
         </div>
 
-        <ModalFooter align="right">
-          <ButtonGroup>
-            <LoadingButton
-              isLoading={isLoading}
-              variant="primary"
-              as="submit"
-              loadingLabel={t('common.is_loading')}
-            >
-              {t('common.save')}
-            </LoadingButton>
-          </ButtonGroup>
-        </ModalFooter>
+        <div>
+          <ButtonGroup
+            align="right"
+            actions={{
+              primary: {
+                children: t('common.save'),
+                isLoading,
+                as: 'submit',
+                loadingLabel: t('common.is_loading'),
+              },
+            }}
+          />
+        </div>
       </form>
-    </ModalWrapper>
+    </div>
   )
 }
 
