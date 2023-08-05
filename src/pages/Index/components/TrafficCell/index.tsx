@@ -1,8 +1,6 @@
 import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/react'
-import styled from '@emotion/styled'
-import loadable from '@loadable/component'
 import bytes from 'bytes'
 import { ChartPoint } from 'chart.js'
 import useSWR from 'swr'
@@ -32,7 +30,7 @@ export const REFRESH_RATE = 1000
 const Index: React.FC = () => {
   const { t } = useTranslation()
   const profile = useProfile()
-  const { data: traffic, error: trafficError } = useSWR(
+  const { data: traffic } = useSWR(
     profile !== undefined ? '/traffic' : null,
     (url) =>
       fetcher<Traffic & { nowTime: number }>(url).then((res) => {

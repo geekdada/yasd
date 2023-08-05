@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import { List, AutoSizer } from 'react-virtualized'
 import { css } from '@emotion/react'
-import { useModal } from '@sumup/circuit-ui'
 import SelectorGroup from '@sumup/circuit-ui/dist/es/components/SelectorGroup'
 import omit from 'lodash-es/omit'
 import { ListRowRenderer } from 'react-virtualized/dist/es/List'
@@ -32,13 +31,14 @@ function useQuery() {
 }
 
 const Page: React.FC = () => {
-  const { setModal } = useModal()
   const { t } = useTranslation()
   const profile = useProfile()
   const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(true)
   const [group, setGroup] = useState<'recent' | 'active'>('recent')
-  const { data: recentRequestsResponse, error: requestsError } =
-    useSWR<RecentRequests>(() => '/requests/' + group, fetcher, {
+  const { data: recentRequestsResponse } = useSWR<RecentRequests>(
+    () => '/requests/' + group,
+    fetcher,
+    {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
       dedupingInterval: 1000,
@@ -47,7 +47,8 @@ const Page: React.FC = () => {
           ? 2000
           : 4000
         : 0,
-    })
+    },
+  )
   const [requestList, setRequestList] = useState<Array<RequestItem>>([])
   const [activeRequestList, setActiveRequestList] = useState<
     Array<RequestItem>
@@ -129,8 +130,6 @@ const Page: React.FC = () => {
     ({
       key, // Unique key within array of rows
       index, // Index of row within collection
-      isScrolling, // The List is currently being scrolled
-      isVisible, // This row is visible within the List (eg it is not an overscanned row)
       style, // Style object to be applied to row (to position it)
     }) => {
       const req = currentList[index]

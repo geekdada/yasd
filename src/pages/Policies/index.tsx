@@ -7,10 +7,10 @@ import { Headline } from '@sumup/circuit-ui'
 import useSWR from 'swr'
 import tw from 'twin.macro'
 
-import BackButton from '../../components/BackButton'
-import PageContainer from '../../components/PageContainer'
-import { Policies, PolicyGroups } from '../../types'
-import fetcher from '../../utils/fetcher'
+import BackButton from '@/components/BackButton'
+import PageContainer from '@/components/PageContainer'
+import { Policies, PolicyGroups } from '@/types'
+import fetcher from '@/utils/fetcher'
 
 import PolicyGroup from './components/PolicyGroup'
 import { usePolicyPerformance } from './usePolicyPerformance'
@@ -21,14 +21,8 @@ const PolicyNameItem = styled.div`
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
-  const { data: policies, error: policiesError } = useSWR<Policies>(
-    '/policies',
-    fetcher,
-  )
-  const { data: policyGroups, error: policyGroupsError } = useSWR<PolicyGroups>(
-    '/policy_groups',
-    fetcher,
-  )
+  const { data: policies } = useSWR<Policies>('/policies', fetcher)
+  const { data: policyGroups } = useSWR<PolicyGroups>('/policy_groups', fetcher)
   const policyGroupNames = (policies && policies['policy-groups']) || []
   const refs = policyGroupNames.map(() => {
     return createRef<HTMLDivElement>()

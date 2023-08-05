@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { Toggle } from '@sumup/circuit-ui'
 import useSWR, { mutate } from 'swr'
-import tw from 'twin.macro'
 
 import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
@@ -12,10 +11,7 @@ import fetcher from '@/utils/fetcher'
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
-  const { data: modules, error: modulesError } = useSWR<Modules>(
-    '/modules',
-    fetcher,
-  )
+  const { data: modules } = useSWR<Modules>('/modules', fetcher)
   const [isLoading, setIsLoading] = useState(false)
 
   const isChecked = (name: string): boolean => {

@@ -6,7 +6,6 @@ import { useModal } from '@sumup/circuit-ui'
 import { ChevronRight } from '@sumup/icons'
 import bytes from 'bytes'
 import dayjs from 'dayjs'
-import tw from 'twin.macro'
 
 import ActionsModal from '@/components/ActionsModal'
 import { DataRow, DataRowMain, DataRowSub } from '@/components/Data'

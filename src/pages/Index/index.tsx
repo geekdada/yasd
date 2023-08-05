@@ -6,22 +6,21 @@ import { Button, Headline, Toggle } from '@sumup/circuit-ui'
 import { delay } from 'bluebird'
 import store from 'store2'
 import useSWR, { mutate } from 'swr'
-import tw from 'twin.macro'
 
-import Ad from '../../components/Ad'
-import ChangeLanguage from '../../components/ChangeLanguage'
-import { DataGroup, DataRow, DataRowMain } from '../../components/Data'
-import VersionSupport from '../../components/VersionSupport'
+import Ad from '@/components/Ad'
+import ChangeLanguage from '@/components/ChangeLanguage'
+import { DataGroup, DataRow, DataRowMain } from '@/components/Data'
+import VersionSupport from '@/components/VersionSupport'
 import {
   usePlatform,
   usePlatformBuild,
   usePlatformVersion,
   useProfile,
-} from '../../models/profile'
-import { Capability } from '../../types'
-import { forceRefresh, isRunInSurge } from '../../utils'
-import { ExistingProfiles, LastUsedProfile } from '../../utils/constant'
-import fetcher from '../../utils/fetcher'
+} from '@/models/profile'
+import { Capability } from '@/types'
+import { forceRefresh, isRunInSurge } from '@/utils'
+import { ExistingProfiles, LastUsedProfile } from '@/utils/constant'
+import fetcher from '@/utils/fetcher'
 
 import Events from './components/Events'
 import HostInfo from './components/HostInfo'

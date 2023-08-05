@@ -21,7 +21,7 @@ describe('useSetState', () => {
       })
     })
 
-    const [state, setState, getState] = result.current
+    const [state] = result.current
     expect(state).toMatchObject({ a: 'old', b: 'new' })
   })
 
@@ -31,12 +31,12 @@ describe('useSetState', () => {
     )
 
     await act(async () => {
-      const [state, setState] = result.current
+      const [, setState] = result.current
 
       setState((state: State) => ({ ...state, b: 'new' }))
     })
 
-    const [state, setState, getState] = result.current
+    const [state] = result.current
     expect(state).toMatchObject({ a: 'old', b: 'new' })
   })
 
@@ -46,7 +46,7 @@ describe('useSetState', () => {
     )
 
     await act(async () => {
-      const [state, setState, getState] = result.current
+      const [, setState, getState] = result.current
 
       setState((state: any) => ({ ...state, b: 'new' }))
       const nextState = await getState()
@@ -54,7 +54,7 @@ describe('useSetState', () => {
       expect(nextState).toMatchObject({ a: 'old', b: 'new' })
     })
 
-    const [state, setState, getState] = result.current
+    const [state, , getState] = result.current
     expect(state).toMatchObject({ a: 'old', b: 'new' })
 
     await act(async () => {

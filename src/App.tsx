@@ -16,7 +16,6 @@ import {
 } from 'react-router-dom'
 import { toast, ToastContainer as OriginalToastContainer } from 'react-toastify'
 import styled from '@emotion/styled'
-import loadable from '@loadable/component'
 import { find } from 'lodash-es'
 import store from 'store2'
 import { SWRConfig } from 'swr'

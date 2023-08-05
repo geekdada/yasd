@@ -1,15 +1,14 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/react'
-import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import useSWR from 'swr'
 import tw from 'twin.macro'
 
-import { useProfile } from '../../../models/profile'
-import { EventList } from '../../../types'
-import fetcher from '../../../utils/fetcher'
+import { useProfile } from '@/models/profile'
+import { EventList } from '@/types'
+import fetcher from '@/utils/fetcher'
 
 dayjs.extend(localizedFormat)
 

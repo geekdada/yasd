@@ -1,12 +1,11 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/react'
-import styled from '@emotion/styled'
 import bytes from 'bytes'
 import dayjs from 'dayjs'
 import tw from 'twin.macro'
 
-import { RequestItem } from '../../../types'
+import { RequestItem } from '@/types'
 
 import MethodBadge from './MethodBadge'
 

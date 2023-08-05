@@ -1,9 +1,7 @@
 import React from 'react'
-import { css } from '@emotion/react'
-import tw from 'twin.macro'
 
-import ProfileCell from '../../../components/ProfileCell'
-import { useProfile } from '../../../models/profile'
+import ProfileCell from '@/components/ProfileCell'
+import { useProfile } from '@/models/profile'
 
 const HostInfo = (): JSX.Element => {
   const profile = useProfile()

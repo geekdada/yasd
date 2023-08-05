@@ -12,7 +12,7 @@ declare module 'twin.macro' {
 }
 
 declare module 'react' {
-  // The tw and css prop
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface DOMAttributes<T> {
     tw?: string
     css?: CSSInterpolation

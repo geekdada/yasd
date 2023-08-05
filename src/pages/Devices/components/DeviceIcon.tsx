@@ -1,9 +1,8 @@
 import React from 'react'
 import { css } from '@emotion/react'
 import { Image } from '@sumup/circuit-ui'
-import tw from 'twin.macro'
 
-import { useSurgeHost } from '../../../models/profile'
+import { useSurgeHost } from '@/models/profile'
 
 interface DeviceIconProps {
   icon?: string

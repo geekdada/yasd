@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { css } from '@emotion/react'
-import styled from '@emotion/styled'
 import { ReloadIcon } from '@radix-ui/react-icons'
-import { Headline, Spinner } from '@sumup/circuit-ui'
+import { Headline } from '@sumup/circuit-ui'
 
 import { cn } from '@/utils/shadcn'
 

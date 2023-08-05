@@ -1,5 +1,3 @@
-/* global $ */
-
 import { join } from 'path'
 
 import fs from 'fs-extra'

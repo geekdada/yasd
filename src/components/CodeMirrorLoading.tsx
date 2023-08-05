@@ -1,6 +1,5 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
 
 const CodeMirrorLoading = (): JSX.Element => {
   const { t } = useTranslation()

@@ -2,17 +2,10 @@ import React, { MouseEvent, KeyboardEvent, useState } from 'react'
 import { useForm, Controller, useFormState } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import {
-  ButtonGroup,
-  Input,
-  useModal,
-  Toggle,
-  Headline,
-} from '@sumup/circuit-ui'
+import { ButtonGroup, Input, Toggle, Headline } from '@sumup/circuit-ui'
 import { to } from 'await-to-js'
 import isIP from 'is-ip'
 import { mutate } from 'swr'
-import tw from 'twin.macro'
 
 import { DHCPDevice } from '@/types'
 import fetcher from '@/utils/fetcher'
@@ -78,7 +71,7 @@ const DeviceSettingsModal = ({
         }
       }
 
-      const [err, result] = await to(
+      const [err] = await to(
         fetcher<{
           error?: string
         }>({

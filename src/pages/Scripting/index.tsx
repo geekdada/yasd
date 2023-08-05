@@ -22,10 +22,7 @@ import fetcher from '@/utils/fetcher'
 const Page: React.FC = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { data: scripting, error: scriptingError } = useSWR<Scriptings>(
-    '/scripting',
-    fetcher,
-  )
+  const { data: scripting } = useSWR<Scriptings>('/scripting', fetcher)
   const [evaluateResult, setEvaluateResult] = useState<string>()
   const [isLoading, setIsLoading] = useState<number>()
 

@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  MouseEventHandler,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react'
+import React, { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { List, AutoSizer, ListRowRenderer } from 'react-virtualized'
@@ -13,18 +7,15 @@ import { Button, SelectorGroup } from '@sumup/circuit-ui'
 import useSWR, { mutate } from 'swr'
 import tw from 'twin.macro'
 
-import FixedFullscreenContainer from '../../components/FixedFullscreenContainer'
-import PageTitle from '../../components/PageTitle'
-import { DnsResult } from '../../types'
-import fetcher from '../../utils/fetcher'
+import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
+import PageTitle from '@/components/PageTitle'
+import { DnsResult } from '@/types'
+import fetcher from '@/utils/fetcher'
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
   const [group, setGroup] = useState<'dynamic' | 'static'>('dynamic')
-  const { data: dnsResult, error: dnsResultError } = useSWR<DnsResult>(
-    '/dns',
-    fetcher,
-  )
+  const { data: dnsResult } = useSWR<DnsResult>('/dns', fetcher)
   const list = useMemo(() => {
     if (group === 'dynamic') {
       return dnsResult?.dnsCache ?? []
@@ -55,8 +46,6 @@ const Page: React.FC = () => {
     ({
       key, // Unique key within array of rows
       index, // Index of row within collection
-      isScrolling, // The List is currently being scrolled
-      isVisible, // This row is visible within the List (eg it is not an overscanned row)
       style, // Style object to be applied to row (to position it)
     }) => {
       if (group === 'dynamic') {

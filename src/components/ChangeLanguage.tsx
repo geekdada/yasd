@@ -1,14 +1,7 @@
-import React, {
-  ChangeEventHandler,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import React, { ChangeEventHandler, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { css } from '@emotion/react'
 import { Select } from '@sumup/circuit-ui'
 import store from 'store2'
-import tw from 'twin.macro'
 
 import { LastUsedLanguage } from '@/utils/constant'
 

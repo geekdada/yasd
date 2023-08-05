@@ -25,7 +25,7 @@ const CodeMirror = lazy(async () => {
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
-  const { data: profile, error: profileError } = useSWR<{ profile: string }>(
+  const { data: profile } = useSWR<{ profile: string }>(
     '/profiles/current?sensitive=1',
     fetcher,
   )

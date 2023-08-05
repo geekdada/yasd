@@ -1,14 +1,12 @@
 import React, { ChangeEventHandler, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { css } from '@emotion/react'
 import { Toggle } from '@sumup/circuit-ui'
 import useSWR, { mutate } from 'swr'
-import tw from 'twin.macro'
 
-import { useProfile } from '../../../models/profile'
-import { Capability } from '../../../types'
-import fetcher from '../../../utils/fetcher'
+import { useProfile } from '@/models/profile'
+import { Capability } from '@/types'
+import fetcher from '@/utils/fetcher'
 
 import MenuTile, { MenuTileContent, MenuTileTitle } from './MenuTile'
 

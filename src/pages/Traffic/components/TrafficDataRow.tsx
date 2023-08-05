@@ -2,13 +2,12 @@ import React, { useMemo, useState } from 'react'
 import { Collapse } from 'react-collapse'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/react'
-import styled from '@emotion/styled'
 import { ChevronRight } from '@sumup/icons'
 import bytes from 'bytes'
 import tw from 'twin.macro'
 
-import { DataRow, DataRowMain, DataRowSub } from '../../../components/Data'
-import { ConnectorTraffic } from '../../../types'
+import { DataRow, DataRowMain, DataRowSub } from '@/components/Data'
+import { ConnectorTraffic } from '@/types'
 
 interface TrafficDataRowProps {
   name: string
