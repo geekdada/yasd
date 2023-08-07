@@ -1,7 +1,7 @@
 import { findIndex } from 'lodash-es'
 import store from 'store2'
 
-import { Profile } from '../types'
+import { Profile } from '@/types'
 
 import { ExistingProfiles } from './constant'
 

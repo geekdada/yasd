@@ -21,6 +21,7 @@ export enum TrafficActions {
   UpdateInterface = 'updateInterface',
   UpdateConnector = 'updateConnector',
   UpdateHistory = 'updateHistory',
+  Clear = 'clear',
 }
 
 export const HISTORY_SIZE = 60
@@ -40,6 +41,9 @@ type ReducerAction =
         down?: DataPoint
         up?: DataPoint
       }
+    }
+  | {
+      type: TrafficActions.Clear
     }
 
 const trafficReducer: Reducer<ITrafficContext, ReducerAction> = (
@@ -82,6 +86,8 @@ const trafficReducer: Reducer<ITrafficContext, ReducerAction> = (
         history,
       }
     }
+    case TrafficActions.Clear:
+      return getInitialState()
     default:
       throw new Error(`Unknown action type: ${action}`)
   }
@@ -96,15 +102,7 @@ const TrafficDispatchContext = createContext<Dispatch<ReducerAction>>(
 export const TrafficProvider: React.FC<{
   children: ReactNode | ReactNode[]
 }> = (props) => {
-  const [state, dispatch] = useReducer(trafficReducer, {
-    startTime: Date.now(),
-    interface: {},
-    connector: {},
-    history: {
-      down: getInitialData(),
-      up: getInitialData(),
-    },
-  })
+  const [state, dispatch] = useReducer(trafficReducer, getInitialState())
 
   return (
     <TrafficContext.Provider value={state}>
@@ -136,7 +134,19 @@ export const useTrafficHistory = (): {
   return context.history
 }
 
-function getInitialData(): DataPoint[] {
+function getInitialState(): ITrafficContext {
+  return {
+    startTime: Date.now(),
+    interface: {},
+    connector: {},
+    history: {
+      down: getInitialTrafficHistory(),
+      up: getInitialTrafficHistory(),
+    },
+  }
+}
+
+function getInitialTrafficHistory(): DataPoint[] {
   const result = []
 
   for (let i = 1; i < HISTORY_SIZE + 1; i++) {

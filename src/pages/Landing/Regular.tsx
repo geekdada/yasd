@@ -13,6 +13,7 @@ import ChangeLanguage from '@/components/ChangeLanguage'
 import ProfileCell from '@/components/ProfileCell'
 import { Button } from '@/components/ui/button'
 import { useSetState } from '@/hooks'
+import { TrafficActions, useTrafficDispatch } from '@/models'
 import { ProfileActions, useProfileDispatch } from '@/models/profile'
 import { Profile } from '@/types'
 import { ExistingProfiles, LastUsedProfile } from '@/utils/constant'
@@ -25,12 +26,16 @@ import { tryHost } from './utils'
 
 const Page: React.FC = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const protocol = window.location.protocol
   const { isLoading, setIsLoading } = useAuthData()
+
   const [existingProfiles, setExistingProfiles, getExistingProfiles] =
     useSetState<Array<Profile>>([])
+
   const profileDispatch = useProfileDispatch()
-  const { t } = useTranslation()
+  const trafficDispatch = useTrafficDispatch()
+
   const {
     getValues,
     register,
@@ -136,7 +141,14 @@ const Page: React.FC = () => {
     if (storedExistingProfiles) {
       setExistingProfiles(storedExistingProfiles)
     }
-  }, [setExistingProfiles])
+
+    profileDispatch({
+      type: ProfileActions.Clear,
+    })
+    trafficDispatch({
+      type: TrafficActions.Clear,
+    })
+  }, [profileDispatch, setExistingProfiles, trafficDispatch])
 
   return (
     <div

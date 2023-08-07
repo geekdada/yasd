@@ -45,8 +45,12 @@ const profileReducer: Reducer<IProfileContext, ReducerAction> = (
       setServer(action.payload.host, action.payload.port, action.payload.key, {
         tls: action.payload.tls,
       })
+
       return {
-        profile: action.payload,
+        profile: {
+          ...state.profile,
+          ...action.payload,
+        },
       }
     case ProfileActions.Clear:
       return {
