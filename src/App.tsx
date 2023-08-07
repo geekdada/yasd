@@ -33,10 +33,7 @@ import {
   useProfileDispatch,
 } from '@/models'
 import HomePage from '@/pages/Home'
-import {
-  RegularLanding as LandingPage,
-  SurgeLanding as SurgeLandingPage,
-} from '@/pages/Landing'
+import { LandingPage } from '@/pages/Landing'
 import { Profile } from '@/types'
 import { isRunInSurge } from '@/utils'
 import {
@@ -234,10 +231,7 @@ const App: React.FC = () => {
       <PageLayout>
         <Suspense fallback={<FullLoading />}>
           <Routes>
-            <Route
-              path="/"
-              element={isRunInSurge() ? <SurgeLandingPage /> : <LandingPage />}
-            />
+            <Route path="/" element={<LandingPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/policies" element={<PoliciesPage />} />
             <Route path="/requests" element={<RequestsPage />} />

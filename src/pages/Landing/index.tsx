@@ -1,2 +1,1 @@
-export { default as RegularLanding } from './Regular'
-export { default as SurgeLanding } from './Surge'
+export { default as LandingPage } from './Landing'
