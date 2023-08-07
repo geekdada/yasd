@@ -15,16 +15,22 @@ interface IProfileContext {
   profile?: Profile
 }
 
+export enum ProfileActions {
+  Update = 'update',
+  Clear = 'clear',
+  UpdatePlatformVersion = 'updatePlatformVersion',
+}
+
 type ReducerAction =
   | {
-      type: 'update'
+      type: ProfileActions.Update
       payload: Profile
     }
   | {
-      type: 'clear'
+      type: ProfileActions.Clear
     }
   | {
-      type: 'updatePlatformVersion'
+      type: ProfileActions.UpdatePlatformVersion
       payload: {
         platformVersion: Profile['platformVersion']
       }
@@ -35,18 +41,18 @@ const profileReducer: Reducer<IProfileContext, ReducerAction> = (
   action,
 ) => {
   switch (action.type) {
-    case 'update':
+    case ProfileActions.Update:
       setServer(action.payload.host, action.payload.port, action.payload.key, {
         tls: action.payload.tls,
       })
       return {
         profile: action.payload,
       }
-    case 'clear':
+    case ProfileActions.Clear:
       return {
         profile: undefined,
       }
-    case 'updatePlatformVersion': {
+    case ProfileActions.UpdatePlatformVersion: {
       if (!state.profile) {
         throw new Error(
           'updatePlatformVersion cannot be dispatched if the profile is absent.',

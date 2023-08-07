@@ -1,16 +1,20 @@
 import React, { useEffect } from 'react'
-import { useForm, Controller } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { Headline, Input, Button, Checkbox } from '@sumup/circuit-ui'
+import { Button, Checkbox, Headline, Input } from '@sumup/circuit-ui'
 import { find } from 'lodash-es'
 import store from 'store2'
 import { v4 as uuid } from 'uuid'
 
 import ChangeLanguage from '@/components/ChangeLanguage'
 import { useSetState } from '@/hooks'
-import { useProfile, useProfileDispatch } from '@/models/profile'
+import {
+  ProfileActions,
+  useProfile,
+  useProfileDispatch,
+} from '@/models/profile'
 import { Profile } from '@/types'
 import { ExistingProfiles, LastUsedProfile } from '@/utils/constant'
 import { getValidationHint } from '@/utils/validation'
@@ -68,7 +72,7 @@ const Page: React.FC = () => {
         }
 
         profileDispatch({
-          type: 'update',
+          type: ProfileActions.Update,
           payload: profile,
         })
       }
@@ -143,7 +147,7 @@ const Page: React.FC = () => {
 
       if (result) {
         profileDispatch({
-          type: 'update',
+          type: ProfileActions.Update,
           payload: result,
         })
       }

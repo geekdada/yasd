@@ -1,16 +1,16 @@
 import React, {
+  lazy,
+  Suspense,
   useCallback,
   useEffect,
   useRef,
   useState,
-  lazy,
-  Suspense,
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-  Routes,
-  Route,
   Navigate,
+  Route,
+  Routes,
   useLocation,
   useNavigate,
 } from 'react-router-dom'
@@ -21,13 +21,17 @@ import store from 'store2'
 import { SWRConfig } from 'swr'
 import tw from 'twin.macro'
 
-import 'react-toastify/dist/ReactToastify.css'
 import FullLoading from '@/components/FullLoading'
 import NetworkErrorModal from '@/components/NetworkErrorModal'
 import NewVersionAlert from '@/components/NewVersionAlert'
 import PageLayout from '@/components/PageLayout'
 import useTrafficUpdater from '@/hooks/useTrafficUpdater'
-import { usePlatformVersion, useProfile, useProfileDispatch } from '@/models'
+import {
+  ProfileActions,
+  usePlatformVersion,
+  useProfile,
+  useProfileDispatch,
+} from '@/models'
 import HomePage from '@/pages/Home'
 import {
   RegularLanding as LandingPage,
@@ -41,6 +45,8 @@ import {
   LastUsedProfile,
 } from '@/utils/constant'
 import { httpClient } from '@/utils/fetcher'
+
+import 'react-toastify/dist/ReactToastify.css'
 
 const PoliciesPage = lazy(() => import('@/pages/Policies'))
 const RequestsPage = lazy(() => import('@/pages/Requests'))
@@ -140,7 +146,7 @@ const App: React.FC = () => {
 
       if (result) {
         profileDispatch({
-          type: 'update',
+          type: ProfileActions.Update,
           payload: result,
         })
       }
@@ -188,7 +194,7 @@ const App: React.FC = () => {
 
         if (currentPlatformVersion !== platformVersion) {
           profileDispatch({
-            type: 'updatePlatformVersion',
+            type: ProfileActions.UpdatePlatformVersion,
             payload: {
               platformVersion: currentPlatformVersion,
             },

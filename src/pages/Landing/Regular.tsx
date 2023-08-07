@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { Headline, Input, Checkbox } from '@sumup/circuit-ui'
+import { Checkbox, Headline, Input } from '@sumup/circuit-ui'
 import { find } from 'lodash-es'
 import store from 'store2'
 import { v4 as uuid } from 'uuid'
@@ -13,7 +13,7 @@ import ChangeLanguage from '@/components/ChangeLanguage'
 import ProfileCell from '@/components/ProfileCell'
 import { Button } from '@/components/ui/button'
 import { useSetState } from '@/hooks'
-import { useProfileDispatch } from '@/models/profile'
+import { ProfileActions, useProfileDispatch } from '@/models/profile'
 import { Profile } from '@/types'
 import { ExistingProfiles, LastUsedProfile } from '@/utils/constant'
 import { getValidationHint } from '@/utils/validation'
@@ -73,7 +73,7 @@ const Page: React.FC = () => {
         }
 
         profileDispatch({
-          type: 'update',
+          type: ProfileActions.Update,
           payload: profile,
         })
         navigate('/home', { replace: true })
