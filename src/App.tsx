@@ -20,40 +20,37 @@ import { find } from 'lodash-es'
 import store from 'store2'
 import { SWRConfig } from 'swr'
 import tw from 'twin.macro'
-import 'react-toastify/dist/ReactToastify.css'
 
-import FullLoading from './components/FullLoading'
-import NetworkErrorModal from './components/NetworkErrorModal'
-import NewVersionAlert from './components/NewVersionAlert'
-import PageLayout from './components/PageLayout'
-import {
-  usePlatformVersion,
-  useProfile,
-  useProfileDispatch,
-} from './models/profile'
-import IndexPage from './pages/Index'
+import 'react-toastify/dist/ReactToastify.css'
+import FullLoading from '@/components/FullLoading'
+import NetworkErrorModal from '@/components/NetworkErrorModal'
+import NewVersionAlert from '@/components/NewVersionAlert'
+import PageLayout from '@/components/PageLayout'
+import useTrafficUpdater from '@/hooks/useTrafficUpdater'
+import { usePlatformVersion, useProfile, useProfileDispatch } from '@/models'
+import HomePage from '@/pages/Home'
 import {
   RegularLanding as LandingPage,
   SurgeLanding as SurgeLandingPage,
-} from './pages/Landing'
-import { Profile } from './types'
-import { isRunInSurge } from './utils'
+} from '@/pages/Landing'
+import { Profile } from '@/types'
+import { isRunInSurge } from '@/utils'
 import {
   ExistingProfiles,
   LastUsedLanguage,
   LastUsedProfile,
-} from './utils/constant'
-import { httpClient } from './utils/fetcher'
+} from '@/utils/constant'
+import { httpClient } from '@/utils/fetcher'
 
-const PoliciesPage = lazy(() => import('./pages/Policies'))
-const RequestsPage = lazy(() => import('./pages/Requests'))
-const TrafficPage = lazy(() => import('./pages/Traffic'))
-const ModulesPage = lazy(() => import('./pages/Modules'))
-const ScriptingPage = lazy(() => import('./pages/Scripting'))
-const EvaluatePage = lazy(() => import('./pages/Scripting/Evaluate'))
-const DnsPage = lazy(() => import('./pages/Dns'))
-const DevicesPage = lazy(() => import('./pages/Devices'))
-const ProfilePage = lazy(() => import('./pages/Profiles/Current'))
+const PoliciesPage = lazy(() => import('@/pages/Policies'))
+const RequestsPage = lazy(() => import('@/pages/Requests'))
+const TrafficPage = lazy(() => import('@/pages/Traffic'))
+const ModulesPage = lazy(() => import('@/pages/Modules'))
+const ScriptingPage = lazy(() => import('@/pages/Scripting'))
+const EvaluatePage = lazy(() => import('@/pages/Scripting/Evaluate'))
+const DnsPage = lazy(() => import('@/pages/Dns'))
+const DevicesPage = lazy(() => import('@/pages/Devices'))
+const ProfilePage = lazy(() => import('@/pages/Profiles/Current'))
 const ToastContainer = styled(OriginalToastContainer)`
   ${tw`p-2 md:p-0`}
 
@@ -123,6 +120,8 @@ const App: React.FC = () => {
   const [hasInit, setHasInit] = useState(false)
   const isCurrentVersionFetched = useRef(true)
   const platformVersion = usePlatformVersion()
+
+  useTrafficUpdater()
 
   const onCloseApplication = useCallback(() => {
     if (isRunInSurge()) {
@@ -233,7 +232,7 @@ const App: React.FC = () => {
               path="/"
               element={isRunInSurge() ? <SurgeLandingPage /> : <LandingPage />}
             />
-            <Route path="/home" element={<IndexPage />} />
+            <Route path="/home" element={<HomePage />} />
             <Route path="/policies" element={<PoliciesPage />} />
             <Route path="/requests" element={<RequestsPage />} />
             <Route path="/traffic" element={<TrafficPage />} />

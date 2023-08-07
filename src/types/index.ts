@@ -211,3 +211,8 @@ export interface BenchmarkResult {
 export interface PolicyBenchmarkResults {
   [key: string]: BenchmarkResult
 }
+
+export type DataPoint = {
+  x: number
+  y: number
+}

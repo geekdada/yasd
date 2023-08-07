@@ -40,6 +40,7 @@ module.exports = {
     'react/prop-types': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unused-vars': 'warn',
     'import/no-named-as-default-member': 'off',
     'import/order': [
       'error',

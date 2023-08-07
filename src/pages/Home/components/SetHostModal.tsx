@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { IconButton, Badge, Button } from '@sumup/circuit-ui'
-import { Laptop } from '@sumup/icons'
 import { find } from 'lodash-es'
+import { Laptop } from 'lucide-react'
 import store from 'store2'
 
 import ProfileCell from '@/components/ProfileCell'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -46,10 +47,10 @@ const SetHostModal: React.FC = () => {
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <IconButton label="change host" className="w-10 h-10 p-1">
+      <DialogTrigger asChild>
+        <Button variant="outline" size="icon">
           <Laptop />
-        </IconButton>
+        </Button>
       </DialogTrigger>
 
       <DialogContent>
@@ -65,7 +66,7 @@ const SetHostModal: React.FC = () => {
                 className="flex flex-row items-center hover:bg-gray-200"
               >
                 {profile.id === currentProfile?.id && (
-                  <Badge variant="success" className="ml-3 text-xs md:text-sm">
+                  <Badge className="ml-3 text-xs md:text-sm">
                     {t('landing.current')}
                   </Badge>
                 )}
@@ -82,11 +83,7 @@ const SetHostModal: React.FC = () => {
         </div>
 
         <div className="mt-4">
-          <Button
-            size="kilo"
-            variant="primary"
-            onClick={() => navigate('/', { replace: true })}
-          >
+          <Button onClick={() => navigate('/', { replace: true })}>
             {t('landing.add_new_host')}
           </Button>
         </div>

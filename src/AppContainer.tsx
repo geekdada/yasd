@@ -10,7 +10,7 @@ import { CacheProvider, ThemeProvider } from '@emotion/react'
 import { BaseStyles } from '@sumup/circuit-ui'
 import { light } from '@sumup/design-tokens'
 
-import { ProfileProvider } from './models/profile'
+import { ProfileProvider, TrafficProvider } from './models'
 
 const ReactRouter: React.FC<BrowserRouterProps | HashRouterProps> = (args) => {
   return process.env.REACT_APP_HASH_ROUTER ? (
@@ -31,10 +31,12 @@ const AppContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
       <CacheProvider value={styleCache}>
         <ReactRouter>
           <ProfileProvider>
-            <ThemeProvider theme={light}>
-              <BaseStyles />
-              {children}
-            </ThemeProvider>
+            <TrafficProvider>
+              <ThemeProvider theme={light}>
+                <BaseStyles />
+                {children}
+              </ThemeProvider>
+            </TrafficProvider>
           </ProfileProvider>
         </ReactRouter>
       </CacheProvider>

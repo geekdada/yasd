@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { Headline, Input, Button, Checkbox } from '@sumup/circuit-ui'
+import { Headline, Input, Checkbox } from '@sumup/circuit-ui'
 import { find } from 'lodash-es'
 import store from 'store2'
 import { v4 as uuid } from 'uuid'
@@ -11,6 +11,7 @@ import { v4 as uuid } from 'uuid'
 import Ad from '@/components/Ad'
 import ChangeLanguage from '@/components/ChangeLanguage'
 import ProfileCell from '@/components/ProfileCell'
+import { Button } from '@/components/ui/button'
 import { useSetState } from '@/hooks'
 import { useProfileDispatch } from '@/models/profile'
 import { Profile } from '@/types'
@@ -151,7 +152,7 @@ const Page: React.FC = () => {
           {t('landing.add_new_host')}
         </Headline>
 
-        <div className="bg-blue-100 border-t-4 border-blue-500 rounded-b text-blue-900 text-sm px-4 py-3 mb-4 shadow-md space-y-4">
+        <div className="bg-blue-100 border border-blue-500 rounded text-blue-700 text-sm px-4 py-3 mb-4 space-y-4">
           <p className="leading-normal">
             该功能仅 Surge iOS 4.4.0 和 Surge Mac 4.0.0 以上版本支持。
           </p>
@@ -168,7 +169,7 @@ const Page: React.FC = () => {
         </div>
 
         <form
-          className="space-y-4 md:space-y-6"
+          className="space-y-2 sm:space-y-4 md:space-y-6"
           onSubmit={handleSubmit(onSubmit)}
         >
           <Input
@@ -189,6 +190,8 @@ const Page: React.FC = () => {
             invalid={!!errors?.host}
             label={t('landing.host')}
             placeholder="127.0.0.1"
+            autoCorrect="off"
+            autoCapitalize="off"
             validationHint={t('landing.host_tips')}
             {...register('host', { required: true })}
           />
@@ -207,6 +210,7 @@ const Page: React.FC = () => {
           />
           <Input
             type="password"
+            autoComplete="off"
             invalid={!!errors?.key}
             validationHint={getValidationHint(
               {
@@ -228,27 +232,27 @@ const Page: React.FC = () => {
                   disabled={protocol === 'https:'}
                   checked={field.value}
                   onChange={field.onChange}
-                >
-                  {t('landing.https')}
-                </Checkbox>
+                  label={t('landing.https')}
+                />
               )}
             />
             <Controller
               name="keepCredential"
               control={control}
               render={({ field }) => (
-                <Checkbox checked={field.value} onChange={field.onChange}>
-                  {t('landing.remember_me')}
-                </Checkbox>
+                <Checkbox
+                  checked={field.value}
+                  onChange={field.onChange}
+                  label={t('landing.remember_me')}
+                />
               )}
             />
           </div>
 
           <div>
             <Button
+              className="w-full"
               type="submit"
-              variant="primary"
-              stretch
               isLoading={isLoading}
               loadingLabel={t('landing.is_loading')}
             >
@@ -267,7 +271,7 @@ const Page: React.FC = () => {
           <div className="bg-gray-100 divide-y divide-gray-200 rounded overflow-hidden space-y-4 md:space-y-6">
             {existingProfiles.map((profile) => {
               return (
-                <div key={profile.id} className="hover:bg-gray-200">
+                <div key={profile.id} className="hover:bg-gray-200 md:px-3">
                   <ProfileCell
                     profile={profile}
                     variant="left"

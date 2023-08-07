@@ -1,8 +1,9 @@
 import bytes from 'bytes'
 import { ChartOptions } from 'chart.js'
+
 import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm'
 
-export const commonChartOptions: ChartOptions = {
+export const commonChartOptions: ChartOptions<'line'> = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -27,11 +28,20 @@ export const commonChartOptions: ChartOptions = {
   },
   animation: {
     duration: 500,
+    easing: 'easeInOutQuad',
+  },
+  transitions: {
+    show: {
+      animation: {
+        duration: 0,
+      },
+    },
   },
   scales: {
     x: {
       type: 'timeseries',
       display: false,
+      reverse: true,
       ticks: {
         autoSkip: false,
       },

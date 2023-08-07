@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { css } from '@emotion/react'
-import { IconButton } from '@sumup/circuit-ui'
 import axios from 'axios'
 import { Trash2 } from 'lucide-react'
 import tw from 'twin.macro'
 
+import { Button } from '@/components/ui/button'
 import { Profile } from '@/types'
+import { cn } from '@/utils/shadcn'
 
 interface ProfileCellProps {
   profile: Profile
@@ -14,6 +14,7 @@ interface ProfileCellProps {
   onDelete?: () => void
   showDelete?: boolean
   variant?: 'spread' | 'left'
+  className?: string
 }
 
 const ProfileCell: React.FC<ProfileCellProps> = ({
@@ -23,12 +24,13 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
   showDelete,
   onDelete,
   variant = 'spread',
+  className,
 }) => {
   const [available, setAvailable] = useState<boolean | undefined>(undefined)
   const variantStyle =
     variant === 'spread'
-      ? tw`flex-row justify-between items-center`
-      : tw`flex-col justify-start items-start`
+      ? 'flex-row justify-between items-center'
+      : 'flex-col justify-start items-start'
 
   const clickHandler = () => {
     if (available && onClick) {
@@ -45,9 +47,9 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
   const getCursorStyle = () => {
     if (onClick) {
       if (available) {
-        return tw`cursor-pointer`
+        return 'cursor-pointer'
       }
-      return tw`cursor-not-allowed`
+      return 'cursor-not-allowed'
     }
     return null
   }
@@ -82,19 +84,19 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
 
   return (
     <div
-      key={profile.id}
-      css={[getCursorStyle(), tw`flex p-3 justify-between`]}
+      className={cn('flex p-3 justify-between', getCursorStyle(), className)}
       onClick={(e) => {
         e.stopPropagation()
         e.preventDefault()
         clickHandler()
       }}
     >
-      <div css={[tw`flex w-full`, variantStyle]}>
+      <div className={cn('flex w-full', variantStyle)}>
         <div className="truncate text-sm md:text-base leading-tight">
           {profile.name}
         </div>
-        <div css={[tw`flex items-center`, variant === 'left' && tw`mt-2`]}>
+
+        <div className={cn('flex items-center', variant === 'left' && 'mt-2')}>
           {checkConnectivity && (
             <div className="relative flex h-3 w-3 mr-3">
               {available && (
@@ -119,29 +121,18 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
       </div>
       {showDelete && (
         <div className="flex items-center ml-2">
-          <IconButton
+          <Button
             onClick={(e) => {
               e.stopPropagation()
               e.preventDefault()
               deleteHandler()
             }}
-            label={'delete profile'}
-            css={[
-              tw`flex items-center justify-center w-8 h-8 text-gray-600`,
-              css`
-                padding: 0;
-
-                svg {
-                  ${tw`transition-colors duration-200 ease-in-out w-4 h-4`}
-                }
-                &:hover svg {
-                  ${tw`text-gray-700`}
-                }
-              `,
-            ]}
+            title={'delete profile'}
+            size="icon"
+            variant="outline"
           >
             <Trash2 />
-          </IconButton>
+          </Button>
         </div>
       )}
     </div>

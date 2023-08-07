@@ -66,7 +66,7 @@ const profileReducer: Reducer<IProfileContext, ReducerAction> = (
       }
     }
     default:
-      throw new Error()
+      throw new Error(`Unknown action type: ${action}`)
   }
 }
 
@@ -74,11 +74,13 @@ const ProfileContext = createContext<IProfileContext>({
   profile: undefined,
 })
 
-const ProfileDispatchContext = createContext<
-  Dispatch<ReducerAction> | undefined
->(undefined)
+const ProfileDispatchContext = createContext<Dispatch<ReducerAction>>(
+  () => undefined,
+)
 
-export const ProfileProvider: React.FC<{ children: ReactNode }> = (props) => {
+export const ProfileProvider: React.FC<{
+  children: ReactNode | ReactNode[]
+}> = (props) => {
   const [state, dispatch] = useReducer(profileReducer, {
     profile: undefined,
   })
@@ -126,12 +128,5 @@ export const useSurgeHost = (): string | null => {
   return `${tls ? 'https:' : 'http:'}//${host}:${port}`
 }
 
-export const useProfileDispatch = (): Dispatch<ReducerAction> => {
-  const context = useContext(ProfileDispatchContext)
-
-  if (!context) {
-    throw new Error()
-  }
-
-  return context
-}
+export const useProfileDispatch = (): Dispatch<ReducerAction> =>
+  useContext(ProfileDispatchContext)

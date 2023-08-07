@@ -1,16 +1,11 @@
-import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import React, { lazy, Suspense, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/react'
 import bytes from 'bytes'
-import useSWR from 'swr'
 import tw from 'twin.macro'
 
-import { useProfile } from '@/models/profile'
-import { ConnectorTraffic, Traffic } from '@/types'
-import fetcher from '@/utils/fetcher'
-
-import { REFRESH_RATE } from './constants'
-import { ChartPoint } from './types'
+import { useInterfaces } from '@/models'
+import { ConnectorTraffic } from '@/types'
 
 const LineChart = lazy(() => import('./components/LineChart'))
 const Cell = tw.div`px-4 py-3`
@@ -29,45 +24,9 @@ const LineChartLoader = () => (
 
 const TrafficCell: React.FC = () => {
   const { t } = useTranslation()
-  const profile = useProfile()
-  const { data: traffic } = useSWR(
-    profile !== undefined ? '/traffic' : null,
-    (url) =>
-      fetcher<Traffic & { nowTime: number }>({ url }).then((res) => {
-        res.nowTime = Date.now()
-        return res
-      }),
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      refreshInterval: REFRESH_RATE,
-      dedupingInterval: REFRESH_RATE,
-    },
-  )
-  const [trafficDatasets, setTrafficDatasets] = useState<{
-    up: Array<ChartPoint>
-    down: Array<ChartPoint>
-  }>({
-    up: [],
-    down: [],
-  })
-
-  const newDatasets = useMemo(() => {
-    return [
-      {
-        label: 'Upload',
-        data: trafficDatasets.up,
-      },
-      {
-        label: 'Download',
-        data: trafficDatasets.down,
-      },
-    ]
-  }, [trafficDatasets.down, trafficDatasets.up])
+  const interfaces = useInterfaces()
 
   const activeInterface = useMemo(() => {
-    if (!traffic) return undefined
-
     const aggregation: ConnectorTraffic = {
       outCurrentSpeed: 0,
       in: 0,
@@ -77,8 +36,8 @@ const TrafficCell: React.FC = () => {
       inMaxSpeed: 0,
     }
 
-    for (const name in traffic.interface) {
-      const conn = traffic.interface[name]
+    for (const name in interfaces) {
+      const conn = interfaces[name]
       aggregation.in += conn.in
       aggregation.out += conn.out
       aggregation.outCurrentSpeed += conn.outCurrentSpeed
@@ -86,29 +45,13 @@ const TrafficCell: React.FC = () => {
     }
 
     return aggregation
-  }, [traffic])
-
-  // Build datasets for chart
-  useEffect(() => {
-    if (!activeInterface) return undefined
-
-    setTrafficDatasets(() => {
-      const time = new Date()
-      const newUps = [{ x: time, y: activeInterface.outCurrentSpeed }]
-      const newDowns = [{ x: time, y: activeInterface.inCurrentSpeed }]
-
-      return {
-        up: newUps,
-        down: newDowns,
-      }
-    })
-  }, [activeInterface])
+  }, [interfaces])
 
   return (
     <div>
       <div className="mb-3 w-full overflow-hidden">
         <Suspense fallback={<LineChartLoader />}>
-          <LineChart id="traffic-chart" newDatasets={newDatasets} />
+          <LineChart />
         </Suspense>
       </div>
 
