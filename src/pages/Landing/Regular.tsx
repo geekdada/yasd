@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -34,7 +34,6 @@ import { ExistingProfiles, LastUsedProfile } from '@/utils/constant'
 import Header from './components/Header'
 import { useAuthData } from './hooks'
 import { useSchemas } from './schemas'
-import { RegularFormFields } from './types'
 import { tryHost } from './utils'
 
 const Page: React.FC = () => {
@@ -75,30 +74,36 @@ const Page: React.FC = () => {
     return profile
   }
 
-  const selectProfile = (id: string) => {
-    getExistingProfiles().then((profiles) => {
-      const profile = find(profiles, { id })
+  const selectProfile = useCallback(
+    (id: string) => {
+      getExistingProfiles().then((profiles) => {
+        const profile = find(profiles, { id })
 
-      if (profile) {
-        if (getValues('keepCredential')) {
-          store.set(LastUsedProfile, profile.id)
+        if (profile) {
+          if (getValues('keepCredential')) {
+            store.set(LastUsedProfile, profile.id)
+          }
+
+          profileDispatch({
+            type: ProfileActions.Update,
+            payload: profile,
+          })
+          navigate('/home', { replace: true })
         }
+      })
+    },
+    [getExistingProfiles, getValues, navigate, profileDispatch],
+  )
 
-        profileDispatch({
-          type: ProfileActions.Update,
-          payload: profile,
-        })
-        navigate('/home', { replace: true })
-      }
-    })
-  }
+  const deleteProfile = useCallback(
+    (id: string) => {
+      const profiles = existingProfiles.filter((item) => item.id !== id)
 
-  const deleteProfile = (id: string) => {
-    const profiles = existingProfiles.filter((item) => item.id !== id)
-
-    setExistingProfiles(profiles)
-    store.set(ExistingProfiles, profiles)
-  }
+      setExistingProfiles(profiles)
+      store.set(ExistingProfiles, profiles)
+    },
+    [existingProfiles, setExistingProfiles],
+  )
 
   const onSubmit = (data: z.infer<typeof RegularLoginFormSchema>) => {
     setIsLoading(true)
@@ -292,7 +297,7 @@ const Page: React.FC = () => {
               />
             </div>
 
-            <div>
+            <div className="pt-5">
               <Button
                 className="w-full"
                 type="submit"

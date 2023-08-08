@@ -1,23 +1,25 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { css } from '@emotion/react'
-import { IconButton } from '@sumup/circuit-ui'
-import { ChevronLeft } from '@sumup/icons'
+import { ArrowLeftIcon } from 'lucide-react'
 
-const BackButton: React.FC = () => {
+import { Button } from '@/components/ui/button'
+
+const BackButton = ({ title }: { title?: string }) => {
   const navigate = useNavigate()
 
   return (
-    <IconButton
-      onClick={() => navigate(-1)}
-      label="back"
-      className="w-8 h-8 mr-3 self-center"
-      css={css`
-        padding: 0.3rem;
-      `}
-    >
-      <ChevronLeft />
-    </IconButton>
+    <div className="space-x-4">
+      <Button
+        variant="outline"
+        onClick={() => navigate(-1)}
+        title="back"
+        size="icon"
+        className="border-2"
+      >
+        <ArrowLeftIcon />
+      </Button>
+      {title ? <span className="">{title}</span> : null}
+    </div>
   )
 }
 

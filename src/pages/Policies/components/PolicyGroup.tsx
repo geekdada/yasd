@@ -1,18 +1,23 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
-import { Card, Headline, Spinner, IconButton } from '@sumup/circuit-ui'
-import { FlashOn } from '@sumup/icons'
+import { Headline } from '@sumup/circuit-ui'
+import { Loader2Icon, ZapIcon } from 'lucide-react'
 import tw from 'twin.macro'
 import useIsInViewport from 'use-is-in-viewport'
 
+import { StatusChip } from '@/components/StatusChip'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Policy,
   SelectPolicyTestResult,
   UrlTestPolicyTestResult,
   PolicyBenchmarkResults,
-} from '../../../types'
-import fetcher from '../../../utils/fetcher'
+} from '@/types'
+import fetcher from '@/utils/fetcher'
+import { cn } from '@/utils/shadcn'
+
 import { mutatePolicyPerformanceResults } from '../usePolicyPerformance'
 
 interface PolicyGroupProps {
@@ -21,21 +26,21 @@ interface PolicyGroupProps {
   policyPerformanceResults?: PolicyBenchmarkResults
 }
 
-const LoadingOverlay = styled.div`
-  ${tw`absolute top-0 right-0 bottom-0 left-0 bg-gray-800 bg-opacity-25 flex items-center justify-center`}
+const LoadingOverlay = tw.div`
+  absolute top-0 right-0 bottom-0 left-0 bg-gray-800 bg-opacity-25 flex items-center justify-center
 `
 
-const LatencyResult = styled.div`
-  ${tw`text-white`}
+const LatencyResult = tw.div`
+  text-white
 `
 
 const latencyResultStyle = (latency: number) => {
   if (latency < 0) {
-    return tw`bg-red-500`
+    return 'error'
   } else if (latency < 200) {
-    return tw`bg-green-500`
+    return 'info'
   } else {
-    return tw`bg-orange-500`
+    return 'warn'
   }
 }
 
@@ -52,93 +57,6 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
   }>({})
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isTesting, setIsTesting] = useState<boolean>(false)
-
-  const selectPolicy = (name: string) => {
-    if (isLoading) return
-
-    setIsLoading(true)
-
-    fetcher({
-      url: '/policy_groups/select',
-      method: 'POST',
-      data: {
-        group_name: policyGroupName,
-        policy: name,
-      },
-    })
-      .then(() => {
-        return refreshSelection()
-      })
-      .then((policy) => {
-        setSelection(policy)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }
-
-  const testPolicy = (policyGroupName: string) => {
-    if (isTesting) return
-
-    setIsTesting(true)
-
-    fetcher<SelectPolicyTestResult | UrlTestPolicyTestResult>({
-      url: '/policy_groups/test',
-      method: 'POST',
-      timeout: 30000,
-      data: {
-        group_name: policyGroupName,
-      },
-    })
-      .then((res) => {
-        const latencies: {
-          [name: string]: number
-        } = {}
-
-        if (policyPerformanceResults) {
-          return Promise.all([
-            refreshSelection().then((policy) => {
-              setSelection(policy)
-            }),
-            mutatePolicyPerformanceResults(),
-          ])
-        }
-
-        if (res.winner) {
-          const testResult = (res as UrlTestPolicyTestResult).results[0].data
-
-          Object.keys(testResult).forEach((key) => {
-            const result = testResult[key]
-
-            latencies[key] = result.receive
-              ? Number(result.receive.toFixed(0))
-              : -1
-          })
-
-          setSelection((res as UrlTestPolicyTestResult).winner)
-        } else {
-          const testResult = res as SelectPolicyTestResult
-          Object.keys(testResult).forEach((key) => {
-            const result = testResult[key]
-
-            latencies[key] = result.receive
-              ? Number(result.receive.toFixed(0))
-              : -1
-          })
-        }
-
-        setLatencies(latencies)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-      .finally(() => {
-        setIsTesting(false)
-      })
-  }
 
   const refreshSelection = useCallback(() => {
     return fetcher<{ policy: string }>({
@@ -171,6 +89,99 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
     setLatencies(latencies)
   }, [policyGroup, policyPerformanceResults])
 
+  const selectPolicy = useCallback(
+    (name: string) => {
+      if (isLoading) return
+
+      setIsLoading(true)
+
+      fetcher({
+        url: '/policy_groups/select',
+        method: 'POST',
+        data: {
+          group_name: policyGroupName,
+          policy: name,
+        },
+      })
+        .then(() => {
+          return refreshSelection()
+        })
+        .then((policy) => {
+          setSelection(policy)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
+    },
+    [isLoading, policyGroupName, refreshSelection],
+  )
+
+  const testPolicy = useCallback(
+    (policyGroupName: string) => {
+      if (isTesting) return
+
+      setIsTesting(true)
+
+      fetcher<SelectPolicyTestResult | UrlTestPolicyTestResult>({
+        url: '/policy_groups/test',
+        method: 'POST',
+        timeout: 30000,
+        data: {
+          group_name: policyGroupName,
+        },
+      })
+        .then((res) => {
+          const latencies: {
+            [name: string]: number
+          } = {}
+
+          if (policyPerformanceResults) {
+            return Promise.all([
+              refreshSelection().then((policy) => {
+                setSelection(policy)
+              }),
+              mutatePolicyPerformanceResults(),
+            ])
+          }
+
+          if (res.winner) {
+            const testResult = (res as UrlTestPolicyTestResult).results[0].data
+
+            Object.keys(testResult).forEach((key) => {
+              const result = testResult[key]
+
+              latencies[key] = result.receive
+                ? Number(result.receive.toFixed(0))
+                : -1
+            })
+
+            setSelection((res as UrlTestPolicyTestResult).winner)
+          } else {
+            const testResult = res as SelectPolicyTestResult
+            Object.keys(testResult).forEach((key) => {
+              const result = testResult[key]
+
+              latencies[key] = result.receive
+                ? Number(result.receive.toFixed(0))
+                : -1
+            })
+          }
+
+          setLatencies(latencies)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+        .finally(() => {
+          setIsTesting(false)
+        })
+    },
+    [isTesting, policyPerformanceResults, refreshSelection],
+  )
+
   useEffect(() => {
     let isMounted = true
 
@@ -187,84 +198,73 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
     }
   }, [refreshSelection, isInViewport, selection])
 
-  return (
-    <div ref={targetRef}>
-      <Card className="relative overflow-hidden px-3 md:px-4">
-        {isLoading && (
-          <LoadingOverlay>
-            <Spinner />
-          </LoadingOverlay>
-        )}
-
-        <Headline
-          size="four"
-          as="h4"
-          className="flex flex-row justify-between items-center mb-3 md:mb-4"
-        >
-          <div>{policyGroupName}</div>
-          <IconButton
-            size="kilo"
-            label={t('policies.test_policy')}
-            onClick={() => testPolicy(policyGroupName)}
-          >
-            {isTesting ? (
-              <Spinner className="text-gray-700 w-5 h-5" />
-            ) : (
-              <FlashOn className="text-gray-700 w-5 h-5" />
-            )}
-          </IconButton>
+  const cardInner = (
+    <>
+      <CardHeader className="flex flex-row justify-between items-center">
+        <Headline size="four" as="h4">
+          {policyGroupName}
         </Headline>
+        <Button
+          size="icon"
+          variant="outline"
+          title={t('policies.test_policy')}
+          onClick={() => testPolicy(policyGroupName)}
+        >
+          {isTesting ? <Loader2Icon className="animate-spin" /> : <ZapIcon />}
+        </Button>
+      </CardHeader>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+      <CardContent>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {policyGroup.map((policy) => {
             return (
               <div
-                css={[
-                  tw`bg-gray-200 rounded-md px-3 py-3 md:px-4 md:py-3 cursor-pointer hover:bg-gray-300 transition-colors ease-in-out duration-200`,
-                  selection === policy.name
-                    ? tw`bg-blue-600 text-white hover:bg-blue-600`
-                    : '',
-                ]}
+                className={cn(
+                  'bg-muted rounded-xl border shadow px-3 py-3 md:px-4 md:py-3 cursor-pointer hover:bg-neutral-100 transition-colors ease-in-out duration-200',
+                  selection === policy.name &&
+                    'bg-blue-500 text-white hover:bg-blue-500',
+                )}
                 key={policy.name}
                 onClick={() => selectPolicy(policy.name)}
               >
-                <div className="text-sm md:text-base leading-snug">
+                <div className="text-xs mb-1">
+                  {policy.typeDescription.toUpperCase()}
+                </div>
+
+                <div className="text-sm font-bold md:text-base leading-snug">
                   {policy.name}
                 </div>
-                <div
-                  css={[
-                    tw`flex flex-row justify-between mt-2 text-xs text-gray-700`,
-                    selection === policy.name ? tw`text-white` : '',
-                  ]}
-                >
-                  <div className="text-center bg-gray-400 text-gray-700 px-1 rounded">
-                    {policy.typeDescription.toUpperCase()}
-                  </div>
+
+                <div className="flex mt-2">
                   {latencies[policy.name] >= 0 && (
-                    <LatencyResult
-                      css={[
-                        tw`rounded px-1`,
-                        latencyResultStyle(latencies[policy.name]),
-                      ]}
-                    >
-                      {latencies[policy.name] + 'ms'}
-                    </LatencyResult>
+                    <StatusChip
+                      size="sm"
+                      variant={latencyResultStyle(latencies[policy.name])}
+                      text={latencies[policy.name] + 'ms'}
+                    />
                   )}
                   {latencies[policy.name] === -1 && (
-                    <LatencyResult
-                      css={[
-                        tw`rounded px-1`,
-                        latencyResultStyle(latencies[policy.name]),
-                      ]}
-                    >
-                      Failed
-                    </LatencyResult>
+                    <StatusChip size="sm" variant="error" text="Failed" />
                   )}
                 </div>
               </div>
             )
           })}
         </div>
+      </CardContent>
+    </>
+  )
+
+  return (
+    <div ref={targetRef}>
+      <Card className="relative overflow-hidden">
+        {isLoading ? (
+          <LoadingOverlay>
+            <Loader2Icon className="h-4 w-4 animate-spin" />
+          </LoadingOverlay>
+        ) : (
+          cardInner
+        )}
       </Card>
     </div>
   )
