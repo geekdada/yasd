@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@sumup/circuit-ui'
 
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -37,12 +37,7 @@ const ActionsModal = ({
 
       <div className="space-y-5 pb-5">
         {actions.map((action) => (
-          <Button
-            stretch
-            key={action.id}
-            onClick={action.onClick}
-            variant="primary"
-          >
+          <Button stretch key={action.id} onClick={action.onClick}>
             {t(action.title)}
           </Button>
         ))}

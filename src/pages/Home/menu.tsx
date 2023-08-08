@@ -1,8 +1,8 @@
 import React from 'react'
 import gte from 'semver/functions/gte'
 
-import { Profile } from '../../types'
-import { isRunInSurge } from '../../utils'
+import { Profile } from '@/types'
+import { isRunInSurge } from '@/utils'
 
 import CapabilityTile from './components/CapabilityTile'
 

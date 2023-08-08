@@ -1,8 +1,14 @@
-import React, { ChangeEventHandler, useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Select } from '@sumup/circuit-ui'
 import store from 'store2'
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { LastUsedLanguage } from '@/utils/constant'
 
 const ChangeLanguage = (): JSX.Element => {
@@ -19,11 +25,11 @@ const ChangeLanguage = (): JSX.Element => {
   ]
   const [isLoading, setIsLoading] = useState(false)
 
-  const onChange: ChangeEventHandler<HTMLSelectElement> = useCallback(
-    (e) => {
+  const onChange = useCallback(
+    (newVal: string) => {
       setIsLoading(true)
-      store.set(LastUsedLanguage, e.target.value)
-      i18n.changeLanguage(e.target.value).finally(() => setIsLoading(false))
+      store.set(LastUsedLanguage, newVal)
+      i18n.changeLanguage(newVal).finally(() => setIsLoading(false))
     },
     [i18n],
   )
@@ -31,13 +37,23 @@ const ChangeLanguage = (): JSX.Element => {
   return (
     <div className="flex justify-center w-full">
       <Select
-        label="change language"
-        hideLabel
         value={i18n.language}
-        options={options}
-        onChange={onChange}
+        onValueChange={(newVal) => {
+          onChange(newVal)
+        }}
         disabled={isLoading}
-      />
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Theme" />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   )
 }

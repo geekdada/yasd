@@ -1,6 +1,8 @@
 import bytes from 'bytes'
 import { ChartOptions } from 'chart.js'
 
+import { REFRESH_RATE } from '@/hooks/useTrafficUpdater'
+
 import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm'
 
 export const commonChartOptions: ChartOptions<'line'> = {
@@ -27,8 +29,8 @@ export const commonChartOptions: ChartOptions<'line'> = {
     intersect: true,
   },
   animation: {
-    duration: 500,
-    easing: 'easeInOutQuad',
+    duration: REFRESH_RATE,
+    easing: 'linear',
   },
   transitions: {
     show: {
@@ -41,7 +43,7 @@ export const commonChartOptions: ChartOptions<'line'> = {
     x: {
       type: 'timeseries',
       display: false,
-      reverse: true,
+      reverse: false,
       ticks: {
         autoSkip: false,
       },
@@ -51,9 +53,10 @@ export const commonChartOptions: ChartOptions<'line'> = {
       beginAtZero: true,
       grid: {
         display: true,
-        color: '#c2c2c2',
+        color: 'hsl(0, 0%, 84%)',
         drawTicks: false,
       },
+      position: 'right',
       border: {
         dash: [3, 6],
         display: false,
@@ -70,17 +73,17 @@ export const commonChartOptions: ChartOptions<'line'> = {
 
 export const chartStyles = {
   up: {
-    borderColor: '#27c8ae',
+    borderColor: '#8250ff',
     borderWidth: 2,
     lineTension: 0.3,
     pointRadius: 0,
-    backgroundColor: 'rgba(123, 166, 220, .2)',
+    backgroundColor: 'hsl(280, 75%, 98%)',
   },
   down: {
-    borderColor: '#f3a956',
+    borderColor: '#06b5f4',
     borderWidth: 2,
     lineTension: 0.3,
     pointRadius: 0,
-    backgroundColor: 'rgba(243, 169, 86, .2)',
+    backgroundColor: 'hsl(210, 100%, 98%)',
   },
 }

@@ -29,6 +29,10 @@ const buttonVariants = cva(
         lg: 'h-10 rounded-md px-8',
         icon: 'h-9 w-9',
       },
+      stretch: {
+        true: 'w-full',
+        false: '',
+      },
     },
     defaultVariants: {
       variant: 'default',
@@ -43,6 +47,7 @@ export interface ButtonProps
   asChild?: boolean
   isLoading?: boolean
   loadingLabel?: string
+  stretch?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -54,6 +59,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       asChild = false,
       isLoading,
       loadingLabel,
+      stretch,
       ...props
     },
     ref,
@@ -63,7 +69,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     if (isLoading) {
       return (
         <Comp
-          className={cn(buttonVariants({ variant, size, className }))}
+          className={cn(buttonVariants({ stretch, variant, size, className }))}
           disabled
           ref={ref}
           {...props}
@@ -76,7 +82,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ stretch, variant, size, className }))}
         css={[
           size === 'icon' &&
             css`

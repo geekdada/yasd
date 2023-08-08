@@ -6,7 +6,7 @@
   "tailwind": {
     "config": "tailwind.config.cjs",
     "css": "src/styles/shadcn.css",
-    "baseColor": "blue",
+    "baseColor": "zinc",
     "cssVariables": true
   },
   "aliases": {

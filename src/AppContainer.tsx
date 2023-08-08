@@ -5,9 +5,7 @@ import {
   HashRouter,
   HashRouterProps,
 } from 'react-router-dom'
-import createCache from '@emotion/cache'
-import { CacheProvider, ThemeProvider } from '@emotion/react'
-import { BaseStyles } from '@sumup/circuit-ui'
+import { ThemeProvider } from '@emotion/react'
 import { light } from '@sumup/design-tokens'
 
 import { ProfileProvider, TrafficProvider } from './models'
@@ -21,25 +19,17 @@ const ReactRouter: React.FC<BrowserRouterProps | HashRouterProps> = (args) => {
     </BrowserRouter>
   )
 }
-const styleCache = createCache({
-  key: 'yasd',
-})
 
 const AppContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <Suspense fallback={<div />}>
-      <CacheProvider value={styleCache}>
-        <ReactRouter>
-          <ProfileProvider>
-            <TrafficProvider>
-              <ThemeProvider theme={light}>
-                <BaseStyles />
-                {children}
-              </ThemeProvider>
-            </TrafficProvider>
-          </ProfileProvider>
-        </ReactRouter>
-      </CacheProvider>
+      <ReactRouter>
+        <ProfileProvider>
+          <TrafficProvider>
+            <ThemeProvider theme={light}>{children}</ThemeProvider>
+          </TrafficProvider>
+        </ProfileProvider>
+      </ReactRouter>
     </Suspense>
   )
 }

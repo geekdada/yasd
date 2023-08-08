@@ -7,7 +7,7 @@ const HostInfo = (): JSX.Element => {
   const profile = useProfile()
 
   return (
-    <div className="bg-gray-100 rounded-lg">
+    <div className="bg-muted text-foreground rounded-lg">
       {profile && <ProfileCell variant="left" profile={profile} />}
     </div>
   )

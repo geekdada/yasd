@@ -1,26 +1,39 @@
 import React, { useEffect } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { Checkbox, Headline, Input } from '@sumup/circuit-ui'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Headline } from '@sumup/circuit-ui'
 import { find } from 'lodash-es'
 import store from 'store2'
 import { v4 as uuid } from 'uuid'
+import { z } from 'zod'
 
 import Ad from '@/components/Ad'
 import ChangeLanguage from '@/components/ChangeLanguage'
 import ProfileCell from '@/components/ProfileCell'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 import { useSetState } from '@/hooks'
 import { TrafficActions, useTrafficDispatch } from '@/models'
 import { ProfileActions, useProfileDispatch } from '@/models/profile'
 import { Profile } from '@/types'
 import { ExistingProfiles, LastUsedProfile } from '@/utils/constant'
-import { getValidationHint } from '@/utils/validation'
 
 import Header from './components/Header'
 import { useAuthData } from './hooks'
+import { useSchemas } from './schemas'
 import { RegularFormFields } from './types'
 import { tryHost } from './utils'
 
@@ -29,6 +42,7 @@ const Page: React.FC = () => {
   const { t } = useTranslation()
   const protocol = window.location.protocol
   const { isLoading, setIsLoading } = useAuthData()
+  const { RegularLoginFormSchema } = useSchemas()
 
   const [existingProfiles, setExistingProfiles, getExistingProfiles] =
     useSetState<Array<Profile>>([])
@@ -36,21 +50,14 @@ const Page: React.FC = () => {
   const profileDispatch = useProfileDispatch()
   const trafficDispatch = useTrafficDispatch()
 
-  const {
-    getValues,
-    register,
-    handleSubmit,
-    control,
-    clearErrors,
-    setError,
-    reset,
-    formState: { errors },
-  } = useForm<RegularFormFields>({
+  const form = useForm<z.infer<typeof RegularLoginFormSchema>>({
+    resolver: zodResolver(RegularLoginFormSchema),
     defaultValues: {
       keepCredential: false,
       useTls: window.location.protocol === 'https:',
     },
   })
+  const { getValues, handleSubmit, clearErrors, setError, reset } = form
 
   const addProfile = (config: Omit<Profile, 'id'>): Profile => {
     const profile: Profile = {
@@ -93,11 +100,7 @@ const Page: React.FC = () => {
     store.set(ExistingProfiles, profiles)
   }
 
-  const onSubmit = (data: RegularFormFields) => {
-    if (!data.name || !data.host || !data.port || !data.key) {
-      return
-    }
-
+  const onSubmit = (data: z.infer<typeof RegularLoginFormSchema>) => {
     setIsLoading(true)
 
     tryHost(data.useTls ? 'https:' : 'http:', data.host, data.port, data.key)
@@ -180,98 +183,127 @@ const Page: React.FC = () => {
           </p>
         </div>
 
-        <form
-          className="space-y-2 sm:space-y-4 md:space-y-6"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <Input
-            type="text"
-            invalid={!!errors?.name}
-            validationHint={getValidationHint(
-              {
-                required: t('devices.err_required'),
-              },
-              errors?.name,
-            )}
-            label={t('landing.name')}
-            placeholder="Mac"
-            {...register('name', { required: true })}
-          />
-          <Input
-            type="text"
-            invalid={!!errors?.host}
-            label={t('landing.host')}
-            placeholder="127.0.0.1"
-            autoCorrect="off"
-            autoCapitalize="off"
-            validationHint={t('landing.host_tips')}
-            {...register('host', { required: true })}
-          />
-          <Input
-            type="number"
-            invalid={!!errors?.port}
-            label={t('landing.port')}
-            placeholder="6171"
-            validationHint={getValidationHint(
-              {
-                required: t('devices.err_required'),
-              },
-              errors?.port,
-            )}
-            {...register('port', { required: true })}
-          />
-          <Input
-            type="password"
-            autoComplete="off"
-            invalid={!!errors?.key}
-            validationHint={getValidationHint(
-              {
-                required: t('devices.err_required'),
-              },
-              errors?.key,
-            )}
-            label={t('landing.key')}
-            placeholder="examplekey"
-            {...register('key', { required: true })}
-          />
-
-          <div>
-            <Controller
-              name="useTls"
-              control={control}
+        <Form {...form}>
+          <form
+            className="space-y-2 sm:space-y-4 md:space-y-6"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <FormField
+              control={form.control}
+              name="name"
               render={({ field }) => (
-                <Checkbox
-                  disabled={protocol === 'https:'}
-                  checked={field.value}
-                  onChange={field.onChange}
-                  label={t('landing.https')}
-                />
+                <FormItem>
+                  <FormLabel>{t('landing.name')}</FormLabel>
+                  <FormControl>
+                    <Input placeholder="My Mac" autoComplete="off" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
             />
-            <Controller
-              name="keepCredential"
-              control={control}
+
+            <FormField
+              control={form.control}
+              name="host"
               render={({ field }) => (
-                <Checkbox
-                  checked={field.value}
-                  onChange={field.onChange}
-                  label={t('landing.remember_me')}
-                />
+                <FormItem>
+                  <FormLabel>{t('landing.host')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="127.0.0.1"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      autoComplete="off"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>{t('landing.host_tips')}</FormDescription>
+                  <FormMessage />
+                </FormItem>
               )}
             />
-          </div>
 
-          <div>
-            <Button
-              className="w-full"
-              type="submit"
-              isLoading={isLoading}
-              loadingLabel={t('landing.is_loading')}
-            >
-              {t('landing.confirm')}
-            </Button>
-          </div>
-        </form>
+            <FormField
+              control={form.control}
+              name="port"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('landing.port')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="6171"
+                      type="number"
+                      autoCorrect="off"
+                      autoComplete="off"
+                      onChange={(e) => field.onChange(+e.target.value)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="key"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('landing.key')}</FormLabel>
+                  <FormControl>
+                    <Input type="password" autoComplete="off" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="useTls"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        disabled={protocol === 'https:'}
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel>{t('landing.https')}</FormLabel>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="keepCredential"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel>{t('landing.remember_me')}</FormLabel>
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div>
+              <Button
+                className="w-full"
+                type="submit"
+                isLoading={isLoading}
+                loadingLabel={t('landing.is_loading')}
+              >
+                {t('landing.confirm')}
+              </Button>
+            </div>
+          </form>
+        </Form>
       </div>
 
       {existingProfiles.length > 0 && (
@@ -280,7 +312,7 @@ const Page: React.FC = () => {
             {t('landing.history')}
           </Headline>
 
-          <div className="bg-gray-100 divide-y divide-gray-200 rounded overflow-hidden space-y-4 md:space-y-6">
+          <div className="bg-muted divide-y divide-gray-200 rounded overflow-hidden">
             {existingProfiles.map((profile) => {
               return (
                 <div key={profile.id} className="hover:bg-gray-200 md:px-3">
