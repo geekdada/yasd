@@ -7,8 +7,8 @@ import { isRunInSurge } from '@/utils'
 import CapabilityTile from './components/CapabilityTile'
 
 export interface MenuItem {
-  title: string
-  subTitle?: string
+  titleKey: string
+  descriptionKey?: string
   link?: string
   component?: JSX.Element
   isEnabled?: (
@@ -19,33 +19,33 @@ export interface MenuItem {
 
 const menu: Array<MenuItem> = [
   {
-    title: 'policies',
+    titleKey: 'policies',
     link: '/policies',
   },
   {
-    title: 'requests',
+    titleKey: 'requests',
     link: '/requests',
   },
   {
-    title: 'traffic',
+    titleKey: 'traffic',
     link: '/traffic',
   },
   {
-    title: 'scripting',
+    titleKey: 'scripting',
     component: (
       <CapabilityTile
         api="/features/scripting"
-        title="scripting"
+        titleKey="scripting"
         link="/scripting"
       />
     ),
   },
   {
-    title: 'modules',
+    titleKey: 'modules',
     link: '/modules',
   },
   {
-    title: 'device_management',
+    titleKey: 'device_management',
     link: '/devices',
     isEnabled: (platform, platformVersion) => {
       return Boolean(
@@ -56,31 +56,45 @@ const menu: Array<MenuItem> = [
     },
   },
   {
-    title: 'dns',
+    titleKey: 'dns',
     link: '/dns',
   },
   {
-    title: 'profile',
+    titleKey: 'profile',
     link: '/profiles/current',
   },
   {
-    title: 'mitm',
-    component: <CapabilityTile api="/features/mitm" title="mitm" />,
+    titleKey: 'mitm',
+    component: (
+      <CapabilityTile
+        api="/features/mitm"
+        titleKey="mitm"
+        descriptionKey="descriptions.mitm"
+      />
+    ),
   },
   {
-    title: 'http_capture',
-    component: <CapabilityTile api="/features/capture" title="http_capture" />,
+    titleKey: 'http_capture',
+    component: (
+      <CapabilityTile api="/features/capture" titleKey="http_capture" />
+    ),
   },
   {
-    title: 'rewrite',
-    component: <CapabilityTile api="/features/rewrite" title="rewrite" />,
+    titleKey: 'rewrite',
+    component: (
+      <CapabilityTile
+        api="/features/rewrite"
+        titleKey="rewrite"
+        descriptionKey="descriptions.rewrite"
+      />
+    ),
   },
 ]
 
 if (!isRunInSurge()) {
   menu.push({
-    title: 'github',
-    subTitle: '🌟',
+    titleKey: 'github',
+    descriptionKey: 'descriptions.github',
     link: 'https://github.com/geekdada/yasd',
   })
 }

@@ -63,7 +63,10 @@ export const commonChartOptions: ChartOptions<'line'> = {
       },
       ticks: {
         callback(value): string {
-          return bytes(value as number, { decimalPlaces: 0 }) + '/s '
+          return (
+            bytes(value as number, { decimalPlaces: 0, unitSeparator: ' ' }) +
+            '/s '
+          )
         },
         maxTicksLimit: 4,
       },

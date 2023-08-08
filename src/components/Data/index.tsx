@@ -16,7 +16,7 @@ export const DataGroup: React.FC<{
           {props.title}
         </div>
       )}
-      <div className="divide-y divide-gray-200 bg-gray-100 rounded-lg mb-4 overflow-hidden">
+      <div className="divide-y divide-gray-200 border bg-muted rounded-xl mb-4 overflow-hidden">
         {props.children}
       </div>
     </div>
@@ -26,17 +26,17 @@ export const DataGroup: React.FC<{
 export const DataRow = styled.div``
 
 export const DataRowMain = styled.div`
-  ${tw`flex items-center justify-between px-3 py-3 leading-normal text-gray-800`}
+  ${tw`flex items-center justify-between px-3 py-3 md:px-5 md:py-4 leading-normal`}
 
   & > div:last-of-type {
-    ${tw`text-gray-600`}
+    ${tw``}
   }
 `
 
 export const DataRowSub = styled.div`
-  ${tw`flex items-center justify-between px-3 leading-normal text-xs text-gray-800 lg:text-sm lg:leading-relaxed`}
+  ${tw`flex items-center justify-between px-3 leading-normal text-xs lg:text-sm lg:leading-relaxed`}
 
   & > div:last-of-type {
-    ${tw`text-gray-600`}
+    ${tw``}
   }
 `

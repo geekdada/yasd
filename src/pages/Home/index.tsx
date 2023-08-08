@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { Button, Headline, Toggle } from '@sumup/circuit-ui'
+import { Button, Headline } from '@sumup/circuit-ui'
 import { delay } from 'bluebird'
 import store from 'store2'
 import useSWR, { mutate } from 'swr'
@@ -10,6 +10,7 @@ import useSWR, { mutate } from 'swr'
 import Ad from '@/components/Ad'
 import ChangeLanguage from '@/components/ChangeLanguage'
 import { DataGroup, DataRow, DataRowMain } from '@/components/Data'
+import { Switch } from '@/components/ui/switch'
 import VersionSupport from '@/components/VersionSupport'
 import {
   usePlatform,
@@ -24,7 +25,7 @@ import fetcher from '@/utils/fetcher'
 
 import Events from './components/Events'
 import HostInfo from './components/HostInfo'
-import MenuTile, { MenuTileTitle } from './components/MenuTile'
+import MenuTile from './components/MenuTile'
 import SetHostModal from './components/SetHostModal'
 import TrafficCell from './components/TrafficCell'
 import menu from './menu'
@@ -102,7 +103,7 @@ const Page: React.FC = () => {
       <Headline
         size="two"
         as="h2"
-        className="sticky top-0 flex shadow bg-white z-10 px-3 py-3 mb-4"
+        className="sticky top-0 flex shadow bg-white z-10 px-3 py-3"
       >
         {profile && (
           <div className="w-full flex justify-between items-center">
@@ -124,96 +125,89 @@ const Page: React.FC = () => {
       </Headline>
 
       <div
+        className="space-y-4 lg:space-y-6"
         css={css`
           padding-left: env(safe-area-inset-left);
           padding-right: env(safe-area-inset-right);
         `}
       >
-        <div className="mb-4">
+        <div className="pt-4 lg:pt-6">
           <TrafficCell />
         </div>
 
-        <VersionSupport macos="0.0.0">
-          <DataGroup className="mx-4">
-            <DataRow>
-              <DataRowMain>
-                <div className="font-medium">{t('home.system_proxy')}</div>
-                <div>
-                  <Toggle
-                    label="toggle"
-                    checkedLabel="checked"
-                    uncheckedLabel="unchecked"
+        <div className="px-4 lg:px-6 space-y-4 lg:space-y-6">
+          <VersionSupport macos="0.0.0">
+            <DataGroup>
+              <DataRow>
+                <DataRowMain>
+                  <div className="font-bold">{t('home.system_proxy')}</div>
+                  <Switch
                     checked={systemProxy?.enabled}
                     onChange={() => toggleSystemProxy()}
                   />
-                </div>
-              </DataRowMain>
-            </DataRow>
-            <DataRow>
-              <DataRowMain>
-                <div className="font-medium">{t('home.enhanced_mode')}</div>
-                <div>
-                  <Toggle
-                    label="toggle"
-                    checkedLabel="checked"
-                    uncheckedLabel="unchecked"
+                </DataRowMain>
+              </DataRow>
+              <DataRow>
+                <DataRowMain>
+                  <div className="font-bold">{t('home.enhanced_mode')}</div>
+                  <Switch
                     checked={enhancedMode?.enabled}
                     onChange={() => toggleEnhancedMode()}
                   />
+                </DataRowMain>
+              </DataRow>
+            </DataGroup>
+          </VersionSupport>
+
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+            {menu.map((item) => {
+              if (
+                typeof item.isEnabled === 'function' &&
+                !item.isEnabled(platform, platformVersion)
+              ) {
+                return null
+              }
+
+              return (
+                <div key={item.titleKey}>
+                  {item.component ? (
+                    item.component
+                  ) : (
+                    <MenuTile
+                      title={t(`home.${item.titleKey}`)}
+                      description={
+                        item.descriptionKey
+                          ? t(`home.${item.descriptionKey}`)
+                          : undefined
+                      }
+                      onClick={() => openLink(item.link)}
+                    />
+                  )}
                 </div>
-              </DataRowMain>
-            </DataRow>
-          </DataGroup>
-        </VersionSupport>
+              )
+            })}
+          </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
-          {menu.map((item) => {
-            if (
-              typeof item.isEnabled === 'function' &&
-              !item.isEnabled(platform, platformVersion)
-            ) {
-              return null
-            }
+          <div>
+            <Events />
+          </div>
 
-            return (
-              <div key={item.title}>
-                {item.component ? (
-                  item.component
-                ) : (
-                  <MenuTile onClick={() => openLink(item.link)}>
-                    <MenuTileTitle title={t(`home.${item.title}`)} />
+          <div>
+            <Ad />
+          </div>
 
-                    {item.subTitle && (
-                      <div className="text-base text-gray-500">
-                        {item.subTitle}
-                      </div>
-                    )}
-                  </MenuTile>
-                )}
-              </div>
-            )
-          })}
-        </div>
+          <div>
+            <ChangeLanguage />
+          </div>
 
-        <div className="mt-4 px-4">
-          <Events />
-        </div>
-
-        <div className="mt-4 px-4">
-          <Ad />
-        </div>
-
-        <div className="mt-4 px-4">
-          <ChangeLanguage />
-        </div>
-
-        <div className="text-center mt-4 text-sm">
-          {Boolean(platform && platformBuild && platformVersion) && (
-            <code className="px-4 py-2 rounded bg-gray-100 text-gray-500">
-              v{process.env.REACT_APP_VERSION} - {platform} v{platformVersion}(
-              {platformBuild})
-            </code>
-          )}
+          <div className="text-sm flex justify-center">
+            {Boolean(platform && platformBuild && platformVersion) && (
+              <code className="block px-4 py-2 rounded bg-gray-100 text-gray-500">
+                v{process.env.REACT_APP_VERSION} - {platform} v{platformVersion}
+                ({platformBuild})
+              </code>
+            )}
+          </div>
         </div>
       </div>
     </div>

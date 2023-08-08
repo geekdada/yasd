@@ -1,15 +1,25 @@
 import React from 'react'
+import Balancer from 'react-wrap-balancer'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { Card, Headline } from '@sumup/circuit-ui'
-import tw from 'twin.macro'
+import { Headline } from '@sumup/circuit-ui'
+import { MoveRightIcon } from 'lucide-react'
 
-import { cn } from '@/utils/shadcn'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from '@/components/ui/card'
 
 interface MenuTileProps {
-  children: React.ReactNode
+  title: string
+  description?: string
   onClick?: () => void
   link?: string
+  switchElement?: React.ReactNode
 }
 
 const MenuTile: React.FC<MenuTileProps> = (props) => {
@@ -20,28 +30,40 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
   }
 
   return (
-    <div
-      onClick={() => handleClick()}
-      css={[
-        props.onClick &&
-          tw`cursor-pointer transform transition-transform duration-100 active:scale-95`,
-      ]}
-    >
-      <Card
-        className={cn(
-          'p-4 border-none shadow-sm bg-gray-100 transition-colors duration-150 ease-in-out',
-          props.onClick && 'hover:bg-gray-200 active:bg-gray-200',
-        )}
-        css={[
-          css`
-            user-select: none;
-            min-height: 8rem;
-          `,
-        ]}
+    <Card className="overflow-hidden">
+      <CardHeader
+        className="border-b border-gray-900/5 bg-gray-50 space-y-4 justify-center"
+        css={css`
+          height: 3.8rem;
+        `}
       >
-        {props.children}
-      </Card>
-    </div>
+        <div className="flex items-center gap-8 justify-between">
+          <CardTitle>{props.title}</CardTitle>
+          {props.switchElement}
+        </div>
+      </CardHeader>
+
+      <CardContent
+        className="p-5 flex items-center justify-between gap-4"
+        css={css`
+          height: 5rem;
+        `}
+      >
+        {props.description ? (
+          <CardDescription>{props.description}</CardDescription>
+        ) : (
+          <div></div>
+        )}
+
+        {props.onClick ? (
+          <div className="flex justify-end">
+            <Button size="icon" variant="outline" onClick={() => handleClick()}>
+              <MoveRightIcon />
+            </Button>
+          </div>
+        ) : null}
+      </CardContent>
+    </Card>
   )
 }
 

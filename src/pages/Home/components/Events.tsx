@@ -6,6 +6,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat'
 import useSWR from 'swr'
 import tw from 'twin.macro'
 
+import { StatusChip } from '@/components/StatusChip'
 import { useProfile } from '@/models/profile'
 import { EventList } from '@/types'
 import fetcher from '@/utils/fetcher'
@@ -21,43 +22,43 @@ const Events: React.FC = () => {
   )
 
   return (
-    <div className="p-3 bg-gray-100 rounded">
-      <div className="text-base font-medium text-gray-700">
+    <div className="space-y-3">
+      <div className="text-base font-bold text-gray-700">
         {t('home.events')}
       </div>
-      <div className="divide-y divide-gray-200 mt-1">
-        {events &&
-          events.events.slice(0, 8).map((item) => {
-            return (
-              <div key={item.identifier} className="py-1">
-                <div
-                  className="text-sm leading-normal text-gray-600"
-                  css={css`
-                    word-break: break-word;
-                    overflow-wrap: break-word;
-                  `}
-                >
-                  {item.content}
-                </div>
-                <div className="text-xs text-gray-500 mt-1">
-                  {item.type === 2 && (
-                    <span
-                      css={[
-                        tw`bg-red-400 text-white rounded mr-1`,
-                        css`
-                          font-size: 0.6rem;
-                          padding: 0.1rem 0.5rem;
-                        `,
-                      ]}
-                    >
-                      ERROR
+      <div className="p-3 md:px-5 lg:px-6 bg-muted rounded-xl border">
+        <div className="grid grid-cols-1 divide-y divide-gray-200">
+          {events &&
+            events.events.slice(0, 8).map((item) => {
+              return (
+                <div key={item.identifier} className="py-2 md:py-3 lg:py-4">
+                  <div
+                    className="text-sm leading-normal text-gray-600"
+                    css={css`
+                      word-break: break-word;
+                      overflow-wrap: break-word;
+                    `}
+                  >
+                    {item.content}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                    <span>
+                      {item.type === 2 && (
+                        <StatusChip size="sm" variant="error" />
+                      )}
+                      {item.type === 1 && (
+                        <StatusChip size="sm" variant="warn" />
+                      )}
+                      {item.type === 0 && (
+                        <StatusChip size="sm" variant="info" />
+                      )}
                     </span>
-                  )}
-                  <span>{dayjs(item.date).format('L LTS')}</span>
+                    <span>{dayjs(item.date).format('L LTS')}</span>
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
+        </div>
       </div>
     </div>
   )

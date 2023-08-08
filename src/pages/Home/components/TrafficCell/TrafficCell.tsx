@@ -9,8 +9,8 @@ import { ConnectorTraffic } from '@/types'
 
 const LineChart = lazy(() => import('./components/LineChart'))
 const Cell = tw.div`px-4 py-3`
-const Title = tw.div`text-xs md:text-sm text-gray-500 leading-relaxed font-medium`
-const Data = tw.div`text-base md:text-lg text-gray-700 leading-normal`
+const Title = tw.div`text-xs text-muted-foreground leading-relaxed`
+const Data = tw.div`text-base md:text-lg text-gray-700 font-bold leading-normal`
 const LineChartLoader = () => (
   <div
     className="flex items-center justify-center text-sm text-gray-500"
@@ -56,18 +56,28 @@ const TrafficCell: React.FC = () => {
       </div>
 
       {activeInterface ? (
-        <div className="grid grid-cols-3 gap-4 divide-x divide-gray-200 border-solid border border-gray-200 bg-gray-100">
+        <div className="grid grid-cols-3 gap-4 divide-x divide-gray-200 border-solid border border-gray-200 bg-muted">
           <Cell>
             <Title>{t('traffic_cell.upload')}</Title>
-            <Data>{bytes(activeInterface.outCurrentSpeed)}/s</Data>
+            <Data>
+              {bytes(activeInterface.outCurrentSpeed, { unitSeparator: ' ' })}
+              <span className="text-sm">/s</span>
+            </Data>
           </Cell>
           <Cell>
             <Title>{t('traffic_cell.download')}</Title>
-            <Data>{bytes(activeInterface.inCurrentSpeed)}/s</Data>
+            <Data>
+              {bytes(activeInterface.inCurrentSpeed, { unitSeparator: ' ' })}
+              <span className="text-sm">/s</span>
+            </Data>
           </Cell>
           <Cell>
             <Title>{t('traffic_cell.total')}</Title>
-            <Data>{bytes(activeInterface.in + activeInterface.out)}</Data>
+            <Data>
+              {bytes(activeInterface.in + activeInterface.out, {
+                unitSeparator: ' ',
+              })}
+            </Data>
           </Cell>
         </div>
       ) : (

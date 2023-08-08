@@ -53,7 +53,12 @@
     "rewrite": "Rewrite",
     "github": "GitHub",
     "events": "Events",
-    "device_management": "Device Management"
+    "device_management": "Device Management",
+    "descriptions": {
+      "mitm": "Decrypt HTTPS traffic with man-in-the-middle (MitM) attack.",
+      "rewrite": "Redirect HTTP requests or modify request headers.",
+      "github": "Give a star to Surge Web Dashboard"
+    }
   },
   "traffic_cell": {
     "upload": "Upload",
