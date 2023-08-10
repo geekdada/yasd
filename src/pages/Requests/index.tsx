@@ -1,30 +1,20 @@
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  ChangeEvent,
-  useMemo,
-} from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import { List, AutoSizer } from 'react-virtualized'
 import { css } from '@emotion/react'
-import SelectorGroup from '@sumup/circuit-ui/dist/es/components/SelectorGroup'
-import omit from 'lodash-es/omit'
+import { ActivityIcon, HistoryIcon } from 'lucide-react'
 import { ListRowRenderer } from 'react-virtualized/dist/es/List'
-import useSWR, { mutate } from 'swr'
 import tw from 'twin.macro'
 
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import PageTitle from '@/components/PageTitle'
-import { useProfile } from '@/models/profile'
-import { RecentRequests, RequestItem } from '@/types'
-import fetcher from '@/utils/fetcher'
+import { Toggle } from '@/components/ui/toggle'
+import useRequestsList from '@/pages/Requests/hooks/useRequestsList'
+import { RequestItem } from '@/types'
 
 import ListItem from './components/ListItem'
 import RequestModal from './components/RequestModal'
-
-const LIST_ITEMS_MAX = 150
 
 function useQuery() {
   return new URLSearchParams(useLocation().search)
@@ -32,113 +22,39 @@ function useQuery() {
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
-  const profile = useProfile()
-  const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(true)
+
+  const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(false)
   const [group, setGroup] = useState<'recent' | 'active'>('recent')
-  const { data: recentRequestsResponse } = useSWR<RecentRequests>(
-    () => '/requests/' + group,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      dedupingInterval: 1000,
-      refreshInterval: isAutoRefresh
-        ? profile?.platform === 'macos'
-          ? 2000
-          : 4000
-        : 0,
-    },
-  )
-  const [requestList, setRequestList] = useState<Array<RequestItem>>([])
-  const [activeRequestList, setActiveRequestList] = useState<
-    Array<RequestItem>
-  >([])
-  const [selectedRequest, setSelectedRequest] = useState<RequestItem | null>(
-    null,
-  )
-  const currentList = group === 'recent' ? requestList : activeRequestList
+
   const query = useQuery()
   const sourceIp = useMemo<string | null>(() => query.get('source'), [query])
 
-  useEffect(() => {
-    if (!recentRequestsResponse?.requests) return
+  const [selectedRequest, setSelectedRequest] = useState<RequestItem | null>(
+    null,
+  )
 
-    const pendingList = [...recentRequestsResponse.requests]
-    const now = new Date()
-    let newList = [...currentList]
-
-    while (pendingList.length) {
-      const request = pendingList.pop() as RequestItem
-      const existingIndex = newList.findIndex((item) => item.id === request.id)
-
-      if (existingIndex >= 0) {
-        Object.assign(newList[existingIndex], {
-          ...omit(request, ['id']),
-          lastUpdated: now,
-        })
-      } else {
-        if (newList.length && request.id > newList[0].id) {
-          newList.unshift({
-            ...request,
-            lastUpdated: now,
-          })
-        } else {
-          newList.push({
-            ...request,
-            lastUpdated: now,
-          })
-        }
-      }
-    }
-
-    if (group === 'recent') {
-      newList = newList
-        .filter((request) => {
-          if (sourceIp) {
-            return sourceIp === request.sourceAddress
-          }
-          return true
-        })
-        .slice(0, LIST_ITEMS_MAX)
-    } else {
-      newList = newList
-        .filter((request) => {
-          if (sourceIp) {
-            return (
-              request.lastUpdated === now && sourceIp === request.sourceAddress
-            )
-          }
-          return request.lastUpdated === now
-        })
-        .sort((a, b) => b.id - a.id)
-    }
-
-    if (group === 'recent') {
-      setRequestList(newList)
-      setActiveRequestList([])
-    } else {
-      setRequestList([])
-      setActiveRequestList(newList)
-    }
-  }, [recentRequestsResponse, group, sourceIp, currentList])
-
-  const openRequestDetail = useCallback((req: RequestItem) => {
-    setSelectedRequest(req)
-  }, [])
+  const { requestList } = useRequestsList({
+    isAutoRefreshEnabled: isAutoRefresh,
+    sourceIp,
+    onlyActive: group === 'active',
+  })
 
   const rowRenderer: ListRowRenderer = useCallback(
     ({
-      key, // Unique key within array of rows
       index, // Index of row within collection
       style, // Style object to be applied to row (to position it)
     }) => {
-      const req = currentList[index]
+      if (!requestList) {
+        return null
+      }
+
+      const req = requestList[index]
 
       return (
         <div
-          key={key}
+          key={req.id}
           style={style}
-          onClick={() => openRequestDetail(req)}
+          onClick={() => setSelectedRequest(req)}
           className="flex flex-col justify-center py-2 cursor-pointer hover:bg-gray-100"
           css={css`
             padding-left: calc(env(safe-area-inset-left) + 0.75rem);
@@ -149,8 +65,34 @@ const Page: React.FC = () => {
         </div>
       )
     },
-    [currentList, openRequestDetail],
+    [requestList],
   )
+
+  const toggles = [
+    {
+      title: t('requests.recent'),
+      value: 'recent',
+      icon: HistoryIcon,
+    } as const,
+    {
+      title: t('requests.active'),
+      value: 'active',
+      icon: ActivityIcon,
+    } as const,
+  ].map((toggle) => (
+    <Toggle
+      key={toggle.value}
+      pressed={group === toggle.value}
+      onPressedChange={(pressed) => {
+        if (pressed) {
+          setGroup(toggle.value)
+        }
+      }}
+    >
+      <toggle.icon className="mr-2 h-4 w-4" />
+      {toggle.title}
+    </Toggle>
+  ))
 
   return (
     <FixedFullscreenContainer>
@@ -158,25 +100,24 @@ const Page: React.FC = () => {
         title={t('home.requests')}
         hasAutoRefresh={true}
         defaultAutoRefreshState={true}
-        onAuthRefreshStateChange={(newState) => setIsAutoRefresh(newState)}
+        onAutoRefreshStateChange={(newState) => setIsAutoRefresh(newState)}
       />
 
       <div className="flex-1">
-        {recentRequestsResponse ? (
-          currentList.length ? (
+        {requestList ? (
+          requestList.length ? (
             <AutoSizer>
               {({ width, height }) => {
                 return (
                   <List
                     width={width}
                     height={height}
-                    rowCount={currentList.length}
+                    rowCount={requestList.length}
                     rowHeight={64}
                     rowRenderer={rowRenderer}
-                    style={{
-                      outline: 'none',
-                    }}
                     css={css`
+                      outline: none;
+
                       & > div {
                         ${tw`divide-y divide-gray-200`}
                       }
@@ -197,53 +138,7 @@ const Page: React.FC = () => {
         )}
       </div>
 
-      <div
-        className="flex divide-x divide-gray-200 border-t border-solid border-gray-200 py-2 px-2"
-        css={[
-          css`
-            & > div {
-              ${tw`mx-2`}
-            }
-            & > div:first-of-type {
-              margin-left: 0;
-            }
-          `,
-        ]}
-      >
-        <SelectorGroup
-          css={[
-            tw`flex justify-center items-center`,
-            css`
-              & label {
-                ${tw`py-2 px-4 ml-2 my-1 text-sm`}
-              }
-              & label:first-of-type {
-                margin-left: 0;
-              }
-            `,
-          ]}
-          label="choose the dns result group"
-          name="selector-group"
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            setGroup(() => {
-              const newState = event.target.value as 'recent' | 'active'
-              mutate('/requests/' + newState)
-              return newState
-            })
-          }}
-          options={[
-            {
-              children: t('requests.recent'),
-              value: 'recent',
-            },
-            {
-              children: t('requests.active'),
-              value: 'active',
-            },
-          ]}
-          value={group}
-        />
-      </div>
+      <div className="flex space-x-3 border-t py-2 px-2">{toggles}</div>
 
       <RequestModal
         req={selectedRequest}

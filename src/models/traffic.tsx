@@ -8,9 +8,16 @@ import React, {
 } from 'react'
 import dayjs from 'dayjs'
 
-import { DataPoint, Traffic } from '@/types'
+import { ConnectorTraffic, DataPoint, Traffic } from '@/types'
 
-interface ITrafficContext extends Traffic {
+interface ITrafficContext {
+  startTime?: Date
+  interface: {
+    [name: string]: ConnectorTraffic
+  }
+  connector: {
+    [name: string]: ConnectorTraffic
+  }
   history: {
     down: DataPoint[]
     up: DataPoint[]
@@ -18,6 +25,7 @@ interface ITrafficContext extends Traffic {
 }
 
 export enum TrafficActions {
+  UpdateStartTime = 'updateStartTime',
   UpdateInterface = 'updateInterface',
   UpdateConnector = 'updateConnector',
   UpdateHistory = 'updateHistory',
@@ -27,6 +35,10 @@ export enum TrafficActions {
 export const HISTORY_SIZE = 60
 
 type ReducerAction =
+  | {
+      type: TrafficActions.UpdateStartTime
+      payload: Date
+    }
   | {
       type: TrafficActions.UpdateInterface
       payload: Traffic['interface']
@@ -51,6 +63,11 @@ const trafficReducer: Reducer<ITrafficContext, ReducerAction> = (
   action,
 ) => {
   switch (action.type) {
+    case 'updateStartTime':
+      return {
+        ...state,
+        startTime: action.payload,
+      }
     case 'updateInterface':
       return {
         ...state,
@@ -126,6 +143,11 @@ export const useConnectors = (): Traffic['connector'] => {
   return context.connector
 }
 
+export const useStartTime = (): Date | undefined => {
+  const context = useContext(TrafficContext) as ITrafficContext
+  return context.startTime
+}
+
 export const useTrafficHistory = (): {
   down: DataPoint[]
   up: DataPoint[]
@@ -136,7 +158,7 @@ export const useTrafficHistory = (): {
 
 function getInitialState(): ITrafficContext {
   return {
-    startTime: Date.now(),
+    startTime: undefined,
     interface: {},
     connector: {},
     history: {

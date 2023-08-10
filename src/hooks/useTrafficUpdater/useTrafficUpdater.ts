@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import dayjs from 'dayjs'
 import useSWR from 'swr'
 
 import { TrafficActions, useProfile, useTrafficDispatch } from '@/models'
@@ -38,6 +39,11 @@ const useTrafficUpdater = () => {
     dispatchTrafficAction({
       type: TrafficActions.UpdateInterface,
       payload: traffic.interface,
+    })
+
+    dispatchTrafficAction({
+      type: TrafficActions.UpdateStartTime,
+      payload: dayjs.unix(traffic.startTime).toDate(),
     })
 
     const aggregation: ConnectorTraffic = {

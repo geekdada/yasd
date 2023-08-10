@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/utils/shadcn'
 
-const chipVariants = cva('font-medium ring-1 ring-inset', {
+const chipVariants = cva('inline-block font-medium ring-1 ring-inset', {
   variants: {
     variant: {
       info: 'text-green-700 bg-green-50 ring-green-600/20',

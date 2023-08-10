@@ -11,7 +11,7 @@ interface PageTitleProps {
   title: string
   hasAutoRefresh?: boolean
   defaultAutoRefreshState?: boolean
-  onAuthRefreshStateChange?: (newState: boolean) => void
+  onAutoRefreshStateChange?: (newState: boolean) => void
   sticky?: boolean
 }
 
@@ -25,8 +25,8 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
   )
 
   useEffect(() => {
-    if (props.hasAutoRefresh && props.onAuthRefreshStateChange) {
-      props.onAuthRefreshStateChange(isAutoRefresh)
+    if (props.hasAutoRefresh && props.onAutoRefreshStateChange) {
+      props.onAutoRefreshStateChange(isAutoRefresh)
     }
   }, [isAutoRefresh, props])
 
@@ -45,8 +45,7 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
           padding-left: env(safe-area-inset-left);
         `}
       >
-        <BackButton />
-        <div>{props.title}</div>
+        <BackButton title={props.title} />
       </div>
 
       {props.hasAutoRefresh && (

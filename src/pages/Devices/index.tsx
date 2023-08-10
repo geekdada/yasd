@@ -24,7 +24,7 @@ const Page = (): JSX.Element => {
         title={t('home.device_management')}
         hasAutoRefresh={true}
         defaultAutoRefreshState={false}
-        onAuthRefreshStateChange={(newState) => setIsAutoRefresh(newState)}
+        onAutoRefreshStateChange={(newState) => setIsAutoRefresh(newState)}
       />
 
       <div className="divide-y divide-gray-200">

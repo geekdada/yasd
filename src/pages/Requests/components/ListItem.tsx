@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/react'
 import bytes from 'bytes'
 import dayjs from 'dayjs'
-import tw from 'twin.macro'
 
 import { RequestItem } from '@/types'
 
@@ -19,12 +18,10 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
     <React.Fragment>
       <div className="text-sm truncate">{req.URL}</div>
       <div
-        css={[
-          tw`flex items-center leading-none truncate`,
-          css`
-            height: 1.5rem;
-          `,
-        ]}
+        className="flex items-center leading-none truncate"
+        css={css`
+          height: 1.5rem;
+        `}
       >
         <MethodBadge
           method={req.method}
