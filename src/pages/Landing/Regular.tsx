@@ -4,13 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Headline } from '@sumup/circuit-ui'
 import { find } from 'lodash-es'
 import store from 'store2'
 import { v4 as uuid } from 'uuid'
 import { z } from 'zod'
 
-import Ad from '@/components/Ad'
 import ChangeLanguage from '@/components/ChangeLanguage'
 import ProfileCell from '@/components/ProfileCell'
 import { Button } from '@/components/ui/button'
@@ -25,6 +23,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { TypographyH2, TypographyH3 } from '@/components/ui/typography'
 import { useSetState } from '@/hooks'
 import { TrafficActions, useTrafficDispatch } from '@/models'
 import { ProfileActions, useProfileDispatch } from '@/models/profile'
@@ -52,6 +51,10 @@ const Page: React.FC = () => {
   const form = useForm<z.infer<typeof RegularLoginFormSchema>>({
     resolver: zodResolver(RegularLoginFormSchema),
     defaultValues: {
+      name: '',
+      host: '',
+      port: 6171,
+      key: '',
       keepCredential: false,
       useTls: window.location.protocol === 'https:',
     },
@@ -115,7 +118,7 @@ const Page: React.FC = () => {
         const newProfile = addProfile({
           name: data.name,
           host: data.host,
-          port: Number(data.port),
+          port: data.port,
           key: data.key,
           platform: res.platform,
           platformVersion: res.platformVersion,
@@ -168,9 +171,7 @@ const Page: React.FC = () => {
       <Header />
 
       <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto space-y-6 md:space-y-10">
-        <Headline as="h2" size="two">
-          {t('landing.add_new_host')}
-        </Headline>
+        <TypographyH2>{t('landing.add_new_host')}</TypographyH2>
 
         <div className="bg-blue-100 border border-blue-500 rounded text-blue-700 text-sm px-4 py-3 mb-4 space-y-4">
           <p className="leading-normal">
@@ -190,7 +191,7 @@ const Page: React.FC = () => {
 
         <Form {...form}>
           <form
-            className="space-y-2 sm:space-y-4 md:space-y-6"
+            className="space-y-3 sm:space-y-4 md:space-y-6"
             onSubmit={handleSubmit(onSubmit)}
           >
             <FormField
@@ -200,7 +201,7 @@ const Page: React.FC = () => {
                 <FormItem>
                   <FormLabel>{t('landing.name')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="My Mac" autoComplete="off" {...field} />
+                    <Input {...field} placeholder="My Mac" autoComplete="off" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -215,11 +216,11 @@ const Page: React.FC = () => {
                   <FormLabel>{t('landing.host')}</FormLabel>
                   <FormControl>
                     <Input
+                      {...field}
                       placeholder="127.0.0.1"
                       autoCorrect="off"
                       autoCapitalize="off"
                       autoComplete="off"
-                      {...field}
                     />
                   </FormControl>
                   <FormDescription>{t('landing.host_tips')}</FormDescription>
@@ -237,7 +238,6 @@ const Page: React.FC = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="6171"
                       type="number"
                       autoCorrect="off"
                       autoComplete="off"
@@ -256,19 +256,19 @@ const Page: React.FC = () => {
                 <FormItem>
                   <FormLabel>{t('landing.key')}</FormLabel>
                   <FormControl>
-                    <Input type="password" autoComplete="off" {...field} />
+                    <Input {...field} type="password" autoComplete="off" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <div className="space-y-2">
+            <div className="pt-2 space-y-2">
               <FormField
                 control={form.control}
                 name="useTls"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                  <FormItem className="flex flex-row items-center space-x-3 space-y-0">
                     <FormControl>
                       <Checkbox
                         disabled={protocol === 'https:'}
@@ -284,7 +284,7 @@ const Page: React.FC = () => {
                 control={form.control}
                 name="keepCredential"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                  <FormItem className="flex flex-row items-center space-x-3 space-y-0">
                     <FormControl>
                       <Checkbox
                         checked={field.value}
@@ -297,7 +297,7 @@ const Page: React.FC = () => {
               />
             </div>
 
-            <div className="pt-5">
+            <div className="pt-2">
               <Button
                 className="w-full"
                 type="submit"
@@ -312,15 +312,13 @@ const Page: React.FC = () => {
       </div>
 
       {existingProfiles.length > 0 && (
-        <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto space-y-4 md:space-y-6">
-          <Headline as="h3" size="four">
-            {t('landing.history')}
-          </Headline>
+        <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto space-y-4">
+          <TypographyH3>{t('landing.history')}</TypographyH3>
 
-          <div className="bg-muted divide-y divide-gray-200 rounded overflow-hidden">
+          <div className="bg-muted divide-y divide-gray-200 rounded-xl overflow-hidden">
             {existingProfiles.map((profile) => {
               return (
-                <div key={profile.id} className="hover:bg-gray-200 md:px-3">
+                <div key={profile.id} className="hover:bg-gray-100 md:px-3">
                   <ProfileCell
                     profile={profile}
                     variant="left"
@@ -335,10 +333,6 @@ const Page: React.FC = () => {
           </div>
         </div>
       )}
-
-      <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-        <Ad />
-      </div>
 
       <div>
         <ChangeLanguage />

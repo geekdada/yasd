@@ -39,6 +39,7 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
         id: 'device_settings',
         title: 'devices.device_settings',
         onClick: () => {
+          setActions(null)
           setDeviceSettingsModalOpen(true)
         },
       })
@@ -170,17 +171,24 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
           title={device.dhcpDevice.displayName || device.name}
           dhcpDevice={device.dhcpDevice}
           open={isDeviceSettingsModalOpen}
-          onClose={() => setDeviceSettingsModalOpen(false)}
+          onOpenChange={(open) => {
+            if (!open) {
+              setDeviceSettingsModalOpen(false)
+            }
+          }}
         />
       ) : null}
 
-      {actions ? (
-        <ActionsModal
-          defaultOpen
-          title={device?.dhcpDevice?.displayName || device.name}
-          actions={actions}
-        />
-      ) : null}
+      <ActionsModal
+        open={Boolean(actions)}
+        title={device?.dhcpDevice?.displayName || device.name}
+        onOpenChange={(open) => {
+          if (!open) {
+            setActions(null)
+          }
+        }}
+        actions={actions || []}
+      />
     </>
   )
 }

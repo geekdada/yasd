@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from '@emotion/styled'
-import { Headline } from '@sumup/circuit-ui'
 import { Loader2Icon, ZapIcon } from 'lucide-react'
 import tw from 'twin.macro'
 import useIsInViewport from 'use-is-in-viewport'
@@ -9,6 +7,7 @@ import useIsInViewport from 'use-is-in-viewport'
 import { StatusChip } from '@/components/StatusChip'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { TypographyH3 } from '@/components/ui/typography'
 import {
   Policy,
   SelectPolicyTestResult,
@@ -28,10 +27,6 @@ interface PolicyGroupProps {
 
 const LoadingOverlay = tw.div`
   absolute top-0 right-0 bottom-0 left-0 bg-gray-800 bg-opacity-25 flex items-center justify-center
-`
-
-const LatencyResult = tw.div`
-  text-white
 `
 
 const latencyResultStyle = (latency: number) => {
@@ -201,9 +196,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
   const cardInner = (
     <>
       <CardHeader className="flex flex-row justify-between items-center">
-        <Headline size="four" as="h4">
-          {policyGroupName}
-        </Headline>
+        <TypographyH3>{policyGroupName}</TypographyH3>
         <Button
           size="icon"
           variant="outline"
@@ -217,6 +210,8 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {policyGroup.map((policy) => {
+            const typeDescription = policy.typeDescription.toUpperCase()
+
             return (
               <div
                 className={cn(
@@ -227,9 +222,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
                 key={policy.name}
                 onClick={() => selectPolicy(policy.name)}
               >
-                <div className="text-xs mb-1">
-                  {policy.typeDescription.toUpperCase()}
-                </div>
+                <div className="text-xs mb-1">{typeDescription}</div>
 
                 <div className="text-sm font-bold md:text-base leading-snug">
                   {policy.name}
@@ -243,9 +236,10 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
                       text={latencies[policy.name] + 'ms'}
                     />
                   )}
-                  {latencies[policy.name] === -1 && (
-                    <StatusChip size="sm" variant="error" text="Failed" />
-                  )}
+                  {!typeDescription.includes('REJECT') &&
+                    latencies[policy.name] === -1 && (
+                      <StatusChip size="sm" variant="error" text="Failed" />
+                    )}
                 </div>
               </div>
             )

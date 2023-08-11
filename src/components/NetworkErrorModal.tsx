@@ -1,7 +1,7 @@
 import React, { KeyboardEvent, MouseEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@sumup/circuit-ui'
 
+import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import {
   Dialog,
@@ -39,10 +39,12 @@ const NetworkErrorModal: React.FC<NetworkErrorModalProps> = ({
         </DialogHeader>
 
         <div className="mb-3">{t('common.network_error_message')}</div>
+
         <DialogFooter>
           <ButtonGroup>
             {reloadButton ? (
               <Button
+                variant="secondary"
                 onClick={() => {
                   window.location.reload()
                 }}
@@ -52,9 +54,7 @@ const NetworkErrorModal: React.FC<NetworkErrorModalProps> = ({
             ) : (
               <React.Fragment></React.Fragment>
             )}
-            <Button onClick={onClose} variant="primary">
-              {t('common.exit')}
-            </Button>
+            <Button onClick={onClose}>{t('common.exit')}</Button>
           </ButtonGroup>
         </DialogFooter>
       </DialogContent>

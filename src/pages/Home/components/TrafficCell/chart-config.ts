@@ -30,14 +30,6 @@ export const commonChartOptions: ChartOptions<'line'> = {
   },
   animation: {
     duration: REFRESH_RATE,
-    easing: 'linear',
-  },
-  transitions: {
-    show: {
-      animation: {
-        duration: 0,
-      },
-    },
   },
   scales: {
     x: {

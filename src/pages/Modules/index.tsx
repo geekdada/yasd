@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import { Toggle } from '@sumup/circuit-ui'
 import useSWR, { mutate } from 'swr'
 
 import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
+import { Switch } from '@/components/ui/switch'
+import { withProfile } from '@/models'
 import { Modules } from '@/types'
 import fetcher from '@/utils/fetcher'
 
@@ -57,13 +58,10 @@ const Page: React.FC = () => {
                   {mod}
                 </div>
                 <div className="flex items-center">
-                  <Toggle
-                    label="toggle"
-                    checkedLabel="checked"
-                    uncheckedLabel="unchecked"
+                  <Switch
                     disabled={isLoading}
                     checked={isChecked(mod)}
-                    onChange={() => toggle(mod, !isChecked(mod))}
+                    onCheckedChange={(checked) => toggle(mod, checked)}
                   />
                 </div>
               </div>
@@ -74,4 +72,4 @@ const Page: React.FC = () => {
   )
 }
 
-export default Page
+export default withProfile(Page)

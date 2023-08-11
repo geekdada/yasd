@@ -33,15 +33,15 @@ const ActionsModal = ({
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-      </DialogContent>
 
-      <div className="space-y-5 pb-5">
-        {actions.map((action) => (
-          <Button stretch key={action.id} onClick={action.onClick}>
-            {t(action.title)}
-          </Button>
-        ))}
-      </div>
+        <div className="space-y-5">
+          {actions.map((action) => (
+            <Button stretch key={action.id} onClick={action.onClick}>
+              {t(action.title)}
+            </Button>
+          ))}
+        </div>
+      </DialogContent>
     </Dialog>
   )
 }

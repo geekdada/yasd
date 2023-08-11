@@ -49,11 +49,23 @@
     "dns": "DNS",
     "profile": "配置",
     "mitm": "MitM",
-    "http_capture": "抓取流量",
-    "rewrite": "Rewrite",
+    "http_capture": "抓取 HTTP 流量",
+    "rewrite": "重写",
     "github": "GitHub",
     "events": "事件",
-    "device_management": "设备管理"
+    "device_management": "设备管理",
+    "descriptions": {
+      "mitm": "使用中间人攻击（MitM）解密 HTTPS 流量。",
+      "rewrite": "重定向 HTTP 请求或修改请求标头。",
+      "github": "给 Surge Web Dashboard 一个 Star 吧！",
+      "scripting": "使用 JavaScript 来扩展 Surge 的功能。",
+      "modules": "模块是一系列设置的集合，可用于覆盖当前配置的部分设定。",
+      "device_management": "管理局域网内的设备，包括设备名称、IP 地址、接管模式等。",
+      "profile": "当前的 Surge 配置文件。",
+      "dns": "当前的 DNS 缓存记录。",
+      "http_capture": "打开 HTTP 截取开关以抓取和查看数据体。",
+      "traffic": "实时统计当前的流量使用情况。"
+    }
   },
   "traffic_cell": {
     "upload": "上传",
@@ -118,7 +130,8 @@
     "flush_dns": "刷新 DNS",
     "dynamic": "动态记录",
     "static": "静态记录",
-    "comment": "备注"
+    "comment": "备注",
+    "view_dns": "查看 DNS 记录"
   },
   "devices": {
     "mac_address": "MAC 地址",
@@ -144,5 +157,7 @@
     "device_settings": "设备设定",
     "view_requests": "查看连接",
     "modify": "修改"
+  },
+  "modules": {
   }
 }

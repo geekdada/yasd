@@ -1,19 +1,20 @@
-import React, { lazy, Suspense, useState } from 'react'
+import React, { lazy, Suspense, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { css } from '@emotion/react'
-import { Button, Input } from '@sumup/circuit-ui'
-import tw from 'twin.macro'
 
 import CodeMirrorLoading from '@/components/CodeMirrorLoading'
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import PageTitle from '@/components/PageTitle'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { EvaluateResult } from '@/types'
 import fetcher from '@/utils/fetcher'
 
@@ -28,7 +29,7 @@ const Page: React.FC = () => {
   const [result, setResult] = useState<string>()
   const [timeout, setTimeoutValue] = useState<number>(5)
 
-  const evaluate = () => {
+  const evaluate = useCallback(() => {
     if (isLoading) return
 
     if (!code) {
@@ -61,7 +62,7 @@ const Page: React.FC = () => {
       .finally(() => {
         setIsLoading(false)
       })
-  }
+  }, [code, isLoading, t, timeout])
 
   return (
     <FixedFullscreenContainer>
@@ -71,45 +72,30 @@ const Page: React.FC = () => {
         <div className="h-full overflow-auto">
           <Suspense fallback={<CodeMirrorLoading />}>
             <CodeMirror
+              isJavaScript
               value={code}
-              onBeforeChange={(editor, data, value) => {
+              onChange={(value) => {
                 setCode(value)
               }}
             />
           </Suspense>
         </div>
-        <div
-          css={[
-            tw`flex items-center border-t border-solid border-gray-200 py-3 px-3`,
-          ]}
-        >
+
+        <div className="flex items-center border-t border-solid border-gray-200 py-3 px-3">
           <Button
             onClick={evaluate}
-            variant="primary"
-            size="kilo"
             isLoading={isLoading}
             loadingLabel={t('scripting.running')}
           >
             {t('scripting.run_script_button_title')}
           </Button>
 
-          <div
-            css={[
-              tw`ml-4`,
-              css`
-                padding-bottom: 1px;
-
-                & input {
-                  border-radius: 4px;
-                  ${tw`px-2 py-1 text-sm leading-none`}
-                }
-              `,
-            ]}
-          >
+          <div className="ml-4">
+            <Label htmlFor="timeout-input">{t('scripting.timeout')}</Label>
             <Input
+              id="timeout-input"
               type="number"
               required
-              label={t('scripting.timeout')}
               value={timeout}
               onChange={({ target }) =>
                 setTimeoutValue(Number((target as HTMLInputElement).value))

@@ -140,3 +140,16 @@ export const useSurgeHost = (): string | null => {
 
 export const useProfileDispatch = (): Dispatch<ReducerAction> =>
   useContext(ProfileDispatchContext)
+
+export const withProfile = <P extends object>(
+  Component: React.ComponentType<P>,
+): React.FC<P> =>
+  function WithProfile(props) {
+    const profile = useProfile()
+
+    if (!profile) {
+      return null
+    }
+
+    return <Component {...(props as P)} profile={profile} />
+  }

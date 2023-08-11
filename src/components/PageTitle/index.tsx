@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { css } from '@emotion/react'
 import { ReloadIcon } from '@radix-ui/react-icons'
-import { Headline } from '@sumup/circuit-ui'
 
+import { TypographyH2 } from '@/components/ui/typography'
 import { cn } from '@/utils/shadcn'
 
 import BackButton from '../BackButton'
@@ -31,9 +31,7 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
   }, [isAutoRefresh, props])
 
   return (
-    <Headline
-      as="h2"
-      size="two"
+    <TypographyH2
       className={cn(
         isSticky ? 'sticky top-0' : '',
         'flex items-center justify-between shadow bg-white z-10 px-3 py-3',
@@ -66,7 +64,7 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
           />
         </div>
       )}
-    </Headline>
+    </TypographyH2>
   )
 }
 

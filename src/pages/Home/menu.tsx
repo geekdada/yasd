@@ -28,6 +28,7 @@ const menu: Array<MenuItem> = [
   },
   {
     titleKey: 'traffic',
+    descriptionKey: 'descriptions.traffic',
     link: '/traffic',
   },
   {
@@ -37,16 +38,19 @@ const menu: Array<MenuItem> = [
         api="/features/scripting"
         titleKey="scripting"
         link="/scripting"
+        descriptionKey="descriptions.scripting"
       />
     ),
   },
   {
     titleKey: 'modules',
     link: '/modules',
+    descriptionKey: 'descriptions.modules',
   },
   {
     titleKey: 'device_management',
     link: '/devices',
+    descriptionKey: 'descriptions.device_management',
     isEnabled: (platform, platformVersion) => {
       return Boolean(
         platform === 'macos' &&
@@ -57,11 +61,13 @@ const menu: Array<MenuItem> = [
   },
   {
     titleKey: 'dns',
+    descriptionKey: 'descriptions.dns',
     link: '/dns',
   },
   {
     titleKey: 'profile',
     link: '/profiles/current',
+    descriptionKey: 'descriptions.profile',
   },
   {
     titleKey: 'mitm',
@@ -76,7 +82,11 @@ const menu: Array<MenuItem> = [
   {
     titleKey: 'http_capture',
     component: (
-      <CapabilityTile api="/features/capture" titleKey="http_capture" />
+      <CapabilityTile
+        api="/features/capture"
+        titleKey="http_capture"
+        descriptionKey="descriptions.http_capture"
+      />
     ),
   },
   {

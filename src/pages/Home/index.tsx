@@ -2,14 +2,13 @@ import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { Button, Headline } from '@sumup/circuit-ui'
 import { delay } from 'bluebird'
 import store from 'store2'
 import useSWR, { mutate } from 'swr'
 
-import Ad from '@/components/Ad'
 import ChangeLanguage from '@/components/ChangeLanguage'
 import { DataGroup, DataRow, DataRowMain } from '@/components/Data'
+import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import VersionSupport from '@/components/VersionSupport'
 import {
@@ -78,7 +77,7 @@ const Page: React.FC = () => {
       })
   }, [enhancedMode])
 
-  const logout = () => {
+  const logoutSurge = () => {
     store.remove(LastUsedProfile)
     store.remove(ExistingProfiles)
     window.location.reload()
@@ -100,11 +99,7 @@ const Page: React.FC = () => {
         padding-bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
       `}
     >
-      <Headline
-        size="two"
-        as="h2"
-        className="sticky top-0 flex shadow bg-white z-10 px-3 py-3"
-      >
+      <div className="sticky top-0 flex shadow bg-white z-10 px-3 py-3">
         {profile && (
           <div className="w-full flex justify-between items-center">
             <div className="w-2/3" onDoubleClick={forceRefresh}>
@@ -113,7 +108,7 @@ const Page: React.FC = () => {
 
             {isRunInSurge() ? (
               <div>
-                <Button size="kilo" onClick={logout}>
+                <Button onClick={() => logoutSurge()}>
                   {t('home.logout')}
                 </Button>
               </div>
@@ -122,7 +117,7 @@ const Page: React.FC = () => {
             )}
           </div>
         )}
-      </Headline>
+      </div>
 
       <div
         className="space-y-4 lg:space-y-6"
@@ -190,10 +185,6 @@ const Page: React.FC = () => {
 
           <div>
             <Events />
-          </div>
-
-          <div>
-            <Ad />
           </div>
 
           <div>

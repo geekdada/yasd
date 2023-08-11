@@ -26,7 +26,7 @@ const Events: React.FC = () => {
       <div className="text-base font-bold text-gray-700">
         {t('home.events')}
       </div>
-      <div className="p-3 md:px-5 lg:px-6 bg-muted rounded-xl border">
+      <div className="px-3 md:px-5 bg-muted rounded-xl border">
         <div className="grid grid-cols-1 divide-y divide-gray-200">
           {events &&
             events.events.slice(0, 8).map((item) => {

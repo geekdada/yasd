@@ -47,10 +47,10 @@ const useRequestsList = ({
     if (sourceIp) {
       if (onlyActive) {
         return requestList.filter(
-          (item) => item.remoteAddress === sourceIp && !item.completed,
+          (item) => item.sourceAddress === sourceIp && !item.completed,
         )
       } else {
-        return requestList.filter((item) => item.remoteAddress === sourceIp)
+        return requestList.filter((item) => item.sourceAddress === sourceIp)
       }
     } else {
       if (onlyActive) {

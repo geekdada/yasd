@@ -2,12 +2,11 @@ import React, { createRef, RefObject, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ScrollTo } from 'react-scroll-to'
 import { css } from '@emotion/react'
-import { Headline } from '@sumup/circuit-ui'
 import useSWR from 'swr'
-import tw from 'twin.macro'
 
 import BackButton from '@/components/BackButton'
 import PageContainer from '@/components/PageContainer'
+import { TypographyH2 } from '@/components/ui/typography'
 import { useProfile } from '@/models'
 import { Policies, PolicyGroups } from '@/types'
 import fetcher from '@/utils/fetcher'
@@ -57,11 +56,11 @@ const Page: React.FC = () => {
             padding-right: env(safe-area-inset-right);
           `}
         >
-          <Headline as="h2" size="two" className="mb-2 px-4">
+          <TypographyH2 className="mb-2 px-4">
             <div className="flex items-center">
               <BackButton title={t('home.policies')} />
             </div>
-          </Headline>
+          </TypographyH2>
         </div>
 
         <div

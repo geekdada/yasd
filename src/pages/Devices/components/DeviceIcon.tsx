@@ -1,6 +1,5 @@
 import React from 'react'
 import { css } from '@emotion/react'
-import { Image } from '@sumup/circuit-ui'
 
 import { useSurgeHost } from '@/models/profile'
 
@@ -19,7 +18,8 @@ const DeviceIcon = ({ icon }: DeviceIconProps): JSX.Element => {
         margin-right: 0.7rem;
       `}
     >
-      <Image
+      <img
+        loading="lazy"
         src={`${surgeHost}/resources/devices-icon?id=${icon || 'default'}`}
         alt=""
       />

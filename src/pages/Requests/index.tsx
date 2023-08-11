@@ -9,6 +9,7 @@ import tw from 'twin.macro'
 
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import PageTitle from '@/components/PageTitle'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { Toggle } from '@/components/ui/toggle'
 import useRequestsList from '@/pages/Requests/hooks/useRequestsList'
 import { RequestItem } from '@/types'
@@ -68,18 +69,20 @@ const Page: React.FC = () => {
     [requestList],
   )
 
-  const toggles = [
-    {
-      title: t('requests.recent'),
-      value: 'recent',
-      icon: HistoryIcon,
-    } as const,
-    {
-      title: t('requests.active'),
-      value: 'active',
-      icon: ActivityIcon,
-    } as const,
-  ].map((toggle) => (
+  const toggles = (
+    [
+      {
+        title: t('requests.recent'),
+        value: 'recent',
+        icon: HistoryIcon,
+      },
+      {
+        title: t('requests.active'),
+        value: 'active',
+        icon: ActivityIcon,
+      },
+    ] as const
+  ).map((toggle) => (
     <Toggle
       key={toggle.value}
       pressed={group === toggle.value}
@@ -138,7 +141,7 @@ const Page: React.FC = () => {
         )}
       </div>
 
-      <div className="flex space-x-3 border-t py-2 px-2">{toggles}</div>
+      <ButtonGroup className="border-t py-2 px-2">{toggles}</ButtonGroup>
 
       <RequestModal
         req={selectedRequest}

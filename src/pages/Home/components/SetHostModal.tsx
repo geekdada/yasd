@@ -63,7 +63,7 @@ const SetHostModal: React.FC = () => {
             return (
               <div
                 key={profile.id}
-                className="flex flex-row items-center hover:bg-gray-200"
+                className="flex flex-row items-center hover:bg-gray-100"
               >
                 {profile.id === currentProfile?.id && (
                   <Badge className="ml-3 text-xs md:text-sm">

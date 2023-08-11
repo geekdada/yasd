@@ -57,7 +57,14 @@
     "descriptions": {
       "mitm": "Decrypt HTTPS traffic with man-in-the-middle (MitM) attack.",
       "rewrite": "Redirect HTTP requests or modify request headers.",
-      "github": "Give a star to Surge Web Dashboard"
+      "github": "Give Surge Web Dashboard a star on GitHub.",
+      "scripting": "Use JavaScript to extend the ability of Surge as your wish.",
+      "modules": "Override the current profile with a set of settings. Highly flexible for diverse purposes.",
+      "device_management": "Manage devices that are managed by Surge.",
+      "profile": "Your current Surge configuration.",
+      "dns": "DNS records managed by Surge.",
+      "http_capture": "Turn on HTTP capture switch to dump and inspect the body.",
+      "traffic": "Surge traffic statistics."
     }
   },
   "traffic_cell": {
@@ -123,7 +130,8 @@
     "flush_dns": "Flush DNS",
     "dynamic": "Dynamic",
     "static": "Static",
-    "comment": "Comment"
+    "comment": "Comment",
+    "view_dns": "Lookup DNS records"
   },
   "devices": {
     "mac_address": "MAC Address",
@@ -137,7 +145,7 @@
     "mode": "Takeover Mode",
     "address": "Address",
     "name": "Name",
-    "handled_by_surge": "Handled by Surge",
+    "handled_by_surge": "Use Surge as Gateway",
     "not_handled_by_surge": "None",
     "proxy_and_gateway_mode": "Proxy & Gateway",
     "gateway_mode": "Gateway",
@@ -149,5 +157,7 @@
     "device_settings": "Device Settings",
     "view_requests": "View Requests",
     "modify": "Modify"
+  },
+  "modules": {
   }
 }

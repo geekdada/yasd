@@ -1,40 +1,43 @@
-import React from 'react'
-import { Controlled } from 'react-codemirror2'
+import React, { useMemo } from 'react'
+import { javascript } from '@codemirror/lang-javascript'
+import { EditorView } from '@codemirror/view'
 import { css } from '@emotion/react'
-
-// @ts-ignore
-import('codemirror/lib/codemirror.css')
-// @ts-ignore
-import('codemirror/theme/material.css')
-// @ts-ignore
-import('codemirror/mode/javascript/javascript.js')
+import { material } from '@uiw/codemirror-theme-material'
+import {
+  default as ReactCodeMirror,
+  ReactCodeMirrorProps,
+} from '@uiw/react-codemirror'
 
 import { cn } from '@/utils/shadcn'
 
 type CodeMirrorProps = {
   className?: string
-} & React.ComponentProps<typeof Controlled>
+  isJavaScript?: boolean
+} & ReactCodeMirrorProps
 
-const CodeMirror = ({ className, options, ...props }: CodeMirrorProps) => {
+const CodeMirror = ({ className, isJavaScript, ...props }: CodeMirrorProps) => {
+  const extensions = useMemo(() => {
+    const exts = [EditorView.lineWrapping]
+
+    if (isJavaScript) {
+      exts.push(javascript())
+    }
+
+    return exts
+  }, [isJavaScript])
+
   return (
-    <Controlled
-      className={cn('h-full text-xs', className)}
+    <ReactCodeMirror
+      className={cn('relative h-full text-sm', className)}
       css={css`
-        & > .CodeMirror {
-          height: 100%;
+        & * {
           font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
-            monospace;
+            monospace !important;
         }
       `}
-      options={{
-        ...options,
-        mode: 'javascript',
-        theme: 'material',
-        lineNumbers: true,
-        tabSize: 2,
-        indentWithTabs: false,
-        lineWrapping: true,
-      }}
+      height="100%"
+      theme={material}
+      extensions={extensions}
       {...props}
     />
   )

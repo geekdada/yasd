@@ -3,19 +3,20 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { css } from '@emotion/react'
-import { Button } from '@sumup/circuit-ui'
 import { uniqBy } from 'lodash-es'
+import { Link2Icon } from 'lucide-react'
 import useSWR from 'swr'
-import tw from 'twin.macro'
 
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import PageTitle from '@/components/PageTitle'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { withProfile } from '@/models'
 import { EvaluateResult, Scriptings } from '@/types'
 import fetcher from '@/utils/fetcher'
 
@@ -69,24 +70,20 @@ const Page: React.FC = () => {
       <PageTitle title={t('home.scripting')} />
 
       <div className="flex-1 overflow-auto">
-        <div className="divide-y divide-gray-200">
+        <div className="divide-y">
           {scripting &&
             filteredList.map((script, index) => {
               return (
                 <div
                   key={`${script.name}-${script.type}`}
-                  css={[
-                    tw`flex items-center justify-between py-3 cursor-pointer hover:bg-gray-100`,
-                    css`
-                      padding-left: calc(env(safe-area-inset-left) + 0.75rem);
-                      padding-right: calc(env(safe-area-inset-right) + 0.75rem);
-                    `,
-                  ]}
-                  title={t('scripting.open_script')}
-                  onClick={() => openUrl(script.path)}
+                  className="flex items-center justify-between py-3"
+                  css={css`
+                    padding-left: calc(env(safe-area-inset-left) + 0.75rem);
+                    padding-right: calc(env(safe-area-inset-right) + 0.75rem);
+                  `}
                 >
                   <div className="flex-1">
-                    <div className="truncate leading-normal text-gray-700">
+                    <div className="truncate leading-normal font-mono">
                       {script.name}
                     </div>
                     <div className="text-sm text-gray-500">{script.type}</div>
@@ -94,16 +91,24 @@ const Page: React.FC = () => {
                   <div className="ml-2 flex items-center">
                     {script.type === 'cron' && (
                       <Button
-                        onClick={(e) => {
-                          e.stopPropagation()
+                        onClick={() => {
                           evaluate(script.name, index)
                         }}
-                        size="kilo"
                         isLoading={isLoading === index}
                         loadingLabel={t('scripting.running')}
-                        className="px-3 py-3 text-sm leading-tight"
+                        variant="outline"
                       >
                         {t('scripting.run_script_button_title')}
+                      </Button>
+                    )}
+                    {script.path.startsWith('http') && (
+                      <Button
+                        title={t('scripting.open_script')}
+                        onClick={() => openUrl(script.path)}
+                        size="icon"
+                        variant="outline"
+                      >
+                        <Link2Icon />
                       </Button>
                     )}
                   </div>
@@ -113,10 +118,9 @@ const Page: React.FC = () => {
         </div>
       </div>
 
-      <div className="border-t border-solid border-gray-200 py-2">
+      <div className="border-t border-solid border-gray-200 py-3 px-4">
         <Button
-          variant="tertiary"
-          size="kilo"
+          variant="secondary"
           onClick={() => navigate('/scripting/evaluate')}
         >
           {t('scripting.debug_script_button_title')}
@@ -151,4 +155,4 @@ const Page: React.FC = () => {
   )
 }
 
-export default Page
+export default withProfile(Page)

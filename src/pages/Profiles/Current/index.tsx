@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import CodeMirrorLoading from '@/components/CodeMirrorLoading'
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import PageTitle from '@/components/PageTitle'
+import { withProfile } from '@/models'
 import fetcher from '@/utils/fetcher'
 
 const CodeMirror = lazy(() => import('@/components/CodeMirror'))
@@ -14,6 +15,9 @@ const Page: React.FC = () => {
   const { data: profile } = useSWR<{ profile: string }>(
     '/profiles/current?sensitive=1',
     fetcher,
+    {
+      revalidateOnFocus: false,
+    },
   )
 
   return (
@@ -24,13 +28,8 @@ const Page: React.FC = () => {
         <div className="h-full overflow-auto">
           <Suspense fallback={<CodeMirrorLoading />}>
             <CodeMirror
+              readOnly
               value={profile?.profile ?? `${t('common.is_loading')}...`}
-              options={{
-                readOnly: 'nocursor',
-              }}
-              onBeforeChange={() => {
-                // noop
-              }}
             />
           </Suspense>
         </div>
@@ -39,4 +38,4 @@ const Page: React.FC = () => {
   )
 }
 
-export default Page
+export default withProfile(Page)

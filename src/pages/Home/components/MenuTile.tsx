@@ -1,8 +1,6 @@
 import React from 'react'
-import Balancer from 'react-wrap-balancer'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { Headline } from '@sumup/circuit-ui'
 import { MoveRightIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -13,6 +11,7 @@ import {
   CardDescription,
   CardTitle,
 } from '@/components/ui/card'
+import { TypographyH4 } from '@/components/ui/typography'
 
 interface MenuTileProps {
   title: string
@@ -70,11 +69,7 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
 export const MenuTileContent = styled.div``
 
 export const MenuTileTitle: React.FC<{ title: string }> = ({ title }) => {
-  return (
-    <Headline size="four" as="h4" className="text-gray-800">
-      {title}
-    </Headline>
-  )
+  return <TypographyH4 className="text-gray-800">{title}</TypographyH4>
 }
 
 export default MenuTile

@@ -8,7 +8,11 @@ type ButtonGroupProps = {
 
 const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
   ({ children, className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex', className)} {...props}>
+    <div
+      ref={ref}
+      className={cn('flex items-center space-x-3', className)}
+      {...props}
+    >
       {children}
     </div>
   ),

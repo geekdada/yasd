@@ -19,20 +19,15 @@ export const useSchemas = () => {
   const RegularLoginFormSchema = useMemo(
     () =>
       z.object({
-        name: z.string({
-          required_error: t('devices.err_required'),
+        name: z.string().min(1, {
+          message: t('devices.err_required'),
         }),
-        host: z.string({
-          required_error: t('devices.err_required'),
+        host: z.string().min(1, {
+          message: t('devices.err_required'),
         }),
-        port: z
-          .number({
-            required_error: t('devices.err_required'),
-          })
-          .min(1)
-          .max(65535),
-        key: z.string({
-          required_error: t('devices.err_required'),
+        port: z.number().min(1).max(65535),
+        key: z.string().min(1, {
+          message: t('devices.err_required'),
         }),
         useTls: z.boolean(),
         keepCredential: z.boolean(),

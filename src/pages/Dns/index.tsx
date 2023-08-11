@@ -1,21 +1,28 @@
-import React, { ChangeEvent, useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { List, AutoSizer, ListRowRenderer } from 'react-virtualized'
 import { css } from '@emotion/react'
-import { Button, SelectorGroup } from '@sumup/circuit-ui'
+import { SearchIcon } from 'lucide-react'
 import useSWR, { mutate } from 'swr'
 import tw from 'twin.macro'
 
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import PageTitle from '@/components/PageTitle'
+import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
+import { Toggle } from '@/components/ui/toggle'
+import { withProfile } from '@/models'
 import { DnsResult } from '@/types'
 import fetcher from '@/utils/fetcher'
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
   const [group, setGroup] = useState<'dynamic' | 'static'>('dynamic')
-  const { data: dnsResult } = useSWR<DnsResult>('/dns', fetcher)
+
+  const { data: dnsResult } = useSWR<DnsResult>('/dns', fetcher, {
+    revalidateOnFocus: false,
+  })
   const list = useMemo(() => {
     if (group === 'dynamic') {
       return dnsResult?.dnsCache ?? []
@@ -44,7 +51,6 @@ const Page: React.FC = () => {
 
   const rowRenderer: ListRowRenderer = useCallback(
     ({
-      key, // Unique key within array of rows
       index, // Index of row within collection
       style, // Style object to be applied to row (to position it)
     }) => {
@@ -53,24 +59,35 @@ const Page: React.FC = () => {
 
         return (
           <div
-            key={key}
+            key={`dynamic-${record.domain}`}
             style={style}
-            onClick={() => openIpDetail(record.data[0])}
-            className="flex flex-col justify-center py-2 cursor-pointer hover:bg-gray-100"
+            className="flex gap-5 py-1"
             css={css`
               padding-left: calc(env(safe-area-inset-left) + 0.75rem);
               padding-right: calc(env(safe-area-inset-right) + 0.75rem);
             `}
           >
-            <div className="text-sm truncate">{record.domain}</div>
-            <div className="text-xs text-gray-700 leading-tight">
-              DNS: {record.server}
+            <div className="flex flex-1 flex-col justify-center overflow-hidden">
+              <div className="text-sm truncate">{record.domain}</div>
+              <div className="text-xs text-gray-700 leading-tight">
+                DNS: {record.server}
+              </div>
+              <div className="text-xs text-gray-700 leading-tight truncate">
+                {t('dns.result')}: {record.data.join(', ')}
+              </div>
+              <div className="text-xs text-gray-700 leading-tight truncate">
+                {t('dns.path')}: {record.path}
+              </div>
             </div>
-            <div className="text-xs text-gray-700 leading-tight truncate">
-              {t('dns.result')}: {record.data.join(', ')}
-            </div>
-            <div className="text-xs text-gray-700 leading-tight truncate">
-              {t('dns.path')}: {record.path}
+            <div className="flex items-center">
+              <Button
+                title={t('dns.view_dns')}
+                onClick={() => openIpDetail(record.data[0])}
+                size="icon"
+                variant="outline"
+              >
+                <SearchIcon />
+              </Button>
             </div>
           </div>
         )
@@ -79,9 +96,9 @@ const Page: React.FC = () => {
 
         return (
           <div
-            key={key}
+            key={`static-${record.domain}-${record.data}`}
             style={style}
-            className="flex flex-col justify-center py-2"
+            className="flex justify-between gap-5 py-1"
             css={css`
               padding-left: calc(env(safe-area-inset-left) + 0.75rem);
               padding-right: calc(env(safe-area-inset-right) + 0.75rem);
@@ -111,6 +128,31 @@ const Page: React.FC = () => {
     [group, list, t],
   )
 
+  const toggles = (
+    [
+      {
+        title: t('dns.dynamic'),
+        value: 'dynamic',
+      },
+      {
+        title: t('dns.static'),
+        value: 'static',
+      },
+    ] as const
+  ).map((toggle) => (
+    <Toggle
+      key={toggle.value}
+      pressed={group === toggle.value}
+      onPressedChange={(pressed) => {
+        if (pressed) {
+          setGroup(toggle.value)
+        }
+      }}
+    >
+      {toggle.title}
+    </Toggle>
+  ))
+
   return (
     <FixedFullscreenContainer>
       <PageTitle title="DNS" />
@@ -139,52 +181,11 @@ const Page: React.FC = () => {
         </AutoSizer>
       </div>
 
-      <div
-        className="flex divide-x divide-gray-200 border-t border-solid border-gray-200 py-2 px-2"
-        css={css`
-          & > div {
-            ${tw`mx-2`}
-          }
-          & > div:first-of-type {
-            margin-left: 0;
-          }
-        `}
-      >
-        <SelectorGroup
-          className="flex justify-center items-center"
-          css={css`
-            & label {
-              ${tw`py-2 px-4 ml-2 my-1 text-sm`}
-            }
-            & label:first-of-type {
-              margin-left: 0;
-            }
-          `}
-          label="choose the dns result group"
-          name="selector-group"
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            setGroup(event.target.value as 'dynamic' | 'static')
-          }}
-          options={[
-            {
-              children: t('dns.dynamic'),
-              value: 'dynamic',
-            },
-            {
-              children: t('dns.static'),
-              value: 'static',
-            },
-          ]}
-          value={group}
-        />
+      <div className="flex divide-x divide-gray-200 border-t py-2 px-2">
+        <ButtonGroup className="px-3">{toggles}</ButtonGroup>
 
-        <div className="flex items-center">
-          <Button
-            className="font-normal"
-            variant="tertiary"
-            size="kilo"
-            onClick={flushDns}
-          >
+        <div className="flex items-center px-3">
+          <Button variant="outline" onClick={() => flushDns()}>
             {t('dns.flush_dns')}
           </Button>
         </div>
@@ -193,4 +194,4 @@ const Page: React.FC = () => {
   )
 }
 
-export default Page
+export default withProfile(Page)
