@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useVersionSupport } from '@/hooks'
+import { useVersionSupport } from '@/hooks/useVersionSupport'
 import { isRunInSurge as _isRunInSurge } from '@/utils'
 
 interface VersionSupportProps {
