@@ -5,8 +5,8 @@ import {
   HashRouter,
   HashRouterProps,
 } from 'react-router-dom'
-import { ThemeProvider } from '@emotion/react'
-import { light } from '@sumup/design-tokens'
+
+import { ThemeProvider } from '@/components/ThemeProvider'
 
 import { HistoryProvider, ProfileProvider, TrafficProvider } from './models'
 
@@ -27,7 +27,7 @@ const AppContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
         <ProfileProvider>
           <TrafficProvider>
             <HistoryProvider>
-              <ThemeProvider theme={light}>{children}</ThemeProvider>
+              <ThemeProvider>{children}</ThemeProvider>
             </HistoryProvider>
           </TrafficProvider>
         </ProfileProvider>
