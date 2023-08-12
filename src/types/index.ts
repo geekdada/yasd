@@ -139,7 +139,7 @@ export interface Profile {
   port: number
   key: string
   name: string
-  platform: 'macos' | 'ios'
+  platform: 'macos' | 'ios' | 'tvos'
   platformVersion: string
   platformBuild: string
   tls?: boolean

@@ -1,34 +1,71 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 
-interface AuthData {
-  name: string
-  host: string
-  port: string
-  key: string
-  useTls: boolean
-}
+import { getSurgeHost } from '@/pages/Landing/utils'
+import { isRunInSurge } from '@/utils'
 
-export function useAuthData() {
-  const protocol = window.location.protocol
-  const data = useState<AuthData>(() => ({
-    name: '',
-    host: '',
-    port: '',
-    key: '',
-    useTls: protocol === 'https:',
-  }))
-  const [hasError, setHasError] = useState<boolean | string>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [keepCredential, setKeepCredential] = useState(false)
+const useSchemas = () => {
+  const { t } = useTranslation()
+  const RegularLoginFormSchema = useMemo(
+    () =>
+      z.object({
+        name: z.string().min(1, {
+          message: t('devices.err_required'),
+        }),
+        host: z.string().min(1, {
+          message: t('devices.err_required'),
+        }),
+        port: z.number().min(1).max(65535),
+        key: z.string().min(1, {
+          message: t('devices.err_required'),
+        }),
+        useTls: z.boolean(),
+        keepCredential: z.boolean(),
+      }),
+    [t],
+  )
 
   return {
-    data: data[0],
-    setData: data[1],
-    hasError,
-    setHasError,
+    RegularLoginFormSchema,
+  }
+}
+
+export const useAuthData = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  return {
     isLoading,
     setIsLoading,
-    keepCredential,
-    setKeepCredential,
   }
+}
+
+export const useLoginForm = () => {
+  const { RegularLoginFormSchema } = useSchemas()
+  const surgeHost = getSurgeHost()
+  const defaultValues = isRunInSurge()
+    ? ({
+        name: 'Surge',
+        host: surgeHost.hostname,
+        port: Number(surgeHost.port),
+        key: '',
+        keepCredential: false,
+        useTls: surgeHost.protocol === 'https:',
+      } as const)
+    : ({
+        name: '',
+        host: '',
+        port: 6171,
+        key: '',
+        keepCredential: false,
+        useTls: window.location.protocol === 'https:',
+      } as const)
+  const regularForm = useForm<z.infer<typeof RegularLoginFormSchema>>({
+    resolver: zodResolver(RegularLoginFormSchema),
+    defaultValues,
+  })
+
+  return { form: regularForm, Schema: RegularLoginFormSchema }
 }

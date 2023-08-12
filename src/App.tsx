@@ -16,6 +16,7 @@ import {
 } from 'react-router-dom'
 import { toast, ToastContainer as OriginalToastContainer } from 'react-toastify'
 import styled from '@emotion/styled'
+import { init } from 'i18next'
 import { find } from 'lodash-es'
 import store from 'store2'
 import { SWRConfig } from 'swr'
@@ -27,7 +28,10 @@ import NewVersionAlert from '@/components/NewVersionAlert'
 import PageLayout from '@/components/PageLayout'
 import useTrafficUpdater from '@/hooks/useTrafficUpdater'
 import {
+  HistoryActions,
   ProfileActions,
+  useHistory,
+  useHistoryDispatch,
   usePlatformVersion,
   useProfile,
   useProfileDispatch,
@@ -36,11 +40,7 @@ import HomePage from '@/pages/Home'
 import { LandingPage } from '@/pages/Landing'
 import { Profile } from '@/types'
 import { isRunInSurge } from '@/utils'
-import {
-  ExistingProfiles,
-  LastUsedLanguage,
-  LastUsedProfile,
-} from '@/utils/constant'
+import { LastUsedLanguage, LastUsedProfile } from '@/utils/constant'
 import { httpClient } from '@/utils/fetcher'
 
 import 'react-toastify/dist/ReactToastify.css'
@@ -118,47 +118,39 @@ const App: React.FC = () => {
   const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
+
+  const historyDispatch = useHistoryDispatch()
   const profileDispatch = useProfileDispatch()
+  const platformVersion = usePlatformVersion()
   const profile = useProfile()
+  const history = useHistory()
+
   const [hasInit, setHasInit] = useState(false)
   const isCurrentVersionFetched = useRef(true)
-  const platformVersion = usePlatformVersion()
 
   useTrafficUpdater()
 
   const onCloseApplication = useCallback(() => {
     if (isRunInSurge()) {
-      store.remove(LastUsedProfile)
-      store.remove(ExistingProfiles)
+      historyDispatch({
+        type: HistoryActions.DELETE_ALL_HISTORY,
+      })
     }
 
     window.location.replace('/')
-  }, [])
-
-  useEffect(
-    () => {
-      const existingProfiles = store.get(ExistingProfiles)
-      const lastId = store.get(LastUsedProfile)
-      const result = find<Profile>(existingProfiles, { id: lastId })
-
-      if (result) {
-        profileDispatch({
-          type: ProfileActions.Update,
-          payload: result,
-        })
-      }
-
-      setHasInit(true)
-    },
-    // eslint-disable-next-line
-    [],
-  )
+  }, [historyDispatch])
 
   useEffect(() => {
-    if (hasInit && !profile && location.pathname !== '/') {
+    historyDispatch({
+      type: HistoryActions.LOAD_HISTORY,
+    })
+  }, [historyDispatch])
+
+  useEffect(() => {
+    if (history && !profile && location.pathname !== '/') {
       navigate('/', { replace: true })
     }
-  }, [hasInit, location, navigate, profile])
+  }, [hasInit, history, location, navigate, profile])
 
   useEffect(() => {
     // Log page view

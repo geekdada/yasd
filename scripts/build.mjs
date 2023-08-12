@@ -25,7 +25,6 @@ await (async () => {
 
     case 'release-ci':
       process.env.NODE_ENV = 'production'
-      process.env.REACT_APP_SHOW_AD = 'true'
       process.env.REACT_APP_HASH_ROUTER = 'true'
       process.env.REACT_APP_USE_SW = 'true'
       process.env.PUBLIC_URL = getUrlPathPrefix()

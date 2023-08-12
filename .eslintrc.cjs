@@ -36,6 +36,7 @@ module.exports = {
     'plugin:prettier/recommended',
   ],
   rules: {
+    'no-debugger': 'warn',
     'react/no-unknown-property': ['error', { ignore: ['css'] }],
     'react/prop-types': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',

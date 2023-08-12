@@ -7,6 +7,7 @@ import useSWR from 'swr'
 import tw from 'twin.macro'
 
 import { StatusChip } from '@/components/StatusChip'
+import { TypographyH4 } from '@/components/ui/typography'
 import { useProfile } from '@/models/profile'
 import { EventList } from '@/types'
 import fetcher from '@/utils/fetcher'
@@ -22,10 +23,9 @@ const Events: React.FC = () => {
   )
 
   return (
-    <div className="space-y-3">
-      <div className="text-base font-bold text-gray-700">
-        {t('home.events')}
-      </div>
+    <div className="space-y-2">
+      <TypographyH4 className="px-3 md:px-5">{t('home.events')}</TypographyH4>
+
       <div className="px-3 md:px-5 bg-muted rounded-xl border">
         <div className="grid grid-cols-1 divide-y divide-gray-200">
           {events &&

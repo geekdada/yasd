@@ -60,7 +60,7 @@ export function TypographyH4({
 }: { children: React.ReactNode } & React.HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h4
-      className={cn('scroll-m-20 text-xl tracking-tight', className)}
+      className={cn('scroll-m-20 text-lg font-bold tracking-tight', className)}
       {...props}
     >
       {children}

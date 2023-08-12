@@ -131,7 +131,7 @@ const Page: React.FC = () => {
         </div>
 
         <div className="px-4 lg:px-6 space-y-4 lg:space-y-6">
-          <VersionSupport macos="0.0.0">
+          <VersionSupport macos>
             <DataGroup>
               <DataRow>
                 <DataRowMain>
@@ -182,23 +182,25 @@ const Page: React.FC = () => {
               )
             })}
           </div>
+        </div>
+      </div>
 
-          <div>
-            <Events />
-          </div>
+      <div className="mt-6 px-4 lg:px-6 space-y-4 lg:space-y-6">
+        <div>
+          <Events />
+        </div>
 
-          <div>
-            <ChangeLanguage />
-          </div>
+        <div>
+          <ChangeLanguage />
+        </div>
 
-          <div className="text-sm flex justify-center">
-            {Boolean(platform && platformBuild && platformVersion) && (
-              <code className="block px-4 py-2 rounded bg-gray-100 text-gray-500">
-                v{process.env.REACT_APP_VERSION} - {platform} v{platformVersion}
-                ({platformBuild})
-              </code>
-            )}
-          </div>
+        <div className="text-sm flex justify-center">
+          {Boolean(platform && platformBuild && platformVersion) && (
+            <code className="block px-4 py-2 rounded bg-gray-100 text-gray-500">
+              v{process.env.REACT_APP_VERSION} - {platform} v{platformVersion}(
+              {platformBuild})
+            </code>
+          )}
         </div>
       </div>
     </div>

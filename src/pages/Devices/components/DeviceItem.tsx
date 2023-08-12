@@ -78,14 +78,13 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
         <DataRowMain>
           <div className="flex items-center w-full overflow-hidden">
             {surgeHost ? (
-              <VersionSupport macos="4.1.1" ios="4.11.0">
+              <VersionSupport macos="4.1.1" ios="4.11.0" tvos>
                 <div className="flex-1">
                   <DeviceIcon icon={device.dhcpDevice?.icon} />
                 </div>
               </VersionSupport>
-            ) : (
-              <React.Fragment />
-            )}
+            ) : null}
+
             <div className="w-full overflow-hidden">
               <div className="truncate pr-5">{device.name}</div>
               <div className="text-sm text-gray-600">

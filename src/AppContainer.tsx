@@ -8,7 +8,7 @@ import {
 import { ThemeProvider } from '@emotion/react'
 import { light } from '@sumup/design-tokens'
 
-import { ProfileProvider, TrafficProvider } from './models'
+import { HistoryProvider, ProfileProvider, TrafficProvider } from './models'
 
 const ReactRouter: React.FC<BrowserRouterProps | HashRouterProps> = (args) => {
   return process.env.REACT_APP_HASH_ROUTER ? (
@@ -26,7 +26,9 @@ const AppContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
       <ReactRouter>
         <ProfileProvider>
           <TrafficProvider>
-            <ThemeProvider theme={light}>{children}</ThemeProvider>
+            <HistoryProvider>
+              <ThemeProvider theme={light}>{children}</ThemeProvider>
+            </HistoryProvider>
           </TrafficProvider>
         </ProfileProvider>
       </ReactRouter>
