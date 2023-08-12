@@ -2,7 +2,6 @@ import React, { useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { find } from 'lodash-es'
 import { v4 as uuid } from 'uuid'
 import { z } from 'zod'
 
@@ -22,17 +21,13 @@ import {
 import { Input } from '@/components/ui/input'
 import { TypographyH2, TypographyH3 } from '@/components/ui/typography'
 import VersionSupport from '@/components/VersionSupport'
-import {
-  HistoryActions,
-  TrafficActions,
-  useHistory,
-  useHistoryDispatch,
-  useProfile,
-  useTrafficDispatch,
-} from '@/models'
-import { ProfileActions, useProfileDispatch } from '@/models/profile'
+import { useProfile, useAppDispatch, useHistory } from '@/store'
+import { historyActions } from '@/store/slices/history'
+import { profileActions } from '@/store/slices/profile'
+import { trafficActions } from '@/store/slices/traffic'
 import { Profile } from '@/types'
 import { isRunInSurge } from '@/utils'
+import { rememberLastUsed } from '@/utils/store'
 
 import Header from './components/Header'
 import { useAuthData, useLoginForm } from './hooks'
@@ -45,61 +40,49 @@ const Page: React.FC = () => {
   const { t } = useTranslation()
   const { isLoading, setIsLoading } = useAuthData()
 
+  const dispatch = useAppDispatch()
   const history = useHistory()
-  const historyDispatch = useHistoryDispatch()
   const profile = useProfile()
-  const profileDispatch = useProfileDispatch()
-  const trafficDispatch = useTrafficDispatch()
 
   const { form, Schema } = useLoginForm()
   const { getValues, handleSubmit, clearErrors, setError, reset } = form
 
   const addHistory = useCallback(
     (profile: Profile): void => {
-      historyDispatch({
-        type: HistoryActions.ADD_HISTORY,
-        payload: {
+      dispatch(
+        historyActions.addHistory({
           profile,
           remember: getValues('keepCredential'),
-        },
-      })
+        }),
+      )
     },
-    [historyDispatch, getValues],
+    [dispatch, getValues],
   )
 
   const selectHistory = useCallback(
     (profile: Profile): void => {
       if (getValues('keepCredential')) {
-        historyDispatch({
-          type: HistoryActions.REMEMBER_LAST_USED,
-          payload: {
-            id: profile.id,
-          },
-        })
+        rememberLastUsed(profile.id)
       }
 
-      profileDispatch({
-        type: ProfileActions.Update,
-        payload: profile,
-      })
+      dispatch(profileActions.update(profile))
 
       if (!isRunInSurge()) {
         navigate('/home', { replace: true })
       }
     },
-    [getValues, historyDispatch, navigate, profileDispatch],
+    [dispatch, getValues, navigate],
   )
 
   const deleteHistory = useCallback(
     (id: string) => {
-      historyDispatch({
-        type: HistoryActions.DELETE_HISTORY,
-        payload: {
+      dispatch(
+        historyActions.deleteHistory({
           id,
-        },
-      })
+        }),
+      )
     },
-    [historyDispatch],
+    [dispatch],
   )
 
   const onSubmit = useCallback(
@@ -174,14 +157,10 @@ const Page: React.FC = () => {
         navigate('/home', { replace: true })
       }
     } else {
-      profileDispatch({
-        type: ProfileActions.Clear,
-      })
-      trafficDispatch({
-        type: TrafficActions.Clear,
-      })
+      dispatch(profileActions.clear)
+      dispatch(trafficActions.clear)
     }
-  }, [navigate, profile, profileDispatch, trafficDispatch])
+  }, [dispatch, navigate, profile])
 
   return (
     <div

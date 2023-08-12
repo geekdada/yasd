@@ -4,11 +4,10 @@ import { css } from '@emotion/react'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import useSWR from 'swr'
-import tw from 'twin.macro'
 
 import { StatusChip } from '@/components/StatusChip'
 import { TypographyH4 } from '@/components/ui/typography'
-import { useProfile } from '@/models/profile'
+import { useProfile } from '@/store'
 import { EventList } from '@/types'
 import fetcher from '@/utils/fetcher'
 

@@ -8,7 +8,7 @@ import tw from 'twin.macro'
 import { DataGroup, DataRow, DataRowMain } from '@/components/Data'
 import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
-import { useConnectors, useInterfaces, useStartTime } from '@/models'
+import { useConnectors, useInterfaces, useStartTime } from '@/store'
 import { ConnectorTraffic, Traffic } from '@/types'
 
 import TrafficDataRow from './components/TrafficDataRow'

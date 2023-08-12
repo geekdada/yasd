@@ -2,14 +2,17 @@ import { useEffect } from 'react'
 import dayjs from 'dayjs'
 import useSWR from 'swr'
 
-import { TrafficActions, useProfile, useTrafficDispatch } from '@/models'
+import { useAppDispatch, useProfile } from '@/store'
+import { trafficActions } from '@/store/slices/traffic'
 import { ConnectorTraffic, Traffic } from '@/types'
 import fetcher from '@/utils/fetcher'
 
 import { REFRESH_RATE } from './constants'
 
 const useTrafficUpdater = () => {
+  const dispatch = useAppDispatch()
   const profile = useProfile()
+
   const { data: traffic } = useSWR(
     profile !== undefined ? '/traffic' : null,
     (url) =>
@@ -24,27 +27,21 @@ const useTrafficUpdater = () => {
       dedupingInterval: REFRESH_RATE,
     },
   )
-  const dispatchTrafficAction = useTrafficDispatch()
 
   useEffect(() => {
     if (!traffic) return undefined
 
     const now = Date.now()
 
-    dispatchTrafficAction({
-      type: TrafficActions.UpdateConnector,
-      payload: traffic.connector,
-    })
+    dispatch(trafficActions.updateConnector(traffic.connector))
 
-    dispatchTrafficAction({
-      type: TrafficActions.UpdateInterface,
-      payload: traffic.interface,
-    })
+    dispatch(trafficActions.updateInterface(traffic.interface))
 
-    dispatchTrafficAction({
-      type: TrafficActions.UpdateStartTime,
-      payload: dayjs.unix(traffic.startTime).toDate(),
-    })
+    dispatch(
+      trafficActions.updateStartTime(
+        dayjs.unix(traffic.startTime).toDate().getTime(),
+      ),
+    )
 
     const aggregation: ConnectorTraffic = {
       outCurrentSpeed: 0,
@@ -63,9 +60,8 @@ const useTrafficUpdater = () => {
       aggregation.inCurrentSpeed += conn.inCurrentSpeed
     }
 
-    dispatchTrafficAction({
-      type: TrafficActions.UpdateHistory,
-      payload: {
+    dispatch(
+      trafficActions.updateHistory({
         up: {
           x: now,
           y: aggregation.outCurrentSpeed,
@@ -74,9 +70,9 @@ const useTrafficUpdater = () => {
           x: now,
           y: aggregation.inCurrentSpeed,
         },
-      },
-    })
-  }, [dispatchTrafficAction, traffic])
+      }),
+    )
+  }, [dispatch, traffic])
 
   return undefined
 }

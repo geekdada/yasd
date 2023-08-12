@@ -7,7 +7,7 @@ import useSWR from 'swr'
 import BackButton from '@/components/BackButton'
 import PageContainer from '@/components/PageContainer'
 import { TypographyH2 } from '@/components/ui/typography'
-import { useProfile } from '@/models'
+import { useProfile } from '@/store'
 import { Policies, PolicyGroups } from '@/types'
 import fetcher from '@/utils/fetcher'
 

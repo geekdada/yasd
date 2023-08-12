@@ -9,7 +9,7 @@ import dayjs from 'dayjs'
 import ActionsModal, { Action } from '@/components/ActionsModal'
 import { DataRow, DataRowMain, DataRowSub } from '@/components/Data'
 import VersionSupport from '@/components/VersionSupport'
-import { useSurgeHost } from '@/models/profile'
+import { useSurgeHost } from '@/store'
 import { DeviceInfo } from '@/types'
 
 import DeviceIcon from './DeviceIcon'

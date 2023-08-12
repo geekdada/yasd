@@ -1,7 +1,7 @@
 import React from 'react'
 
 import ProfileCell from '@/components/ProfileCell'
-import { useProfile } from '@/models/profile'
+import { useProfile } from '@/store'
 
 const HostInfo = (): JSX.Element => {
   const profile = useProfile()

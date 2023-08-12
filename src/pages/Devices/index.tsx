@@ -4,9 +4,9 @@ import useSWR from 'swr'
 
 import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
-import { withProfile } from '@/models'
 import { DevicesResult } from '@/types'
 import fetcher from '@/utils/fetcher'
+import withProfile from '@/utils/with-profile'
 
 import DeviceItem from './components/DeviceItem'
 

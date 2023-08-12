@@ -1,4 +1,5 @@
 import React, { ReactNode, Suspense } from 'react'
+import { Provider } from 'react-redux'
 import {
   BrowserRouter,
   BrowserRouterProps,
@@ -6,9 +7,9 @@ import {
   HashRouterProps,
 } from 'react-router-dom'
 
+import Bootstrap from '@/bootstrap'
 import { ThemeProvider } from '@/components/ThemeProvider'
-
-import { HistoryProvider, ProfileProvider, TrafficProvider } from './models'
+import { store } from '@/store'
 
 const ReactRouter: React.FC<BrowserRouterProps | HashRouterProps> = (args) => {
   return process.env.REACT_APP_HASH_ROUTER ? (
@@ -23,15 +24,13 @@ const ReactRouter: React.FC<BrowserRouterProps | HashRouterProps> = (args) => {
 const AppContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <Suspense fallback={<div />}>
-      <ReactRouter>
-        <ProfileProvider>
-          <TrafficProvider>
-            <HistoryProvider>
-              <ThemeProvider>{children}</ThemeProvider>
-            </HistoryProvider>
-          </TrafficProvider>
-        </ProfileProvider>
-      </ReactRouter>
+      <Provider store={store}>
+        <ReactRouter>
+          <ThemeProvider>
+            <Bootstrap>{children}</Bootstrap>
+          </ThemeProvider>
+        </ReactRouter>
+      </Provider>
     </Suspense>
   )
 }

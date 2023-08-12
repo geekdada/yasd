@@ -1,6 +1,6 @@
 import gte from 'semver/functions/gte'
 
-import { usePlatform, usePlatformVersion } from '@/models'
+import { usePlatform, usePlatformVersion } from '@/store'
 
 interface VersionSupportProps {
   macos?: string | boolean

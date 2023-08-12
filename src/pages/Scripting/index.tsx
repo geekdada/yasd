@@ -16,9 +16,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { withProfile } from '@/models'
 import { EvaluateResult, Scriptings } from '@/types'
 import fetcher from '@/utils/fetcher'
+import withProfile from '@/utils/with-profile'
 
 const Page: React.FC = () => {
   const { t } = useTranslation()

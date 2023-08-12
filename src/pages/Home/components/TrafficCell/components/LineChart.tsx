@@ -12,7 +12,7 @@ import {
 } from 'chart.js'
 import set from 'lodash-es/set'
 
-import { useTrafficHistory } from '@/models'
+import { useTrafficHistory } from '@/store'
 import { DataPoint } from '@/types'
 
 import { chartStyles, commonChartOptions } from '../chart-config'

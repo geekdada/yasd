@@ -6,9 +6,9 @@ import useSWR, { mutate } from 'swr'
 import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
 import { Switch } from '@/components/ui/switch'
-import { withProfile } from '@/models'
 import { Modules } from '@/types'
 import fetcher from '@/utils/fetcher'
+import withProfile from '@/utils/with-profile'
 
 const Page: React.FC = () => {
   const { t } = useTranslation()

@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import useSWR from 'swr'
 
-import { useProfile } from '@/models'
+import { useProfile } from '@/store'
 import { RecentRequests } from '@/types'
 import fetcher from '@/utils/fetcher'
 

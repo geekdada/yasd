@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from '@emotion/react'
 
-import { useSurgeHost } from '@/models/profile'
+import { useSurgeHost } from '@/store'
 
 interface DeviceIconProps {
   icon?: string

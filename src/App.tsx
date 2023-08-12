@@ -16,9 +16,6 @@ import {
 } from 'react-router-dom'
 import { toast, ToastContainer as OriginalToastContainer } from 'react-toastify'
 import styled from '@emotion/styled'
-import { init } from 'i18next'
-import { find } from 'lodash-es'
-import store from 'store2'
 import { SWRConfig } from 'swr'
 import tw from 'twin.macro'
 
@@ -27,20 +24,17 @@ import NetworkErrorModal from '@/components/NetworkErrorModal'
 import NewVersionAlert from '@/components/NewVersionAlert'
 import PageLayout from '@/components/PageLayout'
 import useTrafficUpdater from '@/hooks/useTrafficUpdater'
-import {
-  HistoryActions,
-  ProfileActions,
-  useHistory,
-  useHistoryDispatch,
-  usePlatformVersion,
-  useProfile,
-  useProfileDispatch,
-} from '@/models'
 import HomePage from '@/pages/Home'
 import { LandingPage } from '@/pages/Landing'
-import { Profile } from '@/types'
+import {
+  usePlatformVersion,
+  useAppDispatch,
+  useHistory,
+  useProfile,
+} from '@/store'
+import { historyActions } from '@/store/slices/history'
+import { profileActions } from '@/store/slices/profile'
 import { isRunInSurge } from '@/utils'
-import { LastUsedLanguage, LastUsedProfile } from '@/utils/constant'
 import { httpClient } from '@/utils/fetcher'
 
 import 'react-toastify/dist/ReactToastify.css'
@@ -114,55 +108,37 @@ if (
 }
 
 const App: React.FC = () => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
 
-  const historyDispatch = useHistoryDispatch()
-  const profileDispatch = useProfileDispatch()
+  const dispatch = useAppDispatch()
   const platformVersion = usePlatformVersion()
   const profile = useProfile()
   const history = useHistory()
 
-  const [hasInit, setHasInit] = useState(false)
   const isCurrentVersionFetched = useRef(true)
 
   useTrafficUpdater()
 
   const onCloseApplication = useCallback(() => {
     if (isRunInSurge()) {
-      historyDispatch({
-        type: HistoryActions.DELETE_ALL_HISTORY,
-      })
+      dispatch(historyActions.deleteAllHistory())
     }
 
     window.location.replace('/')
-  }, [historyDispatch])
-
-  useEffect(() => {
-    historyDispatch({
-      type: HistoryActions.LOAD_HISTORY,
-    })
-  }, [historyDispatch])
+  }, [dispatch])
 
   useEffect(() => {
     if (history && !profile && location.pathname !== '/') {
       navigate('/', { replace: true })
     }
-  }, [hasInit, history, location, navigate, profile])
+  }, [history, location, navigate, profile])
 
   useEffect(() => {
     // Log page view
   }, [location.pathname])
-
-  useEffect(() => {
-    const language: string | null = store.get(LastUsedLanguage)
-
-    if (language && language !== i18n.language) {
-      i18n.changeLanguage(language)
-    }
-  }, [i18n])
 
   useEffect(() => {
     if (
@@ -182,12 +158,11 @@ const App: React.FC = () => {
         const currentPlatformVersion = res.headers['x-surge-version']
 
         if (currentPlatformVersion !== platformVersion) {
-          profileDispatch({
-            type: ProfileActions.UpdatePlatformVersion,
-            payload: {
+          dispatch(
+            profileActions.updatePlatformVersion({
               platformVersion: currentPlatformVersion,
-            },
-          })
+            }),
+          )
         }
 
         isCurrentVersionFetched.current = false
@@ -196,7 +171,7 @@ const App: React.FC = () => {
         console.error(err)
         toast.error(t('common.surge_too_old'))
       })
-  }, [location, platformVersion, profile?.platform, profileDispatch, t])
+  }, [dispatch, location, platformVersion, profile?.platform, t])
 
   return (
     <SWRConfig

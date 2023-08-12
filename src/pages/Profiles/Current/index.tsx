@@ -5,8 +5,8 @@ import useSWR from 'swr'
 import CodeMirrorLoading from '@/components/CodeMirrorLoading'
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import PageTitle from '@/components/PageTitle'
-import { withProfile } from '@/models'
 import fetcher from '@/utils/fetcher'
+import withProfile from '@/utils/with-profile'
 
 const CodeMirror = lazy(() => import('@/components/CodeMirror'))
 

@@ -4,7 +4,7 @@ import { css } from '@emotion/react'
 import bytes from 'bytes'
 import tw from 'twin.macro'
 
-import { useInterfaces } from '@/models'
+import { useInterfaces } from '@/store'
 import { ConnectorTraffic } from '@/types'
 
 const LineChart = lazy(() => import('./components/LineChart'))

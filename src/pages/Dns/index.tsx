@@ -12,9 +12,9 @@ import PageTitle from '@/components/PageTitle'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { Toggle } from '@/components/ui/toggle'
-import { withProfile } from '@/models'
 import { DnsResult } from '@/types'
 import fetcher from '@/utils/fetcher'
+import withProfile from '@/utils/with-profile'
 
 const Page: React.FC = () => {
   const { t } = useTranslation()

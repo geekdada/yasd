@@ -29,7 +29,7 @@ export const commonChartOptions: ChartOptions<'line'> = {
     intersect: true,
   },
   animation: {
-    duration: REFRESH_RATE,
+    duration: 400,
   },
   scales: {
     x: {

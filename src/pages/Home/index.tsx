@@ -16,7 +16,7 @@ import {
   usePlatformBuild,
   usePlatformVersion,
   useProfile,
-} from '@/models/profile'
+} from '@/store'
 import { Capability } from '@/types'
 import { forceRefresh, isRunInSurge } from '@/utils'
 import { ExistingProfiles, LastUsedProfile } from '@/utils/constant'

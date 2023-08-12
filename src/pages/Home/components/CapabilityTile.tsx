@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import useSWR, { mutate } from 'swr'
 
 import { Switch } from '@/components/ui/switch'
-import { useProfile } from '@/models/profile'
+import { useProfile } from '@/store'
 import { Capability } from '@/types'
 import fetcher from '@/utils/fetcher'
 
