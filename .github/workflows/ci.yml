@@ -37,6 +37,7 @@ jobs:
     - name: yarn install, build
       run: |
         yarn install
+        yarn build
 
     - name: test, report coverage
       run: |
