@@ -48,14 +48,6 @@ const DnsPage = lazy(() => import('@/pages/Dns'))
 const DevicesPage = lazy(() => import('@/pages/Devices'))
 const ProfilePage = lazy(() => import('@/pages/Profiles/Current'))
 
-if (
-  !!process.env.REACT_APP_DEBUG_GA ||
-  (process.env.NODE_ENV === 'production' && process.env.REACT_APP_ENABLE_GA)
-) {
-  // Enable Sashimi Analytics
-  // Use process.env.REACT_APP_DEBUG_GA to enable debug mode
-}
-
 const App: React.FC = () => {
   const { t } = useTranslation()
   const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false)
@@ -84,10 +76,6 @@ const App: React.FC = () => {
       navigate('/', { replace: true })
     }
   }, [history, location, navigate, profile])
-
-  useEffect(() => {
-    // Log page view
-  }, [location.pathname])
 
   useEffect(() => {
     if (
