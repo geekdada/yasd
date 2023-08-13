@@ -41,7 +41,7 @@ const NetworkErrorModal: React.FC<NetworkErrorModalProps> = ({
         <div className="mb-3">{t('common.network_error_message')}</div>
 
         <DialogFooter>
-          <ButtonGroup>
+          <ButtonGroup align="right">
             {reloadButton ? (
               <Button
                 variant="secondary"

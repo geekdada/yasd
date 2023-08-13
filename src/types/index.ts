@@ -54,6 +54,7 @@ export interface RequestItem {
     | 'Rule Evaluating'
     | 'DNS Lookup'
     | 'Establishing Connection'
+    | undefined
   outCurrentSpeed: number
   completed: 1 | 0 | boolean
   modified: 1 | 0 | boolean

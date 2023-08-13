@@ -35,26 +35,24 @@ const ChangeLanguage = (): JSX.Element => {
   )
 
   return (
-    <div className="flex justify-center w-full">
-      <Select
-        value={i18n.language}
-        onValueChange={(newVal) => {
-          onChange(newVal)
-        }}
-        disabled={isLoading}
-      >
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Theme" />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+    <Select
+      value={i18n.language}
+      onValueChange={(newVal) => {
+        onChange(newVal)
+      }}
+      disabled={isLoading}
+    >
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Theme" />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((option) => (
+          <SelectItem key={option.value} value={option.value}>
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   )
 }
 

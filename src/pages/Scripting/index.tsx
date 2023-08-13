@@ -8,6 +8,7 @@ import { Link2Icon } from 'lucide-react'
 import useSWR from 'swr'
 
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
+import ListCell from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
 import { Button } from '@/components/ui/button'
 import {
@@ -74,13 +75,10 @@ const Page: React.FC = () => {
           {scripting &&
             filteredList.map((script, index) => {
               return (
-                <div
+                <ListCell
+                  interactive={false}
                   key={`${script.name}-${script.type}`}
-                  className="flex items-center justify-between py-3"
-                  css={css`
-                    padding-left: calc(env(safe-area-inset-left) + 0.75rem);
-                    padding-right: calc(env(safe-area-inset-right) + 0.75rem);
-                  `}
+                  className="flex flex-row items-center justify-between py-3"
                 >
                   <div className="flex-1">
                     <div className="truncate leading-normal font-mono">
@@ -112,13 +110,13 @@ const Page: React.FC = () => {
                       </Button>
                     )}
                   </div>
-                </div>
+                </ListCell>
               )
             })}
         </div>
       </div>
 
-      <div className="border-t border-solid border-gray-200 py-3 px-4">
+      <div className="border-t border-solid border-gray-200 dark:border-white/20 py-3 px-4">
         <Button
           variant="secondary"
           onClick={() => navigate('/scripting/evaluate')}

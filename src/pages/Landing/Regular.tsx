@@ -6,7 +6,9 @@ import { v4 as uuid } from 'uuid'
 import { z } from 'zod'
 
 import ChangeLanguage from '@/components/ChangeLanguage'
+import DarkModeToggle from '@/components/DarkModeToggle'
 import ProfileCell from '@/components/ProfileCell'
+import RunInSurge from '@/components/RunInSurge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -20,7 +22,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { TypographyH2, TypographyH3 } from '@/components/ui/typography'
-import VersionSupport from '@/components/VersionSupport'
 import { useProfile, useAppDispatch, useHistory } from '@/store'
 import { historyActions } from '@/store/slices/history'
 import { profileActions } from '@/store/slices/profile'
@@ -30,6 +31,7 @@ import { isRunInSurge } from '@/utils'
 import { rememberLastUsed } from '@/utils/store'
 
 import Header from './components/Header'
+import HeaderInfo from './components/HeaderInfo'
 import { useAuthData, useLoginForm } from './hooks'
 import { getSurgeHost, tryHost } from './utils'
 
@@ -174,30 +176,16 @@ const Page: React.FC = () => {
       <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto space-y-6 md:space-y-10">
         <TypographyH2>{t('landing.add_new_host')}</TypographyH2>
 
-        <VersionSupport isRunInSurge={false} tvos macos ios>
-          <div className="bg-blue-100 border border-blue-500 rounded text-blue-700 text-sm px-4 py-3 mb-4 space-y-4">
-            <p className="leading-normal">
-              该功能仅 Surge iOS 4.4.0 和 Surge Mac 4.0.0 以上版本支持。
-            </p>
-            <p className="leading-normal">
-              <a
-                href="https://manual.nssurge.com/others/http-api.html#configuration"
-                target="_blank"
-                rel="noreferrer"
-                className="border-b border-solid border-blue-500"
-              >
-                🔗 开启方式
-              </a>
-            </p>
-          </div>
-        </VersionSupport>
+        <RunInSurge not>
+          <HeaderInfo />
+        </RunInSurge>
 
         <Form {...form}>
           <form
             className="space-y-3 sm:space-y-4 md:space-y-6"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <VersionSupport isRunInSurge={false} tvos macos ios>
+            <RunInSurge not>
               <FormField
                 control={form.control}
                 name="name"
@@ -256,7 +244,7 @@ const Page: React.FC = () => {
                   </FormItem>
                 )}
               />
-            </VersionSupport>
+            </RunInSurge>
 
             <FormField
               control={form.control}
@@ -273,7 +261,7 @@ const Page: React.FC = () => {
             />
 
             <div className="pt-2 space-y-2">
-              <VersionSupport isRunInSurge={false} tvos macos ios>
+              <RunInSurge not>
                 <FormField
                   control={form.control}
                   name="useTls"
@@ -290,7 +278,7 @@ const Page: React.FC = () => {
                     </FormItem>
                   )}
                 />
-              </VersionSupport>
+              </RunInSurge>
 
               <FormField
                 control={form.control}
@@ -323,7 +311,7 @@ const Page: React.FC = () => {
         </Form>
       </div>
 
-      <VersionSupport isRunInSurge={false} tvos macos ios>
+      <RunInSurge not>
         {history && history.length > 0 && (
           <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto space-y-4">
             <TypographyH3>{t('landing.history')}</TypographyH3>
@@ -331,7 +319,10 @@ const Page: React.FC = () => {
             <div className="bg-muted divide-y divide-gray-200 rounded-xl overflow-hidden">
               {history.map((profile) => {
                 return (
-                  <div key={profile.id} className="hover:bg-gray-100 md:px-3">
+                  <div
+                    key={profile.id}
+                    className="hover:bg-gray-100 dark:hover:bg-black/20 md:px-3"
+                  >
                     <ProfileCell
                       profile={profile}
                       variant="left"
@@ -346,10 +337,11 @@ const Page: React.FC = () => {
             </div>
           </div>
         )}
-      </VersionSupport>
+      </RunInSurge>
 
-      <div>
+      <div className="flex justify-center items-center space-x-3">
         <ChangeLanguage />
+        <DarkModeToggle />
       </div>
     </div>
   )

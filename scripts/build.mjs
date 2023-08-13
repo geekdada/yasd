@@ -59,7 +59,7 @@ await (async () => {
       process.env.PUBLIC_URL = getUrlPathPrefix()
       await $`craco build`
 
-      if ('REACT_APP_HASH_ROUTER' in process.env) {
+      if (process.env.REACT_APP_HASH_ROUTER === 'true') {
         await changeManifest({
           start_url: `${getUrlPathPrefix()}/#/home`,
         })

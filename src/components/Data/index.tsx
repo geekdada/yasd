@@ -12,11 +12,11 @@ export const DataGroup: React.FC<{
   return (
     <div className={cn(props.className)}>
       {props.title && (
-        <div className="text-gray-600 text-sm leading-normal px-3 mb-1 truncate lg:text-base lg:leading-relaxed">
+        <div className="text-gray-600 dark:text-white/90 text-sm leading-normal px-3 mb-1 truncate lg:text-base lg:leading-relaxed">
           {props.title}
         </div>
       )}
-      <div className="divide-y divide-gray-200 border bg-muted rounded-xl mb-4 overflow-hidden">
+      <div className="divide-y divide-gray-200 dark:divide-black/20 border bg-muted rounded-xl mb-4 overflow-hidden">
         {props.children}
       </div>
     </div>

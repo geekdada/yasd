@@ -127,7 +127,7 @@
     "result": "结果",
     "source": "来源",
     "path": "路径",
-    "flush_dns": "刷新 DNS",
+    "flush_dns": "清理 DNS 缓存",
     "dynamic": "动态记录",
     "static": "静态记录",
     "comment": "备注",

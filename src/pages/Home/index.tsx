@@ -7,6 +7,7 @@ import store from 'store2'
 import useSWR, { mutate } from 'swr'
 
 import ChangeLanguage from '@/components/ChangeLanguage'
+import DarkModeToggle from '@/components/DarkModeToggle'
 import { DataGroup, DataRow, DataRowMain } from '@/components/Data'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
@@ -99,7 +100,7 @@ const Page: React.FC = () => {
         padding-bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
       `}
     >
-      <div className="sticky top-0 flex shadow bg-white z-10 px-3 py-3">
+      <div className="sticky top-0 flex shadow bg-white dark:bg-neutral-900 z-10 px-3 py-3">
         {profile && (
           <div className="w-full flex justify-between items-center">
             <div className="w-2/3" onDoubleClick={forceRefresh}>
@@ -154,7 +155,7 @@ const Page: React.FC = () => {
             </DataGroup>
           </VersionSupport>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {menu.map((item) => {
               if (
                 typeof item.isEnabled === 'function' &&
@@ -190,13 +191,14 @@ const Page: React.FC = () => {
           <Events />
         </div>
 
-        <div>
+        <div className="flex justify-center items-center space-x-3">
           <ChangeLanguage />
+          <DarkModeToggle />
         </div>
 
         <div className="text-sm flex justify-center">
           {Boolean(platform && platformBuild && platformVersion) && (
-            <code className="block px-4 py-2 rounded bg-gray-100 text-gray-500">
+            <code className="block px-4 py-2 rounded bg-muted text-gray-500">
               v{process.env.REACT_APP_VERSION} - {platform} v{platformVersion}(
               {platformBuild})
             </code>

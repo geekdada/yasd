@@ -7,10 +7,10 @@ export const isTruthy = (obj: string | boolean | 1 | 0) =>
   obj === 1 || obj === true || (typeof obj === 'string' && obj.length > 0)
 
 export const isRunInSurge = (): boolean =>
-  'REACT_APP_RUN_IN_SURGE' in process.env
+  process.env.REACT_APP_RUN_IN_SURGE === 'true'
 
 export const forceRefresh = async (): Promise<void> => {
-  if (process.env.REACT_APP_USE_SW) {
+  if (process.env.REACT_APP_USE_SW === 'true') {
     await unregisterAsync()
   }
 

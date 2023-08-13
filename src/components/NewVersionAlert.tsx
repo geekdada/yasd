@@ -18,7 +18,7 @@ const currentVersion = process.env.REACT_APP_VERSION as string
 
 const NewVersionAlert: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const [versionUrl, setVersionUrl] = useState<string>()
+  const [versionUrl, setVersionUrl] = useState<string>('#')
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const NewVersionAlert: React.FC = () => {
         </DialogHeader>
         <div className="mb-3">{t('new_version_alert.message')}</div>
         <DialogFooter>
-          <ButtonGroup>
+          <ButtonGroup align="right">
             <a href={versionUrl} target="_blank" rel="noreferrer">
               <Button onClick={() => setIsOpen(false)}>
                 {t('common.see')}

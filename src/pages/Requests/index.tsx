@@ -8,6 +8,7 @@ import { ListRowRenderer } from 'react-virtualized/dist/es/List'
 import tw from 'twin.macro'
 
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
+import ListCell from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { Toggle } from '@/components/ui/toggle'
@@ -52,18 +53,14 @@ const Page: React.FC = () => {
       const req = requestList[index]
 
       return (
-        <div
-          key={req.id}
+        <ListCell
           style={style}
+          key={req.id}
+          className="flex flex-col justify-center py-2"
           onClick={() => setSelectedRequest(req)}
-          className="flex flex-col justify-center py-2 cursor-pointer hover:bg-gray-100"
-          css={css`
-            padding-left: calc(env(safe-area-inset-left) + 0.75rem);
-            padding-right: calc(env(safe-area-inset-right) + 0.75rem);
-          `}
         >
           <ListItem req={req} />
-        </div>
+        </ListCell>
       )
     },
     [requestList],
@@ -122,7 +119,7 @@ const Page: React.FC = () => {
                       outline: none;
 
                       & > div {
-                        ${tw`divide-y divide-gray-200`}
+                        ${tw`divide-y divide-gray-200 dark:divide-white/10`}
                       }
                     `}
                   />

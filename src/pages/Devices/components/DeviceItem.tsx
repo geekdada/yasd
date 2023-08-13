@@ -74,7 +74,7 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
 
   return (
     <>
-      <DataRow className="hover:bg-gray-100 cursor-pointer" onClick={onClick}>
+      <DataRow onClick={onClick}>
         <DataRowMain>
           <div className="flex items-center w-full overflow-hidden">
             {surgeHost ? (

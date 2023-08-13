@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 
 type ThemeProviderProps = {
   children: React.ReactNode
@@ -56,6 +57,12 @@ export function ThemeProvider({
 
   return (
     <ThemeProviderContext.Provider {...props} value={value}>
+      <Helmet>
+        <meta
+          name="theme-color"
+          content={theme === 'light' ? 'hsl(0, 0%, 100%)' : 'hsl(0, 0%, 9%)'}
+        />
+      </Helmet>
       {children}
     </ThemeProviderContext.Provider>
   )

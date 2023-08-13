@@ -48,7 +48,7 @@ const SetHostModal: React.FC = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" className="dark:bg-muted">
           <Laptop />
         </Button>
       </DialogTrigger>
@@ -58,12 +58,12 @@ const SetHostModal: React.FC = () => {
           <DialogTitle>{t('landing.history')}</DialogTitle>
         </DialogHeader>
 
-        <div className="bg-gray-100 divide-y divide-gray-200 rounded overflow-hidden">
+        <div className="bg-gray-100 dark:bg-muted divide-y divide-gray-200 dark:divide-black/20 rounded-xl overflow-hidden">
           {existingProfiles.map((profile) => {
             return (
               <div
                 key={profile.id}
-                className="flex flex-row items-center hover:bg-gray-100"
+                className="flex flex-row items-center hover:bg-gray-100 dark:hover:bg-black/20"
               >
                 {profile.id === currentProfile?.id && (
                   <Badge className="ml-3 text-xs md:text-sm">

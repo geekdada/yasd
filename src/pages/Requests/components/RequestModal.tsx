@@ -30,6 +30,9 @@ const TabsWrapper = styled.div`
   .react-tabs__tab {
     ${tw`text-sm font-medium border-none transition-colors duration-200 ease-in-out active:shadow-none active:border-none focus:shadow-none focus:border-none`}
   }
+  .react-tabs__tab:focus:after {
+    display: none;
+  }
   .react-tabs__tab--selected {
     ${tw`text-blue-500 bg-blue-100 border-none`}
   }
@@ -81,7 +84,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
           <MethodBadge
             method={req.method}
             failed={req.failed}
-            status={req.status}
+            status={req.status || ''}
           />
           <span>{`Detail (#${req.id})`}</span>
         </DialogTitle>
@@ -183,7 +186,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
 
             <DataGroup title={t('requests.remark')}>
               <pre
-                className="font-mono text-xs text-gray-600 leading-tight p-3 whitespace-pre-wrap break-words"
+                className="font-mono text-xs text-muted-foreground leading-tight p-3 whitespace-pre-wrap break-words"
                 css={css`
                   min-height: 7rem;
                 `}
@@ -207,7 +210,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
           <TabPanel>
             <DataGroup title={t('requests.request_header_title')}>
               <pre
-                className="font-mono text-xs text-gray-600 leading-tight p-3 whitespace-pre-wrap break-words"
+                className="font-mono text-xs text-muted-foreground leading-tight p-3 whitespace-pre-wrap break-words"
                 css={css`
                   min-height: 7rem;
                 `}

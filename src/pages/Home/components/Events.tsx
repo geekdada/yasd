@@ -26,13 +26,13 @@ const Events: React.FC = () => {
       <TypographyH4 className="px-3 md:px-5">{t('home.events')}</TypographyH4>
 
       <div className="px-3 md:px-5 bg-muted rounded-xl border">
-        <div className="grid grid-cols-1 divide-y divide-gray-200">
+        <div className="grid grid-cols-1 divide-y divide-gray-200 dark:divide-black/20">
           {events &&
             events.events.slice(0, 8).map((item) => {
               return (
                 <div key={item.identifier} className="py-2 md:py-3 lg:py-4">
                   <div
-                    className="text-sm leading-normal text-gray-600"
+                    className="text-sm leading-normal text-gray-600 dark:text-white/90"
                     css={css`
                       word-break: break-word;
                       overflow-wrap: break-word;
@@ -40,7 +40,7 @@ const Events: React.FC = () => {
                   >
                     {item.content}
                   </div>
-                  <div className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                  <div className="text-xs text-gray-500  dark:text-white/70 mt-1 flex items-center gap-1">
                     <span>
                       {item.type === 2 && (
                         <StatusChip size="sm" variant="error" />

@@ -10,7 +10,8 @@ import { ConnectorTraffic } from '@/types'
 const LineChart = lazy(() => import('./components/LineChart'))
 const Cell = tw.div`px-4 py-3`
 const Title = tw.div`text-xs text-muted-foreground leading-relaxed`
-const Data = tw.div`text-base md:text-lg text-gray-700 font-bold leading-normal`
+const Data = tw.div`text-base md:text-lg text-gray-700 dark:text-white/90 font-bold leading-normal`
+
 const LineChartLoader = () => (
   <div
     className="flex items-center justify-center text-sm text-gray-500"
@@ -56,7 +57,7 @@ const TrafficCell: React.FC = () => {
       </div>
 
       {activeInterface ? (
-        <div className="grid grid-cols-3 gap-4 divide-x divide-gray-200 border-solid border border-gray-200 bg-muted">
+        <div className="grid grid-cols-3 gap-4 divide-x dark:divide-black/20 border-solid border dark:border-gray-900 bg-muted">
           <Cell>
             <Title>{t('traffic_cell.upload')}</Title>
             <Data>

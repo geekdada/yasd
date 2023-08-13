@@ -12,7 +12,7 @@ import { ThemeProvider } from '@/components/ThemeProvider'
 import { store } from '@/store'
 
 const ReactRouter: React.FC<BrowserRouterProps | HashRouterProps> = (args) => {
-  return process.env.REACT_APP_HASH_ROUTER ? (
+  return process.env.REACT_APP_HASH_ROUTER === 'true' ? (
     <HashRouter {...(args as HashRouterProps)}>{args.children}</HashRouter>
   ) : (
     <BrowserRouter {...(args as BrowserRouterProps)}>

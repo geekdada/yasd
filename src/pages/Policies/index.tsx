@@ -47,7 +47,7 @@ const Page: React.FC = () => {
   return (
     <PageContainer>
       <div
-        className="sticky top-0 left-0 right-0 shadow bg-white z-10 pt-5 mb-5"
+        className="sticky top-0 left-0 right-0 shadow bg-white dark:bg-muted z-10 pt-5 mb-5"
         ref={headerRef}
       >
         <div
@@ -56,7 +56,7 @@ const Page: React.FC = () => {
             padding-right: env(safe-area-inset-right);
           `}
         >
-          <TypographyH2 className="mb-2 px-4">
+          <TypographyH2 className="px-4 my-0 py-0 border-none">
             <div className="flex items-center">
               <BackButton title={t('home.policies')} />
             </div>
@@ -64,7 +64,7 @@ const Page: React.FC = () => {
         </div>
 
         <div
-          className="flex justify-start overflow-x-scroll pt-6 pb-5 space-x-3"
+          className="flex justify-start overflow-x-scroll py-4 space-x-3"
           css={css`
             padding-left: calc(env(safe-area-inset-left) + 1rem);
             padding-right: calc(env(safe-area-inset-right) + 1rem);

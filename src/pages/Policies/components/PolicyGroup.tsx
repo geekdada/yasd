@@ -215,9 +215,9 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
             return (
               <div
                 className={cn(
-                  'bg-muted rounded-xl border shadow px-3 py-3 md:px-4 md:py-3 cursor-pointer hover:bg-neutral-100 transition-colors ease-in-out duration-200',
+                  'bg-muted rounded-xl border shadow px-3 py-3 md:px-4 md:py-3 cursor-pointer hover:bg-neutral-100 dark:hover:bg-black/90 transition-colors ease-in-out duration-200',
                   selection === policy.name &&
-                    'bg-blue-500 text-white hover:bg-blue-500',
+                    'bg-blue-500 text-white hover:bg-blue-500 dark:hover:bg-blue-500',
                 )}
                 key={policy.name}
                 onClick={() => selectPolicy(policy.name)}

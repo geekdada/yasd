@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import useSWR, { mutate } from 'swr'
 
+import ListCell from '@/components/ListCell'
 import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
 import { Switch } from '@/components/ui/switch'
@@ -49,14 +50,15 @@ const Page: React.FC = () => {
     <PageContainer>
       <PageTitle title={t('home.modules')} />
 
-      <div className="divide-y divide-gray-200">
+      <div className="divide-y">
         {modules &&
           modules.available.map((mod) => {
             return (
-              <div key={mod} className="flex items-center justify-between p-3">
-                <div className="truncate leading-normal text-gray-700">
-                  {mod}
-                </div>
+              <ListCell
+                key={mod}
+                className="flex flex-row items-center justify-between p-3"
+              >
+                <div className="truncate leading-normal">{mod}</div>
                 <div className="flex items-center">
                   <Switch
                     disabled={isLoading}
@@ -64,7 +66,7 @@ const Page: React.FC = () => {
                     onCheckedChange={(checked) => toggle(mod, checked)}
                   />
                 </div>
-              </div>
+              </ListCell>
             )
           })}
       </div>

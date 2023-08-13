@@ -23,6 +23,7 @@ import FullLoading from '@/components/FullLoading'
 import NetworkErrorModal from '@/components/NetworkErrorModal'
 import NewVersionAlert from '@/components/NewVersionAlert'
 import PageLayout from '@/components/PageLayout'
+import RunInSurge from '@/components/RunInSurge'
 import useTrafficUpdater from '@/hooks/useTrafficUpdater'
 import HomePage from '@/pages/Home'
 import { LandingPage } from '@/pages/Landing'
@@ -193,7 +194,9 @@ const App: React.FC = () => {
         isOpen={isNetworkModalOpen}
         onClose={onCloseApplication}
       />
-      <NewVersionAlert />
+      <RunInSurge not>
+        <NewVersionAlert />
+      </RunInSurge>
 
       <PageLayout>
         <Suspense fallback={<FullLoading />}>

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import useSWR from 'swr'
 
+import ListCell from '@/components/ListCell'
 import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
 import { DevicesResult } from '@/types'
@@ -28,12 +29,12 @@ const Page = (): JSX.Element => {
         onAutoRefreshStateChange={(newState) => setIsAutoRefresh(newState)}
       />
 
-      <div className="divide-y divide-gray-200">
+      <div className="divide-y">
         {devices?.devices &&
           devices.devices.map((device) => (
-            <div key={device.identifier}>
+            <ListCell key={device.identifier}>
               <DeviceItem device={device} />
-            </div>
+            </ListCell>
           ))}
       </div>
     </PageContainer>

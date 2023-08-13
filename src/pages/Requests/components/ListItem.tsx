@@ -26,7 +26,7 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
         <MethodBadge
           method={req.method}
           failed={req.failed}
-          status={req.status}
+          status={req.status || ''}
         />
         <div className="text-xs ml-1">#{req.id}</div>
         <div className="text-xs ml-1">
@@ -43,10 +43,12 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
           <span> - </span>
           <span>{bytes(req.inBytes + req.outBytes)}</span>
         </div>
-        <div className="text-xs ml-1">
-          <span> - </span>
-          <span>{t(`requests.${formatStatusKey(req.status)}`)}</span>
-        </div>
+        {req.status ? (
+          <div className="text-xs ml-1">
+            <span> - </span>
+            <span>{t(`requests.${formatStatusKey(req.status)}`)}</span>
+          </div>
+        ) : null}
       </div>
     </React.Fragment>
   )

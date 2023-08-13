@@ -31,7 +31,7 @@ export const Bootstrap: React.FC<{
     }
   }, [i18n])
 
-  if (!history || !isTranslationLoaded) {
+  if (history === undefined || !isTranslationLoaded) {
     return null
   }
 

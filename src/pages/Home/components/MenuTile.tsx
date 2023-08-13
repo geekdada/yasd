@@ -31,7 +31,7 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
   return (
     <Card className="overflow-hidden">
       <CardHeader
-        className="border-b border-gray-900/5 bg-gray-50 space-y-4 justify-center"
+        className="border-b border-gray-900/5 bg-gray-50 dark:bg-muted space-y-4 justify-center"
         css={css`
           height: 3.8rem;
         `}

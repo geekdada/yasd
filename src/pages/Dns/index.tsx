@@ -8,6 +8,7 @@ import useSWR, { mutate } from 'swr'
 import tw from 'twin.macro'
 
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
+import ListCell from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
@@ -58,24 +59,21 @@ const Page: React.FC = () => {
         const record = (list as DnsResult['dnsCache'])[index]
 
         return (
-          <div
+          <ListCell
+            interactive={false}
             key={`dynamic-${record.domain}`}
             style={style}
-            className="flex gap-5 py-1"
-            css={css`
-              padding-left: calc(env(safe-area-inset-left) + 0.75rem);
-              padding-right: calc(env(safe-area-inset-right) + 0.75rem);
-            `}
+            className="flex flex-row gap-5 py-1"
           >
             <div className="flex flex-1 flex-col justify-center overflow-hidden">
               <div className="text-sm truncate">{record.domain}</div>
-              <div className="text-xs text-gray-700 leading-tight">
+              <div className="text-xs text-gray-700 dark:text-white/70 leading-tight">
                 DNS: {record.server}
               </div>
-              <div className="text-xs text-gray-700 leading-tight truncate">
+              <div className="text-xs text-gray-700 dark:text-white/70 leading-tight truncate">
                 {t('dns.result')}: {record.data.join(', ')}
               </div>
-              <div className="text-xs text-gray-700 leading-tight truncate">
+              <div className="text-xs text-gray-700 dark:text-white/70 leading-tight truncate">
                 {t('dns.path')}: {record.path}
               </div>
             </div>
@@ -89,39 +87,38 @@ const Page: React.FC = () => {
                 <SearchIcon />
               </Button>
             </div>
-          </div>
+          </ListCell>
         )
       } else {
         const record = (list as DnsResult['local'])[index]
 
         return (
-          <div
+          <ListCell
+            interactive={false}
             key={`static-${record.domain}-${record.data}`}
             style={style}
-            className="flex justify-between gap-5 py-1"
-            css={css`
-              padding-left: calc(env(safe-area-inset-left) + 0.75rem);
-              padding-right: calc(env(safe-area-inset-right) + 0.75rem);
-            `}
+            className="flex flex-row gap-5 py-1"
           >
-            <div className="text-sm truncate">{record.domain}</div>
-            {!!record.server && (
-              <div className="text-xs text-gray-700 leading-tight">
-                DNS: {record.server}
+            <div className="flex flex-1 flex-col justify-center overflow-hidden">
+              <div className="text-sm truncate">{record.domain}</div>
+              {!!record.server && (
+                <div className="text-xs text-gray-700 dark:text-white/70 leading-tight">
+                  DNS: {record.server}
+                </div>
+              )}
+              <div className="text-xs text-gray-700 dark:text-white/70 leading-tight">
+                {t('dns.result')}: {record.data ?? 'N/A'}
               </div>
-            )}
-            <div className="text-xs text-gray-700 leading-tight">
-              {t('dns.result')}: {record.data ?? 'N/A'}
-            </div>
-            <div className="text-xs text-gray-700 leading-tight">
-              {t('dns.source')}: {record.source ?? 'N/A'}
-            </div>
-            {!!record.comment && (
-              <div className="text-xs text-gray-700 leading-tight">
-                {t('dns.comment')}: {record.comment}
+              <div className="text-xs text-gray-700 dark:text-white/70 leading-tight">
+                {t('dns.source')}: {record.source ?? 'N/A'}
               </div>
-            )}
-          </div>
+              {!!record.comment && (
+                <div className="text-xs text-gray-700 dark:text-white/70 leading-tight">
+                  {t('dns.comment')}: {record.comment}
+                </div>
+              )}
+            </div>
+          </ListCell>
         )
       }
     },
@@ -172,7 +169,7 @@ const Page: React.FC = () => {
                 }}
                 css={css`
                   & > div {
-                    ${tw`divide-y divide-gray-200`}
+                    ${tw`divide-y`}
                   }
                 `}
               />
@@ -181,7 +178,7 @@ const Page: React.FC = () => {
         </AutoSizer>
       </div>
 
-      <div className="flex divide-x divide-gray-200 border-t py-2 px-2">
+      <div className="flex divide-x border-t py-2 px-2">
         <ButtonGroup className="px-3">{toggles}</ButtonGroup>
 
         <div className="flex items-center px-3">

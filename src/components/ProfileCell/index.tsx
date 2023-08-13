@@ -84,7 +84,7 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
 
   return (
     <div
-      className={cn('flex p-3 justify-between', getCursorStyle(), className)}
+      className={cn('flex p-3 justify-between ', getCursorStyle(), className)}
       onClick={(e) => {
         e.stopPropagation()
         e.preventDefault()

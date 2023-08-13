@@ -42,9 +42,9 @@ jobs:
     - name: test, report coverage
       run: |
         yarn verify-translation
-#        yarn test:coverage
+        yarn test
 
-    - uses: codecov/codecov-action@v1
-      if: success() && matrix.os == 'ubuntu-latest'
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+#    - uses: codecov/codecov-action@v1
+#      if: success() && matrix.os == 'ubuntu-latest'
+#      with:
+#        token: ${{ secrets.CODECOV_TOKEN }}

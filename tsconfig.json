@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2017",
     "lib": [
       "dom",
       "dom.iterable",
@@ -20,11 +20,11 @@
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
     "noFallthroughCasesInSwitch": true,
-    "baseUrl":  "./src",
+    "baseUrl":  ".",
     "paths": {
       "@/*": [
-        "./*",
-      ],
+        "./src/*"
+      ]
     }
   },
   "include": [

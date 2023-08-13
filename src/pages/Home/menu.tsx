@@ -46,6 +46,7 @@ const menu: Array<MenuItem> = [
     titleKey: 'modules',
     link: '/modules',
     descriptionKey: 'descriptions.modules',
+    isEnabled: (platform) => platform !== 'tvos',
   },
   {
     titleKey: 'device_management',
