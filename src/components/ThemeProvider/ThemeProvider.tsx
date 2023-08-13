@@ -60,7 +60,7 @@ export function ThemeProvider({
       <Helmet>
         <meta
           name="theme-color"
-          content={theme === 'light' ? 'hsl(0, 0%, 100%)' : 'hsl(0, 0%, 9%)'}
+          content={theme === 'dark' ? 'hsl(0, 0%, 9%)' : 'hsl(0, 0%, 100%)'}
         />
       </Helmet>
       {children}

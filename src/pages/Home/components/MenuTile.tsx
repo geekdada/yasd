@@ -43,24 +43,30 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
       </CardHeader>
 
       <CardContent
-        className="p-5 flex items-center justify-between gap-4"
+        className="p-4 gap-0"
         css={css`
-          height: 5rem;
+          height: 9rem;
         `}
       >
-        {props.description ? (
-          <CardDescription>{props.description}</CardDescription>
-        ) : (
-          <div></div>
-        )}
+        <div className="flex flex-col h-full justify-between gap-4">
+          {props.description ? (
+            <CardDescription>{props.description}</CardDescription>
+          ) : (
+            <div />
+          )}
 
-        {props.onClick ? (
-          <div className="flex justify-end">
-            <Button variant="outline" onClick={() => handleClick()}>
-              <MoveRightIcon />
-            </Button>
-          </div>
-        ) : null}
+          {props.onClick ? (
+            <div className="flex justify-end">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => handleClick()}
+              >
+                <MoveRightIcon />
+              </Button>
+            </div>
+          ) : null}
+        </div>
       </CardContent>
     </Card>
   )
