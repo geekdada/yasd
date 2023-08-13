@@ -50,8 +50,8 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
         <div
           onClick={() => setIsAutoRefresh(!isAutoRefresh)}
           className={cn(
-            'bg-blue-500 text-white cursor-pointer w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-200 ease-in-out',
-            isAutoRefresh && 'bg-red-400',
+            'relative bg-green-100 cursor-pointer w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 ease-in-out',
+            isAutoRefresh && 'bg-red-100',
           )}
           css={[
             css`
@@ -59,8 +59,17 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
             `,
           ]}
         >
-          <ReloadIcon
-            className={cn('w-6 h-6', isAutoRefresh && 'animate-spin')}
+          <span
+            className={cn(
+              'absolute bg-green-600 w-4 h-4 rounded-full transition-colors',
+              isAutoRefresh && 'animate-ping bg-red-600',
+            )}
+          />
+          <span
+            className={cn(
+              'bg-green-600 w-4 h-4 rounded-full transition-colors',
+              isAutoRefresh && 'bg-red-600',
+            )}
           />
         </div>
       )}

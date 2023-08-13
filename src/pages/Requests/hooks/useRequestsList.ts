@@ -5,18 +5,22 @@ import { useProfile } from '@/store'
 import { RecentRequests } from '@/types'
 import fetcher from '@/utils/fetcher'
 
+import { FilterSchema } from '../components/FilterPopover'
+
 import { useRequestListReducer, RequestListActions } from './reducer'
 
 type Props = {
   isAutoRefreshEnabled?: boolean
   sourceIp?: string | null
   onlyActive?: boolean
+  filter: FilterSchema
 }
 
 const useRequestsList = ({
   isAutoRefreshEnabled,
   sourceIp,
   onlyActive,
+  filter,
 }: Props) => {
   const profile = useProfile()
 
@@ -44,22 +48,26 @@ const useRequestsList = ({
       return undefined
     }
 
-    if (sourceIp) {
-      if (onlyActive) {
-        return requestList.filter(
-          (item) => item.sourceAddress === sourceIp && !item.completed,
-        )
-      } else {
-        return requestList.filter((item) => item.sourceAddress === sourceIp)
-      }
-    } else {
-      if (onlyActive) {
-        return requestList.filter((item) => !item.completed)
-      } else {
-        return requestList
-      }
-    }
-  }, [onlyActive, requestList, sourceIp])
+    return requestList
+      .filter((item) => {
+        if (onlyActive) {
+          return !item.completed
+        }
+        return true
+      })
+      .filter((item) => {
+        if (sourceIp) {
+          return item.sourceAddress === sourceIp
+        }
+        return true
+      })
+      .filter((item) => {
+        if (filter.urlFilter) {
+          return item.URL.includes(filter.urlFilter)
+        }
+        return true
+      })
+  }, [filter.urlFilter, onlyActive, requestList, sourceIp])
 
   useEffect(() => {
     if (!recentRequests) {

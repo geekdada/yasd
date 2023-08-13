@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import { css } from '@emotion/react'
 import { uniqBy } from 'lodash-es'
 import { Link2Icon } from 'lucide-react'

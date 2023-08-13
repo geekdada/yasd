@@ -31,7 +31,7 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
   return (
     <Card className="overflow-hidden">
       <CardHeader
-        className="border-b border-gray-900/5 bg-gray-50 dark:bg-muted space-y-4 justify-center"
+        className="border-b border-gray-900/5 bg-muted space-y-4 justify-center"
         css={css`
           height: 3.8rem;
         `}
@@ -56,7 +56,7 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
 
         {props.onClick ? (
           <div className="flex justify-end">
-            <Button size="icon" variant="outline" onClick={() => handleClick()}>
+            <Button variant="outline" onClick={() => handleClick()}>
               <MoveRightIcon />
             </Button>
           </div>

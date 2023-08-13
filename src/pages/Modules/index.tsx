@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { toast } from 'react-toastify'
 import useSWR, { mutate } from 'swr'
 
 import ListCell from '@/components/ListCell'

@@ -46,36 +46,40 @@ const Page: React.FC = () => {
   const platformVersion = usePlatformVersion()
   const platformBuild = usePlatformBuild()
 
-  const toggleSystemProxy = useCallback(() => {
-    fetcher({
-      method: 'POST',
-      url: '/features/system_proxy',
-      data: {
-        enabled: !systemProxy?.enabled,
-      },
-    })
-      .then(() => {
-        return delay(100).then(() => mutate('/features/system_proxy'))
+  const toggleSystemProxy = useCallback(async () => {
+    try {
+      fetcher({
+        method: 'POST',
+        url: '/features/system_proxy',
+        data: {
+          enabled: !systemProxy?.enabled,
+        },
       })
-      .catch((err) => {
-        console.error(err)
-      })
+
+      await delay(100)
+
+      await mutate('/features/system_proxy')
+    } catch (err) {
+      console.error(err)
+    }
   }, [systemProxy])
 
-  const toggleEnhancedMode = useCallback(() => {
-    fetcher({
-      method: 'POST',
-      url: '/features/enhanced_mode',
-      data: {
-        enabled: !enhancedMode?.enabled,
-      },
-    })
-      .then(() => {
-        return delay(100).then(() => mutate('/features/enhanced_mode'))
+  const toggleEnhancedMode = useCallback(async () => {
+    try {
+      await fetcher({
+        method: 'POST',
+        url: '/features/enhanced_mode',
+        data: {
+          enabled: !enhancedMode?.enabled,
+        },
       })
-      .catch((err) => {
-        console.error(err)
-      })
+
+      await delay(100)
+
+      await mutate('/features/enhanced_mode')
+    } catch (err) {
+      console.error(err)
+    }
   }, [enhancedMode])
 
   const logoutSurge = () => {
@@ -138,24 +142,27 @@ const Page: React.FC = () => {
                 <DataRowMain>
                   <div className="font-bold">{t('home.system_proxy')}</div>
                   <Switch
+                    className="dark:border-white/20"
                     checked={systemProxy?.enabled}
-                    onChange={() => toggleSystemProxy()}
+                    onCheckedChange={() => toggleSystemProxy()}
                   />
                 </DataRowMain>
               </DataRow>
+
               <DataRow>
                 <DataRowMain>
                   <div className="font-bold">{t('home.enhanced_mode')}</div>
                   <Switch
+                    className="dark:border-white/20"
                     checked={enhancedMode?.enabled}
-                    onChange={() => toggleEnhancedMode()}
+                    onCheckedChange={() => toggleEnhancedMode()}
                   />
                 </DataRowMain>
               </DataRow>
             </DataGroup>
           </VersionSupport>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {menu.map((item) => {
               if (
                 typeof item.isEnabled === 'function' &&

@@ -120,7 +120,7 @@
     "result": "Result",
     "open_script": "Open script",
     "empty_code_error": "No code entered in the editor",
-    "editor_placeholder": "// Only supports Cron script\n// Docs: https://manual.nssurge.com/scripting/cron.html\n\n$done();",
+    "editor_placeholder": "// Only supports Cron script\n\n$done();",
     "timeout": "Timeout"
   },
   "dns": {
@@ -159,5 +159,10 @@
     "modify": "Modify"
   },
   "modules": {
-  }
+  },
+  "Submit": "Submit",
+  "Clear": "Clear",
+  "Filter": "Filter",
+  "Filter rules": "Filter rules",
+  "Filter requests by partial URL.": "Filter requests by partial URL."
 }

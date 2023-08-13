@@ -1,7 +1,8 @@
 import React, { lazy, Suspense, useCallback, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { toast } from 'react-toastify'
 import { css } from '@emotion/react'
+import { LifeBuoy } from 'lucide-react'
 
 import CodeMirrorLoading from '@/components/CodeMirrorLoading'
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
@@ -81,8 +82,9 @@ const Page: React.FC = () => {
           </Suspense>
         </div>
 
-        <div className="flex items-center border-t border-solid border-gray-200 py-3 px-3">
+        <div className="flex items-center border-t border-solid py-3 px-3">
           <Button
+            size="lg"
             onClick={evaluate}
             isLoading={isLoading}
             loadingLabel={t('scripting.running')}
@@ -90,7 +92,17 @@ const Page: React.FC = () => {
             {t('scripting.run_script_button_title')}
           </Button>
 
-          <div className="ml-4">
+          <a
+            href="https://manual.nssurge.com/scripting/common.html"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Button className="ml-4" size="icon" variant="outline">
+              <LifeBuoy />
+            </Button>
+          </a>
+
+          <div className="ml-6">
             <Label htmlFor="timeout-input">{t('scripting.timeout')}</Label>
             <Input
               id="timeout-input"

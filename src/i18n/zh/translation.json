@@ -120,7 +120,7 @@
     "result": "结果",
     "open_script": "打开脚本",
     "empty_code_error": "没有输入脚本内容",
-    "editor_placeholder": "// 仅支持 Cron 类型脚本\n// 文档: https://manual.nssurge.com/scripting/cron.html\n\n$done();",
+    "editor_placeholder": "// 仅支持 Cron 类型脚本\n\n$done();",
     "timeout": "超时时间"
   },
   "dns": {
@@ -159,5 +159,10 @@
     "modify": "修改"
   },
   "modules": {
-  }
+  },
+  "Submit": "提交",
+  "Clear": "清除",
+  "Filter": "过滤",
+  "Filter rules": "过滤规则",
+  "Filter requests by partial URL.": "根据部分 URL 过滤请求。"
 }

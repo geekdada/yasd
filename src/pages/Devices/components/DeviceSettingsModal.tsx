@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { useForm, useFormState } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { toast } from 'react-toastify'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { to } from 'await-to-js'
 import { mutate } from 'swr'
@@ -65,7 +65,7 @@ const DeviceSettingsModal = ({
   const onSubmit = useCallback(
     (data: FormData) => {
       if (!Object.keys(dirtyFields).length) {
-        toast.warn(t('devices.err_nothing_changed'))
+        toast(t('devices.err_nothing_changed'))
         return
       }
 

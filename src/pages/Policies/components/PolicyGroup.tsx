@@ -26,7 +26,7 @@ interface PolicyGroupProps {
 }
 
 const LoadingOverlay = tw.div`
-  absolute top-0 right-0 bottom-0 left-0 bg-gray-800 bg-opacity-25 flex items-center justify-center
+  absolute top-0 right-0 bottom-0 left-0 bg-neutral-200 bg-opacity-90 flex items-center justify-center
 `
 
 const latencyResultStyle = (latency: number) => {
@@ -207,7 +207,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
         </Button>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="p-4">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {policyGroup.map((policy) => {
             const typeDescription = policy.typeDescription.toUpperCase()
@@ -254,11 +254,11 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
       <Card className="relative overflow-hidden">
         {isLoading ? (
           <LoadingOverlay>
-            <Loader2Icon className="h-4 w-4 animate-spin" />
+            <Loader2Icon className="text-neutral-600 h-8 w-8 animate-spin" />
           </LoadingOverlay>
-        ) : (
-          cardInner
-        )}
+        ) : null}
+
+        {cardInner}
       </Card>
     </div>
   )

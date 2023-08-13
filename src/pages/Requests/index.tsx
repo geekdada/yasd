@@ -10,8 +10,10 @@ import tw from 'twin.macro'
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import ListCell from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
-import { ButtonGroup } from '@/components/ui/button-group'
 import { Toggle } from '@/components/ui/toggle'
+import FilterPopover, {
+  FilterSchema,
+} from '@/pages/Requests/components/FilterPopover'
 import useRequestsList from '@/pages/Requests/hooks/useRequestsList'
 import { RequestItem } from '@/types'
 
@@ -28,6 +30,10 @@ const Page: React.FC = () => {
   const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(false)
   const [group, setGroup] = useState<'recent' | 'active'>('recent')
 
+  const [filter, setFilter] = useState<FilterSchema>({
+    urlFilter: '',
+  })
+
   const query = useQuery()
   const sourceIp = useMemo<string | null>(() => query.get('source'), [query])
 
@@ -39,6 +45,7 @@ const Page: React.FC = () => {
     isAutoRefreshEnabled: isAutoRefresh,
     sourceIp,
     onlyActive: group === 'active',
+    filter,
   })
 
   const rowRenderer: ListRowRenderer = useCallback(
@@ -66,6 +73,10 @@ const Page: React.FC = () => {
     [requestList],
   )
 
+  const onFilterRulesChange = useCallback((filter: FilterSchema) => {
+    setFilter(filter)
+  }, [])
+
   const toggles = (
     [
       {
@@ -81,6 +92,7 @@ const Page: React.FC = () => {
     ] as const
   ).map((toggle) => (
     <Toggle
+      size="sm"
       key={toggle.value}
       pressed={group === toggle.value}
       onPressedChange={(pressed) => {
@@ -138,7 +150,16 @@ const Page: React.FC = () => {
         )}
       </div>
 
-      <ButtonGroup className="border-t py-2 px-2">{toggles}</ButtonGroup>
+      <div className="flex items-center border-t py-2 px-2 divide-x">
+        <div className="space-x-3 mr-3">{toggles}</div>
+        <div>
+          <FilterPopover
+            className="ml-3"
+            filter={filter}
+            onFilterRulesChange={onFilterRulesChange}
+          />
+        </div>
+      </div>
 
       <RequestModal
         req={selectedRequest}

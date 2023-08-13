@@ -58,6 +58,7 @@ const CapabilityTile: React.FC<CapabilityTileProps> = ({
       description={descriptionKey ? t(`home.${descriptionKey}`) : undefined}
       switchElement={
         <Switch
+          className="dark:border-white/20"
           disabled={isLoading}
           checked={capability?.enabled}
           onCheckedChange={(newVal) => toggle(newVal)}

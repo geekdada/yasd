@@ -1,5 +1,6 @@
 import React, { ReactNode, Suspense } from 'react'
-import { Provider } from 'react-redux'
+import { HelmetProvider } from 'react-helmet-async'
+import { Provider as ReduxProvider } from 'react-redux'
 import {
   BrowserRouter,
   BrowserRouterProps,
@@ -24,13 +25,15 @@ const ReactRouter: React.FC<BrowserRouterProps | HashRouterProps> = (args) => {
 const AppContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <Suspense fallback={<div />}>
-      <Provider store={store}>
-        <ReactRouter>
-          <ThemeProvider>
-            <Bootstrap>{children}</Bootstrap>
-          </ThemeProvider>
-        </ReactRouter>
-      </Provider>
+      <ReduxProvider store={store}>
+        <HelmetProvider>
+          <ReactRouter>
+            <ThemeProvider>
+              <Bootstrap>{children}</Bootstrap>
+            </ThemeProvider>
+          </ReactRouter>
+        </HelmetProvider>
+      </ReduxProvider>
     </Suspense>
   )
 }

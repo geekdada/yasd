@@ -16,7 +16,7 @@ const FixedFullscreenContainer: React.FC<{
   return (
     <div
       className={cn(
-        'fixed top-0 right-0 bottom-0 left-0 h-full overflow-hidden',
+        'absolute top-0 right-0 bottom-0 left-0 h-full overflow-hidden',
         offsetBottom
           ? css`
               padding-bottom: env(safe-area-inset-bottom);

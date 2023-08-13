@@ -1,4 +1,4 @@
-import { toast } from 'react-toastify'
+import { toast } from 'react-hot-toast'
 import axios, { AxiosRequestConfig } from 'axios'
 
 const client = axios.create({
@@ -51,7 +51,7 @@ const fetcher = <T>(requestConfig: AxiosRequestConfig): Promise<T> => {
         // http.ClientRequest in node.js
         console.error(error.request)
         toast.error('无法连接服务器: ' + error.message, {
-          toastId: error.message,
+          id: error.message,
         })
       } else {
         // Something happened in setting up the request that triggered an Error

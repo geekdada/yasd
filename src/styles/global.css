@@ -1,0 +1,12 @@
+html, body {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+  background-color: hsl(210, 20%, 96%);
+}
+
+.dark #root {
+    background-color: hsl(0 0% 4%);
+}

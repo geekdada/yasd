@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
+import { Toaster, toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import {
   Navigate,
@@ -14,10 +15,7 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom'
-import { toast, ToastContainer as OriginalToastContainer } from 'react-toastify'
-import styled from '@emotion/styled'
 import { SWRConfig } from 'swr'
-import tw from 'twin.macro'
 
 import FullLoading from '@/components/FullLoading'
 import NetworkErrorModal from '@/components/NetworkErrorModal'
@@ -49,56 +47,6 @@ const EvaluatePage = lazy(() => import('@/pages/Scripting/Evaluate'))
 const DnsPage = lazy(() => import('@/pages/Dns'))
 const DevicesPage = lazy(() => import('@/pages/Devices'))
 const ProfilePage = lazy(() => import('@/pages/Profiles/Current'))
-const ToastContainer = styled(OriginalToastContainer)`
-  ${tw`p-2 md:p-0`}
-
-  .Toastify__toast {
-    ${tw`flex items-center px-3 py-3 bg-blue-100 rounded shadow-none`}
-  }
-  .Toastify__close-button,
-  .Toastify__toast-body {
-    ${tw`text-blue-700`}
-  }
-  .Toastify__toast-body {
-    ${tw`text-base`}
-  }
-  .Toastify__close-button {
-    ${tw`block ml-3 self-center`}
-  }
-  .Toastify__progress-bar {
-    ${tw`bg-blue-200`}
-  }
-  .Toastify__toast--error {
-    ${tw`bg-red-100`}
-
-    .Toastify__close-button, .Toastify__toast-body {
-      ${tw`text-red-700`}
-    }
-    .Toastify__progress-bar {
-      ${tw`bg-red-200`}
-    }
-  }
-  .Toastify__toast--warning {
-    ${tw`bg-orange-100 border-l-4 border-orange-500`}
-
-    .Toastify__close-button, .Toastify__toast-body {
-      ${tw`text-orange-700`}
-    }
-    .Toastify__progress-bar {
-      ${tw`bg-orange-200`}
-    }
-  }
-  .Toastify__toast--success {
-    ${tw`bg-green-100`}
-
-    .Toastify__close-button, .Toastify__toast-body {
-      ${tw`text-green-700`}
-    }
-    .Toastify__progress-bar {
-      ${tw`bg-green-200`}
-    }
-  }
-`
 
 if (
   !!process.env.REACT_APP_DEBUG_GA ||
@@ -188,17 +136,19 @@ const App: React.FC = () => {
         refreshWhenOffline: true,
       }}
     >
-      <ToastContainer />
+      <Toaster position="bottom-right" reverseOrder={false} />
+
       <NetworkErrorModal
         reloadButton={isRunInSurge()}
         isOpen={isNetworkModalOpen}
         onClose={onCloseApplication}
       />
+
       <RunInSurge not>
         <NewVersionAlert />
       </RunInSurge>
 
-      <PageLayout>
+      <PageLayout id="page-layout">
         <Suspense fallback={<FullLoading />}>
           <Routes>
             <Route path="/" element={<LandingPage />} />

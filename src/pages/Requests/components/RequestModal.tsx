@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
+import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import { toast } from 'react-toastify'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { Search } from '@sumup/icons'
