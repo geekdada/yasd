@@ -1,3 +1,30 @@
+# [2.0.0-beta.0](https://github.com/geekdada/yasd/compare/v1.1.2...v2.0.0-beta.0) (2023-08-13)
+
+
+### Bug Fixes
+
+* eslint issues ([89f0cf3](https://github.com/geekdada/yasd/commit/89f0cf300e5a9146cae86548933e1bb6bf99f981))
+* theme color ([2a489e8](https://github.com/geekdada/yasd/commit/2a489e80fe33408f6d8052afb93248a2297b0d69))
+* upgrade issues ([6eb6edf](https://github.com/geekdada/yasd/commit/6eb6edfcc459d1c4ed7000d848330f3affff9ede))
+
+
+### Features
+
+* clear traffic and profile on landing page ([8ca3f51](https://github.com/geekdada/yasd/commit/8ca3f5135aec6a81e0e517e8375ee8fc0a7cb99e))
+* give the home page a new look ([7482975](https://github.com/geekdada/yasd/commit/74829758d45c755d7569afda40d1bbcced6b4354))
+* give the policies page a new look ([830fa0e](https://github.com/geekdada/yasd/commit/830fa0ed11fff2e47b54c94f48ba8286818645ed))
+* improve history and profile management ([032fa5d](https://github.com/geekdada/yasd/commit/032fa5d50ae915d715023c566c56278964720506))
+* improve landing page ([5a6c438](https://github.com/geekdada/yasd/commit/5a6c438f0af096d05f854e7285f740dc2eaf6dad))
+* improve style ([72c9ee2](https://github.com/geekdada/yasd/commit/72c9ee2188000ad25a8eae3f749a9b7763a1befb))
+* improve the requests page ([e7cab51](https://github.com/geekdada/yasd/commit/e7cab514416be661d745d28723f72102742c5e89))
+* improve ui ([a88bf49](https://github.com/geekdada/yasd/commit/a88bf49e43b60d9aefad98ac13b786d9bdb95569))
+* improve ui ([2f79a4c](https://github.com/geekdada/yasd/commit/2f79a4c106e6df1f2a8269a1d08f53d3afc4cd98))
+* improve ui ([06a7e00](https://github.com/geekdada/yasd/commit/06a7e00b04e9b5321807460b3338bd68b9713be6))
+* include sashimi ([f2f3ded](https://github.com/geekdada/yasd/commit/f2f3dedff161bd7af08055622101b29add1a0b44))
+* use traffic context to store traffic related data ([ed833c0](https://github.com/geekdada/yasd/commit/ed833c0caa97ed092882c5d7a57c4a45f165747f))
+
+
+
 ## [1.1.2](https://github.com/geekdada/yasd/compare/v1.1.1...v1.1.2) (2021-11-03)
 
 
