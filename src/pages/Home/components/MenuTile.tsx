@@ -42,12 +42,7 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
         </div>
       </CardHeader>
 
-      <CardContent
-        className="p-4 gap-0"
-        css={css`
-          height: 9rem;
-        `}
-      >
+      <CardContent className="px-6 py-4 gap-0 h-[7.8rem] lg:h-[9rem]">
         <div className="flex flex-col h-full justify-between gap-4">
           {props.description ? (
             <CardDescription>{props.description}</CardDescription>
