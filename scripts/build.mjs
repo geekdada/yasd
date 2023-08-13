@@ -17,6 +17,9 @@ await (async () => {
   await clean()
   console.info('🚧  Build artifact')
 
+  // Treating warnings as errors because process.env.CI = true.
+  process.env.CI = 'false'
+
   switch (target) {
     case 'release-vercel':
       process.env.NODE_ENV = 'production'
