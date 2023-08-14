@@ -33,6 +33,7 @@ const requestListReducer: Reducer<
   switch (action.type) {
     case RequestListActions.LOAD_REQUESTS: {
       const currentList = state.requestList ? [...state.requestList] : []
+      const newItems: RequestItem[] = []
       const insertMethod = currentList.length > 0 ? 'unshift' : 'push'
 
       for (const request of action.payload) {
@@ -40,7 +41,7 @@ const requestListReducer: Reducer<
         const now = new Date()
 
         if (index === -1) {
-          currentList[insertMethod]({
+          newItems.push({
             ...request,
             lastUpdated: now,
           })
@@ -51,6 +52,8 @@ const requestListReducer: Reducer<
           })
         }
       }
+
+      currentList[insertMethod](...newItems)
 
       return {
         ...state,

@@ -123,7 +123,7 @@ const DeviceSettingsModal = ({
 
   return (
     <Dialog {...props}>
-      <DialogContent>
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>{`${t('devices.modify')} ${title}`}</DialogTitle>
         </DialogHeader>

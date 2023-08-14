@@ -49,7 +49,7 @@
     "dns": "DNS",
     "profile": "配置",
     "mitm": "MitM",
-    "http_capture": "抓取 HTTP 流量",
+    "http_capture": "抓取 HTTP",
     "rewrite": "重写",
     "github": "GitHub",
     "events": "事件",

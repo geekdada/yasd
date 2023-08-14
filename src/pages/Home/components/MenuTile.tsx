@@ -31,21 +31,23 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
   return (
     <Card className="overflow-hidden">
       <CardHeader
-        className="border-b border-gray-900/5 bg-muted space-y-4 justify-center"
+        className="px-4 md:px-6 border-b border-gray-900/5 bg-muted space-y-4 justify-center"
         css={css`
           height: 3.8rem;
         `}
       >
         <div className="flex items-center gap-8 justify-between">
-          <CardTitle>{props.title}</CardTitle>
+          <CardTitle className="truncate">{props.title}</CardTitle>
           {props.switchElement}
         </div>
       </CardHeader>
 
-      <CardContent className="px-6 py-4 gap-0 h-[7.8rem] lg:h-[9rem]">
-        <div className="flex flex-col h-full justify-between gap-4">
+      <CardContent className="px-4 md:px-6 py-4 gap-0 h-[7.6rem] lg:h-[9rem]">
+        <div className="flex flex-col h-full justify-between gap-2 md:gap-4">
           {props.description ? (
-            <CardDescription>{props.description}</CardDescription>
+            <CardDescription className="text-xs sm:text-sm">
+              {props.description}
+            </CardDescription>
           ) : (
             <div />
           )}

@@ -50,6 +50,7 @@ const Page: React.FC = () => {
 
   const rowRenderer: ListRowRenderer = useCallback(
     ({
+      key, // Unique key within array of rows
       index, // Index of row within collection
       style, // Style object to be applied to row (to position it)
     }) => {
@@ -62,7 +63,7 @@ const Page: React.FC = () => {
       return (
         <ListCell
           style={style}
-          key={req.id}
+          key={key}
           className="flex flex-col justify-center py-2"
           onClick={() => setSelectedRequest(req)}
         >

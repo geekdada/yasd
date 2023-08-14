@@ -81,7 +81,10 @@ const FilterPopover: React.FC<FilterPopoverProps> = ({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-80">
+      <PopoverContent
+        className="w-80"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <div className="grid gap-4">
           <div className="space-y-2">
             <h4 className="font-medium leading-none">{t('Filter rules')}</h4>

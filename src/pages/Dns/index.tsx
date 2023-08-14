@@ -80,7 +80,7 @@ const Page: React.FC = () => {
             <div className="flex items-center">
               <Button
                 title={t('dns.view_dns')}
-                onClick={() => openIpDetail(record.data[0])}
+                onClick={() => openIpDetail(record.domain)}
                 size="icon"
                 variant="outline"
               >

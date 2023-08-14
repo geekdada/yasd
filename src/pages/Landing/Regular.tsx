@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { TypographyH2, TypographyH3 } from '@/components/ui/typography'
+import { TypographyH2, TypographyH4 } from '@/components/ui/typography'
 import { useProfile, useAppDispatch, useHistory } from '@/store'
 import { historyActions } from '@/store/slices/history'
 import { profileActions } from '@/store/slices/profile'
@@ -313,15 +313,17 @@ const Page: React.FC = () => {
 
       <RunInSurge not>
         {history && history.length > 0 && (
-          <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto space-y-4">
-            <TypographyH3>{t('landing.history')}</TypographyH3>
+          <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto space-y-2 md:space-y-4">
+            <TypographyH4 className="px-3 md:px-5">
+              {t('landing.history')}
+            </TypographyH4>
 
             <div className="bg-muted divide-y divide-gray-200 rounded-xl overflow-hidden">
               {history.map((profile) => {
                 return (
                   <div
                     key={profile.id}
-                    className="hover:bg-gray-100 dark:hover:bg-black/20 md:px-3"
+                    className="hover:bg-gray-100 dark:hover:bg-black/20 md:px-2"
                   >
                     <ProfileCell
                       profile={profile}
