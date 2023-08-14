@@ -1,3 +1,12 @@
+# [2.0.0-beta.2](https://github.com/geekdada/yasd/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2023-08-14)
+
+
+### Bug Fixes
+
+* height issue ([b579a3f](https://github.com/geekdada/yasd/commit/b579a3faa678cee17f47a56929066d5f840bc07c))
+
+
+
 # [2.0.0-beta.1](https://github.com/geekdada/yasd/compare/v2.0.0-beta.0...v2.0.0-beta.1) (2023-08-14)
 
 
