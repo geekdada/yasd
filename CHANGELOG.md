@@ -1,3 +1,13 @@
+# [2.0.0-beta.1](https://github.com/geekdada/yasd/compare/v2.0.0-beta.0...v2.0.0-beta.1) (2023-08-14)
+
+
+### Features
+
+* address feedback issue ([1e4cfc0](https://github.com/geekdada/yasd/commit/1e4cfc0df9cc788b7bb1b1554760718581ddf161))
+* improve style ([fe00f55](https://github.com/geekdada/yasd/commit/fe00f55faf74bea9b89faab44602065ca1888ac0))
+
+
+
 # [2.0.0-beta.0](https://github.com/geekdada/yasd/compare/v1.1.2...v2.0.0-beta.0) (2023-08-13)
 
 
