@@ -134,7 +134,7 @@ const App: React.FC = () => {
         <NewVersionAlert />
       </RunInSurge>
 
-      <PageLayout id="page-layout">
+      <PageLayout>
         <Suspense fallback={<FullLoading />}>
           <Routes>
             <Route path="/" element={<LandingPage />} />

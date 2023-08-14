@@ -84,7 +84,6 @@ const Page: React.FC = () => {
 
         <div className="flex items-center border-t border-solid py-3 px-3">
           <Button
-            size="lg"
             onClick={evaluate}
             isLoading={isLoading}
             loadingLabel={t('scripting.running')}

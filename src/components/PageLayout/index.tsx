@@ -10,13 +10,13 @@ const PageLayout: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   return (
     <div
       className={cn(
-        'flex-1 flex justify-center overflow-x-clip overflow-y-scroll',
+        'flex-1 flex min-h-full justify-center overflow-x-clip',
         className,
       )}
       {...props}
     >
-      <div className="flex-1 max-w-4xl w-full">
-        <div className="relative min-h-full border-l bg-background border-r border-gray-200 dark:border-gray-800">
+      <div className="relative max-w-4xl w-full bg-background">
+        <div className="border-l border-r border-gray-200 dark:border-gray-800">
           {children}
         </div>
       </div>
