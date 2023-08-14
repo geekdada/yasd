@@ -36,8 +36,6 @@ import { profileActions } from '@/store/slices/profile'
 import { isRunInSurge } from '@/utils'
 import { httpClient } from '@/utils/fetcher'
 
-import 'react-toastify/dist/ReactToastify.css'
-
 const PoliciesPage = lazy(() => import('@/pages/Policies'))
 const RequestsPage = lazy(() => import('@/pages/Requests'))
 const TrafficPage = lazy(() => import('@/pages/Traffic'))

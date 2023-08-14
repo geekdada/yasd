@@ -27,7 +27,7 @@
     "login": "Login",
     "name": "Name",
     "host": "Host",
-    "host_tips": "Use iphone.local if you're in an intranet",
+    "host_tips": "Use mac.local or mac.sgponte if you're in an intranet",
     "port": "Port",
     "key": "Key",
     "remember_me": "Remember me",

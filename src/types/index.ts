@@ -205,6 +205,7 @@ export interface DevicesResult {
 }
 
 export interface BenchmarkResult {
+  lastTestErrorMessage: string | null
   lastTestScoreInMS: number
   lastTestDate: number
 }

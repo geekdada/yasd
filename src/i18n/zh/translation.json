@@ -27,7 +27,7 @@
     "login": "登录",
     "name": "名称",
     "host": "域名或 IP 地址",
-    "host_tips": "局域网内可以使用 iphone.local",
+    "host_tips": "局域网内可以使用 mac.local 或 mac.sgponte",
     "port": "端口",
     "key": "密钥",
     "remember_me": "记住我",

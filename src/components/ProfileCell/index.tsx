@@ -92,7 +92,7 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
       }}
     >
       <div className={cn('flex w-full', variantStyle)}>
-        <div className="truncate text-sm md:text-base leading-tight font-extrabold">
+        <div className="truncate text-sm md:text-base leading-tight font-bold">
           {profile.name}
         </div>
 

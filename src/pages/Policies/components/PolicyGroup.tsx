@@ -25,6 +25,11 @@ interface PolicyGroupProps {
   policyPerformanceResults?: PolicyBenchmarkResults
 }
 
+type LocalLatency = {
+  latency: number
+  error?: string | null
+}
+
 const LoadingOverlay = tw.div`
   absolute top-0 right-0 bottom-0 left-0 bg-neutral-200 bg-opacity-90 flex items-center justify-center
 `
@@ -48,7 +53,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
   const [isInViewport, targetRef] = useIsInViewport({ threshold: 10 })
   const [selection, setSelection] = useState<string>()
   const [latencies, setLatencies] = useState<{
-    [name: string]: number
+    [name: string]: LocalLatency
   }>({})
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isTesting, setIsTesting] = useState<boolean>(false)
@@ -65,18 +70,27 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
     }
 
     const latencies: {
-      [name: string]: number
+      [name: string]: LocalLatency
     } = {}
 
     policyGroup.forEach((policy) => {
       Object.keys(policyPerformanceResults).forEach((key) => {
         if (policy.lineHash === key) {
-          latencies[policy.name] =
-            policyPerformanceResults[key].lastTestScoreInMS === 0
+          if (!latencies[policy.name]) {
+            latencies[policy.name] = {
+              latency: 0,
+            }
+          }
+
+          latencies[policy.name].latency =
+            policyPerformanceResults[key].lastTestScoreInMS === 0 &&
+            policyPerformanceResults[key].lastTestErrorMessage !== null
               ? -1
               : Number(
                   policyPerformanceResults[key].lastTestScoreInMS.toFixed(0),
                 )
+          latencies[policy.name]['error'] =
+            policyPerformanceResults[key].lastTestErrorMessage
         }
       })
     })
@@ -130,7 +144,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
       })
         .then((res) => {
           const latencies: {
-            [name: string]: number
+            [name: string]: LocalLatency
           } = {}
 
           if (policyPerformanceResults) {
@@ -148,7 +162,13 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
             Object.keys(testResult).forEach((key) => {
               const result = testResult[key]
 
-              latencies[key] = result.receive
+              if (!latencies[key]) {
+                latencies[key] = {
+                  latency: 0,
+                }
+              }
+
+              latencies[key].latency = result.receive
                 ? Number(result.receive.toFixed(0))
                 : -1
             })
@@ -159,7 +179,13 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
             Object.keys(testResult).forEach((key) => {
               const result = testResult[key]
 
-              latencies[key] = result.receive
+              if (!latencies[key]) {
+                latencies[key] = {
+                  latency: 0,
+                }
+              }
+
+              latencies[key].latency = result.receive
                 ? Number(result.receive.toFixed(0))
                 : -1
             })
@@ -195,19 +221,21 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
 
   const cardInner = (
     <>
-      <CardHeader className="flex flex-row justify-between items-center">
-        <TypographyH3>{policyGroupName}</TypographyH3>
-        <Button
-          size="icon"
-          variant="outline"
-          title={t('policies.test_policy')}
-          onClick={() => testPolicy(policyGroupName)}
-        >
-          {isTesting ? <Loader2Icon className="animate-spin" /> : <ZapIcon />}
-        </Button>
+      <CardHeader className="py-4 px-4">
+        <div className="flex flex-row justify-between items-center">
+          <TypographyH3>{policyGroupName}</TypographyH3>
+          <Button
+            size="icon"
+            variant="outline"
+            title={t('policies.test_policy')}
+            onClick={() => testPolicy(policyGroupName)}
+          >
+            {isTesting ? <Loader2Icon className="animate-spin" /> : <ZapIcon />}
+          </Button>
+        </div>
       </CardHeader>
 
-      <CardContent className="p-4">
+      <CardContent className="p-4 pt-0">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {policyGroup.map((policy) => {
             const typeDescription = policy.typeDescription.toUpperCase()
@@ -215,30 +243,40 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
             return (
               <div
                 className={cn(
-                  'bg-muted rounded-xl border shadow px-3 py-3 md:px-4 md:py-3 cursor-pointer hover:bg-neutral-100 dark:hover:bg-black/90 transition-colors ease-in-out duration-200',
+                  'flex flex-col bg-muted rounded-xl border shadow px-3 py-3 md:px-4 md:py-3 cursor-pointer hover:bg-neutral-100 dark:hover:bg-black/90 transition-colors ease-in-out duration-200 justify-between gap-2 md:gap-3',
                   selection === policy.name &&
                     'bg-blue-500 text-white hover:bg-blue-500 dark:hover:bg-blue-500',
                 )}
                 key={policy.name}
                 onClick={() => selectPolicy(policy.name)}
               >
-                <div className="text-xs mb-1">{typeDescription}</div>
+                <div>
+                  <div className="text-xs mb-1 truncate">{typeDescription}</div>
 
-                <div className="text-sm font-bold md:text-base leading-snug">
-                  {policy.name}
+                  <div className="text-sm font-bold md:text-base leading-snug whitespace-break-spaces break-words">
+                    {policy.name}
+                  </div>
                 </div>
 
-                <div className="flex mt-2">
-                  {latencies[policy.name] >= 0 && (
+                <div className="flex">
+                  {latencies[policy.name]?.latency > 0 && (
                     <StatusChip
+                      className="truncate"
                       size="sm"
-                      variant={latencyResultStyle(latencies[policy.name])}
-                      text={latencies[policy.name] + 'ms'}
+                      variant={latencyResultStyle(
+                        latencies[policy.name].latency,
+                      )}
+                      text={latencies[policy.name].latency + 'ms'}
                     />
                   )}
                   {!typeDescription.includes('REJECT') &&
-                    latencies[policy.name] === -1 && (
-                      <StatusChip size="sm" variant="error" text="Failed" />
+                    latencies[policy.name]?.latency === -1 && (
+                      <StatusChip
+                        className="truncate"
+                        size="sm"
+                        variant="error"
+                        text={latencies[policy.name].error || 'Error'}
+                      />
                     )}
                 </div>
               </div>

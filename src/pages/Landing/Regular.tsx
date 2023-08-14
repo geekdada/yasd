@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react'
+import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
@@ -134,16 +135,17 @@ const Page: React.FC = () => {
         .catch((err) => {
           setError('key', {
             type: 'invalid',
-            message: err.message,
+            message: '',
           })
           setError('host', {
             type: 'invalid',
-            message: err.message,
+            message: '',
           })
           setError('port', {
             type: 'invalid',
-            message: err.message,
+            message: '',
           })
+          toast.error(err.message)
           console.error(err)
         })
         .finally(() => {

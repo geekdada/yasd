@@ -6,7 +6,7 @@ import useSWR from 'swr'
 
 import BackButton from '@/components/BackButton'
 import PageContainer from '@/components/PageContainer'
-import { TypographyH2 } from '@/components/ui/typography'
+import { TypographyH3 } from '@/components/ui/typography'
 import { useProfile } from '@/store'
 import { Policies, PolicyGroups } from '@/types'
 import fetcher from '@/utils/fetcher'
@@ -59,11 +59,11 @@ const Page: React.FC = () => {
                   padding-right: env(safe-area-inset-right);
                 `}
               >
-                <TypographyH2 className="px-4 my-0 py-0 border-none">
+                <TypographyH3 className="px-4 my-0 py-0 border-none">
                   <div className="flex items-center">
                     <BackButton title={t('home.policies')} />
                   </div>
-                </TypographyH2>
+                </TypographyH3>
               </div>
 
               <div
