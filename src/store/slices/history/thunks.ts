@@ -9,23 +9,28 @@ import { ExistingProfiles, LastUsedProfile } from '@/utils/constant'
 
 export const loadHistoryFromLocalStorage = createAsyncThunk<
   Profile[],
-  undefined,
+  {
+    loadLastUsedProfile?: boolean
+  },
   {
     state: RootState
   }
->('history/loadHistoryFromLocalStorage', async (_, thunkAPI) => {
-  const storedExistingProfiles: Profile[] | null = store.get(ExistingProfiles)
-  const lastUsedProfileId = store.get(LastUsedProfile)
-  const lastUsedProfile = find<Profile>(storedExistingProfiles, {
-    id: lastUsedProfileId,
-  })
+>(
+  'history/loadHistoryFromLocalStorage',
+  async ({ loadLastUsedProfile }, thunkAPI) => {
+    const storedExistingProfiles: Profile[] | null = store.get(ExistingProfiles)
+    const lastUsedProfileId = store.get(LastUsedProfile)
+    const lastUsedProfile = find<Profile>(storedExistingProfiles, {
+      id: lastUsedProfileId,
+    })
 
-  if (lastUsedProfile) {
-    thunkAPI.dispatch(profileActions.update(lastUsedProfile))
-  }
+    if (loadLastUsedProfile && lastUsedProfile) {
+      thunkAPI.dispatch(profileActions.update(lastUsedProfile))
+    }
 
-  return storedExistingProfiles || []
-})
+    return storedExistingProfiles || []
+  },
+)
 
 export const addHistory = createAsyncThunk<
   Profile | undefined,

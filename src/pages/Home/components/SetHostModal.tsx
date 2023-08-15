@@ -15,12 +15,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { useProfile } from '@/store'
+import { useAppDispatch, useProfile } from '@/store'
+import { profileActions } from '@/store/slices/profile'
+import { trafficActions } from '@/store/slices/traffic'
 import { Profile } from '@/types'
 import { ExistingProfiles, LastUsedProfile } from '@/utils/constant'
 
 const SetHostModal: React.FC = () => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
+
   const [existingProfiles, setExistingProfiles] = useState<Array<Profile>>([])
   const currentProfile = useProfile()
   const navigate = useNavigate()
@@ -36,6 +40,12 @@ const SetHostModal: React.FC = () => {
     },
     [existingProfiles],
   )
+
+  const onAddNewProfile = useCallback(() => {
+    dispatch(profileActions.clear())
+    dispatch(trafficActions.clear())
+    navigate('/', { replace: true })
+  }, [dispatch, navigate])
 
   useEffect(() => {
     const storedExistingProfiles = store.get(ExistingProfiles)
@@ -82,8 +92,8 @@ const SetHostModal: React.FC = () => {
           })}
         </div>
 
-        <div className="mt-4">
-          <Button onClick={() => navigate('/', { replace: true })}>
+        <div>
+          <Button onClick={() => onAddNewProfile()}>
             {t('landing.add_new_host')}
           </Button>
         </div>

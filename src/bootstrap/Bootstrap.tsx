@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 import store from 'store2'
 
 import { useAppDispatch, useHistory } from '@/store'
@@ -12,12 +13,17 @@ export const Bootstrap: React.FC<{
   const { i18n } = useTranslation()
   const dispatch = useAppDispatch()
   const history = useHistory()
+  const location = useLocation()
 
   const [isTranslationLoaded, setIsTranslationLoaded] = useState(false)
 
   useEffect(() => {
-    dispatch(historyActions.loadHistoryFromLocalStorage())
-  }, [dispatch])
+    dispatch(
+      historyActions.loadHistoryFromLocalStorage({
+        loadLastUsedProfile: location.pathname !== '/',
+      }),
+    )
+  }, [dispatch, location.pathname])
 
   useEffect(() => {
     const language: string | null = store.get(LastUsedLanguage)

@@ -28,7 +28,6 @@ import InstallCertificateModal from '@/pages/Landing/components/InstallCertifica
 import { useProfile, useAppDispatch, useHistory } from '@/store'
 import { historyActions } from '@/store/slices/history'
 import { profileActions } from '@/store/slices/profile'
-import { trafficActions } from '@/store/slices/traffic'
 import { Profile } from '@/types'
 import { isRunInSurge } from '@/utils'
 import { rememberLastUsed } from '@/utils/store'
@@ -192,11 +191,8 @@ const Page: React.FC = () => {
       if (profile) {
         navigate('/home', { replace: true })
       }
-    } else {
-      dispatch(profileActions.clear)
-      dispatch(trafficActions.clear)
     }
-  }, [dispatch, navigate, profile])
+  }, [navigate, profile])
 
   return (
     <div
