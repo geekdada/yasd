@@ -1,3 +1,18 @@
+# [2.0.0-beta.3](https://github.com/geekdada/yasd/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2023-08-15)
+
+
+### Bug Fixes
+
+* platform property ([8531464](https://github.com/geekdada/yasd/commit/8531464f8a2d38b8e5988bb9ddf93bb649caf5a5))
+* profile loading incorrectly ([9276ecb](https://github.com/geekdada/yasd/commit/9276ecbd738044bfe294dd06ab4ad7713f5c40ad))
+
+
+### Features
+
+* add a dialog to install certificate ([91ce682](https://github.com/geekdada/yasd/commit/91ce682c1a42b4186f3b566e589f79f0df0b63ca))
+
+
+
 # [2.0.0-beta.2](https://github.com/geekdada/yasd/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2023-08-14)
 
 
