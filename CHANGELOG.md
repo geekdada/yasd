@@ -1,3 +1,13 @@
+# [2.0.0-beta.4](https://github.com/geekdada/yasd/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2023-08-15)
+
+
+### Bug Fixes
+
+* navigate to home when run on surge build ([8aad576](https://github.com/geekdada/yasd/commit/8aad576e0912e4bebcb2ff413aa91305fa2b9e6d))
+* remove unused dep ([b7b05ef](https://github.com/geekdada/yasd/commit/b7b05efc78ed9fae4d59323e3259d6e477779e65))
+
+
+
 # [2.0.0-beta.3](https://github.com/geekdada/yasd/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2023-08-15)
 
 
