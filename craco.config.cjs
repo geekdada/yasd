@@ -20,6 +20,12 @@ const config = {
     alias: {
       '@': `${__dirname}/src`,
     },
+    configure: (webpackConfig) => {
+      if (process.env.REACT_APP_RUN_IN_SURGE === 'true') {
+        webpackConfig.devtool = false
+      }
+      return webpackConfig
+    },
   },
   babel: {
     plugins: ['babel-plugin-macros', '@emotion/babel-plugin'],
