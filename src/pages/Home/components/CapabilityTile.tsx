@@ -48,7 +48,7 @@ const CapabilityTile: React.FC<CapabilityTileProps> = ({
           console.error(err)
         })
     },
-    [api, capability],
+    [api],
   )
 
   return (
