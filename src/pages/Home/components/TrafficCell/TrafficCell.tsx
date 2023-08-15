@@ -58,23 +58,35 @@ const TrafficCell: React.FC = () => {
 
       {activeInterface ? (
         <div className="grid grid-cols-3 gap-4 divide-x dark:divide-black/20 border-solid border-t border-b dark:border-gray-900 bg-muted">
-          <Cell>
+          <Cell
+            css={css`
+              padding-right: 0;
+            `}
+          >
             <Title>{t('traffic_cell.upload')}</Title>
-            <Data>
+            <Data className="truncate">
               {bytes(activeInterface.outCurrentSpeed, { unitSeparator: ' ' })}
               <span className="text-sm">/s</span>
             </Data>
           </Cell>
-          <Cell>
+          <Cell
+            css={css`
+              padding-right: 0;
+            `}
+          >
             <Title>{t('traffic_cell.download')}</Title>
-            <Data>
+            <Data className="truncate">
               {bytes(activeInterface.inCurrentSpeed, { unitSeparator: ' ' })}
               <span className="text-sm">/s</span>
             </Data>
           </Cell>
-          <Cell>
+          <Cell
+            css={css`
+              padding-right: 0;
+            `}
+          >
             <Title>{t('traffic_cell.total')}</Title>
-            <Data>
+            <Data className="truncate">
               {bytes(activeInterface.in + activeInterface.out, {
                 unitSeparator: ' ',
               })}

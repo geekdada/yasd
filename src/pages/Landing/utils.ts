@@ -39,9 +39,7 @@ export const tryHost = async (
 
   return {
     name: environment ? environment.deviceName : undefined,
-    platform: basicInfo.headers['x-system']?.includes('macOS')
-      ? 'macos'
-      : 'ios',
+    platform: (basicInfo.headers['x-system'] || '').toLowerCase(),
     platformVersion: basicInfo.headers['x-surge-version'] || '',
     platformBuild: basicInfo.headers['x-surge-build'] || '',
   }
