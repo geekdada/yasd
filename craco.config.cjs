@@ -21,7 +21,10 @@ const config = {
       '@': `${__dirname}/src`,
     },
     configure: (webpackConfig) => {
-      if (process.env.REACT_APP_RUN_IN_SURGE === 'true') {
+      if (
+        process.env.NODE_ENV === 'production' &&
+        process.env.REACT_APP_RUN_IN_SURGE === 'true'
+      ) {
         webpackConfig.devtool = false
       }
       return webpackConfig

@@ -5,6 +5,7 @@ import store from 'store2'
 
 import { useAppDispatch, useHistory } from '@/store'
 import { historyActions } from '@/store/slices/history'
+import { isRunInSurge } from '@/utils'
 import { LastUsedLanguage } from '@/utils/constant'
 
 export const Bootstrap: React.FC<{
@@ -18,9 +19,11 @@ export const Bootstrap: React.FC<{
   const [isTranslationLoaded, setIsTranslationLoaded] = useState(false)
 
   useEffect(() => {
+    const loadLastUsedProfile = location.pathname !== '/' || isRunInSurge()
+
     dispatch(
       historyActions.loadHistoryFromLocalStorage({
-        loadLastUsedProfile: location.pathname !== '/',
+        loadLastUsedProfile,
       }),
     )
   }, [dispatch, location.pathname])
