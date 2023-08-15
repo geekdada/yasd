@@ -28,7 +28,7 @@ export const loadHistoryFromLocalStorage = createAsyncThunk<
 })
 
 export const addHistory = createAsyncThunk<
-  Profile,
+  Profile | undefined,
   {
     profile: Profile
     remember?: boolean
@@ -45,5 +45,5 @@ export const addHistory = createAsyncThunk<
     store.set(LastUsedProfile, profile.id)
   }
 
-  return profile
+  return remember ? profile : undefined
 })

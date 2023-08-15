@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
+import { AxiosError } from 'axios'
 import { v4 as uuid } from 'uuid'
 import { z } from 'zod'
 
@@ -23,6 +24,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { TypographyH2, TypographyH4 } from '@/components/ui/typography'
+import InstallCertificateModal from '@/pages/Landing/components/InstallCertificateModal'
 import { useProfile, useAppDispatch, useHistory } from '@/store'
 import { historyActions } from '@/store/slices/history'
 import { profileActions } from '@/store/slices/profile'
@@ -41,7 +43,8 @@ const Page: React.FC = () => {
 
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isLoading, setIsLoading } = useAuthData()
+  const { isLoading, setIsLoading, tlsInstruction, setTlsInstruction } =
+    useAuthData()
 
   const dispatch = useAppDispatch()
   const history = useHistory()
@@ -89,70 +92,99 @@ const Page: React.FC = () => {
   )
 
   const onSubmit = useCallback(
-    (data: z.infer<typeof Schema>) => {
+    async (data: z.infer<typeof Schema>) => {
       setIsLoading(true)
 
       const surgeHost = getSurgeHost()
       const protocol = data.useTls ? 'https:' : 'http:'
+      let newProfile: any
 
-      tryHost(protocol, data.host, data.port, data.key)
-        .then((res) => {
-          clearErrors()
+      try {
+        const res = await tryHost(protocol, data.host, data.port, data.key)
 
-          const profile = isRunInSurge()
-            ? ({
-                name: res.name || 'Surge',
-                host: surgeHost.hostname,
-                port: Number(surgeHost.port),
-                key: data.key,
-                platform: res.platform,
-                platformVersion: res.platformVersion,
-                platformBuild: res.platformBuild,
-                tls: data.useTls,
-              } as const)
-            : ({
-                name: data.name,
-                host: data.host,
-                port: data.port,
-                key: data.key,
-                platform: res.platform,
-                platformVersion: res.platformVersion,
-                platformBuild: res.platformBuild,
-                tls: data.useTls,
-              } as const)
-          const id = uuid()
+        clearErrors()
 
-          addHistory({
-            id,
-            ...profile,
-          })
-          selectHistory({
-            id,
-            ...profile,
-          })
-          reset()
+        newProfile = isRunInSurge()
+          ? ({
+              name: res.name || 'Surge',
+              host: surgeHost.hostname,
+              port: Number(surgeHost.port),
+              key: data.key,
+              platform: res.platform,
+              platformVersion: res.platformVersion,
+              platformBuild: res.platformBuild,
+              tls: data.useTls,
+            } as const)
+          : ({
+              name: data.name,
+              host: data.host,
+              port: data.port,
+              key: data.key,
+              platform: res.platform,
+              platformVersion: res.platformVersion,
+              platformBuild: res.platformBuild,
+              tls: data.useTls,
+            } as const)
+        const id = uuid()
+
+        addHistory({
+          id,
+          ...newProfile,
         })
-        .catch((err) => {
-          setError('key', {
-            type: 'invalid',
-            message: '',
-          })
-          setError('host', {
-            type: 'invalid',
-            message: '',
-          })
-          setError('port', {
-            type: 'invalid',
-            message: '',
-          })
+        selectHistory({
+          id,
+          ...newProfile,
+        })
+        reset()
+      } catch (err) {
+        setError('key', {
+          type: 'invalid',
+          message: '',
+        })
+        setError('host', {
+          type: 'invalid',
+          message: '',
+        })
+        setError('port', {
+          type: 'invalid',
+          message: '',
+        })
+
+        console.error(err)
+
+        if (err instanceof AxiosError) {
           toast.error(err.message)
-          console.error(err)
-        })
-        .finally(() => {
-          setIsLoading(false)
-        })
+
+          if (
+            !err.response &&
+            err.config?.url &&
+            err.config?.url?.includes('https')
+          ) {
+            const origin = new URL(err.config.url).origin
+
+            setTlsInstruction((prevState) => ({
+              ...prevState,
+              origin,
+              accessKey: data.key,
+              open: true,
+            }))
+          }
+        } else if (err instanceof Error) {
+          toast.error(err.message)
+        }
+      } finally {
+        setIsLoading(false)
+      }
     },
-    [addHistory, clearErrors, reset, selectHistory, setError, setIsLoading],
+    [
+      addHistory,
+      clearErrors,
+      reset,
+      selectHistory,
+      setError,
+      setIsLoading,
+      setTlsInstruction,
+    ],
   )
 
   useEffect(() => {
@@ -347,6 +379,22 @@ const Page: React.FC = () => {
         <ChangeLanguage />
         <DarkModeToggle />
       </div>
+
+      <InstallCertificateModal
+        accessKey={tlsInstruction.accessKey}
+        origin={tlsInstruction.origin}
+        open={tlsInstruction.open}
+        onOpenChange={(open) => {
+          if (!open) {
+            setTlsInstruction((prev) => ({
+              ...prev,
+              accessKey: undefined,
+              origin: undefined,
+              open,
+            }))
+          }
+        }}
+      />
     </div>
   )
 }

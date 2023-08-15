@@ -50,6 +50,8 @@ const historySlice = createSlice({
     })
 
     builder.addCase(addHistory.fulfilled, (state, action) => {
+      if (!action.payload) return
+
       if (!state.history) {
         state.history = [action.payload]
       } else {

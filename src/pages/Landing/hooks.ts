@@ -35,10 +35,19 @@ const useSchemas = () => {
 
 export const useAuthData = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [tlsInstruction, setTlsInstruction] = useState<{
+    origin?: string
+    accessKey?: string
+    open: boolean
+  }>({
+    open: false,
+  })
 
   return {
     isLoading,
     setIsLoading,
+    tlsInstruction,
+    setTlsInstruction,
   }
 }
 
@@ -51,7 +60,7 @@ export const useLoginForm = () => {
         host: surgeHost.hostname,
         port: Number(surgeHost.port),
         key: '',
-        keepCredential: false,
+        keepCredential: true,
         useTls: surgeHost.protocol === 'https:',
       } as const)
     : ({
@@ -59,7 +68,7 @@ export const useLoginForm = () => {
         host: '',
         port: 6171,
         key: '',
-        keepCredential: false,
+        keepCredential: true,
         useTls: window.location.protocol === 'https:',
       } as const)
   const regularForm = useForm<z.infer<typeof RegularLoginFormSchema>>({

@@ -12,7 +12,17 @@
     "failed_interaction": "操作失败",
     "see": "查看",
     "save": "保存",
-    "surge_too_old": "您的 Surge 版本过低，请考虑升级 Surge 以使用本程序！"
+    "surge_too_old": "您的 Surge 版本过低，请考虑升级 Surge 以使用本程序！",
+    "download": "下载"
+  },
+  "tls_instruction": {
+    "title": "需要证书吗？",
+    "description": "您的连接已失败，可能是因为缺少证书。请按照下面的说明（针对 Safari）安装在您的 Surge 配置文件中定义的证书。",
+    "instruction1": "1. 点击下面的下载按钮下载证书。",
+    "instruction2": "2. Safari 会警告您说您的连接不安全。点击「显示详情」然后点击「访问此网站」。",
+    "instruction3": "3. 点击「安装证书」并按照说明安装证书。",
+    "instruction4": "4. 您可能需要选择一个设备来安装证书。",
+    "instruction5": "5. 回到这里再试一次。"
   },
   "form": {
     "err_invalid": "无效的输入内容",
