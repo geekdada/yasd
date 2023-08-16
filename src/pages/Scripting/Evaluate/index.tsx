@@ -128,7 +128,7 @@ const Page: React.FC = () => {
           <DialogHeader>
             <DialogTitle>{t('scripting.result')}</DialogTitle>
           </DialogHeader>
-          <div>
+          <div className="w-full overflow-hidden">
             <pre
               className="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
               css={css`

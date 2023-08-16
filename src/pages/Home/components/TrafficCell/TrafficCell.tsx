@@ -57,7 +57,7 @@ const TrafficCell: React.FC = () => {
       </div>
 
       {activeInterface ? (
-        <div className="grid grid-cols-3 gap-4 divide-x dark:divide-black/20 border-solid border-t border-b dark:border-gray-900 bg-muted">
+        <div className="grid grid-cols-3 gap-3 divide-x dark:divide-black/20 border-solid border-t border-b dark:border-gray-900 bg-muted">
           <Cell
             css={css`
               padding-right: 0;

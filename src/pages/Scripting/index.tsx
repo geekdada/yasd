@@ -11,6 +11,7 @@ import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import ListCell from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import {
   Dialog,
   DialogContent,
@@ -78,15 +79,15 @@ const Page: React.FC = () => {
                 <ListCell
                   interactive={false}
                   key={`${script.name}-${script.type}`}
-                  className="flex flex-row items-center justify-between py-3"
+                  className="flex flex-row overflow-hidden items-center justify-between py-3 gap-2"
                 >
-                  <div className="flex-1">
-                    <div className="truncate leading-normal font-mono">
+                  <div className="flex-1 overflow-hidden">
+                    <div className=" truncate leading-normal">
                       {script.name}
                     </div>
                     <div className="text-sm text-gray-500">{script.type}</div>
                   </div>
-                  <div className="ml-2 flex items-center">
+                  <ButtonGroup className="items-center">
                     {script.type === 'cron' && (
                       <Button
                         onClick={() => {
@@ -109,7 +110,7 @@ const Page: React.FC = () => {
                         <Link2Icon />
                       </Button>
                     )}
-                  </div>
+                  </ButtonGroup>
                 </ListCell>
               )
             })}
@@ -137,7 +138,7 @@ const Page: React.FC = () => {
           <DialogHeader>
             <DialogTitle>{t('scripting.result')}</DialogTitle>
           </DialogHeader>
-          <div>
+          <div className="w-full overflow-hidden">
             <pre
               className="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
               css={css`

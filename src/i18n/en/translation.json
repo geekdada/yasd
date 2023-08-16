@@ -13,7 +13,10 @@
     "see": "See",
     "save": "Save",
     "surge_too_old": "Your Surge is too old, please upgrade in order to use this application!",
-    "download": "Download"
+    "download": "Download",
+    "dark": "Dark",
+    "light": "Light",
+    "system": "Follow system"
   },
   "tls_instruction": {
     "title": "Needed a certificate?",
@@ -42,7 +45,7 @@
     "key": "Key",
     "remember_me": "Remember me",
     "https": "HTTPS",
-    "confirm": "Done",
+    "confirm": "Submit",
     "is_loading": "Loading",
     "history": "History",
     "current": "Current"

@@ -13,7 +13,10 @@
     "see": "查看",
     "save": "保存",
     "surge_too_old": "您的 Surge 版本过低，请考虑升级 Surge 以使用本程序！",
-    "download": "下载"
+    "download": "下载",
+    "dark": "深色",
+    "light": "浅色",
+    "system": "跟随系统"
   },
   "tls_instruction": {
     "title": "需要证书吗？",
@@ -42,7 +45,7 @@
     "key": "密钥",
     "remember_me": "记住我",
     "https": "HTTPS (请确保开启 http-api-tls)",
-    "confirm": "完成",
+    "confirm": "提交",
     "is_loading": "加载中",
     "history": "历史记录",
     "current": "当前"

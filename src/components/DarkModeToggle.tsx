@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Moon, Sun } from 'lucide-react'
 
 import { useTheme } from '@/components/ThemeProvider'
@@ -12,6 +13,7 @@ import {
 
 export default function DarkModeToggle() {
   const { setTheme } = useTheme()
+  const { t } = useTranslation()
 
   return (
     <DropdownMenu>
@@ -24,13 +26,13 @@ export default function DarkModeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme('light')}>
-          Light
+          {t('common.light')}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')}>
-          Dark
+          {t('common.dark')}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('system')}>
-          System
+          {t('common.system')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

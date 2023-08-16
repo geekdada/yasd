@@ -10,7 +10,7 @@ export function TypographyH1({
   return (
     <h1
       className={cn(
-        'scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-5xl',
+        'scroll-m-20 text-2xl font-extrabold lg:text-5xl',
         className,
       )}
       {...props}
@@ -28,7 +28,7 @@ export function TypographyH2({
   return (
     <h2
       className={cn(
-        'scroll-m-20 border-b pb-2 text-2xl font-bold tracking-tight transition-colors first:mt-0',
+        'scroll-m-20 border-b pb-2 text-2xl font-bold transition-colors first:mt-0',
         className,
       )}
       {...props}
@@ -44,10 +44,7 @@ export function TypographyH3({
   ...props
 }: { children: React.ReactNode } & React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h3
-      className={cn('scroll-m-20 text-xl font-bold tracking-tight', className)}
-      {...props}
-    >
+    <h3 className={cn('scroll-m-20 text-xl font-bold', className)} {...props}>
       {children}
     </h3>
   )
@@ -59,10 +56,7 @@ export function TypographyH4({
   ...props
 }: { children: React.ReactNode } & React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h4
-      className={cn('scroll-m-20 text-lg font-bold tracking-tight', className)}
-      {...props}
-    >
+    <h4 className={cn('scroll-m-20 text-lg font-bold', className)} {...props}>
       {children}
     </h4>
   )

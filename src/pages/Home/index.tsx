@@ -12,6 +12,7 @@ import { DataGroup, DataRow, DataRowMain } from '@/components/Data'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import VersionSupport from '@/components/VersionSupport'
+import VersionTag from '@/components/VersionTag'
 import {
   usePlatform,
   usePlatformBuild,
@@ -44,7 +45,6 @@ const Page: React.FC = () => {
   const { t } = useTranslation()
   const platform = usePlatform()
   const platformVersion = usePlatformVersion()
-  const platformBuild = usePlatformBuild()
 
   const toggleSystemProxy = useCallback(async () => {
     try {
@@ -113,7 +113,7 @@ const Page: React.FC = () => {
 
             {isRunInSurge() ? (
               <div>
-                <Button onClick={() => logoutSurge()}>
+                <Button variant="secondary" onClick={() => logoutSurge()}>
                   {t('home.logout')}
                 </Button>
               </div>
@@ -203,13 +203,8 @@ const Page: React.FC = () => {
           <DarkModeToggle />
         </div>
 
-        <div className="text-sm flex justify-center">
-          {Boolean(platform && platformBuild && platformVersion) && (
-            <code className="block px-4 py-2 rounded bg-muted text-gray-500">
-              v{process.env.REACT_APP_VERSION} - {platform} v{platformVersion}(
-              {platformBuild})
-            </code>
-          )}
+        <div className="flex justify-center">
+          <VersionTag />
         </div>
       </div>
     </div>

@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { TypographyH2, TypographyH4 } from '@/components/ui/typography'
+import VersionTag from '@/components/VersionTag'
 import InstallCertificateModal from '@/pages/Landing/components/InstallCertificateModal'
 import { useProfile, useAppDispatch, useHistory } from '@/store'
 import { historyActions } from '@/store/slices/history'
@@ -156,6 +157,7 @@ const Page: React.FC = () => {
 
           if (
             !err.response &&
+            !err.message.includes('timeout') &&
             err.config?.url &&
             err.config?.url?.includes('https')
           ) {
@@ -204,7 +206,9 @@ const Page: React.FC = () => {
       <Header />
 
       <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto space-y-6 md:space-y-10">
-        <TypographyH2>{t('landing.add_new_host')}</TypographyH2>
+        <TypographyH2>
+          {isRunInSurge() ? t('landing.login') : t('landing.add_new_host')}
+        </TypographyH2>
 
         <RunInSurge not>
           <HeaderInfo />
@@ -371,9 +375,12 @@ const Page: React.FC = () => {
         )}
       </RunInSurge>
 
-      <div className="flex justify-center items-center space-x-3">
-        <ChangeLanguage />
-        <DarkModeToggle />
+      <div className="space-y-3 flex justify-center flex-col items-center">
+        <div className="flex justify-center items-center space-x-3">
+          <ChangeLanguage />
+          <DarkModeToggle />
+        </div>
+        <VersionTag />
       </div>
 
       <InstallCertificateModal
