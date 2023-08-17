@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/react'
 import { LifeBuoy } from 'lucide-react'
 
+import CodeContent from '@/components/CodeContent'
 import CodeMirrorLoading from '@/components/CodeMirrorLoading'
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import PageTitle from '@/components/PageTitle'
@@ -129,14 +130,7 @@ const Page: React.FC = () => {
             <DialogTitle>{t('scripting.result')}</DialogTitle>
           </DialogHeader>
           <div className="w-full overflow-hidden">
-            <pre
-              className="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
-              css={css`
-                min-height: 7rem;
-              `}
-            >
-              {result}
-            </pre>
+            <CodeContent content={result} />
           </div>
         </DialogContent>
       </Dialog>

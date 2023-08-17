@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import useSWR, { mutate } from 'swr'
 
-import ListCell from '@/components/ListCell'
+import { ListCell, ListFullHeightCell } from '@/components/ListCell'
 import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
 import { Switch } from '@/components/ui/switch'
@@ -69,6 +69,10 @@ const Page: React.FC = () => {
               </ListCell>
             )
           })}
+
+        {modules && modules.available.length === 0 && (
+          <ListFullHeightCell>{t('modules.empty_list')}</ListFullHeightCell>
+        )}
       </div>
     </PageContainer>
   )

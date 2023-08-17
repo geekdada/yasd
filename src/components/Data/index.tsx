@@ -27,16 +27,8 @@ export const DataRow = styled.div``
 
 export const DataRowMain = styled.div`
   ${tw`flex items-center justify-between px-3 py-3 md:px-5 md:py-4 leading-normal`}
-
-  & > div:last-of-type {
-    ${tw``}
-  }
 `
 
 export const DataRowSub = styled.div`
   ${tw`flex items-center justify-between px-3 leading-normal text-xs lg:text-sm lg:leading-relaxed`}
-
-  & > div:last-of-type {
-    ${tw``}
-  }
 `

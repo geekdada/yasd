@@ -7,8 +7,9 @@ import { ActivityIcon, HistoryIcon } from 'lucide-react'
 import { ListRowRenderer } from 'react-virtualized/dist/es/List'
 import tw from 'twin.macro'
 
+import BottomPanel from '@/components/BottomPanel'
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
-import ListCell from '@/components/ListCell'
+import { ListCell } from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
 import { Toggle } from '@/components/ui/toggle'
 import FilterPopover, {
@@ -151,7 +152,7 @@ const Page: React.FC = () => {
         )}
       </div>
 
-      <div className="flex items-center border-t py-2 px-2 divide-x">
+      <BottomPanel className="divide-x">
         <div className="space-x-3 mr-3">{toggles}</div>
         <div>
           <FilterPopover
@@ -160,7 +161,7 @@ const Page: React.FC = () => {
             onFilterRulesChange={onFilterRulesChange}
           />
         </div>
-      </div>
+      </BottomPanel>
 
       <RequestModal
         req={selectedRequest}

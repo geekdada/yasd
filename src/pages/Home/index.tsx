@@ -13,12 +13,7 @@ import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import VersionSupport from '@/components/VersionSupport'
 import VersionTag from '@/components/VersionTag'
-import {
-  usePlatform,
-  usePlatformBuild,
-  usePlatformVersion,
-  useProfile,
-} from '@/store'
+import { usePlatform, usePlatformVersion, useProfile } from '@/store'
 import { Capability } from '@/types'
 import { forceRefresh, isRunInSurge } from '@/utils'
 import { ExistingProfiles, LastUsedProfile } from '@/utils/constant'
@@ -107,7 +102,7 @@ const Page: React.FC = () => {
       <div className="sticky top-0 flex shadow bg-white dark:bg-neutral-900 z-10 px-3 py-3">
         {profile && (
           <div className="w-full flex justify-between items-center">
-            <div className="w-2/3" onDoubleClick={forceRefresh}>
+            <div className="w-2/3" onDoubleClick={() => forceRefresh()}>
               <HostInfo />
             </div>
 
@@ -142,7 +137,6 @@ const Page: React.FC = () => {
                 <DataRowMain>
                   <div className="font-bold">{t('home.system_proxy')}</div>
                   <Switch
-                    className="dark:border-white/20"
                     checked={systemProxy?.enabled}
                     onCheckedChange={() => toggleSystemProxy()}
                   />
@@ -153,7 +147,6 @@ const Page: React.FC = () => {
                 <DataRowMain>
                   <div className="font-bold">{t('home.enhanced_mode')}</div>
                   <Switch
-                    className="dark:border-white/20"
                     checked={enhancedMode?.enabled}
                     onCheckedChange={() => toggleEnhancedMode()}
                   />

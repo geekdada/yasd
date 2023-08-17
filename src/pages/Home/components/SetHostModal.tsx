@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -68,7 +69,7 @@ const SetHostModal: React.FC = () => {
           <DialogTitle>{t('landing.history')}</DialogTitle>
         </DialogHeader>
 
-        <div className="bg-gray-100 dark:bg-muted divide-y divide-gray-200 dark:divide-black/20 rounded-xl overflow-hidden">
+        <div className="bg-gray-100 dark:bg-muted border divide-y divide-gray-200 dark:divide-black/20 rounded-xl overflow-hidden">
           {existingProfiles.map((profile) => {
             return (
               <div
@@ -92,11 +93,11 @@ const SetHostModal: React.FC = () => {
           })}
         </div>
 
-        <div>
-          <Button onClick={() => onAddNewProfile()}>
+        <DialogFooter>
+          <Button className="mt-3" onClick={() => onAddNewProfile()}>
             {t('landing.add_new_host')}
           </Button>
-        </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   )

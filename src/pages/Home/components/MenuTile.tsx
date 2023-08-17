@@ -45,7 +45,7 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
       <CardContent className="px-4 md:px-6 py-4 gap-0 h-[7.6rem] lg:h-[9rem]">
         <div className="flex flex-col h-full justify-between gap-2 md:gap-4">
           {props.description ? (
-            <CardDescription className="text-xs sm:text-sm">
+            <CardDescription className="text-xs sm:text-sm line-clamp-3">
               {props.description}
             </CardDescription>
           ) : (

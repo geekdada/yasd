@@ -16,7 +16,9 @@
     "download": "下载",
     "dark": "深色",
     "light": "浅色",
-    "system": "跟随系统"
+    "system": "跟随系统",
+    "sw_updated": "Surge Web Dashboard 已更新，刷新页面以使用新版本。",
+    "refresh": "刷新"
   },
   "tls_instruction": {
     "title": "需要证书吗？",
@@ -169,9 +171,11 @@
     "waiting": "等待",
     "device_settings": "设备设定",
     "view_requests": "查看连接",
-    "modify": "修改"
+    "modify": "修改",
+    "empty_list": "暂无设备"
   },
   "modules": {
+    "empty_list": "暂无模块"
   },
   "Submit": "提交",
   "Clear": "清除",

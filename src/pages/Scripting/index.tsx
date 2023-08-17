@@ -2,13 +2,13 @@ import React, { useMemo, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { css } from '@emotion/react'
 import { uniqBy } from 'lodash-es'
 import { Link2Icon } from 'lucide-react'
 import useSWR from 'swr'
 
+import CodeContent from '@/components/CodeContent'
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
-import ListCell from '@/components/ListCell'
+import { ListCell } from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
@@ -139,14 +139,7 @@ const Page: React.FC = () => {
             <DialogTitle>{t('scripting.result')}</DialogTitle>
           </DialogHeader>
           <div className="w-full overflow-hidden">
-            <pre
-              className="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
-              css={css`
-                min-height: 7rem;
-              `}
-            >
-              {evaluateResult}
-            </pre>
+            <CodeContent content={evaluateResult} />
           </div>
         </DialogContent>
       </Dialog>

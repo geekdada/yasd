@@ -49,7 +49,7 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
         <div
           onClick={() => setIsAutoRefresh(!isAutoRefresh)}
           className={cn(
-            'relative bg-green-100 cursor-pointer w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 ease-in-out',
+            'relative bg-green-100 cursor-pointer w-7 h-7 rounded-full flex items-center justify-center transition-colors duration-200 ease-in-out',
             isAutoRefresh && 'bg-red-100',
           )}
           css={[

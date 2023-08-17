@@ -13,6 +13,7 @@ import tw from 'twin.macro'
 
 import 'react-tabs/style/react-tabs.css'
 
+import CodeContent from '@/components/CodeContent'
 import { DataGroup, DataRowMain } from '@/components/Data'
 import {
   Dialog,
@@ -27,6 +28,8 @@ import fetcher from '@/utils/fetcher'
 import MethodBadge from './MethodBadge'
 
 const TabsWrapper = styled.div`
+  ${tw`w-full overflow-hidden`}
+
   .react-tabs__tab {
     ${tw`text-sm font-medium border-none transition-colors duration-200 ease-in-out active:shadow-none active:border-none focus:shadow-none focus:border-none`}
   }
@@ -185,14 +188,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
             </DataGroup>
 
             <DataGroup title={t('requests.remark')}>
-              <pre
-                className="font-mono text-xs text-muted-foreground leading-tight p-3 whitespace-pre-wrap break-words"
-                css={css`
-                  min-height: 7rem;
-                `}
-              >
-                {req.notes && req.notes.join('\n')}
-              </pre>
+              <CodeContent content={req.notes && req.notes.join('\n')} />
             </DataGroup>
 
             {isFalsy(req.completed) && req.method !== 'UDP' && (
@@ -209,14 +205,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
 
           <TabPanel>
             <DataGroup title={t('requests.request_header_title')}>
-              <pre
-                className="font-mono text-xs text-muted-foreground leading-tight p-3 whitespace-pre-wrap break-words"
-                css={css`
-                  min-height: 7rem;
-                `}
-              >
-                {req.requestHeader || ''}
-              </pre>
+              <CodeContent content={req.requestHeader || ''} />
             </DataGroup>
           </TabPanel>
           <TabPanel>

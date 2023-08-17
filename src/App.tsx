@@ -122,7 +122,7 @@ const App: React.FC = () => {
         refreshWhenOffline: true,
       }}
     >
-      <Toaster position="bottom-right" reverseOrder={false} />
+      <Toaster position="top-right" reverseOrder={false} />
 
       <NetworkErrorModal
         reloadButton={isRunInSurge()}

@@ -23,6 +23,11 @@ const NewVersionAlert: React.FC = () => {
 
   useEffect(() => {
     const lastUsedVersion = store.get(LastUsedVersion)
+    const isSWEnabled = process.env.REACT_APP_USE_SW === 'true'
+
+    if (!isSWEnabled) {
+      return
+    }
 
     if (lastUsedVersion && !satisfies(currentVersion, `~${lastUsedVersion}`)) {
       setVersionUrl(

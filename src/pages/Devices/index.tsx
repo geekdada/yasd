@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import useSWR from 'swr'
 
-import ListCell from '@/components/ListCell'
+import { ListCell, ListFullHeightCell } from '@/components/ListCell'
 import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
 import { DevicesResult } from '@/types'
@@ -20,6 +20,16 @@ const Page = (): JSX.Element => {
     refreshInterval: isAutoRefresh ? 2000 : 0,
   })
 
+  const deviceList = devices?.devices.length ? (
+    devices.devices.map((device) => (
+      <ListCell key={device.identifier}>
+        <DeviceItem device={device} />
+      </ListCell>
+    ))
+  ) : (
+    <ListFullHeightCell>{t('devices.empty_list')}</ListFullHeightCell>
+  )
+
   return (
     <PageContainer>
       <PageTitle
@@ -30,12 +40,13 @@ const Page = (): JSX.Element => {
       />
 
       <div className="divide-y">
-        {devices?.devices &&
-          devices.devices.map((device) => (
-            <ListCell key={device.identifier}>
-              <DeviceItem device={device} />
-            </ListCell>
-          ))}
+        {!devices ? (
+          <ListFullHeightCell>
+            {t('common.is_loading') + '...'}
+          </ListFullHeightCell>
+        ) : (
+          deviceList
+        )}
       </div>
     </PageContainer>
   )

@@ -41,4 +41,26 @@ const ListCell: React.FC<ListCellProps> = ({
   )
 }
 
-export default ListCell
+type ListFullHeightCellProps = {
+  children: React.ReactNode
+} & React.HTMLAttributes<HTMLDivElement>
+
+const ListFullHeightCell = ({
+  children,
+  className,
+  ...props
+}: ListFullHeightCellProps) => {
+  return (
+    <div
+      className={cn(
+        'fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center text-lg font-semibold text-gray-500',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+}
+
+export { ListCell, ListFullHeightCell }

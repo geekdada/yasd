@@ -1,4 +1,4 @@
-import { unregisterAsync } from '../serviceWorkerRegistration'
+import { unregisterAsync } from '@/serviceWorkerRegistration'
 
 export const isFalsy = (obj: string | boolean | 1 | 0) =>
   obj === 0 || obj === false || (typeof obj === 'string' && obj.length === 0)

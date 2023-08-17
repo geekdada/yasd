@@ -8,7 +8,7 @@ import useSWR, { mutate } from 'swr'
 import tw from 'twin.macro'
 
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
-import ListCell from '@/components/ListCell'
+import { ListCell } from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'

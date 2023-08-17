@@ -16,7 +16,9 @@
     "download": "Download",
     "dark": "Dark",
     "light": "Light",
-    "system": "Follow system"
+    "system": "Follow system",
+    "sw_updated": "Surge Web Dashboard has been updated, refresh page to use the new version.",
+    "refresh": "Refresh"
   },
   "tls_instruction": {
     "title": "Needed a certificate?",
@@ -169,9 +171,11 @@
     "waiting": "Waiting",
     "device_settings": "Device Settings",
     "view_requests": "View Requests",
-    "modify": "Modify"
+    "modify": "Modify",
+    "empty_list": "No Device"
   },
   "modules": {
+    "empty_list": "No Module"
   },
   "Submit": "Submit",
   "Clear": "Clear",
