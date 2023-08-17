@@ -1,3 +1,12 @@
+# [2.0.0-beta.6](https://github.com/geekdada/yasd/compare/v2.0.0-beta.5...v2.0.0-beta.6) (2023-08-17)
+
+
+### Features
+
+* improve ui ([b5b8b83](https://github.com/geekdada/yasd/commit/b5b8b83a42d394b9c52fbeda5ddafe15ca908516))
+
+
+
 # [2.0.0-beta.5](https://github.com/geekdada/yasd/compare/v2.0.0-beta.4...v2.0.0-beta.5) (2023-08-16)
 
 
