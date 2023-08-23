@@ -181,5 +181,10 @@
   "Clear": "清除",
   "Filter": "过滤",
   "Filter rules": "过滤规则",
-  "Filter requests by partial URL.": "根据部分 URL 过滤请求。"
+  "Filter requests by partial URL.": "根据部分 URL 过滤请求。",
+  "Sort": "排序",
+  "Sort rules": "排序规则",
+  "Sort requests by time or size.": "根据时间或大小排序请求。",
+  "By time": "按时间",
+  "By size": "按大小"
 }

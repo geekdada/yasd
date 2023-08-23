@@ -1,6 +1,13 @@
 import { useEffect, useMemo } from 'react'
 import useSWR from 'swr'
 
+import { SorterRules } from '@/pages/Requests/components/SorterPopover'
+import {
+  activeFilter,
+  sorter,
+  sourceIpFilter,
+  urlFilter,
+} from '@/pages/Requests/hooks/filters'
 import { useProfile } from '@/store'
 import { RecentRequests } from '@/types'
 import fetcher from '@/utils/fetcher'
@@ -14,6 +21,7 @@ type Props = {
   sourceIp?: string | null
   onlyActive?: boolean
   filter: FilterSchema
+  sortRule: SorterRules
 }
 
 const useRequestsList = ({
@@ -21,6 +29,7 @@ const useRequestsList = ({
   sourceIp,
   onlyActive,
   filter,
+  sortRule,
 }: Props) => {
   const profile = useProfile()
 
@@ -50,24 +59,14 @@ const useRequestsList = ({
 
     return requestList
       .filter((item) => {
-        if (onlyActive) {
-          return !item.completed
-        }
-        return true
+        return (
+          activeFilter(onlyActive, item) &&
+          sourceIpFilter(sourceIp, item) &&
+          urlFilter(filter.urlFilter, item)
+        )
       })
-      .filter((item) => {
-        if (sourceIp) {
-          return item.sourceAddress === sourceIp
-        }
-        return true
-      })
-      .filter((item) => {
-        if (filter.urlFilter) {
-          return item.URL.includes(filter.urlFilter)
-        }
-        return true
-      })
-  }, [filter.urlFilter, onlyActive, requestList, sourceIp])
+      .sort((a, b) => sorter(sortRule, a, b))
+  }, [filter.urlFilter, onlyActive, requestList, sortRule, sourceIp])
 
   useEffect(() => {
     if (!recentRequests) {

@@ -15,6 +15,9 @@ import { Toggle } from '@/components/ui/toggle'
 import FilterPopover, {
   FilterSchema,
 } from '@/pages/Requests/components/FilterPopover'
+import SorterPopover, {
+  SorterRules,
+} from '@/pages/Requests/components/SorterPopover'
 import useRequestsList from '@/pages/Requests/hooks/useRequestsList'
 import { RequestItem } from '@/types'
 
@@ -34,6 +37,10 @@ const Page: React.FC = () => {
   const [filter, setFilter] = useState<FilterSchema>({
     urlFilter: '',
   })
+  const [sorter, setSorter] = useState<SorterRules>({
+    sortBy: null,
+    sortDirection: 'asc',
+  })
 
   const query = useQuery()
   const sourceIp = useMemo<string | null>(() => query.get('source'), [query])
@@ -47,6 +54,7 @@ const Page: React.FC = () => {
     sourceIp,
     onlyActive: group === 'active',
     filter,
+    sortRule: sorter,
   })
 
   const rowRenderer: ListRowRenderer = useCallback(
@@ -152,13 +160,20 @@ const Page: React.FC = () => {
         )}
       </div>
 
-      <BottomPanel className="divide-x">
+      <BottomPanel className="divide-x select-none">
         <div className="space-x-3 mr-3">{toggles}</div>
-        <div>
+        <div className="space-x-3">
           <FilterPopover
             className="ml-3"
             filter={filter}
             onFilterRulesChange={onFilterRulesChange}
+          />
+          <SorterPopover
+            sorter={sorter}
+            onSorterRulesChange={(sorter) => {
+              setSorter(sorter)
+            }}
+            className="ml-3"
           />
         </div>
       </BottomPanel>

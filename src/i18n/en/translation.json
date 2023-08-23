@@ -181,5 +181,10 @@
   "Clear": "Clear",
   "Filter": "Filter",
   "Filter rules": "Filter rules",
-  "Filter requests by partial URL.": "Filter requests by partial URL."
+  "Filter requests by partial URL.": "Filter requests by partial URL.",
+  "Sort": "Sort",
+  "Sort rules": "Sort rules",
+  "Sort requests by time or size.": "Sort requests by time or size.",
+  "By time": "By time",
+  "By size": "By size"
 }

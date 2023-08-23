@@ -60,6 +60,10 @@ const FilterPopover: React.FC<FilterPopoverProps> = ({
     [onFilterRulesChange],
   )
 
+  const onHide = useCallback(() => {
+    setIsOpen(false)
+  }, [])
+
   return (
     <Popover open={isOpen}>
       <PopoverTrigger
@@ -70,18 +74,22 @@ const FilterPopover: React.FC<FilterPopoverProps> = ({
       >
         <Button
           className={cn(
+            'space-x-2',
             hasFilter && 'bg-green-200 text-green-800 hover:bg-green-100',
             className,
           )}
           size="sm"
           variant="secondary"
         >
-          <FilterIcon className="mr-2 h-4 w-4" />
-          {t('Filter')}
+          <FilterIcon className="h-4 w-4" />
+          <span className="max-sm:hidden">{t('Filter')}</span>
         </Button>
       </PopoverTrigger>
 
       <PopoverContent
+        onFocusOutside={onHide}
+        onInteractOutside={onHide}
+        onEscapeKeyDown={onHide}
         className="w-80"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
@@ -92,6 +100,7 @@ const FilterPopover: React.FC<FilterPopoverProps> = ({
               {t('Filter requests by partial URL.')}
             </p>
           </div>
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
