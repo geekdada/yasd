@@ -1,3 +1,12 @@
+# [2.0.0-beta.7](https://github.com/geekdada/yasd/compare/v2.0.0-beta.6...v2.0.0-beta.7) (2023-08-23)
+
+
+### Features
+
+* add sorting to request list ([a3bf7ea](https://github.com/geekdada/yasd/commit/a3bf7ead40d9177f7d0479597ec0e7c940bc6b97))
+
+
+
 # [2.0.0-beta.6](https://github.com/geekdada/yasd/compare/v2.0.0-beta.5...v2.0.0-beta.6) (2023-08-17)
 
 
