@@ -1,3 +1,17 @@
+# [2.0.0-beta.8](https://github.com/geekdada/yasd/compare/v2.0.0-beta.7...v2.0.0-beta.8) (2023-08-24)
+
+
+### Bug Fixes
+
+* known bugs ([5ff78f7](https://github.com/geekdada/yasd/commit/5ff78f7b8e718b895110581ee66cb4ec34bf6466))
+
+
+### Features
+
+* safe area handling ([c367084](https://github.com/geekdada/yasd/commit/c3670847469da77c24bc7a69a3401330a65ce9ab))
+
+
+
 # [2.0.0-beta.7](https://github.com/geekdada/yasd/compare/v2.0.0-beta.6...v2.0.0-beta.7) (2023-08-23)
 
 
