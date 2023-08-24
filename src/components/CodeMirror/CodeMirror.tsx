@@ -28,7 +28,7 @@ const CodeMirror = ({ className, isJavaScript, ...props }: CodeMirrorProps) => {
 
   return (
     <ReactCodeMirror
-      className={cn('relative h-full text-sm', className)}
+      className={cn('relative h-full text-xs sm:text-sm', className)}
       css={css`
         & * {
           font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',

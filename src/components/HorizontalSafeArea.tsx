@@ -3,10 +3,13 @@ import { css } from '@emotion/react'
 
 import { cn } from '@/utils/shadcn'
 
-const HorizontalSafeArea: React.FC<{
-  className?: string
-  children: React.ReactNode | React.ReactNode[]
-}> = (props) => {
+type HorizontalSafeAreaProps = React.HTMLAttributes<HTMLDivElement>
+
+const HorizontalSafeArea: React.FC<HorizontalSafeAreaProps> = ({
+  className,
+  children,
+  ...props
+}) => {
   return (
     <div
       css={css`
@@ -14,7 +17,9 @@ const HorizontalSafeArea: React.FC<{
         padding-right: env(safe-area-inset-right);
       `}
     >
-      <div className={cn(props.className)}>{props.children}</div>
+      <div className={cn(className)} {...props}>
+        {children}
+      </div>
     </div>
   )
 }

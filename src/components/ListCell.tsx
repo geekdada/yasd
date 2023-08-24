@@ -4,7 +4,7 @@ import { cva, VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/utils/shadcn'
 
-const variants = cva('flex w-full flex-col', {
+const variants = cva('flex w-full flex-col select-none', {
   variants: {
     interactive: {
       true: 'cursor-pointer hover:bg-muted',
@@ -53,7 +53,7 @@ const ListFullHeightCell = ({
   return (
     <div
       className={cn(
-        'fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center text-lg font-semibold text-gray-500',
+        'fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center text-lg font-semibold text-gray-500 select-none',
         className,
       )}
       {...props}

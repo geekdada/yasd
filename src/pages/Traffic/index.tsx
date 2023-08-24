@@ -55,13 +55,15 @@ const Page: React.FC = () => {
               <DataRow>
                 <DataRowMain>
                   <div>{t('traffic.start_time')}</div>
-                  <div>{dayjs(startTime).format('LLLL')}</div>
+                  <div>{dayjs(startTime).format('LLL')}</div>
                 </DataRowMain>
               </DataRow>
               <DataRow>
                 <DataRowMain>
                   <div>{t('traffic.uptime')}</div>
-                  <div>{dayjs(startTime).toNow(true)}</div>
+                  <div className="capitalize">
+                    {dayjs(startTime).toNow(true)}
+                  </div>
                 </DataRowMain>
               </DataRow>
             </DataGroup>

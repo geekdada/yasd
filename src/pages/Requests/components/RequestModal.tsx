@@ -109,7 +109,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
             <DataGroup>
               <DataRowMain className="text-sm">
                 <div>{t('requests.date')}</div>
-                <div>{dayjs.unix(req.startDate).format('LLLL')}</div>
+                <div>{dayjs.unix(req.startDate).format('LLL')}</div>
               </DataRowMain>
               <DataRowMain className="text-sm">
                 <div>{t('requests.status')}</div>
