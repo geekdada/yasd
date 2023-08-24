@@ -8,6 +8,7 @@ import useSWR from 'swr'
 
 import CodeContent from '@/components/CodeContent'
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
+import HorizontalSafeArea from '@/components/HorizontalSafeArea'
 import { ListCell } from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
 import { Button } from '@/components/ui/button'
@@ -117,14 +118,14 @@ const Page: React.FC = () => {
         </div>
       </div>
 
-      <div className="border-t border-solid border-gray-200 dark:border-white/20 py-3 px-4">
+      <HorizontalSafeArea className="border-t border-solid border-gray-200 dark:border-white/20 py-3 px-4">
         <Button
           variant="secondary"
           onClick={() => navigate('/scripting/evaluate')}
         >
           {t('scripting.debug_script_button_title')}
         </Button>
-      </div>
+      </HorizontalSafeArea>
 
       <Dialog
         open={!!evaluateResult}

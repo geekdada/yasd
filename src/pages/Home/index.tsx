@@ -9,6 +9,7 @@ import useSWR, { mutate } from 'swr'
 import ChangeLanguage from '@/components/ChangeLanguage'
 import DarkModeToggle from '@/components/DarkModeToggle'
 import { DataGroup, DataRow, DataRowMain } from '@/components/Data'
+import HorizontalSafeArea from '@/components/HorizontalSafeArea'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import VersionSupport from '@/components/VersionSupport'
@@ -99,7 +100,7 @@ const Page: React.FC = () => {
         padding-bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
       `}
     >
-      <div className="sticky top-0 flex shadow bg-white dark:bg-neutral-900 z-10 px-3 py-3">
+      <HorizontalSafeArea className="sticky top-0 flex shadow bg-white dark:bg-neutral-900 z-10 px-3 py-3">
         {profile && (
           <div className="w-full flex justify-between items-center">
             <div className="w-2/3" onDoubleClick={() => forceRefresh()}>
@@ -117,15 +118,9 @@ const Page: React.FC = () => {
             )}
           </div>
         )}
-      </div>
+      </HorizontalSafeArea>
 
-      <div
-        className="space-y-4 lg:space-y-6"
-        css={css`
-          padding-left: env(safe-area-inset-left);
-          padding-right: env(safe-area-inset-right);
-        `}
-      >
+      <HorizontalSafeArea className="space-y-4 lg:space-y-6">
         <div className="pt-4 lg:pt-6">
           <TrafficCell />
         </div>
@@ -184,9 +179,9 @@ const Page: React.FC = () => {
             })}
           </div>
         </div>
-      </div>
+      </HorizontalSafeArea>
 
-      <div className="mt-6 px-4 lg:px-6 space-y-4 lg:space-y-6">
+      <HorizontalSafeArea className="mt-6 px-4 lg:px-6 space-y-4 lg:space-y-6">
         <div>
           <Events />
         </div>
@@ -199,7 +194,7 @@ const Page: React.FC = () => {
         <div className="flex justify-center">
           <VersionTag />
         </div>
-      </div>
+      </HorizontalSafeArea>
     </div>
   )
 }

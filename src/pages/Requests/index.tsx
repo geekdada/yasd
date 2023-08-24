@@ -117,7 +117,7 @@ const Page: React.FC = () => {
   ))
 
   return (
-    <FixedFullscreenContainer>
+    <FixedFullscreenContainer offsetBottom={false}>
       <PageTitle
         title={t('home.requests')}
         hasAutoRefresh={true}

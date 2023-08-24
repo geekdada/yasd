@@ -8,6 +8,7 @@ import useSWR, { mutate } from 'swr'
 import tw from 'twin.macro'
 
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
+import HorizontalSafeArea from '@/components/HorizontalSafeArea'
 import { ListCell } from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
 import { Button } from '@/components/ui/button'
@@ -178,7 +179,7 @@ const Page: React.FC = () => {
         </AutoSizer>
       </div>
 
-      <div className="flex divide-x border-t py-2 px-2">
+      <HorizontalSafeArea className="flex divide-x border-t py-2 px-2">
         <ButtonGroup className="px-3">{toggles}</ButtonGroup>
 
         <div className="flex items-center px-3">
@@ -186,7 +187,7 @@ const Page: React.FC = () => {
             {t('dns.flush_dns')}
           </Button>
         </div>
-      </div>
+      </HorizontalSafeArea>
     </FixedFullscreenContainer>
   )
 }

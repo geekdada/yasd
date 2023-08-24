@@ -1,11 +1,13 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import tw from 'twin.macro'
 
 import { DataGroup, DataRow, DataRowMain } from '@/components/Data'
+import HorizontalSafeArea from '@/components/HorizontalSafeArea'
 import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
 import { useConnectors, useInterfaces, useStartTime } from '@/store'
@@ -46,38 +48,40 @@ const Page: React.FC = () => {
     <PageContainer>
       <PageTitle title={t('home.traffic')} />
 
-      {startTime && (
-        <TrafficWrapper>
-          <DataGroup>
-            <DataRow>
-              <DataRowMain>
-                <div>{t('traffic.start_time')}</div>
-                <div>{dayjs(startTime).format('LLLL')}</div>
-              </DataRowMain>
-            </DataRow>
-            <DataRow>
-              <DataRowMain>
-                <div>{t('traffic.uptime')}</div>
-                <div>{dayjs(startTime).toNow(true)}</div>
-              </DataRowMain>
-            </DataRow>
-          </DataGroup>
+      <HorizontalSafeArea>
+        {startTime && (
+          <TrafficWrapper>
+            <DataGroup>
+              <DataRow>
+                <DataRowMain>
+                  <div>{t('traffic.start_time')}</div>
+                  <div>{dayjs(startTime).format('LLLL')}</div>
+                </DataRowMain>
+              </DataRow>
+              <DataRow>
+                <DataRowMain>
+                  <div>{t('traffic.uptime')}</div>
+                  <div>{dayjs(startTime).toNow(true)}</div>
+                </DataRowMain>
+              </DataRow>
+            </DataGroup>
 
-          <DataGroup>
-            {Object.keys(interfaces).map((name) => {
-              const data = interfaces[name]
-              return <TrafficDataRow key={name} name={name} data={data} />
-            })}
-          </DataGroup>
+            <DataGroup>
+              {Object.keys(interfaces).map((name) => {
+                const data = interfaces[name]
+                return <TrafficDataRow key={name} name={name} data={data} />
+              })}
+            </DataGroup>
 
-          <DataGroup>
-            {getSortedTraffic(connectors).map((data) => {
-              const name = data.name
-              return <TrafficDataRow key={name} name={name} data={data} />
-            })}
-          </DataGroup>
-        </TrafficWrapper>
-      )}
+            <DataGroup>
+              {getSortedTraffic(connectors).map((data) => {
+                const name = data.name
+                return <TrafficDataRow key={name} name={name} data={data} />
+              })}
+            </DataGroup>
+          </TrafficWrapper>
+        )}
+      </HorizontalSafeArea>
     </PageContainer>
   )
 }
