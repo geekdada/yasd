@@ -1,3 +1,12 @@
+# [2.0.0-beta.9](https://github.com/geekdada/yasd/compare/v2.0.0-beta.8...v2.0.0-beta.9) (2023-08-27)
+
+
+### Features
+
+* manage profiles ([d035462](https://github.com/geekdada/yasd/commit/d0354627de285e1aa5d915b5f0e394396d935fed))
+
+
+
 # [2.0.0-beta.8](https://github.com/geekdada/yasd/compare/v2.0.0-beta.7...v2.0.0-beta.8) (2023-08-24)
 
 
