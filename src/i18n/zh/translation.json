@@ -18,7 +18,9 @@
     "light": "浅色",
     "system": "跟随系统",
     "sw_updated": "Surge Web Dashboard 已更新，刷新页面以使用新版本。",
-    "refresh": "刷新"
+    "refresh": "刷新",
+    "confirm": "确认",
+    "cancel": "取消"
   },
   "tls_instruction": {
     "title": "需要证书吗？",
@@ -76,7 +78,7 @@
       "scripting": "使用 JavaScript 来扩展 Surge 的功能。",
       "modules": "模块是一系列设置的集合，可用于覆盖当前配置的部分设定。",
       "device_management": "管理局域网内的设备，包括设备名称、IP 地址、接管模式等。",
-      "profile": "当前的 Surge 配置文件。",
+      "profile": "管理当前 Surge 配置文件。",
       "dns": "当前的 DNS 缓存记录。",
       "http_capture": "打开 HTTP 截取开关以抓取和查看数据体。",
       "traffic": "实时统计当前的流量使用情况。"
@@ -186,5 +188,31 @@
   "Sort rules": "排序规则",
   "Sort requests by time or size.": "根据时间或大小排序请求。",
   "By time": "按时间",
-  "By size": "按大小"
+  "By size": "按大小",
+  "profiles": {
+    "title": "管理配置",
+    "current": "当前",
+    "view_current": "查看当前配置",
+    "reload_current": "重新加载",
+    "change_profile": "更改配置",
+    "select_profile": "选择配置",
+    "select": "选择",
+    "confirm_reload_profile": {
+      "title": "重新加载配置？",
+      "description": "请确保新版本允许使用 HTTP API，否则您将无法在此操作后使用此仪表板。"
+    },
+    "reload_profile_success": "成功重新加载配置。",
+    "reload_profile_failed": "重新加载配置失败。",
+    "confirm_select_profile": {
+      "title": "选择配置？",
+      "description": "请确保新版本允许使用 HTTP API，否则您将无法在此操作后使用此仪表板。"
+    },
+    "select_profile_success": "成功选择配置。",
+    "select_profile_failed": "选择配置失败。",
+    "version_processed": "最终配置",
+    "version_original": "原始配置",
+    "confirm_delete_profile": {
+      "title": "删除配置？"
+    }
+  }
 }

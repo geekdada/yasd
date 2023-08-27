@@ -67,7 +67,7 @@ const menu: Array<MenuItem> = [
   },
   {
     titleKey: 'profile',
-    link: '/profiles/current',
+    link: '/profiles',
     descriptionKey: 'descriptions.profile',
   },
   {

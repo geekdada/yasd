@@ -44,7 +44,8 @@ const ScriptingPage = lazy(() => import('@/pages/Scripting'))
 const EvaluatePage = lazy(() => import('@/pages/Scripting/Evaluate'))
 const DnsPage = lazy(() => import('@/pages/Dns'))
 const DevicesPage = lazy(() => import('@/pages/Devices'))
-const ProfilePage = lazy(() => import('@/pages/Profiles/Current'))
+const CurrentProfilePage = lazy(() => import('@/pages/Profiles/Current'))
+const ManageProfilesPage = lazy(() => import('@/pages/Profiles/Manage'))
 
 const App: React.FC = () => {
   const { t } = useTranslation()
@@ -147,7 +148,8 @@ const App: React.FC = () => {
             <Route path="/scripting/evaluate" element={<EvaluatePage />} />
             <Route path="/dns" element={<DnsPage />} />
             <Route path="/devices" element={<DevicesPage />} />
-            <Route path="/profiles/current" element={<ProfilePage />} />
+            <Route path="/profiles" element={<ManageProfilesPage />} />
+            <Route path="/profiles/current" element={<CurrentProfilePage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

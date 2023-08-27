@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import axios from 'axios'
 import { Trash2 } from 'lucide-react'
 import tw from 'twin.macro'
 
 import { Button } from '@/components/ui/button'
+import { useConfirm } from '@/components/UIProvider'
 import { Profile } from '@/types'
 import { cn } from '@/utils/shadcn'
 
@@ -27,10 +29,12 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
   className,
 }) => {
   const [available, setAvailable] = useState<boolean | undefined>(undefined)
+  const confirm = useConfirm()
   const variantStyle =
     variant === 'spread'
       ? 'flex-row justify-between items-center'
       : 'flex-col justify-start items-start'
+  const { t } = useTranslation()
 
   const clickHandler = () => {
     if (available && onClick) {
@@ -38,8 +42,16 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
     }
   }
 
-  const deleteHandler = () => {
-    if (onDelete) {
+  const deleteHandler = async () => {
+    if (!onDelete) {
+      return undefined
+    }
+
+    const result = await confirm({
+      title: t('profiles.confirm_delete_profile.title'),
+    })
+
+    if (result) {
       onDelete()
     }
   }

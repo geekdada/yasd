@@ -10,6 +10,7 @@ import {
 
 import Bootstrap from '@/bootstrap'
 import { ThemeProvider } from '@/components/ThemeProvider'
+import { UIProvider } from '@/components/UIProvider'
 import { store } from '@/store'
 
 const ReactRouter: React.FC<BrowserRouterProps | HashRouterProps> = (args) => {
@@ -29,7 +30,9 @@ const AppContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
         <HelmetProvider>
           <ReactRouter>
             <ThemeProvider>
-              <Bootstrap>{children}</Bootstrap>
+              <UIProvider>
+                <Bootstrap>{children}</Bootstrap>
+              </UIProvider>
             </ThemeProvider>
           </ReactRouter>
         </HelmetProvider>

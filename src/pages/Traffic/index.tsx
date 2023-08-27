@@ -1,7 +1,5 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import tw from 'twin.macro'
@@ -17,9 +15,7 @@ import TrafficDataRow from './components/TrafficDataRow'
 
 dayjs.extend(relativeTime)
 
-const TrafficWrapper = styled.div`
-  ${tw`px-4 pt-4`}
-`
+const TrafficWrapper = tw.div`p-4 md:p-5 space-y-4 md:space-y-5`
 
 const Page: React.FC = () => {
   const { t } = useTranslation()

@@ -41,14 +41,14 @@ const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
       onClick={() => setIsDetailsOpen(!isDetailsOpen)}
     >
       <DataRowMain>
-        <div className="truncate flex-1 text-sm lg:text-base">{name}</div>
-        <div className="flex items-center ml-3 text-sm lg:text-base">
+        <div className="truncate flex-1 text-sm md:text-base">{name}</div>
+        <div className="flex items-center ml-3 text-sm md:text-base">
           <div>
             {t('traffic.total')} {bytes(data.in + data.out)}
           </div>
           <ChevronRight
             css={[
-              tw`ml-2 w-5 h-5 transition-transform duration-200 ease-in-out`,
+              tw`ml-2 -mr-1 w-5 h-5 transition-transform duration-200 ease-in-out`,
               isDetailsOpen && tw`transform rotate-90`,
             ]}
           />

@@ -33,7 +33,7 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
     <TypographyH3
       className={cn(
         isSticky ? 'sticky top-0' : '',
-        'flex items-center justify-between shadow bg-white dark:bg-muted z-10 px-3 py-2',
+        'flex items-center justify-between shadow bg-white dark:bg-muted z-10 px-3 py-2 md:py-3 md:px-5',
       )}
     >
       <div

@@ -18,7 +18,9 @@
     "light": "Light",
     "system": "Follow system",
     "sw_updated": "Surge Web Dashboard has been updated, refresh page to use the new version.",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
   },
   "tls_instruction": {
     "title": "Needed a certificate?",
@@ -76,7 +78,7 @@
       "scripting": "Use JavaScript to extend the ability of Surge as your wish.",
       "modules": "Override the current profile with a set of settings. Highly flexible for diverse purposes.",
       "device_management": "Manage devices that are managed by Surge.",
-      "profile": "Your current Surge configuration.",
+      "profile": "Mange current Surge profile.",
       "dns": "DNS records managed by Surge.",
       "http_capture": "Turn on HTTP capture switch to dump and inspect the body.",
       "traffic": "Surge traffic statistics."
@@ -186,5 +188,31 @@
   "Sort rules": "Sort rules",
   "Sort requests by time or size.": "Sort requests by time or size.",
   "By time": "By time",
-  "By size": "By size"
+  "By size": "By size",
+  "profiles": {
+    "title": "Manage Profile",
+    "current": "Current",
+    "view_current": "View current profile",
+    "reload_current": "Reload",
+    "change_profile": "Change profile",
+    "select_profile": "Select profile",
+    "select": "Select",
+    "confirm_reload_profile": {
+      "title": "Reload profile?",
+      "description": "Please make sure the new version permits HTTP API usage, otherwise you won't be able to use this dashboard after this operation."
+    },
+    "reload_profile_success": "Profile reloaded successfully.",
+    "reload_profile_failed": "Failed to reload profile.",
+    "confirm_select_profile": {
+      "title": "Select profile?",
+      "description": "Please make sure the new version permits HTTP API usage, otherwise you won't be able to use this dashboard after this operation."
+    },
+    "select_profile_success": "Profile selected successfully.",
+    "select_profile_failed": "Failed to select profile.",
+    "version_processed": "Final profile",
+    "version_original": "Original profile",
+    "confirm_delete_profile": {
+      "title": "Delete this?"
+    }
+  }
 }

@@ -1,8 +1,6 @@
 import bytes from 'bytes'
 import { ChartOptions } from 'chart.js'
 
-import { REFRESH_RATE } from '@/hooks/useTrafficUpdater'
-
 import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm'
 
 export const commonChartOptions: ChartOptions<'line'> = {
