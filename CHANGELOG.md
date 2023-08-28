@@ -1,3 +1,12 @@
+# [2.0.0-beta.10](https://github.com/geekdada/yasd/compare/v2.0.0-beta.9...v2.0.0-beta.10) (2023-08-28)
+
+
+### Features
+
+* validate profiles ([e0a2bcb](https://github.com/geekdada/yasd/commit/e0a2bcb75c1cfcc478977dac072e426991aa9fd6))
+
+
+
 # [2.0.0-beta.9](https://github.com/geekdada/yasd/compare/v2.0.0-beta.8...v2.0.0-beta.9) (2023-08-27)
 
 
