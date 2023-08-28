@@ -7,7 +7,7 @@ import CodeMirrorLoading from '@/components/CodeMirrorLoading'
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import PageTitle from '@/components/PageTitle'
 import { Toggle } from '@/components/ui/toggle'
-import fetcher from '@/utils/fetcher'
+import { useCurrentProfile } from '@/data'
 import withProfile from '@/utils/with-profile'
 
 const CodeMirror = lazy(() => import('@/components/CodeMirror'))
@@ -17,13 +17,7 @@ const Page: React.FC = () => {
   const [version, setVersion] = React.useState<'original' | 'processed'>(
     'processed',
   )
-  const { data: profile } = useSWR<{
-    profile: string
-    originalProfile: string
-  }>('/profiles/current?sensitive=1', fetcher, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  })
+  const { data: profile, isLoading } = useCurrentProfile()
   const profileString = useMemo(() => {
     if (!profile) {
       return undefined
@@ -34,14 +28,14 @@ const Page: React.FC = () => {
 
   return (
     <FixedFullscreenContainer offsetBottom={false}>
-      <PageTitle title={t('home.profile')} />
+      <PageTitle title={`${t('home.profile')} - ${profile?.name}`} />
 
       <div className="h-full flex flex-col overflow-hidden">
         <div className="h-full overflow-auto">
           <Suspense fallback={<CodeMirrorLoading />}>
             <CodeMirror
               readOnly
-              value={profileString ?? `${t('common.is_loading')}...`}
+              value={isLoading ? `${t('common.is_loading')}...` : profileString}
             />
           </Suspense>
         </div>

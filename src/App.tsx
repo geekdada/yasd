@@ -126,7 +126,7 @@ const App: React.FC = () => {
       <Toaster position="top-right" reverseOrder={false} />
 
       <NetworkErrorModal
-        reloadButton={isRunInSurge()}
+        reloadButton
         isOpen={isNetworkModalOpen}
         onClose={onCloseApplication}
       />

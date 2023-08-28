@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import dayjs from 'dayjs'
 import useSWR from 'swr'
 
@@ -12,7 +13,10 @@ import { REFRESH_RATE } from './constants'
 const useTrafficUpdater = () => {
   const dispatch = useAppDispatch()
   const profile = useProfile()
+  const location = useLocation()
 
+  const isInForeground =
+    location.pathname === '/traffic' || location.pathname === '/home'
   const { data: traffic } = useSWR(
     profile !== undefined ? '/traffic' : null,
     (url) =>
@@ -23,8 +27,9 @@ const useTrafficUpdater = () => {
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
-      refreshInterval: REFRESH_RATE,
-      dedupingInterval: REFRESH_RATE,
+      refreshWhenHidden: true,
+      refreshInterval: isInForeground ? REFRESH_RATE : 0,
+      dedupingInterval: isInForeground ? REFRESH_RATE : 0,
     },
   )
 

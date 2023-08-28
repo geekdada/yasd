@@ -3,8 +3,9 @@ import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { Loader2Icon } from 'lucide-react'
-import useSWR, { mutate } from 'swr'
+import useSWR from 'swr'
 
+import CodeContent from '@/components/CodeContent'
 import { DataGroup, DataRowMain } from '@/components/Data'
 import HorizontalSafeArea from '@/components/HorizontalSafeArea'
 import PageContainer from '@/components/PageContainer'
@@ -17,6 +18,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useConfirm } from '@/components/UIProvider'
+import {
+  useAvailableProfiles,
+  useCurrentProfile,
+  useProfileValidation,
+} from '@/data'
 import { useVersionSupport } from '@/hooks/useVersionSupport'
 import fetcher from '@/utils/fetcher'
 
@@ -27,29 +33,32 @@ const ManageProfiles = () => {
   const navigate = useNavigate()
   const confirm = useConfirm()
 
-  const isProfileManagementSupport = useVersionSupport({
-    macos: '4.0.6',
-  })
-  const { data: profiles } = useSWR<{
-    profiles: string[]
-  }>(isProfileManagementSupport ? '/profiles' : null, fetcher, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  })
-  const { data: currentProfile } = useSWR<{
-    name: string
-  }>(
-    isProfileManagementSupport ? '/profiles/current?sensitive=1' : null,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    },
-  )
-
   const [selectedProfile, setSelectedProfile] = useState<string | undefined>(
     undefined,
   )
+
+  const isProfileManagementSupport = useVersionSupport({
+    macos: '4.0.6',
+  })
+  const { data: profiles } = useAvailableProfiles()
+  const { data: currentProfile, mutate: mutateCurrentProfile } =
+    useCurrentProfile()
+  const {
+    data: currentProfileValidation,
+    isLoading: isLoadingCurrentProfileValidation,
+    isValidating: isValidatingCurrentProfileValidation,
+  } = useProfileValidation(currentProfile?.name)
+  const {
+    data: selectedProfileValidation,
+    isLoading: isLoadingSelectedProfileValidation,
+    isValidating: isValidatingSelectedProfileValidation,
+  } = useProfileValidation(
+    selectedProfile !== currentProfile?.name ? selectedProfile : undefined,
+  )
+  const isCurrentProfileInvalid =
+    typeof currentProfileValidation?.error === 'string'
+  const isSelectProfileInvalid =
+    typeof selectedProfileValidation?.error === 'string'
 
   const onReloadProfile = useCallback(async () => {
     const result = await confirm({
@@ -63,8 +72,7 @@ const ManageProfiles = () => {
           method: 'POST',
           url: '/profiles/reload',
         })
-
-        await mutate('/profiles/current?sensitive=1')
+        await mutateCurrentProfile()
 
         toast.success(t('reload_profile_success'))
       }
@@ -91,7 +99,7 @@ const ManageProfiles = () => {
             },
           })
 
-          await mutate('/profiles/current?sensitive=1')
+          await mutateCurrentProfile('/profiles/current?sensitive=1')
 
           toast.success(t('select_profile_success'))
         }
@@ -120,58 +128,109 @@ const ManageProfiles = () => {
               {t('view_current')}
             </DataRowMain>
             <DataRowMain
+              className="flex"
+              disabled={
+                isCurrentProfileInvalid ||
+                isLoadingCurrentProfileValidation ||
+                isValidatingCurrentProfileValidation
+              }
               onClick={() => {
                 onReloadProfile()
               }}
               hideArrow
               destructive
             >
-              {t('reload_current')}
+              <div className="flex items-center gap-2">
+                {t('reload_current')}
+
+                {isLoadingCurrentProfileValidation ||
+                isValidatingCurrentProfileValidation ? (
+                  <Loader2Icon className="stroke-black/40 animate-spin w-4 h-4" />
+                ) : null}
+              </div>
             </DataRowMain>
           </DataGroup>
 
-          {isProfileManagementSupport && (
-            <DataGroup title={t('change_profile')}>
-              <DataRowMain className="gap-3 min-h-[68px]">
-                <div className="truncate flex-1">{t('select_profile')}</div>
+          {isCurrentProfileInvalid && (
+            <div>
+              <div className="text-destructive font-bold text-sm leading-normal px-3 md:px-5 mb-1">
+                Error
+              </div>
+              <CodeContent
+                className="rounded-lg"
+                content={currentProfileValidation.error as string}
+              />
+            </div>
+          )}
 
-                {profiles && currentProfile ? (
-                  <Select
-                    defaultValue={currentProfile.name}
-                    onValueChange={(val) => {
-                      setSelectedProfile(val)
-                    }}
-                  >
-                    <SelectTrigger className="w-[140px] md:w-[180px] dark:border-black/90">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {profiles.profiles.map((profile) => (
-                        <SelectItem key={profile} value={profile}>
-                          {profile}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                ) : (
-                  <div className="h-full flex items-center">
-                    <Loader2Icon className="stroke-black/40 animate-spin" />
-                  </div>
-                )}
-              </DataRowMain>
-              <DataRowMain
-                onClick={() => {
-                  if (selectedProfile) {
-                    onSelectProfile(selectedProfile)
+          {isProfileManagementSupport && (
+            <>
+              <DataGroup title={t('change_profile')}>
+                <DataRowMain className="gap-3 min-h-[68px]">
+                  <div className="truncate flex-1">{t('select_profile')}</div>
+
+                  {profiles && currentProfile ? (
+                    <Select
+                      defaultValue={currentProfile.name}
+                      onValueChange={(val) => {
+                        setSelectedProfile(val)
+                      }}
+                    >
+                      <SelectTrigger className="w-[140px] md:w-[180px] dark:border-black/90">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {profiles.profiles.map((profile) => (
+                          <SelectItem key={profile} value={profile}>
+                            {profile}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <div className="h-full flex items-center">
+                      <Loader2Icon className="stroke-black/40 animate-spin" />
+                    </div>
+                  )}
+                </DataRowMain>
+                <DataRowMain
+                  onClick={() => {
+                    if (selectedProfile) {
+                      onSelectProfile(selectedProfile)
+                    }
+                  }}
+                  destructive
+                  hideArrow
+                  disabled={
+                    selectedProfile === currentProfile?.name ||
+                    isSelectProfileInvalid ||
+                    isLoadingSelectedProfileValidation ||
+                    isValidatingSelectedProfileValidation
                   }
-                }}
-                destructive
-                hideArrow
-                disabled={selectedProfile === currentProfile?.name}
-              >
-                {t('select')}
-              </DataRowMain>
-            </DataGroup>
+                >
+                  <div className="flex items-center gap-2">
+                    {t('select')}
+
+                    {isLoadingSelectedProfileValidation ||
+                    isValidatingSelectedProfileValidation ? (
+                      <Loader2Icon className="stroke-black/40 animate-spin w-4 h-4" />
+                    ) : null}
+                  </div>
+                </DataRowMain>
+              </DataGroup>
+
+              {isSelectProfileInvalid && (
+                <div>
+                  <div className="text-destructive font-bold text-sm leading-normal px-3 md:px-5 mb-1">
+                    Error
+                  </div>
+                  <CodeContent
+                    className="rounded-lg"
+                    content={selectedProfileValidation.error as string}
+                  />
+                </div>
+              )}
+            </>
           )}
         </div>
       </HorizontalSafeArea>

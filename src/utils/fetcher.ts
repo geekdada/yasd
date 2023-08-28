@@ -34,7 +34,7 @@ export function setServer(
   client.defaults.baseURL = `${useTls ? 'https:' : 'http:'}//${host}:${port}/v1`
 }
 
-const fetcher = <T>(requestConfig: AxiosRequestConfig): Promise<T> => {
+const fetcher = async <T>(requestConfig: AxiosRequestConfig): Promise<T> => {
   return client
     .request<T>(requestConfig)
     .then((res) => res.data)
