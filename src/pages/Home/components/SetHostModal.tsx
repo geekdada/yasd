@@ -94,7 +94,7 @@ const SetHostModal: React.FC = () => {
         </div>
 
         <DialogFooter>
-          <Button className="mt-3" onClick={() => onAddNewProfile()}>
+          <Button className="mt-3 sm:mt-0" onClick={() => onAddNewProfile()}>
             {t('landing.add_new_host')}
           </Button>
         </DialogFooter>

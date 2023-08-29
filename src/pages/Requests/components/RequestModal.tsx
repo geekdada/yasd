@@ -105,7 +105,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
           </TabList>
 
           <TabPanel>
-            <div className="space-y-4 mb-5">
+            <div className="space-y-4">
               <DataGroup responsiveTitle={false}>
                 <DataRowMain responsiveFont={false}>
                   <div>{t('requests.date')}</div>

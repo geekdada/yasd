@@ -37,6 +37,10 @@ const ManageProfiles = () => {
     undefined,
   )
 
+  const isProfileReloadSupport = useVersionSupport({
+    ios: true,
+    macos: true,
+  })
   const isProfileManagementSupport = useVersionSupport({
     macos: '4.0.6',
   })
@@ -80,7 +84,7 @@ const ManageProfiles = () => {
       console.error(err)
       toast.error(t('reload_profile_failed'))
     }
-  }, [confirm, t])
+  }, [confirm, mutateCurrentProfile, t])
 
   const onSelectProfile = useCallback(
     async (newProfile: string) => {
@@ -108,7 +112,7 @@ const ManageProfiles = () => {
         toast.error(t('select_profile_failed'))
       }
     },
-    [confirm, t],
+    [confirm, mutateCurrentProfile, t],
   )
 
   useEffect(() => {
@@ -130,6 +134,7 @@ const ManageProfiles = () => {
             <DataRowMain
               className="flex"
               disabled={
+                !isProfileReloadSupport ||
                 isCurrentProfileInvalid ||
                 isLoadingCurrentProfileValidation ||
                 isValidatingCurrentProfileValidation
