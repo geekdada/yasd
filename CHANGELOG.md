@@ -1,3 +1,12 @@
+# [2.0.0](https://github.com/geekdada/yasd/compare/v2.0.0-beta.10...v2.0.0) (2023-08-29)
+
+
+### Bug Fixes
+
+* known bugs ([d33a12d](https://github.com/geekdada/yasd/commit/d33a12dc37dd8448ed2d02bca46e6ed2f3c49aec))
+
+
+
 # [2.0.0-beta.10](https://github.com/geekdada/yasd/compare/v2.0.0-beta.9...v2.0.0-beta.10) (2023-08-28)
 
 
