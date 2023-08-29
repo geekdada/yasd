@@ -1,11 +1,7 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { Image } from '@sumup/circuit-ui'
 import React from 'react'
-import css from '@emotion/css/macro'
-import tw from 'twin.macro'
+import { css } from '@emotion/react'
 
-import { useSurgeHost } from '../../../models/profile'
+import { useSurgeHost } from '@/store'
 
 interface DeviceIconProps {
   icon?: string
@@ -22,7 +18,8 @@ const DeviceIcon = ({ icon }: DeviceIconProps): JSX.Element => {
         margin-right: 0.7rem;
       `}
     >
-      <Image
+      <img
+        loading="lazy"
         src={`${surgeHost}/resources/devices-icon?id=${icon || 'default'}`}
         alt=""
       />

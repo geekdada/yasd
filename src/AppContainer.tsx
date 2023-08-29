@@ -1,9 +1,6 @@
-import createCache from '@emotion/cache'
-import { CacheProvider } from '@emotion/core'
-import { ModalProvider } from '@sumup/circuit-ui'
-import { light } from '@sumup/design-tokens'
-import { ThemeProvider } from 'emotion-theming'
-import React, { Suspense } from 'react'
+import React, { ReactNode, Suspense } from 'react'
+import { HelmetProvider } from 'react-helmet-async'
+import { Provider as ReduxProvider } from 'react-redux'
 import {
   BrowserRouter,
   BrowserRouterProps,
@@ -11,10 +8,13 @@ import {
   HashRouterProps,
 } from 'react-router-dom'
 
-import { ProfileProvider } from './models/profile'
+import Bootstrap from '@/bootstrap'
+import { ThemeProvider } from '@/components/ThemeProvider'
+import { UIProvider } from '@/components/UIProvider'
+import { store } from '@/store'
 
 const ReactRouter: React.FC<BrowserRouterProps | HashRouterProps> = (args) => {
-  return process.env.REACT_APP_HASH_ROUTER ? (
+  return process.env.REACT_APP_HASH_ROUTER === 'true' ? (
     <HashRouter {...(args as HashRouterProps)}>{args.children}</HashRouter>
   ) : (
     <BrowserRouter {...(args as BrowserRouterProps)}>
@@ -22,22 +22,21 @@ const ReactRouter: React.FC<BrowserRouterProps | HashRouterProps> = (args) => {
     </BrowserRouter>
   )
 }
-const styleCache = createCache({
-  key: 'yasd',
-})
 
-const AppContainer: React.FC = ({ children }) => {
+const AppContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <Suspense fallback={<div />}>
-      <CacheProvider value={styleCache}>
-        <ReactRouter>
-          <ProfileProvider>
-            <ThemeProvider theme={light}>
-              <ModalProvider>{children}</ModalProvider>
+      <ReduxProvider store={store}>
+        <HelmetProvider>
+          <ReactRouter>
+            <ThemeProvider>
+              <UIProvider>
+                <Bootstrap>{children}</Bootstrap>
+              </UIProvider>
             </ThemeProvider>
-          </ProfileProvider>
-        </ReactRouter>
-      </CacheProvider>
+          </ReactRouter>
+        </HelmetProvider>
+      </ReduxProvider>
     </Suspense>
   )
 }

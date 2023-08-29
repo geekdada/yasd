@@ -1,16 +1,13 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import styled from '@emotion/styled/macro'
-import css from '@emotion/css/macro'
-import bytes from 'bytes'
-import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
 import React, { useMemo, useState } from 'react'
-import { ChevronRight } from '@sumup/icons'
 import { Collapse } from 'react-collapse'
+import { useTranslation } from 'react-i18next'
+import { css } from '@emotion/react'
+import { ChevronRight } from '@sumup/icons'
+import bytes from 'bytes'
+import tw from 'twin.macro'
 
-import { DataRow, DataRowMain, DataRowSub } from '../../../components/Data'
-import { ConnectorTraffic } from '../../../types'
+import { DataRow, DataRowMain, DataRowSub } from '@/components/Data'
+import { ConnectorTraffic } from '@/types'
 
 interface TrafficDataRowProps {
   name: string
@@ -44,14 +41,14 @@ const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
       onClick={() => setIsDetailsOpen(!isDetailsOpen)}
     >
       <DataRowMain>
-        <div tw="truncate flex-1 text-sm lg:text-base">{name}</div>
-        <div tw="flex items-center ml-3 text-sm lg:text-base">
+        <div className="truncate flex-1 text-sm md:text-base">{name}</div>
+        <div className="flex items-center ml-3 text-sm md:text-base">
           <div>
             {t('traffic.total')} {bytes(data.in + data.out)}
           </div>
           <ChevronRight
             css={[
-              tw`ml-2 w-5 h-5 transition-transform duration-200 ease-in-out`,
+              tw`ml-2 -mr-1 w-5 h-5 transition-transform duration-200 ease-in-out`,
               isDetailsOpen && tw`transform rotate-90`,
             ]}
           />
@@ -59,7 +56,7 @@ const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
       </DataRowMain>
 
       <Collapse isOpened={isDetailsOpen}>
-        <div tw="pb-3">
+        <div className="pb-3">
           <DataRowSub>
             <div>{t('traffic.traffic')}</div>
             <div>

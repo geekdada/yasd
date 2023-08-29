@@ -1,0 +1,16 @@
+html, body {
+  @apply h-full;
+}
+
+body {
+  @apply antialiased;
+}
+
+#root {
+  background-color: hsl(210, 20%, 96%);
+  @apply min-h-full flex;
+}
+
+.dark #root {
+    background-color: hsl(0 0% 4%);
+}

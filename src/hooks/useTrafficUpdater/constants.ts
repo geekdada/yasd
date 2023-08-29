@@ -1,0 +1,3 @@
+export const REFRESH_RATE = 1000
+
+export const BACKGROUND_REFRESH_RATE = 3000

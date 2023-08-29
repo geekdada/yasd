@@ -1,191 +1,80 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { find } from 'lodash-es'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
+import { Toaster, toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import {
-  Switch,
+  Navigate,
   Route,
-  Redirect,
+  Routes,
   useLocation,
-  useHistory,
+  useNavigate,
 } from 'react-router-dom'
-import loadable from '@loadable/component'
-import tw from 'twin.macro'
-import styled from '@emotion/styled/macro'
-import store from 'store2'
-import ReactGA from 'react-ga'
-import { toast, ToastContainer as OriginalToastContainer } from 'react-toastify'
 import { SWRConfig } from 'swr'
-import 'react-toastify/dist/ReactToastify.css'
 
-import FullLoading from './components/FullLoading'
-import NewVersionAlert from './components/NewVersionAlert'
-import ScrollToTop from './components/ScrollToTop'
-import NetworkErrorModal from './components/NetworkErrorModal'
+import FullLoading from '@/components/FullLoading'
+import NetworkErrorModal from '@/components/NetworkErrorModal'
+import NewVersionAlert from '@/components/NewVersionAlert'
+import PageLayout from '@/components/PageLayout'
+import RunInSurge from '@/components/RunInSurge'
+import useTrafficUpdater from '@/hooks/useTrafficUpdater'
+import HomePage from '@/pages/Home'
+import { LandingPage } from '@/pages/Landing'
 import {
   usePlatformVersion,
+  useAppDispatch,
+  useHistory,
   useProfile,
-  useProfileDispatch,
-} from './models/profile'
-import {
-  RegularLanding as LandingPage,
-  SurgeLanding as SurgeLandingPage,
-} from './pages/Landing'
-import IndexPage from './pages/Index'
-import PageLayout from './components/PageLayout'
-import { Profile } from './types'
-import { isRunInSurge } from './utils'
-import {
-  ExistingProfiles,
-  LastUsedLanguage,
-  LastUsedProfile,
-} from './utils/constant'
-import { httpClient } from './utils/fetcher'
+} from '@/store'
+import { historyActions } from '@/store/slices/history'
+import { profileActions } from '@/store/slices/profile'
+import { isRunInSurge } from '@/utils'
+import { httpClient } from '@/utils/fetcher'
 
-const PoliciesPage = loadable(() => import('./pages/Policies'), {
-  fallback: <FullLoading />,
-})
-const RequestsPage = loadable(() => import('./pages/Requests'), {
-  fallback: <FullLoading />,
-})
-const TrafficPage = loadable(() => import('./pages/Traffic'), {
-  fallback: <FullLoading />,
-})
-const ModulesPage = loadable(() => import('./pages/Modules'), {
-  fallback: <FullLoading />,
-})
-const ScriptingPage = loadable(() => import('./pages/Scripting'), {
-  fallback: <FullLoading />,
-})
-const EvaluatePage = loadable(() => import('./pages/Scripting/Evaluate'), {
-  fallback: <FullLoading />,
-})
-const DnsPage = loadable(() => import('./pages/Dns'), {
-  fallback: <FullLoading />,
-})
-const DevicesPage = loadable(() => import('./pages/Devices'), {
-  fallback: <FullLoading />,
-})
-const ProfilePage = loadable(() => import('./pages/Profiles/Current'), {
-  fallback: <FullLoading />,
-})
-const ToastContainer = styled(OriginalToastContainer)`
-  ${tw`p-2 md:p-0`}
-
-  .Toastify__toast {
-    ${tw`flex items-center px-3 py-3 bg-blue-100 rounded shadow-none`}
-  }
-  .Toastify__close-button,
-  .Toastify__toast-body {
-    ${tw`text-blue-700`}
-  }
-  .Toastify__toast-body {
-    ${tw`text-base`}
-  }
-  .Toastify__close-button {
-    ${tw`block ml-3 self-center`}
-  }
-  .Toastify__progress-bar {
-    ${tw`bg-blue-200`}
-  }
-  .Toastify__toast--error {
-    ${tw`bg-red-100`}
-
-    .Toastify__close-button, .Toastify__toast-body {
-      ${tw`text-red-700`}
-    }
-    .Toastify__progress-bar {
-      ${tw`bg-red-200`}
-    }
-  }
-  .Toastify__toast--warning {
-    ${tw`bg-orange-100 border-l-4 border-orange-500`}
-
-    .Toastify__close-button, .Toastify__toast-body {
-      ${tw`text-orange-700`}
-    }
-    .Toastify__progress-bar {
-      ${tw`bg-orange-200`}
-    }
-  }
-  .Toastify__toast--success {
-    ${tw`bg-green-100`}
-
-    .Toastify__close-button, .Toastify__toast-body {
-      ${tw`text-green-700`}
-    }
-    .Toastify__progress-bar {
-      ${tw`bg-green-200`}
-    }
-  }
-`
-
-if (
-  !!process.env.REACT_APP_DEBUG_GA ||
-  (process.env.NODE_ENV === 'production' && process.env.REACT_APP_ENABLE_GA)
-) {
-  ReactGA.initialize('UA-146417304-2', {
-    debug: !!process.env.REACT_APP_DEBUG_GA,
-  })
-}
+const PoliciesPage = lazy(() => import('@/pages/Policies'))
+const RequestsPage = lazy(() => import('@/pages/Requests'))
+const TrafficPage = lazy(() => import('@/pages/Traffic'))
+const ModulesPage = lazy(() => import('@/pages/Modules'))
+const ScriptingPage = lazy(() => import('@/pages/Scripting'))
+const EvaluatePage = lazy(() => import('@/pages/Scripting/Evaluate'))
+const DnsPage = lazy(() => import('@/pages/Dns'))
+const DevicesPage = lazy(() => import('@/pages/Devices'))
+const CurrentProfilePage = lazy(() => import('@/pages/Profiles/Current'))
+const ManageProfilesPage = lazy(() => import('@/pages/Profiles/Manage'))
 
 const App: React.FC = () => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false)
   const location = useLocation()
-  const history = useHistory()
-  const profileDispatch = useProfileDispatch()
-  const profile = useProfile()
-  const [hasInit, setHasInit] = useState(false)
-  const isCurrentVersionFetched = useRef(true)
+  const navigate = useNavigate()
+
+  const dispatch = useAppDispatch()
   const platformVersion = usePlatformVersion()
+  const profile = useProfile()
+  const history = useHistory()
+
+  const isCurrentVersionFetched = useRef(true)
+
+  useTrafficUpdater()
 
   const onCloseApplication = useCallback(() => {
     if (isRunInSurge()) {
-      store.remove(LastUsedProfile)
-      store.remove(ExistingProfiles)
+      dispatch(historyActions.deleteAllHistory())
     }
 
     window.location.replace('/')
-  }, [])
-
-  useEffect(
-    () => {
-      const existingProfiles = store.get(ExistingProfiles)
-      const lastId = store.get(LastUsedProfile)
-      const result = find<Profile>(existingProfiles, { id: lastId })
-
-      if (result) {
-        profileDispatch({
-          type: 'update',
-          payload: result,
-        })
-      }
-
-      setHasInit(true)
-    },
-    // eslint-disable-next-line
-    [],
-  )
+  }, [dispatch])
 
   useEffect(() => {
-    if (hasInit && !profile && location.pathname !== '/') {
-      history.replace('/')
+    if (history && !profile && location.pathname !== '/') {
+      navigate('/', { replace: true })
     }
-  }, [hasInit, history, location.pathname, profile])
-
-  useEffect(() => {
-    ReactGA.pageview(location.pathname)
-  }, [location.pathname])
-
-  useEffect(() => {
-    const language: string | null = store.get(LastUsedLanguage)
-
-    if (language && language !== i18n.language) {
-      i18n.changeLanguage(language)
-    }
-  }, [i18n])
+  }, [history, location, navigate, profile])
 
   useEffect(() => {
     if (
@@ -205,12 +94,11 @@ const App: React.FC = () => {
         const currentPlatformVersion = res.headers['x-surge-version']
 
         if (currentPlatformVersion !== platformVersion) {
-          profileDispatch({
-            type: 'updatePlatformVersion',
-            payload: {
+          dispatch(
+            profileActions.updatePlatformVersion({
               platformVersion: currentPlatformVersion,
-            },
-          })
+            }),
+          )
         }
 
         isCurrentVersionFetched.current = false
@@ -219,7 +107,7 @@ const App: React.FC = () => {
         console.error(err)
         toast.error(t('common.surge_too_old'))
       })
-  }, [location, platformVersion, profile?.platform, profileDispatch, t])
+  }, [dispatch, location, platformVersion, profile?.platform, t])
 
   return (
     <SWRConfig
@@ -235,54 +123,36 @@ const App: React.FC = () => {
         refreshWhenOffline: true,
       }}
     >
-      <ScrollToTop />
-      <ToastContainer />
+      <Toaster position="top-right" reverseOrder={false} />
+
       <NetworkErrorModal
-        reloadButton={isRunInSurge()}
+        reloadButton
         isOpen={isNetworkModalOpen}
         onClose={onCloseApplication}
       />
-      <NewVersionAlert />
+
+      <RunInSurge not>
+        <NewVersionAlert />
+      </RunInSurge>
 
       <PageLayout>
-        <Switch>
-          <Route exact path="/">
-            {isRunInSurge() ? <SurgeLandingPage /> : <LandingPage />}
-          </Route>
-          <Route exact path="/home">
-            <IndexPage />
-          </Route>
-          <Route exact path="/policies">
-            <PoliciesPage />
-          </Route>
-          <Route exact path="/requests">
-            <RequestsPage />
-          </Route>
-          <Route exact path="/traffic">
-            <TrafficPage />
-          </Route>
-          <Route exact path="/modules">
-            <ModulesPage />
-          </Route>
-          <Route exact path="/scripting">
-            <ScriptingPage />
-          </Route>
-          <Route exact path="/scripting/evaluate">
-            <EvaluatePage />
-          </Route>
-          <Route exact path="/dns">
-            <DnsPage />
-          </Route>
-          <Route exact path="/devices">
-            <DevicesPage />
-          </Route>
-          <Route exact path="/profiles/current">
-            <ProfilePage />
-          </Route>
-          <Route path="*">
-            <Redirect to="/" />
-          </Route>
-        </Switch>
+        <Suspense fallback={<FullLoading />}>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/policies" element={<PoliciesPage />} />
+            <Route path="/requests" element={<RequestsPage />} />
+            <Route path="/traffic" element={<TrafficPage />} />
+            <Route path="/modules" element={<ModulesPage />} />
+            <Route path="/scripting" element={<ScriptingPage />} />
+            <Route path="/scripting/evaluate" element={<EvaluatePage />} />
+            <Route path="/dns" element={<DnsPage />} />
+            <Route path="/devices" element={<DevicesPage />} />
+            <Route path="/profiles" element={<ManageProfilesPage />} />
+            <Route path="/profiles/current" element={<CurrentProfilePage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
       </PageLayout>
     </SWRConfig>
   )

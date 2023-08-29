@@ -1,33 +1,30 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { Button } from '@sumup/circuit-ui'
-import SelectorGroup from '@sumup/circuit-ui/dist/es/components/SelectorGroup'
-import React, {
-  ChangeEvent,
-  MouseEventHandler,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react'
-import css from '@emotion/css/macro'
+import React, { useCallback, useMemo, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { toast } from 'react-toastify'
-import tw from 'twin.macro'
-import useSWR, { mutate } from 'swr'
 import { List, AutoSizer, ListRowRenderer } from 'react-virtualized'
+import { css } from '@emotion/react'
+import { SearchIcon } from 'lucide-react'
+import useSWR, { mutate } from 'swr'
+import tw from 'twin.macro'
 
-import FixedFullscreenContainer from '../../components/FixedFullscreenContainer'
-import PageTitle from '../../components/PageTitle'
-import { DnsResult } from '../../types'
-import fetcher from '../../utils/fetcher'
+import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
+import HorizontalSafeArea from '@/components/HorizontalSafeArea'
+import { ListCell } from '@/components/ListCell'
+import PageTitle from '@/components/PageTitle'
+import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
+import { Toggle } from '@/components/ui/toggle'
+import { DnsResult } from '@/types'
+import fetcher from '@/utils/fetcher'
+import withProfile from '@/utils/with-profile'
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
   const [group, setGroup] = useState<'dynamic' | 'static'>('dynamic')
-  const { data: dnsResult, error: dnsResultError } = useSWR<DnsResult>(
-    '/dns',
-    fetcher,
-  )
+
+  const { data: dnsResult } = useSWR<DnsResult>('/dns', fetcher, {
+    revalidateOnFocus: false,
+  })
   const list = useMemo(() => {
     if (group === 'dynamic') {
       return dnsResult?.dnsCache ?? []
@@ -35,7 +32,7 @@ const Page: React.FC = () => {
     return dnsResult?.local ?? []
   }, [dnsResult, group])
 
-  const flushDns: MouseEventHandler = () => {
+  const flushDns = () => {
     fetcher({
       url: '/dns/flush',
       method: 'POST',
@@ -56,85 +53,109 @@ const Page: React.FC = () => {
 
   const rowRenderer: ListRowRenderer = useCallback(
     ({
-      key, // Unique key within array of rows
       index, // Index of row within collection
-      isScrolling, // The List is currently being scrolled
-      isVisible, // This row is visible within the List (eg it is not an overscanned row)
       style, // Style object to be applied to row (to position it)
     }) => {
       if (group === 'dynamic') {
         const record = (list as DnsResult['dnsCache'])[index]
 
         return (
-          <div
-            key={key}
+          <ListCell
+            interactive={false}
+            key={`dynamic-${record.domain}`}
             style={style}
-            onClick={() => openIpDetail(record.data[0])}
-            css={[
-              tw`flex flex-col justify-center py-2`,
-              tw`cursor-pointer hover:bg-gray-100`,
-              css`
-                padding-left: calc(env(safe-area-inset-left) + 0.75rem);
-                padding-right: calc(env(safe-area-inset-right) + 0.75rem);
-              `,
-            ]}
+            className="flex flex-row gap-5 py-1"
           >
-            <div tw="text-sm truncate">{record.domain}</div>
-            <div tw="text-xs text-gray-700 leading-tight">
-              DNS: {record.server}
+            <div className="flex flex-1 flex-col justify-center overflow-hidden">
+              <div className="text-sm truncate">{record.domain}</div>
+              <div className="text-xs text-gray-700 dark:text-white/70 leading-tight">
+                DNS: {record.server}
+              </div>
+              <div className="text-xs text-gray-700 dark:text-white/70 leading-tight truncate">
+                {t('dns.result')}: {record.data.join(', ')}
+              </div>
+              <div className="text-xs text-gray-700 dark:text-white/70 leading-tight truncate">
+                {t('dns.path')}: {record.path}
+              </div>
             </div>
-            <div tw="text-xs text-gray-700 leading-tight truncate">
-              {t('dns.result')}: {record.data.join(', ')}
+            <div className="flex items-center">
+              <Button
+                title={t('dns.view_dns')}
+                onClick={() => openIpDetail(record.domain)}
+                size="icon"
+                variant="outline"
+              >
+                <SearchIcon />
+              </Button>
             </div>
-            <div tw="text-xs text-gray-700 leading-tight truncate">
-              {t('dns.path')}: {record.path}
-            </div>
-          </div>
+          </ListCell>
         )
       } else {
         const record = (list as DnsResult['local'])[index]
 
         return (
-          <div
-            key={key}
+          <ListCell
+            interactive={false}
+            key={`static-${record.domain}-${record.data}`}
             style={style}
-            css={[
-              tw`flex flex-col justify-center py-2`,
-              css`
-                padding-left: calc(env(safe-area-inset-left) + 0.75rem);
-                padding-right: calc(env(safe-area-inset-right) + 0.75rem);
-              `,
-            ]}
+            className="flex flex-row gap-5 py-1"
           >
-            <div tw="text-sm truncate">{record.domain}</div>
-            {!!record.server && (
-              <div tw="text-xs text-gray-700 leading-tight">
-                DNS: {record.server}
+            <div className="flex flex-1 flex-col justify-center overflow-hidden">
+              <div className="text-sm truncate">{record.domain}</div>
+              {!!record.server && (
+                <div className="text-xs text-gray-700 dark:text-white/70 leading-tight">
+                  DNS: {record.server}
+                </div>
+              )}
+              <div className="text-xs text-gray-700 dark:text-white/70 leading-tight">
+                {t('dns.result')}: {record.data ?? 'N/A'}
               </div>
-            )}
-            <div tw="text-xs text-gray-700 leading-tight">
-              {t('dns.result')}: {record.data ?? 'N/A'}
-            </div>
-            <div tw="text-xs text-gray-700 leading-tight">
-              {t('dns.source')}: {record.source ?? 'N/A'}
-            </div>
-            {!!record.comment && (
-              <div tw="text-xs text-gray-700 leading-tight">
-                {t('dns.comment')}: {record.comment}
+              <div className="text-xs text-gray-700 dark:text-white/70 leading-tight">
+                {t('dns.source')}: {record.source ?? 'N/A'}
               </div>
-            )}
-          </div>
+              {!!record.comment && (
+                <div className="text-xs text-gray-700 dark:text-white/70 leading-tight">
+                  {t('dns.comment')}: {record.comment}
+                </div>
+              )}
+            </div>
+          </ListCell>
         )
       }
     },
-    [group, list],
+    [group, list, t],
   )
+
+  const toggles = (
+    [
+      {
+        title: t('dns.dynamic'),
+        value: 'dynamic',
+      },
+      {
+        title: t('dns.static'),
+        value: 'static',
+      },
+    ] as const
+  ).map((toggle) => (
+    <Toggle
+      key={toggle.value}
+      pressed={group === toggle.value}
+      onPressedChange={(pressed) => {
+        if (pressed) {
+          setGroup(toggle.value)
+        }
+      }}
+    >
+      {toggle.title}
+    </Toggle>
+  ))
 
   return (
     <FixedFullscreenContainer>
       <PageTitle title="DNS" />
 
-      <div tw="flex-1">
+      <div className="flex-1">
         <AutoSizer>
           {({ width, height }) => {
             return (
@@ -149,7 +170,7 @@ const Page: React.FC = () => {
                 }}
                 css={css`
                   & > div {
-                    ${tw`divide-y divide-gray-200`}
+                    ${tw`divide-y`}
                   }
                 `}
               />
@@ -158,62 +179,17 @@ const Page: React.FC = () => {
         </AutoSizer>
       </div>
 
-      <div
-        css={[
-          tw`flex divide-x divide-gray-200 border-t border-solid border-gray-200 py-2 px-2`,
-          css`
-            & > div {
-              ${tw`mx-2`}
-            }
-            & > div:first-of-type {
-              margin-left: 0;
-            }
-          `,
-        ]}
-      >
-        <SelectorGroup
-          css={[
-            tw`flex justify-center items-center`,
-            css`
-              & label {
-                ${tw`py-2 px-4 ml-2 my-1 text-sm`}
-              }
-              & label:first-of-type {
-                margin-left: 0;
-              }
-            `,
-          ]}
-          label="choose the dns result group"
-          name="selector-group"
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            setGroup(event.target.value as 'dynamic' | 'static')
-          }}
-          options={[
-            {
-              children: t('dns.dynamic'),
-              value: 'dynamic',
-            },
-            {
-              children: t('dns.static'),
-              value: 'static',
-            },
-          ]}
-          value={group}
-        />
+      <HorizontalSafeArea className="flex divide-x border-t py-2 px-2">
+        <ButtonGroup className="px-3">{toggles}</ButtonGroup>
 
-        <div tw="flex items-center">
-          <Button
-            tw="font-normal"
-            variant="tertiary"
-            size="kilo"
-            onClick={flushDns}
-          >
+        <div className="flex items-center px-3">
+          <Button variant="outline" onClick={() => flushDns()}>
             {t('dns.flush_dns')}
           </Button>
         </div>
-      </div>
+      </HorizontalSafeArea>
     </FixedFullscreenContainer>
   )
 }
 
-export default Page
+export default withProfile(Page)

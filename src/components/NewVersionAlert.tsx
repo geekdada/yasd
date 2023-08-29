@@ -1,32 +1,33 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
 import React, { useEffect, useState } from 'react'
-import {
-  Button,
-  ButtonGroup,
-  Modal,
-  ModalFooter,
-  ModalHeader,
-  ModalWrapper,
-} from '@sumup/circuit-ui'
-import styled from '@emotion/styled/macro'
-import css from '@emotion/css/macro'
 import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
-import store from 'store2'
 import satisfies from 'semver/functions/satisfies'
+import store from 'store2'
 
-import { LastUsedVersion } from '../utils/constant'
+import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { LastUsedVersion } from '@/utils/constant'
 
 const currentVersion = process.env.REACT_APP_VERSION as string
 
 const NewVersionAlert: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const [versionUrl, setVersionUrl] = useState<string>()
+  const [versionUrl, setVersionUrl] = useState<string>('#')
   const { t } = useTranslation()
 
   useEffect(() => {
     const lastUsedVersion = store.get(LastUsedVersion)
+    const isSWEnabled = process.env.REACT_APP_USE_SW === 'true'
+
+    if (!isSWEnabled) {
+      return
+    }
 
     if (lastUsedVersion && !satisfies(currentVersion, `~${lastUsedVersion}`)) {
       setVersionUrl(
@@ -39,28 +40,28 @@ const NewVersionAlert: React.FC = () => {
   }, [])
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={() => {
-        setIsOpen(false)
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open)
       }}
     >
-      {({ onClose }) => (
-        <ModalWrapper>
-          <ModalHeader title={t('new_version_alert.title')} onClose={onClose} />
-          <div tw="mb-3">{t('new_version_alert.message')}</div>
-          <ModalFooter align="right">
-            <ButtonGroup>
-              <a href={versionUrl} target="_blank" rel="noreferrer">
-                <Button variant="primary" onClick={onClose}>
-                  {t('common.see')}
-                </Button>
-              </a>
-            </ButtonGroup>
-          </ModalFooter>
-        </ModalWrapper>
-      )}
-    </Modal>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t('new_version_alert.title')}</DialogTitle>
+        </DialogHeader>
+        <div className="mb-3">{t('new_version_alert.message')}</div>
+        <DialogFooter>
+          <ButtonGroup align="right">
+            <a href={versionUrl} target="_blank" rel="noreferrer">
+              <Button onClick={() => setIsOpen(false)}>
+                {t('common.see')}
+              </Button>
+            </a>
+          </ButtonGroup>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
 

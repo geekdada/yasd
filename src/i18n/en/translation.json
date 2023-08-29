@@ -12,7 +12,24 @@
     "failed_interaction": "Failed",
     "see": "See",
     "save": "Save",
-    "surge_too_old": "Your Surge is too old, please upgrade in order to use this application!"
+    "surge_too_old": "Your Surge is too old, please upgrade in order to use this application!",
+    "download": "Download",
+    "dark": "Dark",
+    "light": "Light",
+    "system": "Follow system",
+    "sw_updated": "Surge Web Dashboard has been updated, refresh page to use the new version.",
+    "refresh": "Refresh",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "tls_instruction": {
+    "title": "Needed a certificate?",
+    "description": "Your connection has failed, possibly due to a lack of a certificate. Please follow the instructions (for Safari) below to install the certificate defined in your Surge configuration file.",
+    "instruction1": "1. Click the download button below to download the certificate.",
+    "instruction2": "2. Safari will warn you that your connection isn't safe. Click \"Show Details\" and then \"Visit this website\".",
+    "instruction3": "3. Click \"Install Certificate\" and follow the instructions to install the certificate.",
+    "instruction4": "4. You may need to select a device for installing the certificate.",
+    "instruction5": "5. Go back here and try again."
   },
   "form": {
     "err_invalid": "Invalid value",
@@ -27,12 +44,12 @@
     "login": "Login",
     "name": "Name",
     "host": "Host",
-    "host_tips": "Use iphone.local if you're in an intranet",
+    "host_tips": "Use mac.local or mac.sgponte if you're in an intranet",
     "port": "Port",
     "key": "Key",
     "remember_me": "Remember me",
     "https": "HTTPS",
-    "confirm": "Done",
+    "confirm": "Submit",
     "is_loading": "Loading",
     "history": "History",
     "current": "Current"
@@ -53,7 +70,19 @@
     "rewrite": "Rewrite",
     "github": "GitHub",
     "events": "Events",
-    "device_management": "Device Management"
+    "device_management": "Device Management",
+    "descriptions": {
+      "mitm": "Decrypt HTTPS traffic with man-in-the-middle (MitM) attack.",
+      "rewrite": "Redirect HTTP requests or modify request headers.",
+      "github": "Give Surge Web Dashboard a star on GitHub.",
+      "scripting": "Use JavaScript to extend the ability of Surge as your wish.",
+      "modules": "Override the current profile with a set of settings. Highly flexible for diverse purposes.",
+      "device_management": "Manage devices that are managed by Surge.",
+      "profile": "Mange current Surge profile.",
+      "dns": "DNS records managed by Surge.",
+      "http_capture": "Turn on HTTP capture switch to dump and inspect the body.",
+      "traffic": "Surge traffic statistics."
+    }
   },
   "traffic_cell": {
     "upload": "Upload",
@@ -108,7 +137,7 @@
     "result": "Result",
     "open_script": "Open script",
     "empty_code_error": "No code entered in the editor",
-    "editor_placeholder": "// Only supports Cron script\n// Docs: https://manual.nssurge.com/scripting/cron.html\n\n$done();",
+    "editor_placeholder": "// Only supports Cron script\n\n$done();",
     "timeout": "Timeout"
   },
   "dns": {
@@ -118,7 +147,8 @@
     "flush_dns": "Flush DNS",
     "dynamic": "Dynamic",
     "static": "Static",
-    "comment": "Comment"
+    "comment": "Comment",
+    "view_dns": "Lookup DNS records"
   },
   "devices": {
     "mac_address": "MAC Address",
@@ -132,7 +162,7 @@
     "mode": "Takeover Mode",
     "address": "Address",
     "name": "Name",
-    "handled_by_surge": "Handled by Surge",
+    "handled_by_surge": "Use Surge as Gateway",
     "not_handled_by_surge": "None",
     "proxy_and_gateway_mode": "Proxy & Gateway",
     "gateway_mode": "Gateway",
@@ -143,6 +173,46 @@
     "waiting": "Waiting",
     "device_settings": "Device Settings",
     "view_requests": "View Requests",
-    "modify": "Modify"
+    "modify": "Modify",
+    "empty_list": "No Device"
+  },
+  "modules": {
+    "empty_list": "No Module"
+  },
+  "Submit": "Submit",
+  "Clear": "Clear",
+  "Filter": "Filter",
+  "Filter rules": "Filter rules",
+  "Filter requests by partial URL.": "Filter requests by partial URL.",
+  "Sort": "Sort",
+  "Sort rules": "Sort rules",
+  "Sort requests by time or size.": "Sort requests by time or size.",
+  "By time": "By time",
+  "By size": "By size",
+  "profiles": {
+    "title": "Manage Profile",
+    "current": "Current",
+    "view_current": "View current profile",
+    "reload_current": "Reload",
+    "change_profile": "Change profile",
+    "select_profile": "Select profile",
+    "select": "Select",
+    "confirm_reload_profile": {
+      "title": "Reload profile?",
+      "description": "Please make sure the new version permits HTTP API usage, otherwise you won't be able to use this dashboard after this operation."
+    },
+    "reload_profile_success": "Profile reloaded successfully.",
+    "reload_profile_failed": "Failed to reload profile.",
+    "confirm_select_profile": {
+      "title": "Select profile?",
+      "description": "Please make sure the new version permits HTTP API usage, otherwise you won't be able to use this dashboard after this operation."
+    },
+    "select_profile_success": "Profile selected successfully.",
+    "select_profile_failed": "Failed to select profile.",
+    "version_processed": "Final profile",
+    "version_original": "Original profile",
+    "confirm_delete_profile": {
+      "title": "Delete this?"
+    }
   }
 }

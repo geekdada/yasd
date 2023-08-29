@@ -1,34 +1,32 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import css from '@emotion/css/macro'
-import React, { MouseEvent, useMemo, useState } from 'react'
-import styled from '@emotion/styled/macro'
+import React, { useMemo, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import tw from 'twin.macro'
-import useSWR from 'swr'
+import { useNavigate } from 'react-router-dom'
 import { uniqBy } from 'lodash-es'
-import {
-  Button,
-  LoadingButton,
-  Modal,
-  ModalHeader,
-  ModalWrapper,
-} from '@sumup/circuit-ui'
+import { Link2Icon } from 'lucide-react'
+import useSWR from 'swr'
 
-import FixedFullscreenContainer from '../../components/FixedFullscreenContainer'
-import PageTitle from '../../components/PageTitle'
-import { EvaluateResult, Scriptings } from '../../types'
-import fetcher from '../../utils/fetcher'
+import CodeContent from '@/components/CodeContent'
+import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
+import HorizontalSafeArea from '@/components/HorizontalSafeArea'
+import { ListCell } from '@/components/ListCell'
+import PageTitle from '@/components/PageTitle'
+import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { EvaluateResult, Scriptings } from '@/types'
+import fetcher from '@/utils/fetcher'
+import withProfile from '@/utils/with-profile'
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
-  const history = useHistory()
-  const { data: scripting, error: scriptingError } = useSWR<Scriptings>(
-    '/scripting',
-    fetcher,
-  )
+  const navigate = useNavigate()
+  const { data: scripting } = useSWR<Scriptings>('/scripting', fetcher)
   const [evaluateResult, setEvaluateResult] = useState<string>()
   const [isLoading, setIsLoading] = useState<number>()
 
@@ -74,85 +72,80 @@ const Page: React.FC = () => {
     <FixedFullscreenContainer>
       <PageTitle title={t('home.scripting')} />
 
-      <div tw="flex-1 overflow-auto">
-        <div tw="divide-y divide-gray-200">
+      <div className="flex-1 overflow-auto">
+        <div className="divide-y">
           {scripting &&
             filteredList.map((script, index) => {
               return (
-                <div
+                <ListCell
+                  interactive={false}
                   key={`${script.name}-${script.type}`}
-                  css={[
-                    tw`flex items-center justify-between py-3 cursor-pointer hover:bg-gray-100`,
-                    css`
-                      padding-left: calc(env(safe-area-inset-left) + 0.75rem);
-                      padding-right: calc(env(safe-area-inset-right) + 0.75rem);
-                    `,
-                  ]}
-                  title={t('scripting.open_script')}
-                  onClick={() => openUrl(script.path)}
+                  className="flex flex-row overflow-hidden items-center justify-between py-3 gap-2"
                 >
-                  <div tw="flex-1">
-                    <div tw="truncate leading-normal text-gray-700">
+                  <div className="flex-1 overflow-hidden">
+                    <div className=" truncate leading-normal">
                       {script.name}
                     </div>
-                    <div tw="text-sm text-gray-500">{script.type}</div>
+                    <div className="text-sm text-gray-500">{script.type}</div>
                   </div>
-                  <div tw="ml-2 flex items-center">
+                  <ButtonGroup className="items-center">
                     {script.type === 'cron' && (
-                      <LoadingButton
-                        onClick={(e: MouseEvent) => {
-                          e.stopPropagation()
+                      <Button
+                        onClick={() => {
                           evaluate(script.name, index)
                         }}
-                        size="kilo"
                         isLoading={isLoading === index}
                         loadingLabel={t('scripting.running')}
-                        tw="px-3 py-3 text-sm leading-tight"
+                        variant="outline"
                       >
                         {t('scripting.run_script_button_title')}
-                      </LoadingButton>
+                      </Button>
                     )}
-                  </div>
-                </div>
+                    {script.path.startsWith('http') && (
+                      <Button
+                        title={t('scripting.open_script')}
+                        onClick={() => openUrl(script.path)}
+                        size="icon"
+                        variant="outline"
+                      >
+                        <Link2Icon />
+                      </Button>
+                    )}
+                  </ButtonGroup>
+                </ListCell>
               )
             })}
         </div>
       </div>
 
-      <div tw="border-t border-solid border-gray-200 py-2">
+      <HorizontalSafeArea className="border-t border-solid border-gray-200 dark:border-white/20 py-3 px-4">
         <Button
-          variant="tertiary"
-          size="kilo"
-          onClick={() => history.push('/scripting/evaluate')}
+          variant="secondary"
+          onClick={() => navigate('/scripting/evaluate')}
         >
           {t('scripting.debug_script_button_title')}
         </Button>
-      </div>
+      </HorizontalSafeArea>
 
-      <Modal
-        isOpen={!!evaluateResult}
-        onClose={() => {
-          setEvaluateResult(undefined)
+      <Dialog
+        open={!!evaluateResult}
+        onOpenChange={(open) => {
+          if (!open) {
+            setEvaluateResult(undefined)
+          }
         }}
       >
-        {({ onClose }) => (
-          <ModalWrapper>
-            <ModalHeader title={t('scripting.result')} onClose={onClose} />
-            <div>
-              <pre
-                tw="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
-                css={css`
-                  min-height: 7rem;
-                `}
-              >
-                {evaluateResult}
-              </pre>
-            </div>
-          </ModalWrapper>
-        )}
-      </Modal>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t('scripting.result')}</DialogTitle>
+          </DialogHeader>
+          <div className="w-full overflow-hidden">
+            <CodeContent content={evaluateResult} />
+          </div>
+        </DialogContent>
+      </Dialog>
     </FixedFullscreenContainer>
   )
 }
 
-export default Page
+export default withProfile(Page)

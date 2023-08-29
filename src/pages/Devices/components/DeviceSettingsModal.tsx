@@ -1,35 +1,39 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import css from '@emotion/css/macro'
-import React, { MouseEvent, KeyboardEvent, useState } from 'react'
-import {
-  ButtonGroup,
-  Input,
-  LoadingButton,
-  ModalFooter,
-  ModalHeader,
-  ModalWrapper,
-  Toggle,
-} from '@sumup/circuit-ui'
+import React, { useCallback, useState } from 'react'
+import { useForm, useFormState } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
-import { useForm, Controller, useFormState } from 'react-hook-form'
-import isIP from 'is-ip'
-import to from 'await-to-js'
-import { toast } from 'react-toastify'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { to } from 'await-to-js'
 import { mutate } from 'swr'
 
-import { DHCPDevice } from '../../../types'
-import fetcher from '../../../utils/fetcher'
-import { getValidationHint } from '../../../utils/validation'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { DHCPDevice } from '@/types'
+import fetcher from '@/utils/fetcher'
 
-interface DeviceSettingsModalProps {
+import { useDeviceSettingsSchema } from './schemas'
+
+type DeviceSettingsModalProps = {
   title: string
   dhcpDevice: DHCPDevice
-  onClose: (event?: MouseEvent | KeyboardEvent) => void
-}
+} & Omit<React.ComponentPropsWithoutRef<typeof Dialog>, 'children'>
 
-interface FormData {
+type FormData = {
   name: string
   address: string
   shouldHandledBySurge: boolean
@@ -38,154 +42,164 @@ interface FormData {
 const DeviceSettingsModal = ({
   title,
   dhcpDevice,
-  onClose,
+  ...props
 }: DeviceSettingsModalProps): JSX.Element => {
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-    reset,
-  } = useForm<FormData>({
+  const { t } = useTranslation()
+  const DeviceSettingsSchema = useDeviceSettingsSchema()
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(DeviceSettingsSchema),
     defaultValues: {
       name: dhcpDevice.displayName,
       address: dhcpDevice.assignedIP || dhcpDevice.currentIP,
       shouldHandledBySurge: Boolean(dhcpDevice.shouldHandledBySurge),
     },
   })
+  const { handleSubmit, control, reset } = form
   const { dirtyFields } = useFormState({
     control,
   })
-  const { t } = useTranslation()
+
   const [isLoading, setIsLoading] = useState(false)
-  const onSubmit = (data: FormData) => {
-    if (!Object.keys(dirtyFields).length) {
-      toast.warn(t('devices.err_nothing_changed'))
-      return
-    }
 
-    ;(async () => {
-      setIsLoading(true)
-
-      const payload: Partial<FormData> & {
-        physicalAddress: string
-      } = {
-        physicalAddress: dhcpDevice.physicalAddress,
-      }
-
-      for (const i in dirtyFields) {
-        const key = i as keyof FormData
-        const isDirty = dirtyFields[key]
-
-        if (isDirty) {
-          // @ts-ignore
-          payload[key] = data[key]
-        }
-      }
-
-      const [err, result] = await to(
-        fetcher<{
-          error?: string
-        }>({
-          method: 'POST',
-          url: '/devices',
-          data: payload,
-        }).then((res) => {
-          if (res.error) {
-            throw new Error(res.error)
-          }
-        }),
-      )
-
-      setIsLoading(false)
-
-      if (err) {
-        reset()
-        console.error(err)
-        toast.error(t('common.failed_interaction') + `: ${err.message}`)
+  const onSubmit = useCallback(
+    (data: FormData) => {
+      if (!Object.keys(dirtyFields).length) {
+        toast(t('devices.err_nothing_changed'))
         return
       }
 
-      mutate('/devices')
-      toast.success(t('common.success_interaction'))
-      onClose()
-    })()
-  }
+      ;(async () => {
+        setIsLoading(true)
+
+        const payload: Partial<FormData> & {
+          physicalAddress: string
+        } = {
+          physicalAddress: dhcpDevice.physicalAddress,
+        }
+
+        for (const i in dirtyFields) {
+          const key = i as keyof FormData
+          const isDirty = dirtyFields[key]
+
+          if (isDirty) {
+            // @ts-ignore
+            payload[key] = data[key]
+          }
+        }
+
+        const [err] = await to(
+          fetcher<{
+            error?: string
+          }>({
+            method: 'POST',
+            url: '/devices',
+            data: payload,
+          }).then((res) => {
+            if (res.error) {
+              throw new Error(res.error)
+            }
+          }),
+        )
+
+        setIsLoading(false)
+
+        if (err) {
+          reset()
+          console.error(err)
+          toast.error(t('common.failed_interaction') + `: ${err.message}`)
+          return
+        }
+
+        mutate('/devices')
+        toast.success(t('common.success_interaction'))
+        if (props.onOpenChange) {
+          props.onOpenChange(false)
+        }
+      })()
+    },
+    [dhcpDevice.physicalAddress, dirtyFields, props, reset, t],
+  )
 
   return (
-    <ModalWrapper>
-      <ModalHeader
-        title={`${t('devices.modify')} ${title}`}
-        onClose={onClose}
-      />
+    <Dialog {...props}>
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
+        <DialogHeader>
+          <DialogTitle>{`${t('devices.modify')} ${title}`}</DialogTitle>
+        </DialogHeader>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div tw="pb-5">
-          <Input
-            invalid={!!errors?.name}
-            disabled={isLoading}
-            validationHint={getValidationHint(
-              {
-                required: t('devices.err_required'),
-              },
-              errors?.name,
-            )}
-            label={t('devices.name')}
-            as="input"
-            defaultValue={dhcpDevice.displayName}
-            {...register('name', { required: true })}
-          />
-          <Input
-            invalid={!!errors?.address}
-            disabled={isLoading}
-            validationHint={getValidationHint(
-              {
-                required: t('devices.err_required'),
-                isIP: t('devices.err_not_ip'),
-              },
-              errors?.address,
-            )}
-            label={t('devices.address')}
-            as="input"
-            defaultValue={dhcpDevice.assignedIP || dhcpDevice.currentIP}
-            {...register('address', {
-              required: true,
-              validate: {
-                isIP: (val) => isIP(val),
-              },
-            })}
-          />
-          <Controller
-            name="shouldHandledBySurge"
-            control={control}
-            render={({ field }) => (
-              <Toggle
-                disabled={isLoading}
-                noMargin
-                label={t('devices.handled_by_surge')}
-                labelChecked="on"
-                labelUnchecked="off"
-                checked={field.value}
-                onChange={() => field.onChange(!field.value)}
-              />
-            )}
-          />
-        </div>
+        <Form {...form}>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('devices.name')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      autoComplete="off"
+                      required
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <ModalFooter align="right">
-          <ButtonGroup>
-            <LoadingButton
-              isLoading={isLoading}
-              variant="primary"
-              as="submit"
-              loadingLabel={t('common.is_loading')}
-            >
-              {t('common.save')}
-            </LoadingButton>
-          </ButtonGroup>
-        </ModalFooter>
-      </form>
-    </ModalWrapper>
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('devices.address')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      autoCorrect="off"
+                      autoComplete="off"
+                      autoCapitalize="off"
+                      required
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="shouldHandledBySurge"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                  <FormControl>
+                    <Checkbox
+                      disabled={isLoading}
+                      checked={field.value}
+                      onCheckedChange={(checked) => field.onChange(checked)}
+                    />
+                  </FormControl>
+                  <FormLabel>{t('devices.handled_by_surge')}</FormLabel>
+                </FormItem>
+              )}
+            />
+
+            <div>
+              <Button
+                isLoading={isLoading}
+                type="submit"
+                loadingLabel={t('common.is_loading')}
+              >
+                {t('common.save')}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   )
 }
 

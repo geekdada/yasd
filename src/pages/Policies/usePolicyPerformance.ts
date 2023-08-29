@@ -1,8 +1,8 @@
 import useSWR, { mutate } from 'swr'
 
-import { useVersionSupport } from '../../hooks'
-import { PolicyBenchmarkResults } from '../../types'
-import fetcher from '../../utils/fetcher'
+import { useVersionSupport } from '@/hooks/useVersionSupport'
+import { PolicyBenchmarkResults } from '@/types'
+import fetcher from '@/utils/fetcher'
 
 export const mutatePolicyPerformanceResults = () =>
   mutate('/policies/benchmark_results')

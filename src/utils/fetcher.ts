@@ -1,5 +1,5 @@
+import { toast } from 'react-hot-toast'
 import axios, { AxiosRequestConfig } from 'axios'
-import { toast } from 'react-toastify'
 
 const client = axios.create({
   baseURL: '/v1',
@@ -34,7 +34,7 @@ export function setServer(
   client.defaults.baseURL = `${useTls ? 'https:' : 'http:'}//${host}:${port}/v1`
 }
 
-const fetcher = <T>(requestConfig: AxiosRequestConfig): Promise<T> => {
+const fetcher = async <T>(requestConfig: AxiosRequestConfig): Promise<T> => {
   return client
     .request<T>(requestConfig)
     .then((res) => res.data)
@@ -51,7 +51,7 @@ const fetcher = <T>(requestConfig: AxiosRequestConfig): Promise<T> => {
         // http.ClientRequest in node.js
         console.error(error.request)
         toast.error('无法连接服务器: ' + error.message, {
-          toastId: error.message,
+          id: error.message,
         })
       } else {
         // Something happened in setting up the request that triggered an Error

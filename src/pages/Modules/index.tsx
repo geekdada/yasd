@@ -1,23 +1,19 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
 import React, { useCallback, useState } from 'react'
-import { Toggle } from '@sumup/circuit-ui'
+import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
 import useSWR, { mutate } from 'swr'
-import { toast } from 'react-toastify'
 
-import PageContainer from '../../components/PageContainer'
-import PageTitle from '../../components/PageTitle'
-import { Modules } from '../../types'
-import fetcher from '../../utils/fetcher'
+import { ListCell, ListFullHeightCell } from '@/components/ListCell'
+import PageContainer from '@/components/PageContainer'
+import PageTitle from '@/components/PageTitle'
+import { Switch } from '@/components/ui/switch'
+import { Modules } from '@/types'
+import fetcher from '@/utils/fetcher'
+import withProfile from '@/utils/with-profile'
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
-  const { data: modules, error: modulesError } = useSWR<Modules>(
-    '/modules',
-    fetcher,
-  )
+  const { data: modules } = useSWR<Modules>('/modules', fetcher)
   const [isLoading, setIsLoading] = useState(false)
 
   const isChecked = (name: string): boolean => {
@@ -54,29 +50,32 @@ const Page: React.FC = () => {
     <PageContainer>
       <PageTitle title={t('home.modules')} />
 
-      <div tw="divide-y divide-gray-200">
+      <div className="divide-y">
         {modules &&
           modules.available.map((mod) => {
             return (
-              <div key={mod} tw="flex items-center justify-between p-3">
-                <div tw="truncate leading-normal text-gray-700">{mod}</div>
-                <div tw="flex items-center">
-                  <Toggle
-                    noMargin
-                    label=""
-                    labelChecked="on"
-                    labelUnchecked="off"
+              <ListCell
+                key={mod}
+                className="flex flex-row items-center justify-between p-3"
+              >
+                <div className="truncate leading-normal">{mod}</div>
+                <div className="flex items-center">
+                  <Switch
                     disabled={isLoading}
                     checked={isChecked(mod)}
-                    onChange={() => toggle(mod, !isChecked(mod))}
+                    onCheckedChange={(checked) => toggle(mod, checked)}
                   />
                 </div>
-              </div>
+              </ListCell>
             )
           })}
+
+        {modules && modules.available.length === 0 && (
+          <ListFullHeightCell>{t('modules.empty_list')}</ListFullHeightCell>
+        )}
       </div>
     </PageContainer>
   )
 }
 
-export default Page
+export default withProfile(Page)

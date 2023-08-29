@@ -1,18 +1,16 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { Heading } from '@sumup/circuit-ui'
-import { Spinner } from '@sumup/icons'
 import React, { useEffect, useMemo, useState } from 'react'
-import styled from '@emotion/styled/macro'
-import css from '@emotion/css/macro'
-import tw from 'twin.macro'
+import { css } from '@emotion/react'
+
+import { TypographyH3 } from '@/components/ui/typography'
+import { cn } from '@/utils/shadcn'
+
 import BackButton from '../BackButton'
 
 interface PageTitleProps {
   title: string
   hasAutoRefresh?: boolean
   defaultAutoRefreshState?: boolean
-  onAuthRefreshStateChange?: (newState: boolean) => void
+  onAutoRefreshStateChange?: (newState: boolean) => void
   sticky?: boolean
 }
 
@@ -26,51 +24,55 @@ const PageTitle: React.FC<PageTitleProps> = (props) => {
   )
 
   useEffect(() => {
-    if (props.hasAutoRefresh && props.onAuthRefreshStateChange) {
-      props.onAuthRefreshStateChange(isAutoRefresh)
+    if (props.hasAutoRefresh && props.onAutoRefreshStateChange) {
+      props.onAutoRefreshStateChange(isAutoRefresh)
     }
-  }, [
-    isAutoRefresh,
-    props,
-    props.hasAutoRefresh,
-    props.onAuthRefreshStateChange,
-  ])
+  }, [isAutoRefresh, props])
 
   return (
-    <Heading
-      size={'tera'}
-      noMargin
-      css={[
-        isSticky ? tw`sticky top-0` : '',
-        tw`flex items-center justify-between shadow bg-white z-10 px-3 py-3`,
-        css``,
-      ]}
+    <TypographyH3
+      className={cn(
+        isSticky ? 'sticky top-0' : '',
+        'flex items-center justify-between shadow bg-white dark:bg-muted z-10 px-3 py-2 md:py-3 md:px-5',
+      )}
     >
       <div
-        tw="flex items-center"
+        className="flex items-center"
         css={css`
           padding-left: env(safe-area-inset-left);
         `}
       >
-        <BackButton />
-        <div>{props.title}</div>
+        <BackButton title={props.title} />
       </div>
 
       {props.hasAutoRefresh && (
         <div
           onClick={() => setIsAutoRefresh(!isAutoRefresh)}
+          className={cn(
+            'relative bg-green-100 cursor-pointer w-7 h-7 rounded-full flex items-center justify-center transition-colors duration-200 ease-in-out',
+            isAutoRefresh && 'bg-red-100',
+          )}
           css={[
-            tw`bg-blue-500 text-white cursor-pointer w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-200 ease-in-out`,
-            isAutoRefresh && tw`bg-red-400`,
             css`
               margin-right: env(safe-area-inset-right);
             `,
           ]}
         >
-          <Spinner css={[tw`w-6 h-6`, isAutoRefresh && tw`animate-spin`]} />
+          <span
+            className={cn(
+              'absolute bg-green-600 w-4 h-4 rounded-full transition-colors',
+              isAutoRefresh && 'animate-ping bg-red-600',
+            )}
+          />
+          <span
+            className={cn(
+              'bg-green-600 w-4 h-4 rounded-full transition-colors',
+              isAutoRefresh && 'bg-red-600',
+            )}
+          />
         </div>
       )}
-    </Heading>
+    </TypographyH3>
   )
 }
 

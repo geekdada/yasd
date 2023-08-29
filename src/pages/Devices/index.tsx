@@ -1,28 +1,33 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
 import React, { useState } from 'react'
-import css from '@emotion/css/macro'
-import tw from 'twin.macro'
 import { useTranslation } from 'react-i18next'
 import useSWR from 'swr'
 
-import PageContainer from '../../components/PageContainer'
-import PageTitle from '../../components/PageTitle'
-import { DevicesResult } from '../../types'
-import fetcher from '../../utils/fetcher'
+import { ListCell, ListFullHeightCell } from '@/components/ListCell'
+import PageContainer from '@/components/PageContainer'
+import PageTitle from '@/components/PageTitle'
+import { DevicesResult } from '@/types'
+import fetcher from '@/utils/fetcher'
+import withProfile from '@/utils/with-profile'
+
 import DeviceItem from './components/DeviceItem'
 
 const Page = (): JSX.Element => {
   const { t } = useTranslation()
   const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(false)
-  const { data: devices, error: devicesError } = useSWR<DevicesResult>(
-    '/devices',
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      refreshInterval: isAutoRefresh ? 2000 : 0,
-    },
+  const { data: devices } = useSWR<DevicesResult>('/devices', fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    refreshInterval: isAutoRefresh ? 2000 : 0,
+  })
+
+  const deviceList = devices?.devices.length ? (
+    devices.devices.map((device) => (
+      <ListCell key={device.identifier}>
+        <DeviceItem device={device} />
+      </ListCell>
+    ))
+  ) : (
+    <ListFullHeightCell>{t('devices.empty_list')}</ListFullHeightCell>
   )
 
   return (
@@ -31,19 +36,20 @@ const Page = (): JSX.Element => {
         title={t('home.device_management')}
         hasAutoRefresh={true}
         defaultAutoRefreshState={false}
-        onAuthRefreshStateChange={(newState) => setIsAutoRefresh(newState)}
+        onAutoRefreshStateChange={(newState) => setIsAutoRefresh(newState)}
       />
 
-      <div tw="divide-y divide-gray-200">
-        {devices?.devices &&
-          devices.devices.map((device) => (
-            <div key={device.identifier}>
-              <DeviceItem device={device} />
-            </div>
-          ))}
+      <div className="divide-y">
+        {!devices ? (
+          <ListFullHeightCell>
+            {t('common.is_loading') + '...'}
+          </ListFullHeightCell>
+        ) : (
+          deviceList
+        )}
       </div>
     </PageContainer>
   )
 }
 
-export default Page
+export default withProfile(Page)

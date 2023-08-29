@@ -12,7 +12,24 @@
     "failed_interaction": "操作失败",
     "see": "查看",
     "save": "保存",
-    "surge_too_old": "您的 Surge 版本过低，请考虑升级 Surge 以使用本程序！"
+    "surge_too_old": "您的 Surge 版本过低，请考虑升级 Surge 以使用本程序！",
+    "download": "下载",
+    "dark": "深色",
+    "light": "浅色",
+    "system": "跟随系统",
+    "sw_updated": "Surge Web Dashboard 已更新，刷新页面以使用新版本。",
+    "refresh": "刷新",
+    "confirm": "确认",
+    "cancel": "取消"
+  },
+  "tls_instruction": {
+    "title": "需要证书吗？",
+    "description": "您的连接已失败，可能是因为缺少证书。请按照下面的说明（针对 Safari）安装在您的 Surge 配置文件中定义的证书。",
+    "instruction1": "1. 点击下面的下载按钮下载证书。",
+    "instruction2": "2. Safari 会警告您说您的连接不安全。点击「显示详情」然后点击「访问此网站」。",
+    "instruction3": "3. 点击「安装证书」并按照说明安装证书。",
+    "instruction4": "4. 您可能需要选择一个设备来安装证书。",
+    "instruction5": "5. 回到这里再试一次。"
   },
   "form": {
     "err_invalid": "无效的输入内容",
@@ -27,12 +44,12 @@
     "login": "登录",
     "name": "名称",
     "host": "域名或 IP 地址",
-    "host_tips": "局域网内可以使用 iphone.local",
+    "host_tips": "局域网内可以使用 mac.local 或 mac.sgponte",
     "port": "端口",
     "key": "密钥",
     "remember_me": "记住我",
     "https": "HTTPS (请确保开启 http-api-tls)",
-    "confirm": "完成",
+    "confirm": "提交",
     "is_loading": "加载中",
     "history": "历史记录",
     "current": "当前"
@@ -49,11 +66,23 @@
     "dns": "DNS",
     "profile": "配置",
     "mitm": "MitM",
-    "http_capture": "抓取流量",
-    "rewrite": "Rewrite",
+    "http_capture": "抓取 HTTP",
+    "rewrite": "重写",
     "github": "GitHub",
     "events": "事件",
-    "device_management": "设备管理"
+    "device_management": "设备管理",
+    "descriptions": {
+      "mitm": "使用中间人攻击（MitM）解密 HTTPS 流量。",
+      "rewrite": "重定向 HTTP 请求或修改请求标头。",
+      "github": "给 Surge Web Dashboard 一个 Star 吧！",
+      "scripting": "使用 JavaScript 来扩展 Surge 的功能。",
+      "modules": "模块是一系列设置的集合，可用于覆盖当前配置的部分设定。",
+      "device_management": "管理局域网内的设备，包括设备名称、IP 地址、接管模式等。",
+      "profile": "管理当前 Surge 配置文件。",
+      "dns": "当前的 DNS 缓存记录。",
+      "http_capture": "打开 HTTP 截取开关以抓取和查看数据体。",
+      "traffic": "实时统计当前的流量使用情况。"
+    }
   },
   "traffic_cell": {
     "upload": "上传",
@@ -108,17 +137,18 @@
     "result": "结果",
     "open_script": "打开脚本",
     "empty_code_error": "没有输入脚本内容",
-    "editor_placeholder": "// 仅支持 Cron 类型脚本\n// 文档: https://manual.nssurge.com/scripting/cron.html\n\n$done();",
+    "editor_placeholder": "// 仅支持 Cron 类型脚本\n\n$done();",
     "timeout": "超时时间"
   },
   "dns": {
     "result": "结果",
     "source": "来源",
     "path": "路径",
-    "flush_dns": "刷新 DNS",
+    "flush_dns": "清理 DNS 缓存",
     "dynamic": "动态记录",
     "static": "静态记录",
-    "comment": "备注"
+    "comment": "备注",
+    "view_dns": "查看 DNS 记录"
   },
   "devices": {
     "mac_address": "MAC 地址",
@@ -143,6 +173,46 @@
     "waiting": "等待",
     "device_settings": "设备设定",
     "view_requests": "查看连接",
-    "modify": "修改"
+    "modify": "修改",
+    "empty_list": "暂无设备"
+  },
+  "modules": {
+    "empty_list": "暂无模块"
+  },
+  "Submit": "提交",
+  "Clear": "清除",
+  "Filter": "过滤",
+  "Filter rules": "过滤规则",
+  "Filter requests by partial URL.": "根据部分 URL 过滤请求。",
+  "Sort": "排序",
+  "Sort rules": "排序规则",
+  "Sort requests by time or size.": "根据时间或大小排序请求。",
+  "By time": "按时间",
+  "By size": "按大小",
+  "profiles": {
+    "title": "管理配置",
+    "current": "当前",
+    "view_current": "查看当前配置",
+    "reload_current": "重新加载",
+    "change_profile": "更改配置",
+    "select_profile": "选择配置",
+    "select": "选择",
+    "confirm_reload_profile": {
+      "title": "重新加载配置？",
+      "description": "请确保新版本允许使用 HTTP API，否则您将无法在此操作后使用此仪表板。"
+    },
+    "reload_profile_success": "成功重新加载配置。",
+    "reload_profile_failed": "重新加载配置失败。",
+    "confirm_select_profile": {
+      "title": "选择配置？",
+      "description": "请确保新版本允许使用 HTTP API，否则您将无法在此操作后使用此仪表板。"
+    },
+    "select_profile_success": "成功选择配置。",
+    "select_profile_failed": "选择配置失败。",
+    "version_processed": "最终配置",
+    "version_original": "原始配置",
+    "confirm_delete_profile": {
+      "title": "删除配置？"
+    }
   }
 }

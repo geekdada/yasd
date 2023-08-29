@@ -1,46 +1,26 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import css from '@emotion/css/macro'
-import loadable from '@loadable/component'
-import React, { useState } from 'react'
-import styled from '@emotion/styled/macro'
-import { IControlledCodeMirror } from 'react-codemirror2'
+import React, { lazy, Suspense, useCallback, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import tw from 'twin.macro'
+import { css } from '@emotion/react'
+import { LifeBuoy } from 'lucide-react'
+
+import CodeContent from '@/components/CodeContent'
+import CodeMirrorLoading from '@/components/CodeMirrorLoading'
+import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
+import PageTitle from '@/components/PageTitle'
+import { Button } from '@/components/ui/button'
 import {
-  Input,
-  LoadingButton,
-  Modal,
-  ModalHeader,
-  ModalWrapper,
-} from '@sumup/circuit-ui'
-import { toast } from 'react-toastify'
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { EvaluateResult } from '@/types'
+import fetcher from '@/utils/fetcher'
 
-import CodeMirrorLoading from '../../../components/CodeMirrorLoading'
-import FixedFullscreenContainer from '../../../components/FixedFullscreenContainer'
-import PageTitle from '../../../components/PageTitle'
-import { EvaluateResult } from '../../../types'
-import fetcher from '../../../utils/fetcher'
-
-const CodeMirror = loadable<IControlledCodeMirror>(
-  async () => {
-    const mod = await import('react-codemirror2').then((mod) => mod.Controlled)
-
-    await Promise.all([
-      // @ts-ignore
-      import('codemirror/lib/codemirror.css'),
-      // @ts-ignore
-      import('codemirror/theme/material.css'),
-      // @ts-ignore
-      import('codemirror/mode/javascript/javascript'),
-    ])
-
-    return mod
-  },
-  {
-    fallback: <CodeMirrorLoading />,
-  },
-)
+const CodeMirror = lazy(() => import('@/components/CodeMirror'))
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
@@ -51,7 +31,7 @@ const Page: React.FC = () => {
   const [result, setResult] = useState<string>()
   const [timeout, setTimeoutValue] = useState<number>(5)
 
-  const evaluate = () => {
+  const evaluate = useCallback(() => {
     if (isLoading) return
 
     if (!code) {
@@ -84,72 +64,50 @@ const Page: React.FC = () => {
       .finally(() => {
         setIsLoading(false)
       })
-  }
+  }, [code, isLoading, t, timeout])
 
   return (
     <FixedFullscreenContainer>
       <PageTitle title={t('scripting.debug_script_button_title')} />
 
-      <div tw="h-full flex flex-col overflow-hidden">
-        <div tw="h-full overflow-auto">
-          <CodeMirror
-            css={[
-              tw`h-full text-xs`,
-              css`
-                & > .CodeMirror {
-                  height: 100%;
-                  font-family: Menlo, Monaco, Consolas, 'Liberation Mono',
-                    'Courier New', monospace;
-                }
-              `,
-            ]}
-            value={code}
-            options={{
-              mode: 'javascript',
-              theme: 'material',
-              lineNumbers: true,
-              tabSize: 2,
-              indentWithTabs: false,
-              lineWrapping: true,
-            }}
-            onBeforeChange={(editor, data, value) => {
-              setCode(value)
-            }}
-          />
+      <div className="h-full flex flex-col overflow-hidden">
+        <div className="h-full overflow-auto">
+          <Suspense fallback={<CodeMirrorLoading />}>
+            <CodeMirror
+              isJavaScript
+              value={code}
+              onChange={(value) => {
+                setCode(value)
+              }}
+            />
+          </Suspense>
         </div>
-        <div
-          css={[
-            tw`flex items-center border-t border-solid border-gray-200 py-3 px-3`,
-          ]}
-        >
-          <LoadingButton
+
+        <div className="flex items-center border-t border-solid py-3 px-3">
+          <Button
             onClick={evaluate}
-            variant="primary"
-            size="kilo"
             isLoading={isLoading}
             loadingLabel={t('scripting.running')}
           >
             {t('scripting.run_script_button_title')}
-          </LoadingButton>
+          </Button>
 
-          <div
-            css={[
-              tw`ml-4`,
-              css`
-                padding-bottom: 1px;
-
-                & input {
-                  border-radius: 4px;
-                  ${tw`px-2 py-1 text-sm leading-none`}
-                }
-              `,
-            ]}
+          <a
+            href="https://manual.nssurge.com/scripting/common.html"
+            target="_blank"
+            rel="noreferrer"
           >
+            <Button className="ml-4" size="icon" variant="outline">
+              <LifeBuoy />
+            </Button>
+          </a>
+
+          <div className="ml-6">
+            <Label htmlFor="timeout-input">{t('scripting.timeout')}</Label>
             <Input
+              id="timeout-input"
               type="number"
               required
-              noMargin
-              label={t('scripting.timeout')}
               value={timeout}
               onChange={({ target }) =>
                 setTimeoutValue(Number((target as HTMLInputElement).value))
@@ -159,28 +117,23 @@ const Page: React.FC = () => {
         </div>
       </div>
 
-      <Modal
-        isOpen={!!result}
-        onClose={() => {
-          setResult('')
+      <Dialog
+        open={!!result}
+        onOpenChange={(open) => {
+          if (!open) {
+            setResult('')
+          }
         }}
       >
-        {({ onClose }) => (
-          <ModalWrapper>
-            <ModalHeader title={t('scripting.result')} onClose={onClose} />
-            <div>
-              <pre
-                tw="font-mono text-xs text-gray-600 bg-gray-200 leading-tight p-3 whitespace-pre-wrap break-words"
-                css={css`
-                  min-height: 7rem;
-                `}
-              >
-                {result}
-              </pre>
-            </div>
-          </ModalWrapper>
-        )}
-      </Modal>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t('scripting.result')}</DialogTitle>
+          </DialogHeader>
+          <div className="w-full overflow-hidden">
+            <CodeContent content={result} />
+          </div>
+        </DialogContent>
+      </Dialog>
     </FixedFullscreenContainer>
   )
 }

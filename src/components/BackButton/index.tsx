@@ -1,26 +1,25 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { IconButton } from '@sumup/circuit-ui'
-import { ChevronLeft } from '@sumup/icons'
 import React from 'react'
-import css from '@emotion/css/macro'
-import tw from 'twin.macro'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { ArrowLeftIcon } from 'lucide-react'
 
-const BackButton: React.FC = () => {
-  const history = useHistory()
+import { Button } from '@/components/ui/button'
+
+const BackButton = ({ title }: { title?: string }) => {
+  const navigate = useNavigate()
 
   return (
-    <IconButton
-      onClick={() => history.goBack()}
-      label="back"
-      tw="w-8 h-8 mr-3 self-center"
-      css={css`
-        padding: 0.3rem;
-      `}
-    >
-      <ChevronLeft />
-    </IconButton>
+    <div className="space-x-4">
+      <Button
+        variant="outline"
+        onClick={() => navigate(-1)}
+        title="back"
+        size="icon"
+        className="border-2"
+      >
+        <ArrowLeftIcon />
+      </Button>
+      {title ? <span className="">{title}</span> : null}
+    </div>
   )
 }
 

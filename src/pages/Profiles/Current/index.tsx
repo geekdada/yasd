@@ -1,81 +1,75 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import loadable from '@loadable/component'
-import React from 'react'
-import css from '@emotion/css/macro'
-import { IControlledCodeMirror } from 'react-codemirror2'
+import React, { lazy, Suspense, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import useSWR from 'swr'
-import tw from 'twin.macro'
 
-import CodeMirrorLoading from '../../../components/CodeMirrorLoading'
-import FixedFullscreenContainer from '../../../components/FixedFullscreenContainer'
-import PageTitle from '../../../components/PageTitle'
-import fetcher from '../../../utils/fetcher'
+import BottomPanel from '@/components/BottomPanel'
+import CodeMirrorLoading from '@/components/CodeMirrorLoading'
+import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
+import PageTitle from '@/components/PageTitle'
+import { Toggle } from '@/components/ui/toggle'
+import { useCurrentProfile } from '@/data'
+import withProfile from '@/utils/with-profile'
 
-const CodeMirror = loadable<IControlledCodeMirror>(
-  async () => {
-    const mod = await import('react-codemirror2').then((mod) => mod.Controlled)
-
-    await Promise.all([
-      // @ts-ignore
-      import('codemirror/lib/codemirror.css'),
-      // @ts-ignore
-      import('codemirror/theme/material.css'),
-      // @ts-ignore
-      import('codemirror/mode/properties/properties'),
-    ])
-
-    return mod
-  },
-  {
-    fallback: <CodeMirrorLoading />,
-  },
-)
+const CodeMirror = lazy(() => import('@/components/CodeMirror'))
 
 const Page: React.FC = () => {
   const { t } = useTranslation()
-  const { data: profile, error: profileError } = useSWR<{ profile: string }>(
-    '/profiles/current?sensitive=1',
-    fetcher,
+  const [version, setVersion] = React.useState<'original' | 'processed'>(
+    'processed',
   )
+  const { data: profile, isLoading } = useCurrentProfile()
+  const profileString = useMemo(() => {
+    if (!profile) {
+      return undefined
+    }
+
+    return version === 'processed' ? profile.profile : profile.originalProfile
+  }, [profile, version])
 
   return (
     <FixedFullscreenContainer offsetBottom={false}>
-      <PageTitle title={t('home.profile')} />
+      <PageTitle title={`${t('home.profile')} - ${profile?.name}`} />
 
-      <div tw="h-full flex flex-col overflow-hidden">
-        <div tw="h-full overflow-auto">
-          <CodeMirror
-            css={[
-              tw`h-full text-xs`,
-              css`
-                & > .CodeMirror {
-                  padding-bottom: env(safe-area-inset-bottom);
-                  height: 100%;
-                  font-family: Menlo, Monaco, Consolas, 'Liberation Mono',
-                    'Courier New', monospace;
-                }
-              `,
-            ]}
-            value={profile?.profile ?? `${t('common.is_loading')}...`}
-            options={{
-              mode: 'properties',
-              theme: 'material',
-              lineNumbers: true,
-              tabSize: 2,
-              indentWithTabs: false,
-              lineWrapping: true,
-              readOnly: 'nocursor',
-            }}
-            onBeforeChange={() => {
-              // noop
-            }}
-          />
+      <div className="h-full flex flex-col overflow-hidden">
+        <div className="h-full overflow-auto">
+          <Suspense fallback={<CodeMirrorLoading />}>
+            <CodeMirror
+              readOnly
+              value={isLoading ? `${t('common.is_loading')}...` : profileString}
+            />
+          </Suspense>
         </div>
+
+        <BottomPanel>
+          <div className="space-x-3">
+            <Toggle
+              size="sm"
+              pressed={version === 'processed'}
+              onPressedChange={(pressed) => {
+                if (pressed) {
+                  setVersion('processed')
+                }
+              }}
+            >
+              {t('profiles.version_processed')}
+            </Toggle>
+
+            <Toggle
+              size="sm"
+              pressed={version === 'original'}
+              onPressedChange={(pressed) => {
+                if (pressed) {
+                  setVersion('original')
+                }
+              }}
+            >
+              {t('profiles.version_original')}
+            </Toggle>
+          </div>
+        </BottomPanel>
       </div>
     </FixedFullscreenContainer>
   )
 }
 
-export default Page
+export default withProfile(Page)

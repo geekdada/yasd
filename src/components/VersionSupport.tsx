@@ -1,23 +1,24 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
 import React from 'react'
 
-import { useVersionSupport } from '../hooks'
+import { useVersionSupport } from '@/hooks/useVersionSupport'
 
 interface VersionSupportProps {
-  macos?: string
-  ios?: string
+  macos?: string | boolean
+  ios?: string | boolean
+  tvos?: string | boolean
+  children: React.ReactNode
 }
 
 const VersionSupport: React.FC<VersionSupportProps> = ({
   macos,
   ios,
+  tvos,
   children,
 }) => {
-  const isSupported = useVersionSupport({ macos, ios })
+  const isSupported = useVersionSupport({ macos, ios, tvos })
 
   if (isSupported) {
-    return <React.Fragment>{children}</React.Fragment>
+    return <>{children}</>
   }
 
   return null

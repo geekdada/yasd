@@ -1,22 +1,22 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import axios from 'axios'
-import React, { MouseEventHandler, useEffect, useState } from 'react'
-import styled from '@emotion/styled/macro'
-import css from '@emotion/css/macro'
+import { Trash2 } from 'lucide-react'
 import tw from 'twin.macro'
-import { Bin, PaperPlane } from '@sumup/icons'
-import { IconButton } from '@sumup/circuit-ui'
 
-import { Profile } from '../../types'
+import { Button } from '@/components/ui/button'
+import { useConfirm } from '@/components/UIProvider'
+import { Profile } from '@/types'
+import { cn } from '@/utils/shadcn'
 
 interface ProfileCellProps {
   profile: Profile
   checkConnectivity?: boolean
-  onClick?: MouseEventHandler
+  onClick?: () => void
+  onDelete?: () => void
   showDelete?: boolean
-  onDelete?: MouseEventHandler
   variant?: 'spread' | 'left'
+  className?: string
 }
 
 const ProfileCell: React.FC<ProfileCellProps> = ({
@@ -26,37 +26,42 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
   showDelete,
   onDelete,
   variant = 'spread',
+  className,
 }) => {
   const [available, setAvailable] = useState<boolean | undefined>(undefined)
+  const confirm = useConfirm()
   const variantStyle =
     variant === 'spread'
-      ? tw`flex-row justify-between items-center`
-      : tw`flex-col justify-start items-start`
+      ? 'flex-row justify-between items-center'
+      : 'flex-col justify-start items-start'
+  const { t } = useTranslation()
 
-  const clickHandler: MouseEventHandler = (e) => {
-    e.stopPropagation()
-    e.preventDefault()
-
+  const clickHandler = () => {
     if (available && onClick) {
-      onClick(e)
+      onClick()
     }
   }
 
-  const deleteHandler: MouseEventHandler = (e) => {
-    e.stopPropagation()
-    e.preventDefault()
+  const deleteHandler = async () => {
+    if (!onDelete) {
+      return undefined
+    }
 
-    if (onDelete) {
-      onDelete(e)
+    const result = await confirm({
+      title: t('profiles.confirm_delete_profile.title'),
+    })
+
+    if (result) {
+      onDelete()
     }
   }
 
   const getCursorStyle = () => {
     if (onClick) {
       if (available) {
-        return tw`cursor-pointer`
+        return 'cursor-pointer'
       }
-      return tw`cursor-not-allowed`
+      return 'cursor-not-allowed'
     }
     return null
   }
@@ -91,19 +96,23 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
 
   return (
     <div
-      key={profile.id}
-      css={[getCursorStyle(), tw`flex p-3 justify-between`]}
-      onClick={clickHandler}
+      className={cn('flex p-3 justify-between ', getCursorStyle(), className)}
+      onClick={(e) => {
+        e.stopPropagation()
+        e.preventDefault()
+        clickHandler()
+      }}
     >
-      <div css={[tw`flex w-full`, variantStyle]}>
-        <div tw="truncate text-sm md:text-base leading-tight">
+      <div className={cn('flex w-full', variantStyle)}>
+        <div className="truncate text-sm md:text-base leading-tight font-bold">
           {profile.name}
         </div>
-        <div css={[tw`flex items-center`, variant === 'left' && tw`mt-2`]}>
+
+        <div className={cn('flex items-center', variant === 'left' && 'mt-2')}>
           {checkConnectivity && (
-            <div tw="relative flex h-3 w-3 mr-3">
+            <div className="relative flex h-3 w-3 mr-3">
               {available && (
-                <span tw="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
               )}
               <span
                 css={[
@@ -115,7 +124,7 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
               />
             </div>
           )}
-          <div tw="flex items-center font-mono text-gray-600 text-xs md:text-sm truncate leading-none">
+          <div className="flex items-center font-mono text-muted-foreground text-xs md:text-sm truncate leading-none">
             <span>
               {profile.host}:{profile.port}
             </span>
@@ -123,26 +132,19 @@ const ProfileCell: React.FC<ProfileCellProps> = ({
         </div>
       </div>
       {showDelete && (
-        <div tw="flex items-center ml-2">
-          <IconButton
-            onClick={deleteHandler}
-            label={'delete profile'}
-            css={[
-              tw`flex items-center justify-center w-8 h-8 text-gray-600`,
-              css`
-                padding: 0;
-
-                svg {
-                  ${tw`transition-colors duration-200 ease-in-out w-4 h-4`}
-                }
-                &:hover svg {
-                  ${tw`text-gray-700`}
-                }
-              `,
-            ]}
+        <div className="flex items-center ml-2">
+          <Button
+            onClick={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              deleteHandler()
+            }}
+            title={'delete profile'}
+            size="icon"
+            variant="outline"
           >
-            <Bin />
-          </IconButton>
+            <Trash2 />
+          </Button>
         </div>
       )}
     </div>

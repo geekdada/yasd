@@ -1,274 +1,192 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
-import css from '@emotion/css/macro'
-import { useModal } from '@sumup/circuit-ui'
-import SelectorGroup from '@sumup/circuit-ui/dist/es/components/SelectorGroup'
+import React, { useState, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
+import { List, AutoSizer } from 'react-virtualized'
+import { css } from '@emotion/react'
+import { ActivityIcon, HistoryIcon } from 'lucide-react'
 import { ListRowRenderer } from 'react-virtualized/dist/es/List'
 import tw from 'twin.macro'
-import omit from 'lodash-es/omit'
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  ChangeEvent,
-  useMemo,
-} from 'react'
-import useSWR, { mutate } from 'swr'
-import { List, AutoSizer } from 'react-virtualized'
-import { useLocation } from 'react-router-dom'
 
-import FixedFullscreenContainer from '../../components/FixedFullscreenContainer'
-import PageTitle from '../../components/PageTitle'
-import { useProfile } from '../../models/profile'
-import { RecentRequests, RequestItem } from '../../types'
-import fetcher from '../../utils/fetcher'
+import BottomPanel from '@/components/BottomPanel'
+import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
+import { ListCell } from '@/components/ListCell'
+import PageTitle from '@/components/PageTitle'
+import { Toggle } from '@/components/ui/toggle'
+import FilterPopover, {
+  FilterSchema,
+} from '@/pages/Requests/components/FilterPopover'
+import SorterPopover, {
+  SorterRules,
+} from '@/pages/Requests/components/SorterPopover'
+import useRequestsList from '@/pages/Requests/hooks/useRequestsList'
+import { RequestItem } from '@/types'
+
 import ListItem from './components/ListItem'
 import RequestModal from './components/RequestModal'
-
-const LIST_ITEMS_MAX = 150
 
 function useQuery() {
   return new URLSearchParams(useLocation().search)
 }
 
 const Page: React.FC = () => {
-  const { setModal } = useModal()
   const { t } = useTranslation()
-  const profile = useProfile()
-  const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(true)
+
+  const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(false)
   const [group, setGroup] = useState<'recent' | 'active'>('recent')
-  const { data: recentRequestsResponse, error: requestsError } =
-    useSWR<RecentRequests>(() => '/requests/' + group, fetcher, {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      dedupingInterval: 1000,
-      refreshInterval: isAutoRefresh
-        ? profile?.platform === 'macos'
-          ? 2000
-          : 4000
-        : 0,
-    })
-  const [requestList, setRequestList] = useState<Array<RequestItem>>([])
-  const [activeRequestList, setActiveRequestList] = useState<
-    Array<RequestItem>
-  >([])
-  const currentList = useMemo(
-    () => (group === 'recent' ? requestList : activeRequestList),
-    [group, requestList, activeRequestList],
-  )
+
+  const [filter, setFilter] = useState<FilterSchema>({
+    urlFilter: '',
+  })
+  const [sorter, setSorter] = useState<SorterRules>({
+    sortBy: null,
+    sortDirection: 'asc',
+  })
+
   const query = useQuery()
   const sourceIp = useMemo<string | null>(() => query.get('source'), [query])
 
-  useEffect(
-    () => {
-      if (!recentRequestsResponse?.requests) return
-
-      const pendingList = [...recentRequestsResponse.requests]
-      const now = new Date()
-      let newList = [...currentList]
-
-      while (pendingList.length) {
-        const request = pendingList.pop() as RequestItem
-        const existingIndex = newList.findIndex(
-          (item) => item.id === request.id,
-        )
-
-        if (existingIndex >= 0) {
-          Object.assign(newList[existingIndex], {
-            ...omit(request, ['id']),
-            lastUpdated: now,
-          })
-        } else {
-          if (newList.length && request.id > newList[0].id) {
-            newList.unshift({
-              ...request,
-              lastUpdated: now,
-            })
-          } else {
-            newList.push({
-              ...request,
-              lastUpdated: now,
-            })
-          }
-        }
-      }
-
-      if (group === 'recent') {
-        newList = newList
-          .filter((request) => {
-            if (sourceIp) {
-              return sourceIp === request.sourceAddress
-            }
-            return true
-          })
-          .slice(0, LIST_ITEMS_MAX)
-      } else {
-        newList = newList
-          .filter((request) => {
-            if (sourceIp) {
-              return (
-                request.lastUpdated === now &&
-                sourceIp === request.sourceAddress
-              )
-            }
-            return request.lastUpdated === now
-          })
-          .sort((a, b) => b.id - a.id)
-      }
-
-      if (group === 'recent') {
-        setRequestList(newList)
-        setActiveRequestList([])
-      } else {
-        setRequestList([])
-        setActiveRequestList(newList)
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [recentRequestsResponse, group, sourceIp],
+  const [selectedRequest, setSelectedRequest] = useState<RequestItem | null>(
+    null,
   )
 
-  const openRequestDetail = useCallback(
-    (req: RequestItem) => {
-      setModal({
-        children({ onClose }) {
-          return onClose ? (
-            <RequestModal req={req} onClose={onClose} />
-          ) : (
-            <React.Fragment />
-          )
-        },
-        onClose() {
-          // noop
-        },
-      })
-    },
-    [setModal],
-  )
+  const { requestList } = useRequestsList({
+    isAutoRefreshEnabled: isAutoRefresh,
+    sourceIp,
+    onlyActive: group === 'active',
+    filter,
+    sortRule: sorter,
+  })
 
   const rowRenderer: ListRowRenderer = useCallback(
     ({
       key, // Unique key within array of rows
       index, // Index of row within collection
-      isScrolling, // The List is currently being scrolled
-      isVisible, // This row is visible within the List (eg it is not an overscanned row)
       style, // Style object to be applied to row (to position it)
     }) => {
-      const req = currentList[index]
+      if (!requestList) {
+        return null
+      }
+
+      const req = requestList[index]
 
       return (
-        <div
-          key={key}
+        <ListCell
           style={style}
-          onClick={() => openRequestDetail(req)}
-          tw="flex flex-col justify-center py-2 cursor-pointer hover:bg-gray-100"
-          css={css`
-            padding-left: calc(env(safe-area-inset-left) + 0.75rem);
-            padding-right: calc(env(safe-area-inset-right) + 0.75rem);
-          `}
+          key={key}
+          className="flex flex-col justify-center py-2"
+          onClick={() => setSelectedRequest(req)}
         >
           <ListItem req={req} />
-        </div>
+        </ListCell>
       )
     },
-    [currentList, openRequestDetail],
+    [requestList],
   )
 
+  const onFilterRulesChange = useCallback((filter: FilterSchema) => {
+    setFilter(filter)
+  }, [])
+
+  const toggles = (
+    [
+      {
+        title: t('requests.recent'),
+        value: 'recent',
+        icon: HistoryIcon,
+      },
+      {
+        title: t('requests.active'),
+        value: 'active',
+        icon: ActivityIcon,
+      },
+    ] as const
+  ).map((toggle) => (
+    <Toggle
+      size="sm"
+      key={toggle.value}
+      pressed={group === toggle.value}
+      onPressedChange={(pressed) => {
+        if (pressed) {
+          setGroup(toggle.value)
+        }
+      }}
+    >
+      <toggle.icon className="mr-2 h-4 w-4" />
+      {toggle.title}
+    </Toggle>
+  ))
+
   return (
-    <FixedFullscreenContainer>
-      <React.Fragment>
-        <PageTitle
-          title={t('home.requests')}
-          hasAutoRefresh={true}
-          defaultAutoRefreshState={true}
-          onAuthRefreshStateChange={(newState) => setIsAutoRefresh(newState)}
-        />
+    <FixedFullscreenContainer offsetBottom={false}>
+      <PageTitle
+        title={t('home.requests')}
+        hasAutoRefresh={true}
+        defaultAutoRefreshState={true}
+        onAutoRefreshStateChange={(newState) => setIsAutoRefresh(newState)}
+      />
 
-        <div tw="flex-1">
-          {recentRequestsResponse ? (
-            currentList.length ? (
-              <AutoSizer>
-                {({ width, height }) => {
-                  return (
-                    <List
-                      width={width}
-                      height={height}
-                      rowCount={currentList.length}
-                      rowHeight={64}
-                      rowRenderer={rowRenderer}
-                      style={{
-                        outline: 'none',
-                      }}
-                      css={css`
-                        & > div {
-                          ${tw`divide-y divide-gray-200`}
-                        }
-                      `}
-                    />
-                  )
-                }}
-              </AutoSizer>
-            ) : (
-              <div tw="h-full flex items-center justify-center text-base text-gray-500">
-                {t('common.no_data')}
-              </div>
-            )
+      <div className="flex-1">
+        {requestList ? (
+          requestList.length ? (
+            <AutoSizer>
+              {({ width, height }) => {
+                return (
+                  <List
+                    width={width}
+                    height={height}
+                    rowCount={requestList.length}
+                    rowHeight={64}
+                    rowRenderer={rowRenderer}
+                    css={css`
+                      outline: none;
+
+                      & > div {
+                        ${tw`divide-y divide-gray-200 dark:divide-white/10`}
+                      }
+                    `}
+                  />
+                )
+              }}
+            </AutoSizer>
           ) : (
-            <div tw="h-full flex items-center justify-center text-base text-gray-500">
-              {t('common.is_loading')}...
+            <div className="h-full flex items-center justify-center text-base text-gray-500">
+              {t('common.no_data')}
             </div>
-          )}
-        </div>
+          )
+        ) : (
+          <div className="h-full flex items-center justify-center text-base text-gray-500">
+            {t('common.is_loading')}...
+          </div>
+        )}
+      </div>
 
-        <div
-          css={[
-            tw`flex divide-x divide-gray-200 border-t border-solid border-gray-200 py-2 px-2`,
-            css`
-              & > div {
-                ${tw`mx-2`}
-              }
-              & > div:first-of-type {
-                margin-left: 0;
-              }
-            `,
-          ]}
-        >
-          <SelectorGroup
-            css={[
-              tw`flex justify-center items-center`,
-              css`
-                & label {
-                  ${tw`py-2 px-4 ml-2 my-1 text-sm`}
-                }
-                & label:first-of-type {
-                  margin-left: 0;
-                }
-              `,
-            ]}
-            label="choose the dns result group"
-            name="selector-group"
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              setGroup(() => {
-                const newState = event.target.value as 'recent' | 'active'
-                mutate('/requests/' + newState)
-                return newState
-              })
+      <BottomPanel className="divide-x select-none">
+        <div className="space-x-3 mr-3">{toggles}</div>
+        <div className="space-x-3">
+          <FilterPopover
+            className="ml-3"
+            filter={filter}
+            onFilterRulesChange={onFilterRulesChange}
+          />
+          <SorterPopover
+            sorter={sorter}
+            onSorterRulesChange={(sorter) => {
+              setSorter(sorter)
             }}
-            options={[
-              {
-                children: t('requests.recent'),
-                value: 'recent',
-              },
-              {
-                children: t('requests.active'),
-                value: 'active',
-              },
-            ]}
-            value={group}
+            className="ml-3"
           />
         </div>
-      </React.Fragment>
+      </BottomPanel>
+
+      <RequestModal
+        req={selectedRequest}
+        open={Boolean(selectedRequest)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedRequest(null)
+          }
+        }}
+      />
     </FixedFullscreenContainer>
   )
 }

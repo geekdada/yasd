@@ -1,8 +1,9 @@
 import { findIndex } from 'lodash-es'
 import store from 'store2'
 
-import { Profile } from '../types'
-import { ExistingProfiles } from './constant'
+import type { Profile } from '@/types'
+
+import { ExistingProfiles, LastUsedProfile } from './constant'
 
 export const updateStoredProfile = (
   profileId: Profile['id'],
@@ -18,4 +19,8 @@ export const updateStoredProfile = (
       store.set(ExistingProfiles, storedExistingProfiles)
     }
   }
+}
+
+export const rememberLastUsed = (id: string) => {
+  store.set(LastUsedProfile, id)
 }
