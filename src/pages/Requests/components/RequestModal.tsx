@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { Search } from '@sumup/icons'
@@ -11,8 +10,6 @@ import { basename } from 'path-browserify'
 import { mutate } from 'swr'
 import tw from 'twin.macro'
 
-import 'react-tabs/style/react-tabs.css'
-
 import CodeContent from '@/components/CodeContent'
 import { DataGroup, DataRowMain } from '@/components/Data'
 import {
@@ -21,30 +18,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import {
+  Tabs,
+  TabsContent as TabsContentOriginal,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs'
 import { RequestItem } from '@/types'
 import { isFalsy, isTruthy } from '@/utils'
 import fetcher from '@/utils/fetcher'
 
 import MethodBadge from './MethodBadge'
 
-const TabsWrapper = styled.div`
-  ${tw`w-full overflow-hidden`}
-
-  .react-tabs__tab {
-    ${tw`text-sm font-medium border-none transition-colors duration-200 ease-in-out active:shadow-none active:border-none focus:shadow-none focus:border-none`}
-  }
-  .react-tabs__tab:focus:after {
-    display: none;
-  }
-  .react-tabs__tab--selected {
-    ${tw`text-blue-500 bg-blue-100 border-none`}
-  }
-  .react-tabs__tab-list {
-    ${tw`border-b-2 border-blue-100 mb-4`}
-  }
-  .react-tabs__tab-panel {
-    ${tw`h-[25rem] overflow-auto xl:h-[40rem]`}
-  }
+const TabsContent = styled(TabsContentOriginal)`
+  ${tw`overflow-auto  h-[25rem] xl:h-[40rem]`}
 `
 
 type RequestModalProps = {
@@ -96,15 +83,19 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
         <span className="break-words">{req.URL}</span>
       </div>
 
-      <TabsWrapper>
-        <Tabs>
-          <TabList>
-            <Tab>{t('requests.general_tab')}</Tab>
-            <Tab>{t('requests.request_tab')}</Tab>
-            <Tab>{t('requests.timing_tab')}</Tab>
-          </TabList>
+      <div>
+        <Tabs defaultValue="general">
+          <TabsList className="grid w-full grid-cols-3 mb-5">
+            <TabsTrigger value="general">
+              {t('requests.general_tab')}
+            </TabsTrigger>
+            <TabsTrigger value="request">
+              {t('requests.request_tab')}
+            </TabsTrigger>
+            <TabsTrigger value="timing">{t('requests.timing_tab')}</TabsTrigger>
+          </TabsList>
 
-          <TabPanel>
+          <TabsContent value="general">
             <div className="space-y-4">
               <DataGroup responsiveTitle={false}>
                 <DataRowMain responsiveFont={false}>
@@ -206,17 +197,18 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
                 </DataGroup>
               )}
             </div>
-          </TabPanel>
+          </TabsContent>
 
-          <TabPanel>
+          <TabsContent value="request">
             <DataGroup
               responsiveTitle={false}
               title={t('requests.request_header_title')}
             >
               <CodeContent content={req.requestHeader || ''} />
             </DataGroup>
-          </TabPanel>
-          <TabPanel>
+          </TabsContent>
+
+          <TabsContent value="timing">
             <DataGroup responsiveTitle={false}>
               {req.timingRecords &&
                 req.timingRecords.map((item, index) => (
@@ -226,9 +218,9 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
                   </DataRowMain>
                 ))}
             </DataGroup>
-          </TabPanel>
+          </TabsContent>
         </Tabs>
-      </TabsWrapper>
+      </div>
     </>
   ) : null
 

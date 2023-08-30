@@ -4,7 +4,6 @@ import satisfies from 'semver/functions/satisfies'
 import store from 'store2'
 
 import { Button } from '@/components/ui/button'
-import { ButtonGroup } from '@/components/ui/button-group'
 import {
   Dialog,
   DialogContent,
@@ -23,11 +22,6 @@ const NewVersionAlert: React.FC = () => {
 
   useEffect(() => {
     const lastUsedVersion = store.get(LastUsedVersion)
-    const isSWEnabled = process.env.REACT_APP_USE_SW === 'true'
-
-    if (!isSWEnabled) {
-      return
-    }
 
     if (lastUsedVersion && !satisfies(currentVersion, `~${lastUsedVersion}`)) {
       setVersionUrl(
@@ -52,13 +46,11 @@ const NewVersionAlert: React.FC = () => {
         </DialogHeader>
         <div className="mb-3">{t('new_version_alert.message')}</div>
         <DialogFooter>
-          <ButtonGroup align="right">
-            <a href={versionUrl} target="_blank" rel="noreferrer">
-              <Button onClick={() => setIsOpen(false)}>
-                {t('common.see')}
-              </Button>
-            </a>
-          </ButtonGroup>
+          <a href={versionUrl} target="_blank" rel="noreferrer">
+            <Button className="w-full" onClick={() => setIsOpen(false)}>
+              {t('common.see')}
+            </Button>
+          </a>
         </DialogFooter>
       </DialogContent>
     </Dialog>
