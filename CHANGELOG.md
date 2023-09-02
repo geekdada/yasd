@@ -1,3 +1,12 @@
+## [2.0.2](https://github.com/geekdada/yasd/compare/v2.0.1...v2.0.2) (2023-09-02)
+
+
+### Features
+
+* improve speed style ([afc8bb0](https://github.com/geekdada/yasd/commit/afc8bb0aa264f6c926aa0e64721c7b0866f79355))
+
+
+
 ## [2.0.1](https://github.com/geekdada/yasd/compare/v2.0.0...v2.0.1) (2023-08-30)
 
 
