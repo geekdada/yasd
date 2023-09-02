@@ -37,5 +37,5 @@ export const DataGroup: React.FC<{
 export const DataRow = styled.div``
 
 export const DataRowSub = styled.div`
-  ${tw`flex items-center justify-between px-3 leading-normal text-xs lg:text-sm lg:leading-relaxed`}
+  ${tw`flex items-center justify-between px-3 md:px-5 leading-normal text-xs lg:text-sm lg:leading-relaxed`}
 `

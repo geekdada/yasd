@@ -59,7 +59,7 @@ const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
         <div className="pb-3">
           <DataRowSub>
             <div>{t('traffic.traffic')}</div>
-            <div>
+            <div className="tabular-nums">
               <span>{`${t('traffic.upload')}: ${bytes(data.out)}`}</span>
               <span> </span>
               <span>{`${t('traffic.download')}: ${bytes(data.in)}`}</span>
@@ -67,7 +67,7 @@ const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
           </DataRowSub>
           <DataRowSub>
             <div>{t('traffic.current_speed')}</div>
-            <div>
+            <div className="tabular-nums">
               <span>{`${t('traffic.upload')}: ${bytes(
                 data.outCurrentSpeed,
               )}/s`}</span>
@@ -79,7 +79,7 @@ const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
           </DataRowSub>
           <DataRowSub>
             <div>{t('traffic.maximum_speed')}</div>
-            <div>
+            <div className="tabular-nums">
               <span>{`${t('traffic.upload')}: ${bytes(
                 data.outMaxSpeed,
               )}/s`}</span>
@@ -92,7 +92,9 @@ const TrafficDataRow: React.FC<TrafficDataRowProps> = ({ name, data }) => {
           {!!tcpStat && (
             <DataRowSub>
               <div>{t('traffic.tcp_summary')}</div>
-              <div>{`${t('traffic.avg_rtt')} ${tcpStat}ms`}</div>
+              <div className="tabular-nums">{`${t(
+                'traffic.avg_rtt',
+              )} ${tcpStat}ms`}</div>
             </DataRowSub>
           )}
         </div>

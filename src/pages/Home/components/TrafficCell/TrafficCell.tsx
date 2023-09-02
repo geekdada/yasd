@@ -10,7 +10,7 @@ import { ConnectorTraffic } from '@/types'
 const LineChart = lazy(() => import('./components/LineChart'))
 const Cell = tw.div`px-4 py-3`
 const Title = tw.div`text-xs text-muted-foreground leading-relaxed`
-const Data = tw.div`text-base md:text-lg text-gray-700 dark:text-white/90 font-bold leading-normal`
+const Data = tw.div`text-base md:text-lg text-gray-700 dark:text-white/90 font-bold leading-normal tabular-nums`
 
 const LineChartLoader = () => (
   <div
@@ -48,6 +48,20 @@ const TrafficCell: React.FC = () => {
     return aggregation
   }, [interfaces])
 
+  const betterSpeedString = (speed: number, isCircular: boolean = true) => {
+    const readableString = bytes(speed, {
+      unitSeparator: '---',
+    })
+    const [value, unit] = readableString.split('---')
+
+    return (
+      <>
+        {value}
+        <span className="text-sm">{' ' + unit + (isCircular ? '/s' : '')}</span>
+      </>
+    )
+  }
+
   return (
     <div>
       <div className="mb-3 w-full overflow-hidden">
@@ -65,8 +79,7 @@ const TrafficCell: React.FC = () => {
           >
             <Title>{t('traffic_cell.upload')}</Title>
             <Data className="truncate">
-              {bytes(activeInterface.outCurrentSpeed, { unitSeparator: ' ' })}
-              <span className="text-sm">/s</span>
+              {betterSpeedString(activeInterface.outCurrentSpeed)}
             </Data>
           </Cell>
           <Cell
@@ -76,8 +89,7 @@ const TrafficCell: React.FC = () => {
           >
             <Title>{t('traffic_cell.download')}</Title>
             <Data className="truncate">
-              {bytes(activeInterface.inCurrentSpeed, { unitSeparator: ' ' })}
-              <span className="text-sm">/s</span>
+              {betterSpeedString(activeInterface.inCurrentSpeed)}
             </Data>
           </Cell>
           <Cell
@@ -87,9 +99,10 @@ const TrafficCell: React.FC = () => {
           >
             <Title>{t('traffic_cell.total')}</Title>
             <Data className="truncate">
-              {bytes(activeInterface.in + activeInterface.out, {
-                unitSeparator: ' ',
-              })}
+              {betterSpeedString(
+                activeInterface.in + activeInterface.out,
+                false,
+              )}
             </Data>
           </Cell>
         </div>
