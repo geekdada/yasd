@@ -1,4 +1,4 @@
-name: Release
+name: Release built-in
 
 on:
   release:
@@ -36,7 +36,7 @@ jobs:
       - name: yarn install, build, bundle
         run: |
           yarn install
-          CI=false yarn build:release
+          CI=false yarn build:surge
 
       - name: Upload Release Asset
         id: upload-release-asset
@@ -45,6 +45,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./build.tar.gz
-          asset_name: build.tar.gz
+          asset_path: ./yasd.tar.gz
+          asset_name: built-in.tar.gz
           asset_content_type: application/tar+gzip
