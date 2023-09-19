@@ -1,3 +1,12 @@
+## [2.0.3](https://github.com/geekdada/yasd/compare/v2.0.2...v2.0.3) (2023-09-19)
+
+
+### Bug Fixes
+
+* https://community.nssurge.com/d/2037-nginx-web-dashboard-v201 ([745dbd9](https://github.com/geekdada/yasd/commit/745dbd9491a078dc0b9c19d4925fed691ae2be85))
+
+
+
 ## [2.0.2](https://github.com/geekdada/yasd/compare/v2.0.1...v2.0.2) (2023-09-02)
 
 
