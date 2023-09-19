@@ -97,7 +97,7 @@ const Page: React.FC = () => {
 
       const surgeHost = getSurgeHost()
       const protocol = data.useTls ? 'https:' : 'http:'
-      let newProfile: any
+      let newProfile
 
       try {
         const res = await tryHost(protocol, data.host, data.port, data.key)

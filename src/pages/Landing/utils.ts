@@ -50,15 +50,21 @@ export const getSurgeHost = (): {
   hostname: string
   port: string
 } => {
-  const protocol = window.location.protocol
+  if (process.env.NODE_ENV !== 'production') {
+    const protocol = window.location.protocol
+    const port = window.location.port
+      ? window.location.port
+      : protocol === 'https:'
+      ? '443'
+      : '80'
 
-  if (process.env.NODE_ENV === 'production') {
     return {
       protocol,
       hostname: window.location.hostname,
-      port: window.location.port,
+      port,
     }
   }
+
   return {
     protocol: process.env.REACT_APP_PROTOCOL as string,
     hostname: process.env.REACT_APP_HOST as string,

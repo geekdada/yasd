@@ -15,8 +15,8 @@ const PageLayout: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
       )}
       {...props}
     >
-      <div className="relative max-w-4xl w-full bg-background">
-        <div className="border-l border-r border-gray-200 dark:border-gray-800">
+      <div className="flex flex-1 relative max-w-4xl w-full bg-background">
+        <div className="w-full border-l border-r border-gray-200 dark:border-gray-800">
           {children}
         </div>
       </div>
