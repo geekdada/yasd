@@ -1,3 +1,12 @@
+## [2.0.4](https://github.com/geekdada/yasd/compare/v2.0.3...v2.0.4) (2023-09-20)
+
+
+### Bug Fixes
+
+* logic in determining if the environment is in production ([4635a48](https://github.com/geekdada/yasd/commit/4635a48bcb8e619b89901f1937fbeea4755976ef))
+
+
+
 ## [2.0.3](https://github.com/geekdada/yasd/compare/v2.0.2...v2.0.3) (2023-09-19)
 
 
