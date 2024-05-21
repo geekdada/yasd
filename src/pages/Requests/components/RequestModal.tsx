@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/react'
@@ -64,6 +64,11 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
         })
     },
     [t],
+  )
+
+  const pureIP = useMemo(
+    () => req?.remoteAddress && onlyIP(req.remoteAddress),
+    [req?.remoteAddress],
   )
 
   const content = req ? (
@@ -153,7 +158,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
                     <div>{t('requests.remote_ip')}</div>
                     <div>
                       <a
-                        href={`https://ip.sb/ip/${onlyIP(req.remoteAddress)}`}
+                        href={`https://ip.sb/ip/${pureIP}`}
                         target="_blank"
                         rel="noreferrer noopener"
                       >
