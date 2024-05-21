@@ -25,7 +25,7 @@ import {
   TabsTrigger,
 } from '@/components/ui/tabs'
 import { RequestItem } from '@/types'
-import { isFalsy, isTruthy } from '@/utils'
+import { isFalsy, isTruthy, onlyIP } from '@/utils'
 import fetcher from '@/utils/fetcher'
 
 import MethodBadge from './MethodBadge'
@@ -153,7 +153,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
                     <div>{t('requests.remote_ip')}</div>
                     <div>
                       <a
-                        href={`https://ip.sb/ip/${req.remoteAddress}`}
+                        href={`https://ip.sb/ip/${onlyIP(req.remoteAddress)}`}
                         target="_blank"
                         rel="noreferrer noopener"
                       >

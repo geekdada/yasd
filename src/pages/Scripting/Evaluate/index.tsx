@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useCallback, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { css } from '@emotion/react'
 import { LifeBuoy } from 'lucide-react'
 
 import CodeContent from '@/components/CodeContent'
