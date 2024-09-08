@@ -1,3 +1,12 @@
+## [2.0.6](https://github.com/geekdada/yasd/compare/v2.0.5...v2.0.6) (2024-09-08)
+
+
+### Bug Fixes
+
+* minor ui issues ([1661bf5](https://github.com/geekdada/yasd/commit/1661bf50404624a13caca125483022a811001456))
+
+
+
 ## [2.0.5](https://github.com/geekdada/yasd/compare/v2.0.4...v2.0.5) (2024-05-21)
 
 
