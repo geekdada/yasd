@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { ChevronRight } from '@sumup/icons'
+import { ChevronRight } from 'lucide-react'
 
 import { cn } from '@/utils/shadcn'
 

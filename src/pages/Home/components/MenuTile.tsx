@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { MoveRightIcon } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -59,7 +59,7 @@ const MenuTile: React.FC<MenuTileProps> = (props) => {
                 size="icon"
                 onClick={() => handleClick()}
               >
-                <MoveRightIcon />
+                <ChevronRight />
               </Button>
             </div>
           ) : null}

@@ -10,7 +10,7 @@ const PageLayout: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   return (
     <div
       className={cn(
-        'flex-1 flex min-h-full justify-center overflow-x-clip',
+        'w-full flex-1 flex min-h-full justify-center overflow-x-clip',
         className,
       )}
       {...props}

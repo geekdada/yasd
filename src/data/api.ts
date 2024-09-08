@@ -36,6 +36,7 @@ export const useProfileValidation = (name: string | undefined) => {
       data: {
         name: props[1],
       },
+      timeout: 30_000,
     })
 
   return useSWR(

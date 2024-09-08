@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeftIcon } from 'lucide-react'
+import { ChevronLeft } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 
@@ -12,11 +12,10 @@ const BackButton = ({ title }: { title?: string }) => {
       <Button
         variant="outline"
         onClick={() => navigate(-1)}
-        title="back"
+        title="navigate back"
         size="icon"
-        className="border-2"
       >
-        <ArrowLeftIcon />
+        <ChevronLeft />
       </Button>
       {title ? <span className="">{title}</span> : null}
     </div>

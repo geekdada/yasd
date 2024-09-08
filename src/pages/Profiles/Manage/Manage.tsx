@@ -3,7 +3,6 @@ import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { Loader2Icon } from 'lucide-react'
-import useSWR from 'swr'
 
 import CodeContent from '@/components/CodeContent'
 import { DataGroup, DataRowMain } from '@/components/Data'
