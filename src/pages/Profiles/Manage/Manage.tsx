@@ -103,7 +103,7 @@ const ManageProfiles = () => {
             },
           })
 
-          await mutateCurrentProfile('/profiles/current?sensitive=1')
+          await mutateCurrentProfile()
 
           toast.success(t('select_profile_success'))
         }

@@ -55,8 +55,8 @@ export const getSurgeHost = (): {
     const port = window.location.port
       ? window.location.port
       : protocol === 'https:'
-      ? '443'
-      : '80'
+        ? '443'
+        : '80'
 
     return {
       protocol,

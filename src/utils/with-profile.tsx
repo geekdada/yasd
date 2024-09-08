@@ -12,6 +12,7 @@ const withProfile = <P extends object>(
       return null
     }
 
+    // @ts-ignore
     return <Component {...(props as P)} profile={profile} />
   }
 

@@ -31,8 +31,8 @@ const MethodBadge: React.FC<MethodBadgeProps> = ({
         isTruthy(failed)
           ? tw`bg-red-500`
           : status === 'Active'
-          ? tw`bg-green-500`
-          : tw`bg-blue-500`,
+            ? tw`bg-green-500`
+            : tw`bg-blue-500`,
         cssProp,
       ]}
       {...args}
