@@ -31,7 +31,7 @@ import fetcher from '@/utils/fetcher'
 import MethodBadge from './MethodBadge'
 
 const TabsContent = styled(TabsContentOriginal)`
-  ${tw`overflow-auto  h-[25rem] xl:h-[40rem]`}
+  ${tw``}
 `
 
 type RequestModalProps = {
@@ -88,7 +88,17 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
         <span className="break-words">{req.URL}</span>
       </div>
 
-      <div>
+      <div
+        className="flex-1 overflow-hidden"
+        css={css`
+          & > div {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+          }
+        `}
+      >
         <Tabs defaultValue="general">
           <TabsList className="grid w-full grid-cols-3 mb-5">
             <TabsTrigger value="general">
@@ -100,130 +110,135 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
             <TabsTrigger value="timing">{t('requests.timing_tab')}</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="general">
-            <div className="space-y-4">
-              <DataGroup responsiveTitle={false}>
-                <DataRowMain responsiveFont={false}>
-                  <div>{t('requests.date')}</div>
-                  <div>{dayjs.unix(req.startDate).format('LLL')}</div>
-                </DataRowMain>
-                <DataRowMain responsiveFont={false}>
-                  <div>{t('requests.status')}</div>
-                  <div>{req.status}</div>
-                </DataRowMain>
-
-                {isTruthy(req.completed) && (
+          <div className="flex-1 overflow-y-scroll">
+            <TabsContent value="general">
+              <div className="space-y-4">
+                <DataGroup responsiveTitle={false}>
                   <DataRowMain responsiveFont={false}>
-                    <div>{t('requests.duration')}</div>
-                    <div>
-                      {dayjs
-                        .unix(req.completedDate)
-                        .diff(dayjs.unix(req.startDate))}
-                      ms
-                    </div>
+                    <div>{t('requests.date')}</div>
+                    <div>{dayjs.unix(req.startDate).format('LLL')}</div>
                   </DataRowMain>
+                  <DataRowMain responsiveFont={false}>
+                    <div>{t('requests.status')}</div>
+                    <div>{req.status}</div>
+                  </DataRowMain>
+
+                  {isTruthy(req.completed) && (
+                    <DataRowMain responsiveFont={false}>
+                      <div>{t('requests.duration')}</div>
+                      <div>
+                        {dayjs
+                          .unix(req.completedDate)
+                          .diff(dayjs.unix(req.startDate))}
+                        ms
+                      </div>
+                    </DataRowMain>
+                  )}
+
+                  {req.pid !== 0 && req.processPath && (
+                    <DataRowMain responsiveFont={false}>
+                      <div>{t('requests.process')}</div>
+                      <div>
+                        {trimPath(req.processPath)}({req.pid})
+                      </div>
+                    </DataRowMain>
+                  )}
+                </DataGroup>
+
+                <DataGroup responsiveTitle={false}>
+                  <DataRowMain responsiveFont={false}>
+                    <div>{t('requests.policy_name')}</div>
+                    <div>{req.policyName}</div>
+                  </DataRowMain>
+                  <DataRowMain responsiveFont={false}>
+                    <div>{t('requests.rule_name')}</div>
+                    <div>{req.rule}</div>
+                  </DataRowMain>
+                </DataGroup>
+
+                {!!req.localAddress && !!req.remoteAddress && (
+                  <DataGroup
+                    responsiveTitle={false}
+                    title={t('requests.ip_addr')}
+                  >
+                    <DataRowMain responsiveFont={false}>
+                      <div>{t('requests.local_ip')}</div>
+                      <div>{req.localAddress}</div>
+                    </DataRowMain>
+                    <DataRowMain responsiveFont={false}>
+                      <div>{t('requests.remote_ip')}</div>
+                      <div>
+                        <a
+                          href={`https://ip.sb/ip/${pureIP}`}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                        >
+                          <Search
+                            className="inline mr-1 w-3 h-3"
+                            css={css`
+                              margin-bottom: 2px;
+                            `}
+                          />
+                          {req.remoteAddress}
+                        </a>
+                      </div>
+                    </DataRowMain>
+                  </DataGroup>
                 )}
 
-                {req.pid !== 0 && req.processPath && (
-                  <DataRowMain responsiveFont={false}>
-                    <div>{t('requests.process')}</div>
-                    <div>
-                      {trimPath(req.processPath)}({req.pid})
-                    </div>
-                  </DataRowMain>
-                )}
-              </DataGroup>
-
-              <DataGroup responsiveTitle={false}>
-                <DataRowMain responsiveFont={false}>
-                  <div>{t('requests.policy_name')}</div>
-                  <div>{req.policyName}</div>
-                </DataRowMain>
-                <DataRowMain responsiveFont={false}>
-                  <div>{t('requests.rule_name')}</div>
-                  <div>{req.rule}</div>
-                </DataRowMain>
-              </DataGroup>
-
-              {!!req.localAddress && !!req.remoteAddress && (
                 <DataGroup
                   responsiveTitle={false}
-                  title={t('requests.ip_addr')}
+                  title={t('requests.traffic')}
                 >
                   <DataRowMain responsiveFont={false}>
-                    <div>{t('requests.local_ip')}</div>
-                    <div>{req.localAddress}</div>
+                    <div>{t('requests.download')}</div>
+                    <div>{bytes(req.inBytes)}</div>
                   </DataRowMain>
                   <DataRowMain responsiveFont={false}>
-                    <div>{t('requests.remote_ip')}</div>
-                    <div>
-                      <a
-                        href={`https://ip.sb/ip/${pureIP}`}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                      >
-                        <Search
-                          className="inline mr-1 w-3 h-3"
-                          css={css`
-                            margin-bottom: 2px;
-                          `}
-                        />
-                        {req.remoteAddress}
-                      </a>
-                    </div>
+                    <div>{t('requests.upload')}</div>
+                    <div>{bytes(req.outBytes)}</div>
                   </DataRowMain>
                 </DataGroup>
-              )}
 
-              <DataGroup responsiveTitle={false} title={t('requests.traffic')}>
-                <DataRowMain responsiveFont={false}>
-                  <div>{t('requests.download')}</div>
-                  <div>{bytes(req.inBytes)}</div>
-                </DataRowMain>
-                <DataRowMain responsiveFont={false}>
-                  <div>{t('requests.upload')}</div>
-                  <div>{bytes(req.outBytes)}</div>
-                </DataRowMain>
-              </DataGroup>
-
-              <DataGroup responsiveTitle={false} title={t('requests.remark')}>
-                <CodeContent content={req.notes && req.notes.join('\n')} />
-              </DataGroup>
-
-              {isFalsy(req.completed) && req.method !== 'UDP' && (
-                <DataGroup responsiveTitle={false} title="Action">
-                  <DataRowMain
-                    onClick={() => killRequest(req.id)}
-                    destructive
-                    hideArrow
-                  >
-                    {t('requests.kill_connection_button_title')}...
-                  </DataRowMain>
+                <DataGroup responsiveTitle={false} title={t('requests.remark')}>
+                  <CodeContent content={req.notes && req.notes.join('\n')} />
                 </DataGroup>
-              )}
-            </div>
-          </TabsContent>
 
-          <TabsContent value="request">
-            <DataGroup
-              responsiveTitle={false}
-              title={t('requests.request_header_title')}
-            >
-              <CodeContent content={req.requestHeader || ''} />
-            </DataGroup>
-          </TabsContent>
+                {isFalsy(req.completed) && req.method !== 'UDP' && (
+                  <DataGroup responsiveTitle={false} title="Action">
+                    <DataRowMain
+                      onClick={() => killRequest(req.id)}
+                      destructive
+                      hideArrow
+                    >
+                      {t('requests.kill_connection_button_title')}...
+                    </DataRowMain>
+                  </DataGroup>
+                )}
+              </div>
+            </TabsContent>
 
-          <TabsContent value="timing">
-            <DataGroup responsiveTitle={false}>
-              {req.timingRecords &&
-                req.timingRecords.map((item, index) => (
-                  <DataRowMain key={index} responsiveFont={false}>
-                    <div>{item.name}</div>
-                    <div>{item.durationInMillisecond}ms</div>
-                  </DataRowMain>
-                ))}
-            </DataGroup>
-          </TabsContent>
+            <TabsContent value="request">
+              <DataGroup
+                responsiveTitle={false}
+                title={t('requests.request_header_title')}
+              >
+                <CodeContent content={req.requestHeader || ''} />
+              </DataGroup>
+            </TabsContent>
+
+            <TabsContent value="timing">
+              <DataGroup responsiveTitle={false}>
+                {req.timingRecords &&
+                  req.timingRecords.map((item, index) => (
+                    <DataRowMain key={index} responsiveFont={false}>
+                      <div>{item.name}</div>
+                      <div>{item.durationInMillisecond}ms</div>
+                    </DataRowMain>
+                  ))}
+              </DataGroup>
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </>
@@ -231,7 +246,9 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
 
   return (
     <Dialog {...props}>
-      <DialogContent>{content}</DialogContent>
+      <DialogContent className="h-[90%] max-w-4xl flex flex-col">
+        {content}
+      </DialogContent>
     </Dialog>
   )
 }

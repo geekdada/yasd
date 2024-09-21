@@ -8,7 +8,7 @@ const BackButton = ({ title }: { title?: string }) => {
   const navigate = useNavigate()
 
   return (
-    <div className="space-x-4">
+    <div className="space-x-4 select-none">
       <Button
         variant="outline"
         onClick={() => navigate(-1)}

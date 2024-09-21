@@ -20,7 +20,8 @@
     "sw_updated": "Surge Web Dashboard has been updated, refresh page to use the new version.",
     "refresh": "Refresh",
     "confirm": "Confirm",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "close": "Close"
   },
   "tls_instruction": {
     "title": "Needed a certificate?",

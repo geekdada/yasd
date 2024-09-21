@@ -20,7 +20,8 @@
     "sw_updated": "Surge Web Dashboard 已更新，刷新页面以使用新版本。",
     "refresh": "刷新",
     "confirm": "确认",
-    "cancel": "取消"
+    "cancel": "取消",
+    "close": "关闭"
   },
   "tls_instruction": {
     "title": "需要证书吗？",
