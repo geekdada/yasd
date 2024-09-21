@@ -1,3 +1,12 @@
+## [2.0.8](https://github.com/geekdada/yasd/compare/v2.0.7...v2.0.8) (2024-09-21)
+
+
+### Bug Fixes
+
+* fix [#23](https://github.com/geekdada/yasd/issues/23) ([6e3084e](https://github.com/geekdada/yasd/commit/6e3084e4caccc1c4056318a610c380409498ecab))
+
+
+
 ## [2.0.7](https://github.com/geekdada/yasd/compare/v2.0.6...v2.0.7) (2024-09-21)
 
 
