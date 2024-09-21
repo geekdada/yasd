@@ -16,6 +16,7 @@ import { ButtonGroup } from '@/components/ui/button-group'
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
@@ -135,13 +136,18 @@ const Page: React.FC = () => {
           }
         }}
       >
-        <DialogContent>
+        <DialogContent className="flex flex-col max-h-[90%]">
           <DialogHeader>
             <DialogTitle>{t('scripting.result')}</DialogTitle>
           </DialogHeader>
-          <div className="w-full overflow-hidden">
+          <div className="w-full overflow-x-hidden overflow-y-scroll">
             <CodeContent content={evaluateResult} />
           </div>
+          <DialogFooter>
+            <Button onClick={() => setEvaluateResult(undefined)}>
+              {t('common.close')}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </FixedFullscreenContainer>
