@@ -1,3 +1,12 @@
+## [2.0.9](https://github.com/geekdada/yasd/compare/v2.0.8...v2.0.9) (2024-09-24)
+
+
+### Bug Fixes
+
+* Surge for tvOS not able to initiate speed test ([297037f](https://github.com/geekdada/yasd/commit/297037ffbc377e0c02fe4e95029e5c5929903097))
+
+
+
 ## [2.0.8](https://github.com/geekdada/yasd/compare/v2.0.7...v2.0.8) (2024-09-21)
 
 
