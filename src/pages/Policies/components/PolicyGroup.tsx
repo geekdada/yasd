@@ -156,7 +156,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
             ])
           }
 
-          if (res.winner) {
+          if ('winner' in res) {
             const testResult = (res as UrlTestPolicyTestResult).results[0].data
 
             Object.keys(testResult).forEach((key) => {
@@ -176,6 +176,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
             setSelection((res as UrlTestPolicyTestResult).winner)
           } else {
             const testResult = res as SelectPolicyTestResult
+
             Object.keys(testResult).forEach((key) => {
               const result = testResult[key]
 

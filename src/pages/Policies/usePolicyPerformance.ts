@@ -11,6 +11,7 @@ export const usePolicyPerformance = () => {
   const isSupported = useVersionSupport({
     ios: '4.9.5',
     macos: '4.2.4',
+    tvos: '4.9.5',
   })
   const { data, error } = useSWR<PolicyBenchmarkResults>(
     isSupported ? '/policies/benchmark_results' : null,
