@@ -15,14 +15,16 @@ const FixedFullscreenContainer: React.FC<{
 
   return (
     <div
-      className={cn(
-        'absolute top-0 right-0 bottom-0 left-0 h-full overflow-hidden',
-      )}
+      className={cn('absolute top-0 bottom-0 h-full overflow-hidden')}
       css={[
         offsetBottom &&
           css`
             padding-bottom: env(safe-area-inset-bottom);
           `,
+        css`
+          left: 1px;
+          right: 1px;
+        `,
       ]}
     >
       <div className="w-full h-full flex flex-col">{props.children}</div>

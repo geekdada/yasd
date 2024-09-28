@@ -11,6 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
@@ -23,6 +24,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Switch } from '@/components/ui/switch'
 import { DHCPDevice } from '@/types'
 import fetcher from '@/utils/fetcher'
 
@@ -176,7 +178,7 @@ const DeviceSettingsModal = ({
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center space-x-3 space-y-0">
                   <FormControl>
-                    <Checkbox
+                    <Switch
                       disabled={isLoading}
                       checked={field.value}
                       onCheckedChange={(checked) => field.onChange(checked)}
@@ -187,7 +189,7 @@ const DeviceSettingsModal = ({
               )}
             />
 
-            <div>
+            <DialogFooter>
               <Button
                 isLoading={isLoading}
                 type="submit"
@@ -195,7 +197,7 @@ const DeviceSettingsModal = ({
               >
                 {t('common.save')}
               </Button>
-            </div>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>

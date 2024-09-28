@@ -7,7 +7,6 @@ import { SearchIcon } from 'lucide-react'
 import useSWR, { mutate } from 'swr'
 import tw from 'twin.macro'
 
-import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import HorizontalSafeArea from '@/components/HorizontalSafeArea'
 import { ListCell } from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
@@ -18,7 +17,7 @@ import { DnsResult } from '@/types'
 import fetcher from '@/utils/fetcher'
 import withProfile from '@/utils/with-profile'
 
-const Page: React.FC = () => {
+const ComponentBase: React.FC = () => {
   const { t } = useTranslation()
   const [group, setGroup] = useState<'dynamic' | 'static'>('dynamic')
 
@@ -152,7 +151,7 @@ const Page: React.FC = () => {
   ))
 
   return (
-    <FixedFullscreenContainer>
+    <>
       <PageTitle title="DNS" />
 
       <div className="flex-1">
@@ -188,8 +187,12 @@ const Page: React.FC = () => {
           </Button>
         </div>
       </HorizontalSafeArea>
-    </FixedFullscreenContainer>
+    </>
   )
 }
 
-export default withProfile(Page)
+export const Component = withProfile(ComponentBase)
+
+Component.displayName = 'DnsPage'
+
+export { ErrorBoundary } from '@/components/ErrorBoundary'

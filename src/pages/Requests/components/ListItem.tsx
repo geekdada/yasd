@@ -15,7 +15,7 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
     str.toLowerCase().replace(/\s/g, '_')
 
   return (
-    <React.Fragment>
+    <>
       <div className="text-sm truncate">{req.URL}</div>
       <div
         className="flex items-center leading-none truncate"
@@ -50,7 +50,7 @@ const ListItem: React.FC<{ req: RequestItem }> = ({ req }) => {
           </div>
         ) : null}
       </div>
-    </React.Fragment>
+    </>
   )
 }
 

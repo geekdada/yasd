@@ -6,9 +6,9 @@ import './styles/shadcn.css'
 import './styles/global.css'
 
 import SWUpdateNotification from '@/components/SWUpdateNotification'
+import { RouterProvider } from '@/router'
 
-import App from './App'
-import AppContainer from './AppContainer'
+import routes from './routes'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import './i18n'
 
@@ -16,9 +16,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
   <React.StrictMode>
-    <AppContainer>
-      <App />
-    </AppContainer>
+    <RouterProvider value={routes}></RouterProvider>
   </React.StrictMode>,
 )
 

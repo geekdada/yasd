@@ -38,7 +38,7 @@ import HeaderInfo from './components/HeaderInfo'
 import { useAuthData, useLoginForm } from './hooks'
 import { getSurgeHost, tryHost } from './utils'
 
-const Page: React.FC = () => {
+export const Component: React.FC = () => {
   const protocol = window.location.protocol
 
   const navigate = useNavigate()
@@ -402,4 +402,6 @@ const Page: React.FC = () => {
   )
 }
 
-export default Page
+Component.displayName = 'LandingPage'
+
+export { ErrorBoundary } from '@/components/ErrorBoundary'

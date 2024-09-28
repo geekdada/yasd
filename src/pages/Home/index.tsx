@@ -27,7 +27,7 @@ import SetHostModal from './components/SetHostModal'
 import TrafficCell from './components/TrafficCell'
 import menu from './menu'
 
-const Page: React.FC = () => {
+export const Component: React.FC = () => {
   const navigate = useNavigate()
   const profile = useProfile()
   const { data: systemProxy } = useSWR<Capability>(
@@ -199,4 +199,6 @@ const Page: React.FC = () => {
   )
 }
 
-export default Page
+Component.displayName = 'HomePage'
+
+export { ErrorBoundary } from '@/components/ErrorBoundary'

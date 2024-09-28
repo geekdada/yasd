@@ -7,7 +7,6 @@ import { Loader2Icon } from 'lucide-react'
 import CodeContent from '@/components/CodeContent'
 import { DataGroup, DataRowMain } from '@/components/Data'
 import HorizontalSafeArea from '@/components/HorizontalSafeArea'
-import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
 import {
   Select,
@@ -25,7 +24,7 @@ import {
 import { useVersionSupport } from '@/hooks/useVersionSupport'
 import fetcher from '@/utils/fetcher'
 
-const ManageProfiles = () => {
+export const Component = () => {
   const { t } = useTranslation(undefined, {
     keyPrefix: 'profiles',
   })
@@ -121,7 +120,7 @@ const ManageProfiles = () => {
   }, [currentProfile])
 
   return (
-    <PageContainer>
+    <>
       <PageTitle title={t('title')} />
 
       <HorizontalSafeArea>
@@ -238,8 +237,10 @@ const ManageProfiles = () => {
           )}
         </div>
       </HorizontalSafeArea>
-    </PageContainer>
+    </>
   )
 }
 
-export default ManageProfiles
+Component.displayName = 'ManageProfilesPage'
+
+export { ErrorBoundary } from '@/components/ErrorBoundary'

@@ -39,9 +39,9 @@ export const DataRowMain = ({
   return (
     <div
       className={cn(
-        'flex items-center justify-between px-3 py-3 md:px-5 md:py-4 leading-normal text-sm',
+        'flex items-center justify-between px-3 py-3 md:px-5 md:py-4 leading-normal text-sm gap-3',
         isClickable &&
-          'gap-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-black/20',
+          'cursor-pointer hover:bg-gray-100 dark:hover:bg-black/20',
         destructive && 'text-destructive dark:text-red-500',
         disabled && 'cursor-not-allowed text-gray-400 dark:text-gray-600',
         responsiveFont && 'lg:text-base',

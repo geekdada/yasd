@@ -6,7 +6,6 @@ import tw from 'twin.macro'
 
 import { DataGroup, DataRow, DataRowMain } from '@/components/Data'
 import HorizontalSafeArea from '@/components/HorizontalSafeArea'
-import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
 import { useConnectors, useInterfaces, useStartTime } from '@/store'
 import { ConnectorTraffic, Traffic } from '@/types'
@@ -17,7 +16,7 @@ dayjs.extend(relativeTime)
 
 const TrafficWrapper = tw.div`p-4 md:p-5 space-y-4 md:space-y-5`
 
-const Page: React.FC = () => {
+export const Component: React.FC = () => {
   const { t } = useTranslation()
   const connectors = useConnectors()
   const interfaces = useInterfaces()
@@ -41,7 +40,7 @@ const Page: React.FC = () => {
   }
 
   return (
-    <PageContainer>
+    <>
       <PageTitle title={t('home.traffic')} />
 
       <HorizontalSafeArea>
@@ -80,8 +79,10 @@ const Page: React.FC = () => {
           </TrafficWrapper>
         )}
       </HorizontalSafeArea>
-    </PageContainer>
+    </>
   )
 }
 
-export default Page
+Component.displayName = 'TrafficPage'
+
+export { ErrorBoundary } from '@/components/ErrorBoundary'

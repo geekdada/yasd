@@ -1,30 +1,14 @@
-import React, {
-  lazy,
-  Suspense,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Toaster, toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { SWRConfig } from 'swr'
 
-import FullLoading from '@/components/FullLoading'
 import NetworkErrorModal from '@/components/NetworkErrorModal'
 import NewVersionAlert from '@/components/NewVersionAlert'
 import PageLayout from '@/components/PageLayout'
 import RunInSurge from '@/components/RunInSurge'
 import useTrafficUpdater from '@/hooks/useTrafficUpdater'
-import HomePage from '@/pages/Home'
-import { LandingPage } from '@/pages/Landing'
 import {
   usePlatformVersion,
   useAppDispatch,
@@ -35,17 +19,6 @@ import { historyActions } from '@/store/slices/history'
 import { profileActions } from '@/store/slices/profile'
 import { isRunInSurge } from '@/utils'
 import { httpClient } from '@/utils/fetcher'
-
-const PoliciesPage = lazy(() => import('@/pages/Policies'))
-const RequestsPage = lazy(() => import('@/pages/Requests'))
-const TrafficPage = lazy(() => import('@/pages/Traffic'))
-const ModulesPage = lazy(() => import('@/pages/Modules'))
-const ScriptingPage = lazy(() => import('@/pages/Scripting'))
-const EvaluatePage = lazy(() => import('@/pages/Scripting/Evaluate'))
-const DnsPage = lazy(() => import('@/pages/Dns'))
-const DevicesPage = lazy(() => import('@/pages/Devices'))
-const CurrentProfilePage = lazy(() => import('@/pages/Profiles/Current'))
-const ManageProfilesPage = lazy(() => import('@/pages/Profiles/Manage'))
 
 const App: React.FC = () => {
   const { t } = useTranslation()
@@ -136,23 +109,7 @@ const App: React.FC = () => {
       </RunInSurge>
 
       <PageLayout>
-        <Suspense fallback={<FullLoading />}>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/policies" element={<PoliciesPage />} />
-            <Route path="/requests" element={<RequestsPage />} />
-            <Route path="/traffic" element={<TrafficPage />} />
-            <Route path="/modules" element={<ModulesPage />} />
-            <Route path="/scripting" element={<ScriptingPage />} />
-            <Route path="/scripting/evaluate" element={<EvaluatePage />} />
-            <Route path="/dns" element={<DnsPage />} />
-            <Route path="/devices" element={<DevicesPage />} />
-            <Route path="/profiles" element={<ManageProfilesPage />} />
-            <Route path="/profiles/current" element={<CurrentProfilePage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Suspense>
+        <Outlet />
       </PageLayout>
     </SWRConfig>
   )

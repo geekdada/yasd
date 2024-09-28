@@ -1,10 +1,8 @@
 import React, { lazy, Suspense, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import useSWR from 'swr'
 
 import BottomPanel from '@/components/BottomPanel'
 import CodeMirrorLoading from '@/components/CodeMirrorLoading'
-import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import PageTitle from '@/components/PageTitle'
 import { Toggle } from '@/components/ui/toggle'
 import { useCurrentProfile } from '@/data'
@@ -12,7 +10,7 @@ import withProfile from '@/utils/with-profile'
 
 const CodeMirror = lazy(() => import('@/components/CodeMirror'))
 
-const Page: React.FC = () => {
+const ComponentBase: React.FC = () => {
   const { t } = useTranslation()
   const [version, setVersion] = React.useState<'original' | 'processed'>(
     'processed',
@@ -27,7 +25,7 @@ const Page: React.FC = () => {
   }, [profile, version])
 
   return (
-    <FixedFullscreenContainer offsetBottom={false}>
+    <>
       <PageTitle title={`${t('home.profile')} - ${profile?.name}`} />
 
       <div className="h-full flex flex-col overflow-hidden">
@@ -68,8 +66,12 @@ const Page: React.FC = () => {
           </div>
         </BottomPanel>
       </div>
-    </FixedFullscreenContainer>
+    </>
   )
 }
 
-export default withProfile(Page)
+export const Component = withProfile(ComponentBase)
+
+Component.displayName = 'CurrentProfilePage'
+
+export { ErrorBoundary } from '@/components/ErrorBoundary'

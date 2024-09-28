@@ -9,26 +9,28 @@ import { Search } from 'lucide-react'
 import { basename } from 'path-browserify'
 import { mutate } from 'swr'
 import tw from 'twin.macro'
+import { useMediaQuery } from 'usehooks-ts'
 
 import CodeContent from '@/components/CodeContent'
 import { DataGroup, DataRowMain } from '@/components/Data'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+  Drawer,
+  DrawerContent,
+  DrawerFooter,
+  DrawerClose,
+} from '@/components/ui/drawer'
 import {
   Tabs,
   TabsContent as TabsContentOriginal,
   TabsList,
   TabsTrigger,
 } from '@/components/ui/tabs'
+import { BottomSafeArea } from '@/components/VerticalSafeArea'
 import { RequestItem } from '@/types'
 import { isFalsy, isTruthy, onlyIP } from '@/utils'
 import fetcher from '@/utils/fetcher'
-
-import MethodBadge from './MethodBadge'
 
 const TabsContent = styled(TabsContentOriginal)`
   ${tw``}
@@ -40,6 +42,7 @@ type RequestModalProps = {
 
 const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
   const { t } = useTranslation()
+  const isDesktop = useMediaQuery('(min-width: 768px)')
 
   const killRequest = useCallback(
     (id: number) => {
@@ -73,21 +76,6 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
 
   const content = req ? (
     <>
-      <DialogHeader>
-        <DialogTitle className="flex items-center justify-center gap-2">
-          <MethodBadge
-            method={req.method}
-            failed={req.failed}
-            status={req.status || ''}
-          />
-          <span>{`Detail (#${req.id})`}</span>
-        </DialogTitle>
-      </DialogHeader>
-
-      <div className="leading-normal w-full overflow-hidden">
-        <span className="break-words">{req.URL}</span>
-      </div>
-
       <div
         className="flex-1 overflow-hidden"
         css={css`
@@ -114,6 +102,10 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
             <TabsContent value="general">
               <div className="space-y-4">
                 <DataGroup responsiveTitle={false}>
+                  <DataRowMain responsiveFont={false}>
+                    <div className="break-keep whitespace-nowrap">URL</div>
+                    <div className="break-all text-right">{req.URL}</div>
+                  </DataRowMain>
                   <DataRowMain responsiveFont={false}>
                     <div>{t('requests.date')}</div>
                     <div>{dayjs.unix(req.startDate).format('LLL')}</div>
@@ -162,12 +154,18 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
                     title={t('requests.ip_addr')}
                   >
                     <DataRowMain responsiveFont={false}>
-                      <div>{t('requests.local_ip')}</div>
-                      <div>{req.localAddress}</div>
+                      <div className="break-keep whitespace-nowrap">
+                        {t('requests.local_ip')}
+                      </div>
+                      <div className="break-all text-right">
+                        {req.localAddress}
+                      </div>
                     </DataRowMain>
                     <DataRowMain responsiveFont={false}>
-                      <div>{t('requests.remote_ip')}</div>
-                      <div>
+                      <div className="break-keep whitespace-nowrap">
+                        {t('requests.remote_ip')}
+                      </div>
+                      <div className="break-all text-right">
                         <a
                           href={`https://ip.sb/ip/${pureIP}`}
                           target="_blank"
@@ -244,12 +242,19 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
     </>
   ) : null
 
-  return (
+  return isDesktop ? (
     <Dialog {...props}>
-      <DialogContent className="h-[90%] max-w-4xl flex flex-col">
+      <DialogContent className="h-[90%] max-w-4xl flex flex-col pt-10">
         {content}
       </DialogContent>
     </Dialog>
+  ) : (
+    <Drawer {...props}>
+      <DrawerContent className="flex flex-col px-4 gap-4 h-[90%]">
+        {content}
+        <BottomSafeArea />
+      </DrawerContent>
+    </Drawer>
   )
 }
 

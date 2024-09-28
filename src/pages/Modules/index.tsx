@@ -4,14 +4,13 @@ import { useTranslation } from 'react-i18next'
 import useSWR, { mutate } from 'swr'
 
 import { ListCell, ListFullHeightCell } from '@/components/ListCell'
-import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
 import { Switch } from '@/components/ui/switch'
 import { Modules } from '@/types'
 import fetcher from '@/utils/fetcher'
 import withProfile from '@/utils/with-profile'
 
-const Page: React.FC = () => {
+const ComponentBase: React.FC = () => {
   const { t } = useTranslation()
   const { data: modules } = useSWR<Modules>('/modules', fetcher)
   const [isLoading, setIsLoading] = useState(false)
@@ -47,7 +46,7 @@ const Page: React.FC = () => {
   )
 
   return (
-    <PageContainer>
+    <>
       <PageTitle title={t('home.modules')} />
 
       <div className="divide-y">
@@ -74,8 +73,12 @@ const Page: React.FC = () => {
           <ListFullHeightCell>{t('modules.empty_list')}</ListFullHeightCell>
         )}
       </div>
-    </PageContainer>
+    </>
   )
 }
 
-export default withProfile(Page)
+export const Component = withProfile(ComponentBase)
+
+Component.displayName = 'ModulesPage'
+
+export { ErrorBoundary } from '@/components/ErrorBoundary'

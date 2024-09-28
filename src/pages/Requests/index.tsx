@@ -8,7 +8,6 @@ import { ListRowRenderer } from 'react-virtualized/dist/es/List'
 import tw from 'twin.macro'
 
 import BottomPanel from '@/components/BottomPanel'
-import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import { ListCell } from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
 import { Toggle } from '@/components/ui/toggle'
@@ -28,7 +27,7 @@ function useQuery() {
   return new URLSearchParams(useLocation().search)
 }
 
-const Page: React.FC = () => {
+export const Component: React.FC = () => {
   const { t } = useTranslation()
 
   const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(false)
@@ -117,7 +116,7 @@ const Page: React.FC = () => {
   ))
 
   return (
-    <FixedFullscreenContainer offsetBottom={false}>
+    <>
       <PageTitle
         title={t('home.requests')}
         hasAutoRefresh={true}
@@ -187,8 +186,10 @@ const Page: React.FC = () => {
           }
         }}
       />
-    </FixedFullscreenContainer>
+    </>
   )
 }
 
-export default Page
+Component.displayName = 'RequestsPage'
+
+export { ErrorBoundary } from '@/components/ErrorBoundary'

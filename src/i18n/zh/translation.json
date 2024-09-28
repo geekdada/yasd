@@ -99,6 +99,7 @@
     "completed": "已完成",
     "rule_evaluating": "解析规则",
     "dns_lookup": "解析域名",
+    "hostname": "主机名",
     "establishing_connection": "建立连接",
     "general_tab": "一般",
     "request_tab": "请求",

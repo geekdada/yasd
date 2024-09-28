@@ -22,7 +22,7 @@ import fetcher from '@/utils/fetcher'
 
 const CodeMirror = lazy(() => import('@/components/CodeMirror'))
 
-const Page: React.FC = () => {
+export const Component: React.FC = () => {
   const { t } = useTranslation()
   const [code, setCode] = useState<string>(() =>
     t('scripting.editor_placeholder'),
@@ -141,4 +141,6 @@ const Page: React.FC = () => {
   )
 }
 
-export default Page
+Component.displayName = 'EvaluatePage'
+
+export { ErrorBoundary } from '@/components/ErrorBoundary'

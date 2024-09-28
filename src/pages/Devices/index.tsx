@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import useSWR from 'swr'
 
 import { ListCell, ListFullHeightCell } from '@/components/ListCell'
-import PageContainer from '@/components/PageContainer'
 import PageTitle from '@/components/PageTitle'
 import { DevicesResult } from '@/types'
 import fetcher from '@/utils/fetcher'
@@ -11,7 +10,7 @@ import withProfile from '@/utils/with-profile'
 
 import DeviceItem from './components/DeviceItem'
 
-const Page = (): JSX.Element => {
+const ComponentBase = (): JSX.Element => {
   const { t } = useTranslation()
   const [isAutoRefresh, setIsAutoRefresh] = useState<boolean>(false)
   const { data: devices } = useSWR<DevicesResult>('/devices', fetcher, {
@@ -31,7 +30,7 @@ const Page = (): JSX.Element => {
   )
 
   return (
-    <PageContainer>
+    <>
       <PageTitle
         title={t('home.device_management')}
         hasAutoRefresh={true}
@@ -48,8 +47,12 @@ const Page = (): JSX.Element => {
           deviceList
         )}
       </div>
-    </PageContainer>
+    </>
   )
 }
 
-export default withProfile(Page)
+export const Component = withProfile(ComponentBase)
+
+Component.displayName = 'DevicesPage'
+
+export { ErrorBoundary } from '@/components/ErrorBoundary'

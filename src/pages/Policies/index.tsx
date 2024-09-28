@@ -7,6 +7,7 @@ import useSWR from 'swr'
 import BackButton from '@/components/BackButton'
 import PageContainer from '@/components/PageContainer'
 import { TypographyH3 } from '@/components/ui/typography'
+import { BottomSafeArea } from '@/components/VerticalSafeArea'
 import { useProfile } from '@/store'
 import { Policies, PolicyGroups } from '@/types'
 import fetcher from '@/utils/fetcher'
@@ -15,7 +16,7 @@ import PolicyGroup from './components/PolicyGroup'
 import { PolicyNameItem } from './components/PolicyNameItem'
 import { usePolicyPerformance } from './usePolicyPerformance'
 
-const Page: React.FC = () => {
+export const Component: React.FC = () => {
   const { t } = useTranslation()
   const profile = useProfile()
   const { data: policies } = useSWR<Policies>(
@@ -47,7 +48,7 @@ const Page: React.FC = () => {
   return (
     <ScrollTo>
       {({ scroll }) => (
-        <PageContainer>
+        <>
           <div
             className="sticky top-0 left-0 right-0 shadow bg-white dark:bg-muted z-10 pt-5 mb-5"
             ref={headerRef}
@@ -110,10 +111,14 @@ const Page: React.FC = () => {
                 )
               })}
           </div>
-        </PageContainer>
+
+          <BottomSafeArea />
+        </>
       )}
     </ScrollTo>
   )
 }
 
-export default Page
+Component.displayName = 'PoliciesPage'
+
+export { ErrorBoundary } from '@/components/ErrorBoundary'

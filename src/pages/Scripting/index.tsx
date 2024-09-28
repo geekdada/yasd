@@ -7,7 +7,6 @@ import { Link2Icon } from 'lucide-react'
 import useSWR from 'swr'
 
 import CodeContent from '@/components/CodeContent'
-import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import HorizontalSafeArea from '@/components/HorizontalSafeArea'
 import { ListCell } from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
@@ -24,7 +23,7 @@ import { EvaluateResult, Scriptings } from '@/types'
 import fetcher from '@/utils/fetcher'
 import withProfile from '@/utils/with-profile'
 
-const Page: React.FC = () => {
+const ComponentBase: React.FC = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { data: scripting } = useSWR<Scriptings>('/scripting', fetcher)
@@ -70,7 +69,7 @@ const Page: React.FC = () => {
   }
 
   return (
-    <FixedFullscreenContainer>
+    <>
       <PageTitle title={t('home.scripting')} />
 
       <div className="flex-1 overflow-auto">
@@ -150,8 +149,12 @@ const Page: React.FC = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </FixedFullscreenContainer>
+    </>
   )
 }
 
-export default withProfile(Page)
+export const Component = withProfile(ComponentBase)
+
+Component.displayName = 'ScriptingPage'
+
+export { ErrorBoundary } from '@/components/ErrorBoundary'

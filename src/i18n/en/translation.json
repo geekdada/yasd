@@ -99,6 +99,7 @@
     "completed": "Completed",
     "rule_evaluating": "Rule Evaluating",
     "dns_lookup": "DNS Lookup",
+    "hostname": "Hostname",
     "establishing_connection": "Establishing Connection",
     "general_tab": "General",
     "request_tab": "Request",
