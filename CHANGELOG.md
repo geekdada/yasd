@@ -1,3 +1,13 @@
+## [2.0.10](https://github.com/geekdada/yasd/compare/v2.0.9...v2.0.10) (2024-09-29)
+
+
+### Features
+
+* Optimize dialogs ([f955684](https://github.com/geekdada/yasd/commit/f9556848b3105d729b0dd986fde94116bdbf2ad7))
+* Optimize UI ([9bd8919](https://github.com/geekdada/yasd/commit/9bd89198e66b85a060b6a780a2d6379369dd317e))
+
+
+
 ## [2.0.9](https://github.com/geekdada/yasd/compare/v2.0.8...v2.0.9) (2024-09-24)
 
 
