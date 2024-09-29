@@ -10,15 +10,10 @@ import CodeContent from '@/components/CodeContent'
 import HorizontalSafeArea from '@/components/HorizontalSafeArea'
 import { ListCell } from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
+import { useResponsiveDialog } from '@/components/ResponsiveDialog'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { BottomSafeArea } from '@/components/VerticalSafeArea'
 import { EvaluateResult, Scriptings } from '@/types'
 import fetcher from '@/utils/fetcher'
 import withProfile from '@/utils/with-profile'
@@ -26,8 +21,18 @@ import withProfile from '@/utils/with-profile'
 const ComponentBase: React.FC = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+
+  const {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+    DialogClose,
+  } = useResponsiveDialog()
+
   const { data: scripting } = useSWR<Scriptings>('/scripting', fetcher)
-  const [evaluateResult, setEvaluateResult] = useState<string>()
+  const [evaluateResult, setEvaluateResult] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState<number>()
 
   const filteredList = useMemo(() => {
@@ -143,10 +148,12 @@ const ComponentBase: React.FC = () => {
             <CodeContent content={evaluateResult} />
           </div>
           <DialogFooter>
-            <Button onClick={() => setEvaluateResult(undefined)}>
-              {t('common.close')}
-            </Button>
+            <DialogClose asChild>
+              <Button variant="default">{t('common.close')}</Button>
+            </DialogClose>
           </DialogFooter>
+
+          <BottomSafeArea />
         </DialogContent>
       </Dialog>
     </>

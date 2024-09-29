@@ -6,15 +6,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { to } from 'await-to-js'
 import { mutate } from 'swr'
 
+import { useResponsiveDialog } from '@/components/ResponsiveDialog'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import type { Dialog } from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -47,6 +41,15 @@ const DeviceSettingsModal = ({
   ...props
 }: DeviceSettingsModalProps): JSX.Element => {
   const { t } = useTranslation()
+  const {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+    DialogClose,
+  } = useResponsiveDialog()
+
   const DeviceSettingsSchema = useDeviceSettingsSchema()
 
   const form = useForm<FormData>({
@@ -176,7 +179,7 @@ const DeviceSettingsModal = ({
               control={form.control}
               name="shouldHandledBySurge"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                <FormItem className="flex flex-row items-center space-x-3 space-y-0 py-2">
                   <FormControl>
                     <Switch
                       disabled={isLoading}
@@ -190,6 +193,9 @@ const DeviceSettingsModal = ({
             />
 
             <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">{t('common.cancel')}</Button>
+              </DialogClose>
               <Button
                 isLoading={isLoading}
                 type="submit"

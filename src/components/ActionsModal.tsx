@@ -1,22 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useMediaQuery } from 'usehooks-ts'
 
+import { useResponsiveDialog } from '@/components/ResponsiveDialog'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-} from '@/components/ui/drawer'
+import type { Dialog } from '@/components/ui/dialog'
 import { BottomSafeArea } from '@/components/VerticalSafeArea'
 
 export type Action = {
@@ -36,49 +23,39 @@ const ActionsModal = ({
   ...props
 }: ActionsModalProps): JSX.Element => {
   const { t } = useTranslation()
-  const isDesktop = useMediaQuery('(min-width: 768px)')
-
-  if (isDesktop) {
-    return (
-      <Dialog {...props}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-          </DialogHeader>
-
-          <div className="space-y-5">
-            {actions.map((action) => (
-              <Button stretch key={action.id} onClick={action.onClick}>
-                {t(action.title)}
-              </Button>
-            ))}
-          </div>
-        </DialogContent>
-      </Dialog>
-    )
-  }
+  const {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+    DialogClose,
+  } = useResponsiveDialog()
 
   return (
-    <Drawer {...props}>
-      <DrawerContent className="select-none">
-        <DrawerHeader>
-          <DrawerTitle>{title}</DrawerTitle>
-        </DrawerHeader>
-        <DrawerFooter>
+    <Dialog {...props}>
+      <DialogContent className="select-none">
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4">
           {actions.map((action) => (
             <Button stretch key={action.id} onClick={action.onClick}>
               {t(action.title)}
             </Button>
           ))}
-          <DrawerClose>
-            <Button className="w-full" variant="outline">
-              {t('common.close')}
-            </Button>
-          </DrawerClose>
-        </DrawerFooter>
+        </div>
+
+        <DialogFooter className="flex md:hidden">
+          <DialogClose asChild>
+            <Button variant="outline">{t('common.close')}</Button>
+          </DialogClose>
+        </DialogFooter>
+
         <BottomSafeArea />
-      </DrawerContent>
-    </Drawer>
+      </DialogContent>
+    </Dialog>
   )
 }
 

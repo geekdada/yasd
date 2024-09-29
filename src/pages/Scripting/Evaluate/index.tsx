@@ -7,16 +7,11 @@ import CodeContent from '@/components/CodeContent'
 import CodeMirrorLoading from '@/components/CodeMirrorLoading'
 import FixedFullscreenContainer from '@/components/FixedFullscreenContainer'
 import PageTitle from '@/components/PageTitle'
+import { useResponsiveDialog } from '@/components/ResponsiveDialog'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { BottomSafeArea } from '@/components/VerticalSafeArea'
 import { EvaluateResult } from '@/types'
 import fetcher from '@/utils/fetcher'
 
@@ -24,11 +19,21 @@ const CodeMirror = lazy(() => import('@/components/CodeMirror'))
 
 export const Component: React.FC = () => {
   const { t } = useTranslation()
+
+  const {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+    DialogClose,
+  } = useResponsiveDialog()
+
   const [code, setCode] = useState<string>(() =>
     t('scripting.editor_placeholder'),
   )
   const [isLoading, setIsLoading] = useState(false)
-  const [result, setResult] = useState<string>()
+  const [result, setResult] = useState<string | undefined>()
   const [timeout, setTimeoutValue] = useState<number>(5)
 
   const evaluate = useCallback(() => {
@@ -133,8 +138,12 @@ export const Component: React.FC = () => {
             <CodeContent content={result} />
           </div>
           <DialogFooter>
-            <Button onClick={() => setResult('')}>{t('common.close')}</Button>
+            <DialogClose asChild>
+              <Button variant="default">{t('common.close')}</Button>
+            </DialogClose>
           </DialogFooter>
+
+          <BottomSafeArea />
         </DialogContent>
       </Dialog>
     </FixedFullscreenContainer>
