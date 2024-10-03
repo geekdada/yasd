@@ -7,7 +7,6 @@ import useIsInViewport from 'use-is-in-viewport'
 import { StatusChip } from '@/components/StatusChip'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { TypographyH3 } from '@/components/ui/typography'
 import {
   Policy,
   SelectPolicyTestResult,
@@ -221,10 +220,12 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
   }, [refreshSelection, isInViewport, selection])
 
   const cardInner = (
-    <>
-      <CardHeader className="py-4 px-4">
+    <div className="p-3 sm:p-4 grid gap-4 select-none">
+      <CardHeader className="p-0">
         <div className="flex flex-row justify-between items-center">
-          <TypographyH3>{policyGroupName}</TypographyH3>
+          <div className="scroll-m-20 text-md sm:text-xl font-bold">
+            {policyGroupName}
+          </div>
           <Button
             size="icon"
             variant="outline"
@@ -236,7 +237,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
         </div>
       </CardHeader>
 
-      <CardContent className="p-4 pt-0">
+      <CardContent className="p-0">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {policyGroup.map((policy) => {
             const typeDescription = policy.typeDescription.toUpperCase()
@@ -254,7 +255,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
                 <div>
                   <div className="text-xs mb-1 truncate">{typeDescription}</div>
 
-                  <div className="text-sm font-bold md:text-base leading-snug whitespace-break-spaces break-words">
+                  <div className="text-xs sm:text-sm font-bold leading-snug whitespace-break-spaces break-all">
                     {policy.name}
                   </div>
                 </div>
@@ -285,7 +286,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
           })}
         </div>
       </CardContent>
-    </>
+    </div>
   )
 
   return (

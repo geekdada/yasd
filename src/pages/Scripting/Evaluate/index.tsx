@@ -11,7 +11,6 @@ import { useResponsiveDialog } from '@/components/ResponsiveDialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { BottomSafeArea } from '@/components/VerticalSafeArea'
 import { EvaluateResult } from '@/types'
 import fetcher from '@/utils/fetcher'
 
@@ -142,8 +141,6 @@ export const Component: React.FC = () => {
               <Button variant="default">{t('common.close')}</Button>
             </DialogClose>
           </DialogFooter>
-
-          <BottomSafeArea />
         </DialogContent>
       </Dialog>
     </FixedFullscreenContainer>

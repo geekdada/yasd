@@ -5,7 +5,6 @@ import { css } from '@emotion/react'
 import useSWR from 'swr'
 
 import BackButton from '@/components/BackButton'
-import PageContainer from '@/components/PageContainer'
 import { TypographyH3 } from '@/components/ui/typography'
 import { BottomSafeArea } from '@/components/VerticalSafeArea'
 import { useProfile } from '@/store'
@@ -50,7 +49,7 @@ export const Component: React.FC = () => {
       {({ scroll }) => (
         <>
           <div
-            className="sticky top-0 left-0 right-0 shadow bg-white dark:bg-muted z-10 pt-5 mb-5"
+            className="sticky top-0 left-0 right-0 shadow bg-white dark:bg-muted z-10 pt-3 sm:pt-5 mb-5"
             ref={headerRef}
           >
             <div
@@ -67,7 +66,7 @@ export const Component: React.FC = () => {
             </div>
 
             <div
-              className="flex justify-start overflow-x-scroll py-4 space-x-3"
+              className="flex justify-start overflow-x-scroll pb-3 pt-4 sm:pb-4 space-x-3"
               css={css`
                 padding-left: calc(env(safe-area-inset-left) + 1rem);
                 padding-right: calc(env(safe-area-inset-right) + 1rem);

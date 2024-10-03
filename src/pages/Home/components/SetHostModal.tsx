@@ -6,16 +6,9 @@ import { Laptop } from 'lucide-react'
 import store from 'store2'
 
 import ProfileCell from '@/components/ProfileCell'
+import { useResponsiveDialog } from '@/components/ResponsiveDialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
 import { useAppDispatch, useProfile } from '@/store'
 import { profileActions } from '@/store/slices/profile'
 import { trafficActions } from '@/store/slices/traffic'
@@ -25,6 +18,16 @@ import { ExistingProfiles, LastUsedProfile } from '@/utils/constant'
 const SetHostModal: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+
+  const {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+    DialogTrigger,
+    DialogClose,
+  } = useResponsiveDialog()
 
   const [existingProfiles, setExistingProfiles] = useState<Array<Profile>>([])
   const currentProfile = useProfile()
@@ -69,7 +72,7 @@ const SetHostModal: React.FC = () => {
           <DialogTitle>{t('landing.history')}</DialogTitle>
         </DialogHeader>
 
-        <div className="bg-gray-100 dark:bg-muted border divide-y divide-gray-200 dark:divide-black/20 rounded-xl overflow-hidden">
+        <div className="bg-gray-100 dark:bg-muted border divide-y divide-gray-200 dark:divide-black/20 rounded-xl overflow-hidden my-3">
           {existingProfiles.map((profile) => {
             return (
               <div
@@ -94,7 +97,10 @@ const SetHostModal: React.FC = () => {
         </div>
 
         <DialogFooter>
-          <Button className="mt-3 sm:mt-0" onClick={() => onAddNewProfile()}>
+          <DialogClose asChild className="md:hidden">
+            <Button variant="outline">{t('common.close')}</Button>
+          </DialogClose>
+          <Button onClick={() => onAddNewProfile()}>
             {t('landing.add_new_host')}
           </Button>
         </DialogFooter>

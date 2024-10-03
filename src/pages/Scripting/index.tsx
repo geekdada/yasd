@@ -13,7 +13,6 @@ import PageTitle from '@/components/PageTitle'
 import { useResponsiveDialog } from '@/components/ResponsiveDialog'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import { BottomSafeArea } from '@/components/VerticalSafeArea'
 import { EvaluateResult, Scriptings } from '@/types'
 import fetcher from '@/utils/fetcher'
 import withProfile from '@/utils/with-profile'
@@ -152,8 +151,6 @@ const ComponentBase: React.FC = () => {
               <Button variant="default">{t('common.close')}</Button>
             </DialogClose>
           </DialogFooter>
-
-          <BottomSafeArea />
         </DialogContent>
       </Dialog>
     </>

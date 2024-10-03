@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import { useResponsiveDialog } from '@/components/ResponsiveDialog'
 import { Button } from '@/components/ui/button'
 import type { Dialog } from '@/components/ui/dialog'
-import { BottomSafeArea } from '@/components/VerticalSafeArea'
 
 export type Action = {
   id: number | string
@@ -52,8 +51,6 @@ const ActionsModal = ({
             <Button variant="outline">{t('common.close')}</Button>
           </DialogClose>
         </DialogFooter>
-
-        <BottomSafeArea />
       </DialogContent>
     </Dialog>
   )

@@ -12,7 +12,6 @@ import DarkModeToggle from '@/components/DarkModeToggle'
 import ProfileCell from '@/components/ProfileCell'
 import RunInSurge from '@/components/RunInSurge'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   Form,
   FormControl,
@@ -23,6 +22,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Switch } from '@/components/ui/switch'
 import { TypographyH2, TypographyH4 } from '@/components/ui/typography'
 import VersionTag from '@/components/VersionTag'
 import InstallCertificateModal from '@/pages/Landing/components/InstallCertificateModal'
@@ -294,7 +294,7 @@ export const Component: React.FC = () => {
               )}
             />
 
-            <div className="pt-2 space-y-2">
+            <div className="pt-2 space-y-3">
               <RunInSurge not>
                 <FormField
                   control={form.control}
@@ -302,7 +302,7 @@ export const Component: React.FC = () => {
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-center space-x-3 space-y-0">
                       <FormControl>
-                        <Checkbox
+                        <Switch
                           disabled={protocol === 'https:'}
                           checked={field.value}
                           onCheckedChange={field.onChange}
@@ -320,7 +320,7 @@ export const Component: React.FC = () => {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center space-x-3 space-y-0">
                     <FormControl>
-                      <Checkbox
+                      <Switch
                         checked={field.value}
                         onCheckedChange={field.onChange}
                       />

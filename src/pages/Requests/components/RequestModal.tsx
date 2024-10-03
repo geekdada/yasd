@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import bytes from 'bytes'
 import dayjs from 'dayjs'
 import { Search } from 'lucide-react'
@@ -13,14 +14,8 @@ import { useMediaQuery } from 'usehooks-ts'
 
 import CodeContent from '@/components/CodeContent'
 import { DataGroup, DataRowMain } from '@/components/Data'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
-import {
-  Drawer,
-  DrawerContent,
-  DrawerFooter,
-  DrawerClose,
-} from '@/components/ui/drawer'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
 import {
   Tabs,
   TabsContent as TabsContentOriginal,
@@ -245,12 +240,18 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
   return isDesktop ? (
     <Dialog {...props}>
       <DialogContent className="h-[90%] max-w-4xl flex flex-col pt-10">
+        <VisuallyHidden.Root>
+          <DialogTitle>Request {req?.URL}</DialogTitle>
+        </VisuallyHidden.Root>
         {content}
       </DialogContent>
     </Dialog>
   ) : (
     <Drawer {...props}>
       <DrawerContent className="flex flex-col px-4 gap-4 h-[90%]">
+        <VisuallyHidden.Root>
+          <DrawerTitle>Request {req?.URL}</DrawerTitle>
+        </VisuallyHidden.Root>
         {content}
         <BottomSafeArea />
       </DrawerContent>

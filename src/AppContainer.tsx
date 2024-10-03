@@ -5,6 +5,7 @@ import { Provider as ReduxProvider } from 'react-redux'
 import Bootstrap from '@/bootstrap'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { UIProvider } from '@/components/UIProvider'
+import { SafeAreaInsetsProvider } from '@/hooks/useSafeAreaInsets'
 import { store } from '@/store'
 
 const AppContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -13,7 +14,9 @@ const AppContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
       <HelmetProvider>
         <ThemeProvider>
           <UIProvider>
-            <Bootstrap>{children}</Bootstrap>
+            <SafeAreaInsetsProvider>
+              <Bootstrap>{children}</Bootstrap>
+            </SafeAreaInsetsProvider>
           </UIProvider>
         </ThemeProvider>
       </HelmetProvider>
