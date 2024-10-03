@@ -1,3 +1,12 @@
+## [2.0.11](https://github.com/geekdada/yasd/compare/v2.0.10...v2.0.11) (2024-10-03)
+
+
+### Features
+
+* Optimize UI ([0f9df73](https://github.com/geekdada/yasd/commit/0f9df73cae66ca084dc4cc40c102d028d2bff79b))
+
+
+
 ## [2.0.10](https://github.com/geekdada/yasd/compare/v2.0.9...v2.0.10) (2024-09-29)
 
 
