@@ -8,11 +8,14 @@ export const useDeviceSettingsSchema = () => {
   const DeviceSettingsSchema = useMemo(
     () =>
       z.object({
-        name: z.string().nonempty(t('devices.err_required')),
-        address: z.string().ip({
-          version: 'v4',
-          message: t('devices.err_not_ip'),
-        }),
+        name: z.string().trim().optional(),
+        address: z
+          .string()
+          .trim()
+          .ip({
+            version: 'v4',
+            message: t('devices.err_not_ip'),
+          }),
         shouldHandledBySurge: z.boolean(),
       }),
     [t],

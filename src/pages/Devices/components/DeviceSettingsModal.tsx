@@ -142,12 +142,7 @@ const DeviceSettingsModal = ({
                 <FormItem>
                   <FormLabel>{t('devices.name')}</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={isLoading}
-                      autoComplete="off"
-                      required
-                      {...field}
-                    />
+                    <Input disabled={isLoading} autoComplete="off" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -166,7 +161,6 @@ const DeviceSettingsModal = ({
                       autoCorrect="off"
                       autoComplete="off"
                       autoCapitalize="off"
-                      required
                       {...field}
                     />
                   </FormControl>
