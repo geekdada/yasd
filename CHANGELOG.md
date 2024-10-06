@@ -1,3 +1,12 @@
+## [2.0.12](https://github.com/geekdada/yasd/compare/v2.0.11...v2.0.12) (2024-10-06)
+
+
+### Features
+
+* Device name should be optional ([fbbf3a9](https://github.com/geekdada/yasd/commit/fbbf3a90c24e982532f3db5b0ca24a813706c1fc))
+
+
+
 ## [2.0.11](https://github.com/geekdada/yasd/compare/v2.0.10...v2.0.11) (2024-10-03)
 
 
