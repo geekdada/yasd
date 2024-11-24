@@ -21,7 +21,9 @@
     "refresh": "Refresh",
     "confirm": "Confirm",
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "go_back": "Go back",
+    "execute": "Execute"
   },
   "tls_instruction": {
     "title": "Needed a certificate?",
@@ -133,14 +135,20 @@
     "avg_rtt": "Avg. RTT"
   },
   "scripting": {
-    "run_script_button_title": "Run",
-    "debug_script_button_title": "Debug Script",
+    "run_script_button_title": "Evaluate",
+    "debug_script_button_title": "Evaluate Script",
     "running": "Running",
     "result": "Result",
     "open_script": "Open script",
     "empty_code_error": "No code entered in the editor",
     "editor_placeholder": "// Only supports Cron script\n\n$done();",
-    "timeout": "Timeout"
+    "timeout": "Timeout",
+    "success_without_result_text": "Script executed successfully without any log.",
+    "script_argument": "Script Argument",
+    "define_script_argument": "Define the argument for the execution",
+    "save_for_later": "Save for later",
+    "save_for_later_description": "Save the argument for the next execution",
+    "argument": "Argument"
   },
   "dns": {
     "result": "Result",

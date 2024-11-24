@@ -1,4 +1,4 @@
-import React, { memo, type ReactNode } from 'react'
+import React, { memo } from 'react'
 import { css } from '@emotion/react'
 import tw from 'twin.macro'
 import { useMediaQuery } from 'usehooks-ts'
@@ -28,11 +28,11 @@ const CustomDrawerContent = tw(DrawerContent)`px-6`
 const CustomDrawerHeader = tw(DrawerHeader)`px-0`
 const CustomDrawerFooter = memo(function CustomDrawerFooter({
   children,
-}: {
-  children: ReactNode
-}) {
+  ...props
+}: React.ComponentPropsWithoutRef<typeof DrawerFooter>) {
   return (
     <DrawerFooter
+      {...props}
       className="px-0"
       css={css`
         padding-bottom: max(env(safe-area-inset-bottom), 1rem);

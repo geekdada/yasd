@@ -1,19 +1,20 @@
 import React, { useMemo, useState } from 'react'
-import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { uniqBy } from 'lodash-es'
 import { Link2Icon } from 'lucide-react'
 import useSWR from 'swr'
 
-import CodeContent from '@/components/CodeContent'
 import HorizontalSafeArea from '@/components/HorizontalSafeArea'
 import { ListCell } from '@/components/ListCell'
 import PageTitle from '@/components/PageTitle'
-import { useResponsiveDialog } from '@/components/ResponsiveDialog'
+import {
+  useExecuteScript,
+  withScriptExecutionProvider,
+} from '@/components/ScriptExecutionProvider'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import { EvaluateResult, Scriptings } from '@/types'
+import { Scriptings } from '@/types'
 import fetcher from '@/utils/fetcher'
 import withProfile from '@/utils/with-profile'
 
@@ -21,18 +22,10 @@ const ComponentBase: React.FC = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogFooter,
-    DialogClose,
-  } = useResponsiveDialog()
-
   const { data: scripting } = useSWR<Scriptings>('/scripting', fetcher)
-  const [evaluateResult, setEvaluateResult] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState<number>()
+
+  const { evaluateCronScript } = useExecuteScript()
 
   const filteredList = useMemo(() => {
     if (!scripting) return []
@@ -44,32 +37,14 @@ const ComponentBase: React.FC = () => {
     window.open(path, '_blank', 'noopener noreferrer')
   }
 
-  const evaluate = (scriptName: string, index: number) => {
+  const evaluate = async (scriptName: string, index: number) => {
     if (typeof isLoading === 'number') return
 
     setIsLoading(index)
 
-    fetcher<EvaluateResult>({
-      url: '/scripting/cron/evaluate',
-      method: 'POST',
-      data: {
-        script_name: scriptName,
-      },
-      timeout: 60000,
-    })
-      .then((res) => {
-        if (res.exception) {
-          toast.error(res.exception)
-        } else {
-          setEvaluateResult(res.output)
-        }
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-      .finally(() => {
-        setIsLoading(undefined)
-      })
+    await evaluateCronScript(scriptName)
+
+    setIsLoading(undefined)
   }
 
   return (
@@ -130,34 +105,11 @@ const ComponentBase: React.FC = () => {
           {t('scripting.debug_script_button_title')}
         </Button>
       </HorizontalSafeArea>
-
-      <Dialog
-        open={!!evaluateResult}
-        onOpenChange={(open) => {
-          if (!open) {
-            setEvaluateResult(undefined)
-          }
-        }}
-      >
-        <DialogContent className="flex flex-col max-h-[90%]">
-          <DialogHeader>
-            <DialogTitle>{t('scripting.result')}</DialogTitle>
-          </DialogHeader>
-          <div className="w-full overflow-x-hidden overflow-y-scroll">
-            <CodeContent content={evaluateResult} />
-          </div>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="default">{t('common.close')}</Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </>
   )
 }
 
-export const Component = withProfile(ComponentBase)
+export const Component = withProfile(withScriptExecutionProvider(ComponentBase))
 
 Component.displayName = 'ScriptingPage'
 

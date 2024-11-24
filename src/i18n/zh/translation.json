@@ -21,7 +21,9 @@
     "refresh": "刷新",
     "confirm": "确认",
     "cancel": "取消",
-    "close": "关闭"
+    "close": "关闭",
+    "go_back": "返回",
+    "execute": "执行"
   },
   "tls_instruction": {
     "title": "需要证书吗？",
@@ -140,7 +142,13 @@
     "open_script": "打开脚本",
     "empty_code_error": "没有输入脚本内容",
     "editor_placeholder": "// 仅支持 Cron 类型脚本\n\n$done();",
-    "timeout": "超时时间"
+    "timeout": "超时时间",
+    "success_without_result_text": "脚本执行成功，没有任何日志。",
+    "script_argument": "脚本参数",
+    "define_script_argument": "定义脚本参数",
+    "save_for_later": "保存参数",
+    "save_for_later_description": "保存脚本参数以便下次执行时使用",
+    "argument": "参数"
   },
   "dns": {
     "result": "结果",

@@ -3,19 +3,6 @@ import axios, { AxiosRequestConfig } from 'axios'
 
 const client = axios.create({
   baseURL: '/v1',
-  transformRequest: [
-    (data, headers) => {
-      if (!headers['x-surge-host']) {
-        delete headers['Content-Type']
-      } else {
-        headers['Content-Type'] = 'application/json;charset=UTF-8'
-      }
-
-      if (data) {
-        return JSON.stringify(data)
-      }
-    },
-  ],
 })
 
 export function setServer(

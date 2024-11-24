@@ -4,8 +4,8 @@ import { css } from '@emotion/react'
 import { cn } from '@/utils/shadcn'
 
 type CodeContentProps = {
-  content?: string
-} & React.HTMLAttributes<HTMLPreElement>
+  content?: string | null
+} & Omit<React.HTMLAttributes<HTMLPreElement>, 'content'>
 
 const CodeContent = ({ className, content, ...props }: CodeContentProps) => {
   return (

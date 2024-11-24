@@ -1,15 +1,28 @@
 import React, { createContext, useCallback } from 'react'
+import { z, ZodObject } from 'zod'
 
 import Confirmations from './components/Confirmations'
 
-import type { ConfirmProperties } from './types'
+import type {
+  ConfirmProperties,
+  FormConfirmProperties,
+  SimpleConfirmProperties,
+} from './types'
 
 interface UIState {
   confirmations: ConfirmProperties[]
 }
 
+type ConfirmResult<T> = T extends FormConfirmProperties
+  ? z.infer<ZodObject<T['form']>> | false
+  : T extends SimpleConfirmProperties
+    ? boolean
+    : never
+
 interface UIContext extends UIState {
-  confirm: (properties: ConfirmProperties) => Promise<boolean>
+  confirm: <P extends ConfirmProperties, T = ConfirmResult<P>>(
+    properties: P,
+  ) => Promise<T>
   cleanConfirmation: (index: number) => Promise<void>
 }
 
@@ -20,34 +33,36 @@ export const UIProvider = ({ children }: { children: React.ReactNode }) => {
     confirmations: [],
   })
 
-  const confirm = useCallback(async (properties: ConfirmProperties) => {
-    return new Promise<boolean>((resolve) => {
+  const confirm = useCallback<UIContext['confirm']>(async (properties) => {
+    const isFormConfirm = 'form' in properties
+
+    return new Promise<any>((resolve) => {
+      const newConirmation = isFormConfirm
+        ? ({
+            ...properties,
+            open: true,
+            onConfirm: (result) => {
+              resolve(result)
+            },
+            onCancel: () => {
+              resolve(false)
+            },
+          } as FormConfirmProperties)
+        : ({
+            ...properties,
+            open: true,
+            onConfirm: () => {
+              resolve(true)
+            },
+            onCancel: () => {
+              resolve(false)
+            },
+          } as SimpleConfirmProperties)
+
       setUIState((prevState) => {
         return {
           ...prevState,
-          confirmations: [
-            ...prevState.confirmations,
-            {
-              ...properties,
-              open: true,
-              onConfirm: () => {
-                if (properties.onConfirm) {
-                  properties.onConfirm()
-                  resolve(true)
-                } else {
-                  resolve(true)
-                }
-              },
-              onCancel: () => {
-                if (properties.onCancel) {
-                  properties.onCancel()
-                  resolve(false)
-                } else {
-                  resolve(false)
-                }
-              },
-            },
-          ],
+          confirmations: [...prevState.confirmations, newConirmation],
         }
       })
     })

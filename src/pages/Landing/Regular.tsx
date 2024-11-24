@@ -300,7 +300,8 @@ export const Component: React.FC = () => {
                   control={form.control}
                   name="useTls"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                    <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0">
+                      <FormLabel>{t('landing.https')}</FormLabel>
                       <FormControl>
                         <Switch
                           disabled={protocol === 'https:'}
@@ -308,7 +309,6 @@ export const Component: React.FC = () => {
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>{t('landing.https')}</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -318,14 +318,14 @@ export const Component: React.FC = () => {
                 control={form.control}
                 name="keepCredential"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                  <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0">
+                    <FormLabel>{t('landing.remember_me')}</FormLabel>
                     <FormControl>
                       <Switch
                         checked={field.value}
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>{t('landing.remember_me')}</FormLabel>
                   </FormItem>
                 )}
               />

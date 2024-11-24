@@ -48,6 +48,7 @@ const DeviceSettingsModal = ({
     DialogTitle,
     DialogFooter,
     DialogClose,
+    DialogDescription,
   } = useResponsiveDialog()
 
   const DeviceSettingsSchema = useDeviceSettingsSchema()
@@ -131,6 +132,9 @@ const DeviceSettingsModal = ({
       <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>{`${t('devices.modify')} ${title}`}</DialogTitle>
+          <DialogDescription className="sr-only">
+            {`${t('devices.modify')} ${title}`}
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -173,7 +177,8 @@ const DeviceSettingsModal = ({
               control={form.control}
               name="shouldHandledBySurge"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-3 space-y-0 py-2">
+                <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 py-2">
+                  <FormLabel>{t('devices.handled_by_surge')}</FormLabel>
                   <FormControl>
                     <Switch
                       disabled={isLoading}
@@ -181,7 +186,6 @@ const DeviceSettingsModal = ({
                       onCheckedChange={(checked) => field.onChange(checked)}
                     />
                   </FormControl>
-                  <FormLabel>{t('devices.handled_by_surge')}</FormLabel>
                 </FormItem>
               )}
             />

@@ -27,6 +27,7 @@ const SetHostModal: React.FC = () => {
     DialogFooter,
     DialogTrigger,
     DialogClose,
+    DialogDescription,
   } = useResponsiveDialog()
 
   const [existingProfiles, setExistingProfiles] = useState<Array<Profile>>([])
@@ -70,6 +71,9 @@ const SetHostModal: React.FC = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('landing.history')}</DialogTitle>
+          <DialogDescription className="sr-only">
+            {t('landing.history')}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="bg-gray-100 dark:bg-muted border divide-y divide-gray-200 dark:divide-black/20 rounded-xl overflow-hidden my-3">
@@ -98,7 +102,9 @@ const SetHostModal: React.FC = () => {
 
         <DialogFooter>
           <DialogClose asChild className="md:hidden">
-            <Button variant="outline">{t('common.close')}</Button>
+            <Button autoFocus variant="outline">
+              {t('common.close')}
+            </Button>
           </DialogClose>
           <Button onClick={() => onAddNewProfile()}>
             {t('landing.add_new_host')}

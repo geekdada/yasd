@@ -29,6 +29,7 @@ const ActionsModal = ({
     DialogTitle,
     DialogFooter,
     DialogClose,
+    DialogDescription,
   } = useResponsiveDialog()
 
   return (
@@ -36,6 +37,7 @@ const ActionsModal = ({
       <DialogContent className="select-none">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
+          <DialogDescription className="sr-only">{title}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">

@@ -14,62 +14,88 @@ import {
 
 import { useConfirmations } from '../UIProvider'
 
-const Confirmations = () => {
-  const { confirmations, cleanConfirmation } = useConfirmations()
+import { ConfirmationForm } from './ConfirmationForm'
+
+import type { SimpleConfirmProperties } from '../types'
+
+const Confirmation = ({
+  confirmation,
+  index,
+}: {
+  confirmation: SimpleConfirmProperties
+  index: number
+}) => {
   const { t } = useTranslation()
+  const { cleanConfirmation } = useConfirmations()
 
   const handleAction = useCallback(
-    (index: number) => {
-      const confirmation = confirmations[index]
-
+    (confirmation: SimpleConfirmProperties, index: number) => {
       if (confirmation.onConfirm) {
         confirmation.onConfirm()
       }
 
       cleanConfirmation(index)
     },
-    [cleanConfirmation, confirmations],
+    [cleanConfirmation],
   )
 
   const handleCancel = useCallback(
-    (index: number) => {
-      const confirmation = confirmations[index]
-
+    (confirmation: SimpleConfirmProperties, index: number) => {
       if (confirmation.onCancel) {
         confirmation.onCancel()
       }
 
       cleanConfirmation(index)
     },
-    [cleanConfirmation, confirmations],
+    [cleanConfirmation],
   )
 
   return (
+    <AlertDialog open={confirmation.open}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{confirmation.title}</AlertDialogTitle>
+
+          {confirmation.description ? (
+            <AlertDialogDescription>
+              {confirmation.description}
+            </AlertDialogDescription>
+          ) : null}
+        </AlertDialogHeader>
+
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={() => handleCancel(confirmation, index)}>
+            {confirmation.cancelText ?? t('common.cancel')}
+          </AlertDialogCancel>
+          <AlertDialogAction onClick={() => handleAction(confirmation, index)}>
+            {confirmation.confirmText ?? t('common.confirm')}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}
+
+const Confirmations = () => {
+  const { confirmations } = useConfirmations()
+
+  return (
     <>
-      {confirmations.map((confirmation, index) => (
-        <AlertDialog key={confirmation.title} open={confirmation.open}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{confirmation.title}</AlertDialogTitle>
-
-              {confirmation.description ? (
-                <AlertDialogDescription>
-                  {confirmation.description}
-                </AlertDialogDescription>
-              ) : null}
-            </AlertDialogHeader>
-
-            <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => handleCancel(index)}>
-                {confirmation.cancelText ?? t('common.cancel')}
-              </AlertDialogCancel>
-              <AlertDialogAction onClick={() => handleAction(index)}>
-                {confirmation.confirmText ?? t('common.confirm')}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      ))}
+      {confirmations.map((confirmation, index) =>
+        'form' in confirmation ? (
+          <ConfirmationForm
+            confirmation={confirmation}
+            index={index}
+            key={confirmation.title}
+          />
+        ) : (
+          <Confirmation
+            confirmation={confirmation}
+            index={index}
+            key={confirmation.title}
+          />
+        ),
+      )}
     </>
   )
 }
