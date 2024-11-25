@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/geekdada/yasd/compare/v2.0.12...v2.1.0) (2024-11-25)
+
+
+### Features
+
+* Add argument support in evaluating scripts ([03330fd](https://github.com/geekdada/yasd/commit/03330fd4e06136de644eafda1b31cbcd93a864c5))
+
+
+
 ## [2.0.12](https://github.com/geekdada/yasd/compare/v2.0.11...v2.0.12) (2024-10-06)
 
 
