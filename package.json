@@ -65,7 +65,7 @@
     "@types/jest": "^29.5.3",
     "@types/loadable__component": "^5.13.0",
     "@types/lodash-es": "^4.17.8",
-    "@types/node": "^18.0.0",
+    "@types/node": "^20",
     "@types/path-browserify": "^1.0.0",
     "@types/react": "^18",
     "@types/react-collapse": "^5.0.0",
@@ -115,7 +115,6 @@
     "lint-staged": "^13.2.3",
     "lodash-es": "^4.17.15",
     "lucide-react": "^0.263.1",
-    "node-sass": "^9.0.0",
     "npm-debug-log-cleaner": "^1.0.3",
     "path-browserify": "^1.0.1",
     "postcss": "^8.4.27",
@@ -139,6 +138,7 @@
     "react-virtualized": "^9.22.5",
     "react-wrap-balancer": "^1.0.0",
     "rimraf": "^5.0.1",
+    "sass": "^1.81.0",
     "semver": "^7.5.4",
     "shadcn": "^2.0.4",
     "smoothscroll-polyfill": "^0.4.4",
@@ -180,7 +180,7 @@
     "*.{js,jsx,ts,tsx}": "eslint --ext .mjs,.js,.jsx,.ts,.tsx"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "^20.0.0"
   },
   "snyk": true
 }
