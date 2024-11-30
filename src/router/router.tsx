@@ -7,7 +7,7 @@ import {
 
 import App from '@/App'
 import AppContainer from '@/AppContainer'
-import ErrorBoundary from '@/components/ErrorBoundary'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 
 import { RouterContext } from './context'
 

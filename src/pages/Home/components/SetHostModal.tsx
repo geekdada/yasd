@@ -101,14 +101,14 @@ const SetHostModal: React.FC = () => {
         </div>
 
         <DialogFooter>
+          <Button onClick={() => onAddNewProfile()}>
+            {t('landing.add_new_host')}
+          </Button>
           <DialogClose asChild className="md:hidden">
             <Button autoFocus variant="outline">
               {t('common.close')}
             </Button>
           </DialogClose>
-          <Button onClick={() => onAddNewProfile()}>
-            {t('landing.add_new_host')}
-          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

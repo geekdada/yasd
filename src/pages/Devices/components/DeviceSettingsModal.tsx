@@ -191,9 +191,6 @@ const DeviceSettingsModal = ({
             />
 
             <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">{t('common.cancel')}</Button>
-              </DialogClose>
               <Button
                 isLoading={isLoading}
                 type="submit"
@@ -201,6 +198,9 @@ const DeviceSettingsModal = ({
               >
                 {t('common.save')}
               </Button>
+              <DialogClose asChild className="md:hidden">
+                <Button variant="outline">{t('common.cancel')}</Button>
+              </DialogClose>
             </DialogFooter>
           </form>
         </Form>
