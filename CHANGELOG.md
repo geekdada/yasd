@@ -1,3 +1,12 @@
+## [2.1.1](https://github.com/geekdada/yasd/compare/v2.1.0...v2.1.1) (2024-11-30)
+
+
+### Bug Fixes
+
+* Render issue on traffic update ([189a099](https://github.com/geekdada/yasd/commit/189a09950f7327a8a6f700c0d18010433d8900c3))
+
+
+
 # [2.1.0](https://github.com/geekdada/yasd/compare/v2.0.12...v2.1.0) (2024-11-25)
 
 
