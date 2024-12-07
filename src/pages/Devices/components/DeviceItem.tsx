@@ -19,11 +19,12 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
   const { t } = useTranslation()
   const surgeHost = useSurgeHost()
   const navigate = useNavigate()
+
   const [isDeviceSettingsModalOpen, setDeviceSettingsModalOpen] =
     useState(false)
-  const [actions, setActions] = useState<Action[] | null>(null)
+  const [isActionsModalOpen, setActionsModalOpen] = useState(false)
 
-  const onClick = useCallback(() => {
+  const actions = useMemo(() => {
     const actions = [
       {
         id: 'view_requests',
@@ -39,13 +40,13 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
         id: 'device_settings',
         title: 'devices.device_settings',
         onClick: () => {
-          setActions(null)
+          setActionsModalOpen(false)
           setDeviceSettingsModalOpen(true)
         },
       })
     }
 
-    setActions(actions)
+    return actions
   }, [device.dhcpDevice, device.displayIPAddress, navigate])
 
   const gateway = useMemo<boolean>(() => {
@@ -74,7 +75,7 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
 
   return (
     <>
-      <DataRow onClick={onClick}>
+      <DataRow onClick={() => setActionsModalOpen(true)}>
         <DataRowMain>
           <div className="flex items-center w-full overflow-hidden">
             {surgeHost ? (
@@ -165,28 +166,24 @@ const DeviceItem = ({ device }: { device: DeviceInfo }): JSX.Element => {
         </div>
       </DataRow>
 
-      {device.dhcpDevice ? (
+      {device.dhcpDevice && isDeviceSettingsModalOpen ? (
         <DeviceSettingsModal
           title={device.dhcpDevice.displayName || device.name}
           dhcpDevice={device.dhcpDevice}
           open={isDeviceSettingsModalOpen}
           onOpenChange={(open) => {
-            if (!open) {
-              setDeviceSettingsModalOpen(false)
-            }
+            setDeviceSettingsModalOpen(open)
           }}
         />
       ) : null}
 
       <ActionsModal
-        open={Boolean(actions)}
+        open={isActionsModalOpen}
         title={device?.dhcpDevice?.displayName || device.name}
         onOpenChange={(open) => {
-          if (!open) {
-            setActions(null)
-          }
+          setActionsModalOpen(open)
         }}
-        actions={actions || []}
+        actions={actions}
       />
     </>
   )

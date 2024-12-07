@@ -56,12 +56,12 @@ const DeviceSettingsModal = ({
   const form = useForm<FormData>({
     resolver: zodResolver(DeviceSettingsSchema),
     defaultValues: {
-      name: dhcpDevice.displayName,
+      name: dhcpDevice.displayName || '',
       address: dhcpDevice.assignedIP || dhcpDevice.currentIP,
       shouldHandledBySurge: Boolean(dhcpDevice.shouldHandledBySurge),
     },
   })
-  const { handleSubmit, control, reset } = form
+  const { handleSubmit, control } = form
   const { dirtyFields } = useFormState({
     control,
   })
@@ -78,18 +78,13 @@ const DeviceSettingsModal = ({
       ;(async () => {
         setIsLoading(true)
 
-        const payload: Partial<FormData> & {
-          physicalAddress: string
-        } = {
-          physicalAddress: dhcpDevice.physicalAddress,
-        }
+        const payload: Record<string, unknown> = {}
 
         for (const i in dirtyFields) {
           const key = i as keyof FormData
           const isDirty = dirtyFields[key]
 
           if (isDirty) {
-            // @ts-ignore
             payload[key] = data[key]
           }
         }
@@ -100,7 +95,7 @@ const DeviceSettingsModal = ({
           }>({
             method: 'POST',
             url: '/devices',
-            data: payload,
+            data: { ...payload, physicalAddress: dhcpDevice.physicalAddress },
           }).then((res) => {
             if (res.error) {
               throw new Error(res.error)
@@ -111,7 +106,6 @@ const DeviceSettingsModal = ({
         setIsLoading(false)
 
         if (err) {
-          reset()
           console.error(err)
           toast.error(t('common.failed_interaction') + `: ${err.message}`)
           return
@@ -124,12 +118,12 @@ const DeviceSettingsModal = ({
         }
       })()
     },
-    [dhcpDevice.physicalAddress, dirtyFields, props, reset, t],
+    [dhcpDevice.physicalAddress, dirtyFields, props, t],
   )
 
   return (
     <Dialog {...props}>
-      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>{`${t('devices.modify')} ${title}`}</DialogTitle>
           <DialogDescription className="sr-only">
@@ -146,7 +140,13 @@ const DeviceSettingsModal = ({
                 <FormItem>
                   <FormLabel>{t('devices.name')}</FormLabel>
                   <FormControl>
-                    <Input disabled={isLoading} autoComplete="off" {...field} />
+                    <Input
+                      disabled={isLoading}
+                      autoComplete="off"
+                      autoFocus
+                      data-1p-ignore
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -192,6 +192,7 @@ const DeviceSettingsModal = ({
 
             <DialogFooter>
               <Button
+                disabled={!Object.keys(dirtyFields).length}
                 isLoading={isLoading}
                 type="submit"
                 loadingLabel={t('common.is_loading')}
