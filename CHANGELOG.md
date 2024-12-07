@@ -1,3 +1,12 @@
+## [2.1.2](https://github.com/geekdada/yasd/compare/v2.1.1...v2.1.2) (2024-12-07)
+
+
+### Features
+
+* Improve device settings modal ([61c6548](https://github.com/geekdada/yasd/commit/61c6548783e61c405d9526a096e94305c8e27c00))
+
+
+
 ## [2.1.1](https://github.com/geekdada/yasd/compare/v2.1.0...v2.1.1) (2024-11-30)
 
 
