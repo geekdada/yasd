@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Loader2Icon, ZapIcon } from 'lucide-react'
+import { AutoSizer, List, ListRowRenderer } from 'react-virtualized'
 import useIsInViewport from 'use-is-in-viewport'
 
 import { StatusChip } from '@/components/StatusChip'
@@ -18,6 +19,7 @@ import { cn } from '@/utils/shadcn'
 import { mutatePolicyPerformanceResults } from '../usePolicyPerformance'
 
 interface PolicyGroupProps {
+  columnCount: number
   policyGroupName: string
   policyGroup: Policy[]
   policyPerformanceResults?: PolicyBenchmarkResults
@@ -27,6 +29,10 @@ type LocalLatency = {
   latency: number
   error?: string | null
 }
+
+const VIRTUALIZED_POLICY_THRESHOLD = 80
+const POLICY_CARD_GAP = 16
+const POLICY_CARD_ROW_HEIGHT = 128
 
 const latencyResultStyle = (latency: number) => {
   if (latency < 0) {
@@ -38,7 +44,62 @@ const latencyResultStyle = (latency: number) => {
   }
 }
 
+interface PolicyCardProps {
+  isSelected: boolean
+  latency?: LocalLatency
+  policy: Policy
+  onSelect: (name: string) => void
+}
+
+const PolicyCard = React.memo<PolicyCardProps>(
+  ({ isSelected, latency, policy, onSelect }) => {
+    const typeDescription = policy.typeDescription.toUpperCase()
+
+    return (
+      <div
+        className={cn(
+          'flex h-full flex-col bg-muted rounded-xl border px-3 py-3 md:px-4 md:py-3 cursor-pointer hover:bg-neutral-100 dark:hover:bg-black/90 transition-colors ease-in-out duration-200 justify-between gap-2 md:gap-3 ring-1 ring-black/[0.03] dark:ring-white/[0.04]',
+          isSelected &&
+            'bg-blue-500 text-white hover:bg-blue-500 dark:hover:bg-blue-500',
+        )}
+        data-policy-line-hash={policy.lineHash}
+        onClick={() => onSelect(policy.name)}
+      >
+        <div className="min-h-0">
+          <div className="text-xs mb-1 truncate">{typeDescription}</div>
+
+          <div className="text-xs sm:text-sm font-bold leading-snug whitespace-break-spaces break-all line-clamp-3">
+            {policy.name}
+          </div>
+        </div>
+
+        <div className="flex min-h-6">
+          {latency && latency.latency > 0 && (
+            <StatusChip
+              className="truncate"
+              size="sm"
+              variant={latencyResultStyle(latency.latency)}
+              text={latency.latency + 'ms'}
+            />
+          )}
+          {!typeDescription.includes('REJECT') && latency?.latency === -1 && (
+            <StatusChip
+              className="truncate"
+              size="sm"
+              variant="error"
+              text={latency.error || 'Error'}
+            />
+          )}
+        </div>
+      </div>
+    )
+  },
+)
+
+PolicyCard.displayName = 'PolicyCard'
+
 const PolicyGroup: React.FC<PolicyGroupProps> = ({
+  columnCount,
   policyGroupName,
   policyGroup,
   policyPerformanceResults,
@@ -46,7 +107,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
   const { t } = useTranslation()
   const [isInViewport, targetRef] = useIsInViewport({ threshold: 10 })
   const [selection, setSelection] = useState<string>()
-  const [latencies, setLatencies] = useState<{
+  const [localLatencies, setLocalLatencies] = useState<{
     [name: string]: LocalLatency
   }>({})
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -58,9 +119,9 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
     }).then((res) => res.policy)
   }, [policyGroupName])
 
-  useEffect(() => {
+  const performanceLatencies = useMemo(() => {
     if (!policyPerformanceResults) {
-      return
+      return {}
     }
 
     const latencies: {
@@ -68,29 +129,26 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
     } = {}
 
     policyGroup.forEach((policy) => {
-      Object.keys(policyPerformanceResults).forEach((key) => {
-        if (policy.lineHash === key) {
-          if (!latencies[policy.name]) {
-            latencies[policy.name] = {
-              latency: 0,
-            }
-          }
+      if (!policy.lineHash) return
 
-          latencies[policy.name].latency =
-            policyPerformanceResults[key].lastTestScoreInMS === 0 &&
-            policyPerformanceResults[key].lastTestErrorMessage !== null
-              ? -1
-              : Number(
-                  policyPerformanceResults[key].lastTestScoreInMS.toFixed(0),
-                )
-          latencies[policy.name]['error'] =
-            policyPerformanceResults[key].lastTestErrorMessage
-        }
-      })
+      const result = policyPerformanceResults[policy.lineHash]
+      if (!result) return
+
+      latencies[policy.name] = {
+        latency:
+          result.lastTestScoreInMS === 0 && result.lastTestErrorMessage !== null
+            ? -1
+            : Number(result.lastTestScoreInMS.toFixed(0)),
+        error: result.lastTestErrorMessage,
+      }
     })
 
-    setLatencies(latencies)
+    return latencies
   }, [policyGroup, policyPerformanceResults])
+
+  const latencies = policyPerformanceResults
+    ? performanceLatencies
+    : localLatencies
 
   const selectPolicy = useCallback(
     (name: string) => {
@@ -186,7 +244,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
             })
           }
 
-          setLatencies(latencies)
+          setLocalLatencies(latencies)
         })
         .catch((err) => {
           console.error(err)
@@ -196,6 +254,69 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
         })
     },
     [isTesting, policyPerformanceResults, refreshSelection],
+  )
+
+  const renderPolicyCard = useCallback(
+    (policy: Policy) => (
+      <PolicyCard
+        key={policy.name}
+        policy={policy}
+        isSelected={selection === policy.name}
+        latency={latencies[policy.name]}
+        onSelect={selectPolicy}
+      />
+    ),
+    [latencies, selectPolicy, selection],
+  )
+
+  const renderVirtualizedPolicyList = useCallback(
+    (width: number, height: number) => {
+      const columnWidth =
+        (width - POLICY_CARD_GAP * (columnCount - 1)) / columnCount
+      const rowCount = Math.ceil(policyGroup.length / columnCount)
+
+      const rowRenderer: ListRowRenderer = ({ index, key, style }) => {
+        const startIndex = index * columnCount
+        const rowPolicies = policyGroup.slice(
+          startIndex,
+          startIndex + columnCount,
+        )
+
+        return (
+          <div
+            key={key}
+            style={{
+              ...style,
+              display: 'flex',
+              gap: POLICY_CARD_GAP,
+              paddingBottom: POLICY_CARD_GAP,
+            }}
+          >
+            {rowPolicies.map((policy) => (
+              <div
+                key={policy.name}
+                style={{ width: columnWidth, height: POLICY_CARD_ROW_HEIGHT }}
+              >
+                {renderPolicyCard(policy)}
+              </div>
+            ))}
+          </div>
+        )
+      }
+
+      return (
+        <List
+          width={width}
+          height={height}
+          rowCount={rowCount}
+          rowHeight={POLICY_CARD_ROW_HEIGHT + POLICY_CARD_GAP}
+          rowRenderer={rowRenderer}
+          overscanRowCount={3}
+          style={{ outline: 'none' }}
+        />
+      )
+    },
+    [columnCount, policyGroup, renderPolicyCard],
   )
 
   useEffect(() => {
@@ -233,54 +354,19 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
       </CardHeader>
 
       <CardContent className="p-0">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {policyGroup.map((policy) => {
-            const typeDescription = policy.typeDescription.toUpperCase()
-
-            return (
-              <div
-                className={cn(
-                  'flex flex-col bg-muted rounded-xl border px-3 py-3 md:px-4 md:py-3 cursor-pointer hover:bg-neutral-100 dark:hover:bg-black/90 transition-colors ease-in-out duration-200 justify-between gap-2 md:gap-3 ring-1 ring-black/[0.03] dark:ring-white/[0.04]',
-                  selection === policy.name &&
-                    'bg-blue-500 text-white hover:bg-blue-500 dark:hover:bg-blue-500',
-                )}
-                key={policy.name}
-                data-policy-line-hash={policy.lineHash}
-                onClick={() => selectPolicy(policy.name)}
-              >
-                <div>
-                  <div className="text-xs mb-1 truncate">{typeDescription}</div>
-
-                  <div className="text-xs sm:text-sm font-bold leading-snug whitespace-break-spaces break-all">
-                    {policy.name}
-                  </div>
-                </div>
-
-                <div className="flex">
-                  {latencies[policy.name]?.latency > 0 && (
-                    <StatusChip
-                      className="truncate"
-                      size="sm"
-                      variant={latencyResultStyle(
-                        latencies[policy.name].latency,
-                      )}
-                      text={latencies[policy.name].latency + 'ms'}
-                    />
-                  )}
-                  {!typeDescription.includes('REJECT') &&
-                    latencies[policy.name]?.latency === -1 && (
-                      <StatusChip
-                        className="truncate"
-                        size="sm"
-                        variant="error"
-                        text={latencies[policy.name].error || 'Error'}
-                      />
-                    )}
-                </div>
-              </div>
-            )
-          })}
-        </div>
+        {policyGroup.length > VIRTUALIZED_POLICY_THRESHOLD ? (
+          <div className="h-[55vh] min-h-80 max-h-[640px]">
+            <AutoSizer>
+              {({ width, height }) =>
+                renderVirtualizedPolicyList(width, height)
+              }
+            </AutoSizer>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {policyGroup.map(renderPolicyCard)}
+          </div>
+        )}
       </CardContent>
     </div>
   )

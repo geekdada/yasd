@@ -1,7 +1,8 @@
-import React, { createRef, useRef } from 'react'
+import React, { createRef, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/react'
 import useSWR from 'swr'
+import { useMediaQuery } from 'usehooks-ts'
 
 import BackButton from '@/components/BackButton'
 import { TypographyH3 } from '@/components/ui/typography'
@@ -26,11 +27,15 @@ export const Component: React.FC = () => {
     fetcher,
   )
   const policyGroupNames = (policies && policies['policy-groups']) || []
-  const refs = policyGroupNames.map(() => {
-    return createRef<HTMLDivElement>()
-  })
+  const refs = useMemo(
+    () => policyGroupNames.map(() => createRef<HTMLDivElement>()),
+    [policyGroupNames],
+  )
   const headerRef = useRef<HTMLDivElement>(null)
   const { data: policyPerformanceResults } = usePolicyPerformance()
+  const isMediumViewport = useMediaQuery('(min-width: 768px)')
+  const isLargeViewport = useMediaQuery('(min-width: 1024px)')
+  const policyColumnCount = isLargeViewport ? 4 : isMediumViewport ? 3 : 2
 
   const scrollToRef = (index: number) => {
     const target = refs[index].current
@@ -100,6 +105,7 @@ export const Component: React.FC = () => {
                   policyGroupName={policy}
                   policyGroup={policyGroups[policy]}
                   policyPerformanceResults={policyPerformanceResults}
+                  columnCount={policyColumnCount}
                 />
               </div>
             )
