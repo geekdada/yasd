@@ -1,3 +1,11 @@
+# [3.1.0](https://github.com/geekdada/yasd/compare/v3.0.4...v3.1.0) (2026-06-23)
+
+
+### Bug Fixes
+
+* align virtualized policy breakpoints ([729c521](https://github.com/geekdada/yasd/commit/729c521070ba5b50eb1422d9a2c6ee573aeb3fa7))
+* virtualize large policy groups ([b2c2c03](https://github.com/geekdada/yasd/commit/b2c2c03436086bdc414d878cc71f42eb38646c44))
+
 ## [3.0.4](https://github.com/geekdada/yasd/compare/v3.0.3...v3.0.4) (2026-04-12)
 
 
