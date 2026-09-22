@@ -1,3 +1,10 @@
+# [3.2.0](https://github.com/geekdada/yasd/compare/v3.1.0...v3.2.0) (2026-09-22)
+
+
+### Features
+
+* **policies:** add outbound mode and global policy selection ([f7028d9](https://github.com/geekdada/yasd/commit/f7028d94c835bd88c15c7656072ddf1e2407b3ee))
+
 # [3.1.0](https://github.com/geekdada/yasd/compare/v3.0.4...v3.1.0) (2026-06-23)
 
 
