@@ -93,7 +93,8 @@
     "total": "Total"
   },
   "policies": {
-    "test_policy": "Test policy"
+    "test_policy": "Test policy",
+    "global": "Global"
   },
   "requests": {
     "recent": "Recent",
@@ -226,5 +227,11 @@
     "confirm_delete_profile": {
       "title": "Delete this?"
     }
+  },
+  "outbound": {
+    "title": "Outbound Mode",
+    "rule": "Rule",
+    "proxy": "Global Proxy",
+    "direct": "Direct"
   }
 }

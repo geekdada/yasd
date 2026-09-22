@@ -10,6 +10,7 @@ import ChangeLanguage from '@/components/ChangeLanguage'
 import DarkModeToggle from '@/components/DarkModeToggle'
 import { DataGroup, DataRow, DataRowMain } from '@/components/Data'
 import HorizontalSafeArea from '@/components/HorizontalSafeArea'
+import OutboundMode from '@/components/OutboundMode'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import VersionSupport from '@/components/VersionSupport'
@@ -127,6 +128,7 @@ export const Component: React.FC = () => {
         </div>
 
         <div className="px-4 @3xl:px-6 space-y-4 @3xl:space-y-6">
+          <OutboundMode />
           <VersionSupport macos>
             <DataGroup>
               <DataRow>

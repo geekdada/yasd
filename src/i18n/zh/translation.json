@@ -93,7 +93,8 @@
     "total": "总计"
   },
   "policies": {
-    "test_policy": "测试"
+    "test_policy": "测试",
+    "global": "全局代理"
   },
   "requests": {
     "recent": "最近请求",
@@ -226,5 +227,11 @@
     "confirm_delete_profile": {
       "title": "删除配置？"
     }
+  },
+  "outbound": {
+    "title": "出站模式",
+    "rule": "规则",
+    "proxy": "全局代理",
+    "direct": "直连"
   }
 }

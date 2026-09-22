@@ -3,10 +3,12 @@ import { useTranslation } from 'react-i18next'
 import { Loader2Icon, ZapIcon } from 'lucide-react'
 import { AutoSizer, List, ListRowRenderer } from 'react-virtualized'
 import useIsInViewport from 'use-is-in-viewport'
+import useSWR from 'swr'
 
 import { StatusChip } from '@/components/StatusChip'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { useProfile } from '@/store'
 import {
   Policy,
   SelectPolicyTestResult,
@@ -23,6 +25,7 @@ interface PolicyGroupProps {
   policyGroupName: string
   policyGroup: Policy[]
   policyPerformanceResults?: PolicyBenchmarkResults
+  isGlobal?: boolean
 }
 
 type LocalLatency = {
@@ -103,10 +106,18 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
   policyGroupName,
   policyGroup,
   policyPerformanceResults,
+  isGlobal = false,
 }) => {
   const { t } = useTranslation()
   const [isInViewport, targetRef] = useIsInViewport({ threshold: 10 })
-  const [selection, setSelection] = useState<string>()
+  const [localSelection, setSelection] = useState<string>()
+  const profile = useProfile()
+  const { data: globalSelection, mutate: refreshGlobalSelection } = useSWR(
+    isGlobal && profile ? ['/outbound/global', profile.id] : null,
+    ([url]) => fetcher<{ policy: string }>({ url }),
+    { refreshInterval: 5000 },
+  )
+  const selection = isGlobal ? globalSelection?.policy : localSelection
   const [localLatencies, setLocalLatencies] = useState<{
     [name: string]: LocalLatency
   }>({})
@@ -114,10 +125,15 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
   const [isTesting, setIsTesting] = useState<boolean>(false)
 
   const refreshSelection = useCallback(() => {
+    if (isGlobal) {
+      return refreshGlobalSelection().then((data) => data?.policy)
+    }
     return fetcher<{ policy: string }>({
-      url: '/policy_groups/select?group_name=' + policyGroupName,
+      url:
+        '/policy_groups/select?group_name=' +
+        encodeURIComponent(policyGroupName),
     }).then((res) => res.policy)
-  }, [policyGroupName])
+  }, [isGlobal, policyGroupName, refreshGlobalSelection])
 
   const performanceLatencies = useMemo(() => {
     if (!policyPerformanceResults) {
@@ -157,10 +173,10 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
       setIsLoading(true)
 
       fetcher({
-        url: '/policy_groups/select',
+        url: isGlobal ? '/outbound/global' : '/policy_groups/select',
         method: 'POST',
         data: {
-          group_name: policyGroupName,
+          ...(isGlobal ? {} : { group_name: policyGroupName }),
           policy: name,
         },
       })
@@ -168,7 +184,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
           return refreshSelection()
         })
         .then((policy) => {
-          setSelection(policy)
+          if (!isGlobal) setSelection(policy)
         })
         .catch((err) => {
           console.error(err)
@@ -177,7 +193,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
           setIsLoading(false)
         })
     },
-    [isLoading, policyGroupName, refreshSelection],
+    [isGlobal, isLoading, policyGroupName, refreshSelection],
   )
 
   const testPolicy = useCallback(
@@ -322,18 +338,18 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
   useEffect(() => {
     let isMounted = true
 
-    if (isInViewport && !selection) {
-      void refreshSelection().then((policy) => {
-        if (isMounted) {
-          setSelection(policy)
-        }
-      })
+    if (!isGlobal && isInViewport && !selection) {
+      void refreshSelection()
+        .then((policy) => {
+          if (isMounted) setSelection(policy)
+        })
+        .catch(console.error)
     }
 
     return () => {
       isMounted = false
     }
-  }, [refreshSelection, isInViewport, selection])
+  }, [refreshSelection, isGlobal, isInViewport, selection])
 
   const cardInner = (
     <div className="px-3 sm:px-4 grid gap-4 select-none">
@@ -342,14 +358,20 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
           <div className="scroll-m-20 text-md sm:text-xl font-bold">
             {policyGroupName}
           </div>
-          <Button
-            size="icon"
-            variant="outline"
-            title={t('policies.test_policy')}
-            onClick={() => testPolicy(policyGroupName)}
-          >
-            {isTesting ? <Loader2Icon className="animate-spin" /> : <ZapIcon />}
-          </Button>
+          {!isGlobal && (
+            <Button
+              size="icon"
+              variant="outline"
+              title={t('policies.test_policy')}
+              onClick={() => testPolicy(policyGroupName)}
+            >
+              {isTesting ? (
+                <Loader2Icon className="animate-spin" />
+              ) : (
+                <ZapIcon />
+              )}
+            </Button>
+          )}
         </div>
       </CardHeader>
 

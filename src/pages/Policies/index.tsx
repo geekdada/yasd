@@ -7,6 +7,7 @@ import { useMediaQuery } from 'usehooks-ts'
 import BackButton from '@/components/BackButton'
 import { TypographyH3 } from '@/components/ui/typography'
 import { BottomSafeArea } from '@/components/VerticalSafeArea'
+import { useOutbound } from '@/data/outbound'
 import { useProfile } from '@/store'
 import { Policies, PolicyGroups } from '@/types'
 import fetcher from '@/utils/fetcher'
@@ -14,10 +15,14 @@ import fetcher from '@/utils/fetcher'
 import PolicyGroup from './components/PolicyGroup'
 import { PolicyNameItem } from './components/PolicyNameItem'
 import { usePolicyPerformance } from './usePolicyPerformance'
+import { getGlobalPolicies } from './globalPolicies'
 
 export const Component: React.FC = () => {
   const { t } = useTranslation()
   const profile = useProfile()
+  const { data: outbound } = useOutbound()
+  const globalRef = useRef<HTMLDivElement>(null)
+  const showGlobal = outbound?.mode === 'proxy'
   const { data: policies } = useSWR<Policies>(
     profile !== undefined ? '/policies' : undefined,
     fetcher,
@@ -27,6 +32,10 @@ export const Component: React.FC = () => {
     fetcher,
   )
   const policyGroupNames = (policies && policies['policy-groups']) || []
+  const globalPolicies = useMemo(
+    () => (policies ? getGlobalPolicies(policies) : []),
+    [policies],
+  )
   const refs = useMemo(
     () => policyGroupNames.map(() => createRef<HTMLDivElement>()),
     [policyGroupNames],
@@ -38,7 +47,7 @@ export const Component: React.FC = () => {
   const policyColumnCount = isLargeViewport ? 4 : isMediumViewport ? 3 : 2
 
   const scrollToRef = (index: number) => {
-    const target = refs[index].current
+    const target = index === -1 ? globalRef.current : refs[index].current
     const header = headerRef.current
     if (!target || !header) return
 
@@ -80,6 +89,11 @@ export const Component: React.FC = () => {
             padding-right: calc(env(safe-area-inset-right) + 1rem);
           `}
         >
+          {showGlobal && (
+            <PolicyNameItem onClick={() => scrollToRef(-1)}>
+              {t('policies.global')}
+            </PolicyNameItem>
+          )}
           {policies &&
             policies['policy-groups'].map((policy, index) => (
               <PolicyNameItem key={policy} onClick={() => scrollToRef(index)}>
@@ -96,6 +110,18 @@ export const Component: React.FC = () => {
           padding-right: calc(env(safe-area-inset-right) + 1rem);
         `}
       >
+        {showGlobal && policies && policyGroups && (
+          <div ref={globalRef}>
+            <PolicyGroup
+              key={profile?.id}
+              isGlobal
+              policyGroupName={t('policies.global')}
+              policyGroup={globalPolicies}
+              policyPerformanceResults={policyPerformanceResults}
+              columnCount={policyColumnCount}
+            />
+          </div>
+        )}
         {policies &&
           policyGroups &&
           policies['policy-groups'].map((policy, index) => {
