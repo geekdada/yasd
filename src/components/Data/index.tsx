@@ -18,7 +18,7 @@ export const DataGroup: React.FC<{
       {props.title && (
         <div
           className={cn(
-            'text-gray-600 dark:text-white/90 text-sm leading-normal px-3 md:px-5 mb-1 truncate',
+            'text-gray-600 dark:text-white/90 text-sm leading-normal border-x border-transparent px-3 @md:px-5 mb-1 truncate',
             responsiveTitle && 'lg:mb-2 lg:text-base lg:leading-relaxed',
           )}
         >
@@ -42,7 +42,7 @@ export const DataRowSub: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   return (
     <div
       className={cn(
-        'flex items-center justify-between px-3 md:px-5 leading-normal text-xs lg:text-sm lg:leading-relaxed',
+        'flex items-center justify-between px-3 @md:px-5 leading-normal text-xs lg:text-sm lg:leading-relaxed',
         className,
       )}
       {...props}

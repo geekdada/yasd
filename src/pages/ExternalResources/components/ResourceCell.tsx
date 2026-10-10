@@ -33,7 +33,7 @@ const ResourceCell: React.FC<ResourceCellProps> = ({
   const { t } = useTranslation()
 
   return (
-    <div className="flex items-center gap-3 px-3 py-2.5 md:px-5">
+    <div className="flex items-center gap-3 px-3 py-2.5 @md:px-5">
       <div className="min-w-0 flex-1 leading-normal">
         <div
           className="flex text-xs text-muted-foreground"

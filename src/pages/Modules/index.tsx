@@ -90,7 +90,7 @@ const ComponentBase: React.FC = () => {
             {visibleModules.map((mod) => (
               <label
                 key={mod}
-                className="flex cursor-pointer items-center justify-between gap-3 px-3 py-3 md:px-5"
+                className="flex cursor-pointer items-center justify-between gap-3 px-3 py-3 @md:px-5"
               >
                 <div className="truncate text-sm leading-normal">{mod}</div>
                 <Switch

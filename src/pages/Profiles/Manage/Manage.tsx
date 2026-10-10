@@ -156,7 +156,7 @@ export const Component = () => {
 
           {isCurrentProfileInvalid && (
             <div>
-              <div className="text-destructive font-bold text-sm leading-normal px-3 md:px-5 mb-1">
+              <div className="text-destructive font-bold text-sm leading-normal px-3 @md:px-5 mb-1">
                 Error
               </div>
               <CodeContent
@@ -224,7 +224,7 @@ export const Component = () => {
 
               {isSelectProfileInvalid && (
                 <div>
-                  <div className="text-destructive font-bold text-sm leading-normal px-3 md:px-5 mb-1">
+                  <div className="text-destructive font-bold text-sm leading-normal px-3 @md:px-5 mb-1">
                     Error
                   </div>
                   <CodeContent
