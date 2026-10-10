@@ -116,6 +116,33 @@ export interface Modules {
   available: Array<string>
 }
 
+export type ExternalResourceType =
+  | 'ruleset'
+  | 'domainset'
+  | 'script'
+  | 'policy-group'
+  | 'data'
+
+export interface ExternalResource {
+  path: string
+  type: ExternalResourceType
+  key: string
+  local: boolean
+  ready: boolean
+  updating: boolean
+  // Local resources omit this field. Zero means never downloaded.
+  updatedAt?: number
+  fromModule: string | null
+  error?: string
+}
+
+export interface ExternalResources {
+  defines: Array<ExternalResource>
+}
+
+// Maps each updated key to "success" or an error message.
+export type ExternalResourcesUpdateResult = Record<string, string>
+
 export interface Scriptings {
   scripts: Array<{
     name: string
