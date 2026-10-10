@@ -84,8 +84,10 @@
       "profile": "管理当前 Surge 配置文件。",
       "dns": "当前的 DNS 缓存记录。",
       "http_capture": "打开 HTTP 截取开关以抓取和查看数据体。",
-      "traffic": "实时统计当前的流量使用情况。"
-    }
+      "traffic": "实时统计当前的流量使用情况。",
+      "external_resources": "配置和模块引用的规则集、脚本等资源。"
+    },
+    "external_resources": "外部资源"
   },
   "traffic_cell": {
     "upload": "上传",
@@ -190,7 +192,27 @@
     "empty_list": "暂无设备"
   },
   "modules": {
-    "empty_list": "暂无模块"
+    "empty_list": "暂无模块",
+    "filter_all": "所有模块",
+    "filter_enabled": "已启用的模块",
+    "none_enabled": "没有启用的模块。"
+  },
+  "external_resources": {
+    "empty_list": "没有外部资源",
+    "unsupported": "外部资源需要 Surge iOS 5.23.0 或 Mac 6.10.0 及以上版本。",
+    "update": "更新",
+    "update_all": "全部更新",
+    "updating": "正在更新",
+    "local": "本地",
+    "not_ready": "未就绪",
+    "never_updated": "从未更新",
+    "updated_at": "更新于：{{time}}",
+    "update_failed": "更新失败：{{message}}",
+    "update_all_failed": "{{count}} 个资源更新失败",
+    "main_profile": "主配置文件",
+    "filter_all": "所有项目",
+    "filter_not_ready": "未准备好的项目",
+    "all_ready": "所有资源均已就绪。"
   },
   "Submit": "提交",
   "Clear": "清除",

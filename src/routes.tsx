@@ -36,6 +36,10 @@ const routes: RoutesConfig = {
       lazy: () => import('@/pages/Modules'),
     },
     {
+      path: '/external-resources',
+      lazy: () => import('@/pages/ExternalResources'),
+    },
+    {
       path: '/scripting',
       lazy: () => import('@/pages/Scripting'),
       routeOptions: {

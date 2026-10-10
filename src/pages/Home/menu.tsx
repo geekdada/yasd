@@ -1,6 +1,8 @@
 import React from 'react'
 import gte from 'semver/functions/gte'
 
+import { EXTERNAL_RESOURCES_MIN_VERSION } from '@/data/externalResources'
+import { isVersionSupported } from '@/hooks/useVersionSupport'
 import { Profile } from '@/types'
 import { isRunInSurge } from '@/utils'
 
@@ -47,6 +49,17 @@ const menu: Array<MenuItem> = [
     link: '/modules',
     descriptionKey: 'descriptions.modules',
     isEnabled: (platform) => platform !== 'tvos',
+  },
+  {
+    titleKey: 'external_resources',
+    link: '/external-resources',
+    descriptionKey: 'descriptions.external_resources',
+    isEnabled: (platform, platformVersion) =>
+      isVersionSupported(
+        platform,
+        platformVersion,
+        EXTERNAL_RESOURCES_MIN_VERSION,
+      ),
   },
   {
     titleKey: 'device_management',

@@ -84,8 +84,10 @@
       "profile": "Mange current Surge profile.",
       "dns": "DNS records managed by Surge.",
       "http_capture": "Turn on HTTP capture switch to dump and inspect the body.",
-      "traffic": "Surge traffic statistics."
-    }
+      "traffic": "Surge traffic statistics.",
+      "external_resources": "Rule sets, scripts and other resources referenced by the profile and modules."
+    },
+    "external_resources": "External Resources"
   },
   "traffic_cell": {
     "upload": "Upload",
@@ -190,7 +192,27 @@
     "empty_list": "No Device"
   },
   "modules": {
-    "empty_list": "No Module"
+    "empty_list": "No Module",
+    "filter_all": "All",
+    "filter_enabled": "Enabled",
+    "none_enabled": "No module is enabled."
+  },
+  "external_resources": {
+    "empty_list": "No External Resource",
+    "unsupported": "External resources require Surge iOS 5.23.0 or Mac 6.10.0 and later.",
+    "update": "Update",
+    "update_all": "Update All",
+    "updating": "Updating",
+    "local": "Local",
+    "not_ready": "Not ready",
+    "never_updated": "Never updated",
+    "updated_at": "Updated {{time}}",
+    "update_failed": "Update failed: {{message}}",
+    "update_all_failed": "{{count}} resource(s) failed to update",
+    "main_profile": "Main Profile",
+    "filter_all": "All",
+    "filter_not_ready": "Not Ready",
+    "all_ready": "All resources are ready."
   },
   "Submit": "Submit",
   "Clear": "Clear",

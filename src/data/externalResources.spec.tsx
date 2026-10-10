@@ -70,6 +70,22 @@ describe('external resources', () => {
     expect(fetcher).toHaveBeenCalledWith({ url: '/external_resources' })
   })
 
+  it('polls until no resource is updating', async () => {
+    const updating = {
+      defines: [{ ...resources.defines[0], updating: true }],
+    }
+    vi.mocked(fetcher)
+      .mockResolvedValueOnce(updating)
+      .mockResolvedValue(resources)
+
+    const { result } = renderHook(() => useExternalResources(), { wrapper })
+
+    await waitFor(() => expect(result.current.data).toEqual(resources), {
+      timeout: 3000,
+    })
+    expect(fetcher).toHaveBeenCalledTimes(2)
+  })
+
   it('skips the request on unsupported versions', async () => {
     vi.mocked(useVersionSupport).mockReturnValue(false)
 

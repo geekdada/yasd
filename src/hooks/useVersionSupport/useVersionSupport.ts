@@ -1,43 +1,32 @@
 import gte from 'semver/functions/gte'
 
 import { usePlatform, usePlatformVersion } from '@/store'
+import { Profile } from '@/types'
 
-interface VersionSupportProps {
+export interface VersionSupportProps {
   macos?: string | boolean
   ios?: string | boolean
   tvos?: string | boolean
 }
 
-export const useVersionSupport = ({
-  macos,
-  ios,
-  tvos,
-}: VersionSupportProps): boolean => {
-  const platform = usePlatform()
-  const platformVersion = usePlatformVersion()
-
+export const isVersionSupported = (
+  platform: Profile['platform'] | void,
+  platformVersion: Profile['platformVersion'] | void,
+  requirements: VersionSupportProps,
+): boolean => {
   if (!platform || !platformVersion) {
     return false
   }
 
-  if (
-    macos &&
-    platform === 'macos' &&
-    gte(platformVersion, parseVersion(macos))
-  ) {
-    return true
-  }
+  const minimumVersion = requirements[platform]
 
-  if (ios && platform === 'ios' && gte(platformVersion, parseVersion(ios))) {
-    return true
-  }
-
-  if (tvos && platform === 'tvos' && gte(platformVersion, parseVersion(tvos))) {
-    return true
-  }
-
-  return false
+  return Boolean(
+    minimumVersion && gte(platformVersion, parseVersion(minimumVersion)),
+  )
 }
+
+export const useVersionSupport = (requirements: VersionSupportProps): boolean =>
+  isVersionSupported(usePlatform(), usePlatformVersion(), requirements)
 
 function parseVersion(version: string | boolean): string {
   if (typeof version === 'string') {
