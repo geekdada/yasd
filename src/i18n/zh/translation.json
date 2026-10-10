@@ -260,7 +260,8 @@
     "title": "出站模式",
     "rule": "规则",
     "proxy": "全局代理",
-    "direct": "直连"
+    "direct": "直连",
+    "ip_check": "IP 检测"
   },
   "geoip": {
     "lookup_failed": "查询失败",

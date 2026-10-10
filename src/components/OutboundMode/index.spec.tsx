@@ -59,6 +59,32 @@ describe('outbound mode control', () => {
     },
   )
 
+  it('loads the ip check page only after expanding it', async () => {
+    vi.mocked(fetcher).mockResolvedValue({ mode: 'rule' })
+    const { container } = render(
+      <SWRConfig value={{ provider: () => new Map() }}>
+        <OutboundMode />
+      </SWRConfig>,
+    )
+    expect(container.querySelector('iframe')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'outbound.ip_check' }))
+    const frame = await screen.findByTitle('outbound.ip_check')
+    expect(frame.getAttribute('src')).toBe('https://ip.skk.moe/simple')
+  })
+
+  it('remounts the ip check page when refreshed', async () => {
+    vi.mocked(fetcher).mockResolvedValue({ mode: 'rule' })
+    render(
+      <SWRConfig value={{ provider: () => new Map() }}>
+        <OutboundMode />
+      </SWRConfig>,
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'outbound.ip_check' }))
+    const frame = await screen.findByTitle('outbound.ip_check')
+    fireEvent.click(screen.getByRole('button', { name: 'common.refresh' }))
+    expect(screen.getByTitle('outbound.ip_check')).not.toBe(frame)
+  })
+
   it('retains the confirmed mode after a failed change and enables retry', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {})
     vi.mocked(fetcher).mockImplementation(async (request) => {

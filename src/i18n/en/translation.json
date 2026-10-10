@@ -260,7 +260,8 @@
     "title": "Outbound Mode",
     "rule": "Rule",
     "proxy": "Global Proxy",
-    "direct": "Direct"
+    "direct": "Direct",
+    "ip_check": "IP Check"
   },
   "geoip": {
     "lookup_failed": "Lookup failed",

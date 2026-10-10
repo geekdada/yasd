@@ -13,6 +13,8 @@ import {
 import { useOutbound } from '@/data/outbound'
 import fetcher from '@/utils/fetcher'
 
+import IpCheck from './IpCheck'
+
 export default function OutboundMode() {
   const { t } = useTranslation()
   const { data, mutate } = useOutbound()
@@ -55,6 +57,9 @@ export default function OutboundMode() {
             </SelectContent>
           </Select>
         </DataRowMain>
+      </DataRow>
+      <DataRow>
+        <IpCheck mode={data?.mode} />
       </DataRow>
     </DataGroup>
   )
