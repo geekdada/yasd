@@ -1,0 +1,15 @@
+.accordion { width: 100%; border-top: 1px solid var(--border); }
+.item { border-bottom: 1px solid var(--border); }
+.header { margin: 0; }
+.trigger { display: flex; width: 100%; min-height: var(--control-height-lg); align-items: center; justify-content: space-between; gap: var(--space-5); padding: var(--space-2) 0; border: 0; background: transparent; color: var(--foreground); font: inherit; font-size: var(--text-sm); font-weight: 500; line-height: var(--leading-body); text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: color var(--duration-fast) var(--ease-standard); }
+@media (hover: hover) and (pointer: fine) { .trigger:hover { color: var(--text-secondary); } .trigger:hover .icon { color: var(--foreground); } }
+/* Rotation is driven by a spring in accordion.tsx; CSS only handles color. */
+.icon { display: inline-flex; flex: 0 0 auto; color: var(--text-muted); transition: color var(--duration-fast) var(--ease-standard); }
+.trigger[data-state="open"] .icon { color: var(--foreground); }
+.panel { overflow: hidden; color: var(--text-secondary); font-size: var(--text-sm); line-height: var(--leading-body); }
+.panelInner { overflow-wrap: anywhere; padding: 0 var(--space-8) var(--space-5) 0; }
+.lg .trigger { min-height: 76px; gap: var(--space-8); padding-block: var(--space-5); font-size: var(--text-lg); letter-spacing: var(--tracking-body); }
+.lg .panel { font-size: var(--text-base); line-height: 1.65; }
+.lg .panelInner { max-width: 62ch; padding: 0 var(--space-12) var(--space-6) 0; }
+@media (max-width: 520px) { .lg .trigger { min-height: 68px; font-size: var(--text-base); } .lg .panel { font-size: var(--text-sm); } .lg .panelInner { padding-right: var(--space-6); } }
+@media (prefers-reduced-motion: reduce) { .trigger, .icon { transition: none; } }
