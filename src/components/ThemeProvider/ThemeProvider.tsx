@@ -32,19 +32,17 @@ export function ThemeProvider({
   useEffect(() => {
     const root = window.document.documentElement
 
+    const resolvedTheme =
+      theme === 'system'
+        ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light'
+        : theme
+
     root.classList.remove('light', 'dark')
-
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-        .matches
-        ? 'dark'
-        : 'light'
-
-      root.classList.add(systemTheme)
-      return
-    }
-
-    root.classList.add(theme)
+    root.classList.add(resolvedTheme)
+    // Arc components read the theme from data-theme instead of the class.
+    root.dataset.theme = resolvedTheme
   }, [theme])
 
   const value = {

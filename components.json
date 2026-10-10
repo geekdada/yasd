@@ -13,5 +13,14 @@
   "aliases": {
     "components": "@/components",
     "utils": "@/utils/shadcn"
+  },
+  "registries": {
+    "@uiarc": "https://uiarc.dev/r/{name}.json",
+    "@uiarc-pro": {
+      "url": "https://uiarc.dev/r/pro/{name}.json",
+      "headers": {
+        "Authorization": "Bearer ${ARC_PRO_TOKEN}"
+      }
+    }
   }
 }

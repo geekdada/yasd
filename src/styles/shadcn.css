@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
+@import '../components/arc/foundation.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -26,8 +27,8 @@
   --secondary: hsl(0 0% 96.1%);
   --secondary-foreground: hsl(0 0% 9%);
 
-  --accent: hsl(0 0% 96.1%);
-  --accent-foreground: hsl(0 0% 9%);
+  --shadcn-accent: hsl(0 0% 96.1%);
+  --shadcn-accent-foreground: hsl(0 0% 9%);
 
   --destructive: hsl(0 84.2% 60.2%);
   --destructive-foreground: hsl(0 0% 98%);
@@ -38,7 +39,8 @@
   --radius: 0.5rem;
 }
 
-.dark {
+/* Raised to beat Arc's :root[data-theme='dark'] so the app palette wins. */
+:root.dark {
   --background: hsl(0 0% 3.9%);
   --foreground: hsl(0 0% 98%);
 
@@ -60,8 +62,8 @@
   --secondary: hsl(0 0% 14.9%);
   --secondary-foreground: hsl(0 0% 98%);
 
-  --accent: hsl(0 0% 14.9%);
-  --accent-foreground: hsl(0 0% 98%);
+  --shadcn-accent: hsl(0 0% 14.9%);
+  --shadcn-accent-foreground: hsl(0 0% 98%);
 
   --destructive: hsl(0 62.8% 30.6%);
   --destructive-foreground: hsl(0 85.7% 97.3%);
@@ -84,8 +86,8 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--shadcn-accent);
+  --color-accent-foreground: var(--shadcn-accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-ring: var(--ring);
@@ -93,6 +95,14 @@
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
+
+  /* Arc's foundation redefines these names with other values. Inline them so Tailwind utilities keep the defaults. */
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @layer base {

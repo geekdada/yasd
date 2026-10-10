@@ -14,6 +14,8 @@ const ignoredPaths = [
   'coverage/**',
   'node_modules/**',
   'public/**',
+  // Arc files must match the registry exactly. Otherwise `shadcn add` asks to overwrite them on every install.
+  'src/components/arc/**',
   'src/utils/shadcn.ts',
 ]
 
