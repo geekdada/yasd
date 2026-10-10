@@ -16,6 +16,10 @@ import { FilterSchema } from '../components/FilterPopover'
 
 import { useRequestListReducer, RequestListActions } from './reducer'
 
+const MACOS_REFRESH_INTERVAL = 5000
+// iOS and tvOS devices have less headroom, so they poll less often.
+const MOBILE_REFRESH_INTERVAL = 10_000
+
 type Props = {
   isAutoRefreshEnabled?: boolean
   sourceIp?: string | null
@@ -45,8 +49,8 @@ const useRequestsList = ({
       dedupingInterval: 1000,
       refreshInterval: isAutoRefreshEnabled
         ? profile?.platform === 'macos'
-          ? 2000
-          : 4000
+          ? MACOS_REFRESH_INTERVAL
+          : MOBILE_REFRESH_INTERVAL
         : 0,
     },
   )
