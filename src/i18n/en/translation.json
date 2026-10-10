@@ -123,7 +123,8 @@
     "traffic": "Traffic",
     "remark": "Remark",
     "kill_connection_button_title": "Kill Connection",
-    "request_header_title": "Request Header"
+    "request_header_title": "Request Header",
+    "ip_info": "Remote IP ASN"
   },
   "traffic": {
     "interfaces": "Interfaces",
@@ -162,8 +163,13 @@
     "dynamic": "Dynamic",
     "static": "Static",
     "comment": "Comment",
-    "view_dns": "Lookup DNS records",
-    "search_domain": "Search domain"
+    "search_domain": "Search domain",
+    "view_ip_info": "View IP information",
+    "ip_info": {
+      "description": "Country, ASN and organization of each resolved address.",
+      "unsupported": "Upgrade Surge to iOS 5.23.0 or Mac 6.10.0 and later to view IP information.",
+      "no_address": "This record has no IP address."
+    }
   },
   "devices": {
     "mac_address": "MAC Address",
@@ -255,5 +261,9 @@
     "rule": "Rule",
     "proxy": "Global Proxy",
     "direct": "Direct"
+  },
+  "geoip": {
+    "lookup_failed": "Lookup failed",
+    "no_result": "No information found"
   }
 }

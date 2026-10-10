@@ -123,7 +123,8 @@
     "traffic": "流量",
     "remark": "备注",
     "kill_connection_button_title": "打断连接",
-    "request_header_title": "请求头信息"
+    "request_header_title": "请求头信息",
+    "ip_info": "远端 IP ASN"
   },
   "traffic": {
     "interfaces": "网络接口",
@@ -162,8 +163,13 @@
     "dynamic": "动态记录",
     "static": "静态记录",
     "comment": "备注",
-    "view_dns": "查看 DNS 记录",
-    "search_domain": "搜索域名"
+    "search_domain": "搜索域名",
+    "view_ip_info": "查看 IP 信息",
+    "ip_info": {
+      "description": "每个解析地址的国家或地区、ASN 和所属组织。",
+      "unsupported": "请将 Surge 升级至 iOS 5.23.0 或 Mac 6.10.0 及以上版本以查看 IP 信息。",
+      "no_address": "该记录没有 IP 地址。"
+    }
   },
   "devices": {
     "mac_address": "MAC 地址",
@@ -255,5 +261,9 @@
     "rule": "规则",
     "proxy": "全局代理",
     "direct": "直连"
+  },
+  "geoip": {
+    "lookup_failed": "查询失败",
+    "no_result": "未找到相关信息"
   }
 }

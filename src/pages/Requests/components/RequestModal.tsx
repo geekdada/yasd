@@ -5,13 +5,13 @@ import { css } from '@emotion/react'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import bytes from 'bytes'
 import dayjs from 'dayjs'
-import { Search } from 'lucide-react'
 import { basename } from 'path-browserify'
 import { mutate } from 'swr'
 import { useMediaQuery } from 'usehooks-ts'
 
 import CodeContent from '@/components/CodeContent'
 import { DataGroup, DataRowMain } from '@/components/Data'
+import GeoIPSummary from '@/components/GeoIPSummary'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
 import {
@@ -21,9 +21,11 @@ import {
   TabsTrigger,
 } from '@/components/ui/tabs'
 import { BottomSafeArea } from '@/components/VerticalSafeArea'
+import { useGeoIPSupport } from '@/data/geoip'
 import { RequestItem } from '@/types'
 import { isFalsy, isTruthy, onlyIP } from '@/utils'
 import fetcher from '@/utils/fetcher'
+import { isIPAddress } from '@/utils/geoip'
 
 const TabsContent = TabsContentOriginal
 
@@ -60,6 +62,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
     [t],
   )
 
+  const isGeoIPSupported = useGeoIPSupport()
   const pureIP = useMemo(
     () => req?.remoteAddress && onlyIP(req.remoteAddress),
     [req?.remoteAddress],
@@ -157,21 +160,19 @@ const RequestModal: React.FC<RequestModalProps> = ({ req, ...props }) => {
                         {t('requests.remote_ip')}
                       </div>
                       <div className="break-all text-right">
-                        <a
-                          href={`https://ip.sb/ip/${pureIP}`}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                        >
-                          <Search
-                            className="inline mr-1 w-3 h-3"
-                            css={css`
-                              margin-bottom: 2px;
-                            `}
-                          />
-                          {req.remoteAddress}
-                        </a>
+                        {req.remoteAddress}
                       </div>
                     </DataRowMain>
+                    {isGeoIPSupported && pureIP && isIPAddress(pureIP) && (
+                      <DataRowMain responsiveFont={false}>
+                        <div className="break-keep whitespace-nowrap">
+                          {t('requests.ip_info')}
+                        </div>
+                        <div className="break-all text-right">
+                          <GeoIPSummary address={pureIP} />
+                        </div>
+                      </DataRowMain>
+                    )}
                   </DataGroup>
                 )}
 

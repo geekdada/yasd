@@ -12,15 +12,21 @@ import PageTitle from '@/components/PageTitle'
 import { Button } from '@/components/ui/button'
 import { Toggle } from '@/components/ui/toggle'
 import DnsSearchPopover from './components/DnsSearchPopover'
+import IpInfoDialog from './components/IpInfoDialog'
 import { DnsResult } from '@/types'
 import fetcher from '@/utils/fetcher'
 import withProfile from '@/utils/with-profile'
+
+type DnsCacheRecord = DnsResult['dnsCache'][number]
 
 const ComponentBase: React.FC = () => {
   const { t } = useTranslation()
   const [group, setGroup] = useState<'dynamic' | 'static'>('dynamic')
   const [search, setSearch] = useState('')
   const deferredSearch = useDeferredValue(search)
+  // The record outlives the open state so the dialog keeps its content while closing.
+  const [ipInfoRecord, setIpInfoRecord] = useState<DnsCacheRecord | null>(null)
+  const [isIpInfoOpen, setIsIpInfoOpen] = useState(false)
 
   const { data: dnsResult } = useSWR<DnsResult>('/dns', fetcher, {
     revalidateOnFocus: false,
@@ -52,9 +58,10 @@ const ComponentBase: React.FC = () => {
       })
   }
 
-  const openIpDetail = (ip: string) => {
-    window.open(`https://ip.sb/ip/${ip}`, '_blank', 'noopener noreferrer')
-  }
+  const openIpInfo = useCallback((record: DnsCacheRecord) => {
+    setIpInfoRecord(record)
+    setIsIpInfoOpen(true)
+  }, [])
 
   const rowRenderer: ListRowRenderer = useCallback(
     ({
@@ -62,7 +69,7 @@ const ComponentBase: React.FC = () => {
       style, // Style object to be applied to row (to position it)
     }) => {
       if (group === 'dynamic') {
-        const record = (list as DnsResult['dnsCache'])[index]
+        const record = (list as ReadonlyArray<DnsCacheRecord>)[index]
 
         return (
           <ListCell
@@ -85,8 +92,9 @@ const ComponentBase: React.FC = () => {
             </div>
             <div className="flex items-center">
               <Button
-                title={t('dns.view_dns')}
-                onClick={() => openIpDetail(record.domain)}
+                title={t('dns.view_ip_info')}
+                aria-label={t('dns.view_ip_info')}
+                onClick={() => openIpInfo(record)}
                 size="icon"
                 variant="outline"
               >
@@ -128,7 +136,7 @@ const ComponentBase: React.FC = () => {
         )
       }
     },
-    [group, list, t],
+    [group, list, openIpInfo, t],
   )
 
   const toggles = (
@@ -195,6 +203,13 @@ const ComponentBase: React.FC = () => {
           </Button>
         </div>
       </BottomPanel>
+
+      <IpInfoDialog
+        open={isIpInfoOpen}
+        onOpenChange={setIsIpInfoOpen}
+        domain={ipInfoRecord?.domain ?? ''}
+        addresses={ipInfoRecord?.data ?? []}
+      />
     </>
   )
 }
