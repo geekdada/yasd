@@ -143,6 +143,17 @@ export interface ExternalResources {
 // Maps each updated key to "success" or an error message.
 export type ExternalResourcesUpdateResult = Record<string, string>
 
+// Fields without a lookup result are null.
+export interface GeoIPResult {
+  address: string
+  // ISO 3166 country code.
+  country: string | null
+  asn: number | null
+  organization: string | null
+  'geoip-db-date': number | null
+  'asn-db-date': number | null
+}
+
 export interface Scriptings {
   scripts: Array<{
     name: string
