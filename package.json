@@ -26,9 +26,6 @@
     "verify-translation": "zx scripts/verify-translations.mjs",
     "shadcn:add": "zx scripts/shadcn-add.mjs"
   },
-  "dependencies": {
-    "sonner": "^2.0.7"
-  },
   "devDependencies": {
     "@codemirror/lang-javascript": "^6.2.5",
     "@codemirror/view": "^6.40.0",
@@ -113,6 +110,7 @@
     "semver": "^7.7.4",
     "shadcn": "^4.1.0",
     "smoothscroll-polyfill": "^0.4.4",
+    "sonner": "^2.0.7",
     "store2": "^2.14.4",
     "swr": "^2.4.1",
     "tailwind-merge": "^3.5.0",
@@ -147,16 +145,8 @@
     ]
   },
   "engines": {
-    "node": ">=24 <25"
+    "node": ">=24"
   },
-  "packageManager": "pnpm@10.32.1",
-  "pnpm": {
-    "overrides": {
-      "@types/react": "^19"
-    },
-    "onlyBuiltDependencies": [
-      "msw"
-    ]
-  },
+  "packageManager": "pnpm@12.11.2",
   "snyk": true
 }

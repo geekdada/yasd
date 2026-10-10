@@ -1,0 +1,11 @@
+overrides:
+  '@types/react': ^19
+
+allowBuilds:
+  '@parcel/watcher': false
+  esbuild: false
+  msw: true
+
+publicHoistPattern:
+  - '@commitlint*'
+  - commitlint

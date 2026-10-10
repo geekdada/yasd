@@ -9,7 +9,7 @@
 ## Tooling and environment
 
 - Node `24` is the expected runtime (`.node-version` is `24`, `package.json` requires `>=24 <25`).
-- Package manager: `pnpm` (`packageManager: pnpm@10.32.1`).
+- Package manager: `pnpm` (`packageManager: pnpm@12.11.2`).
 - Vite Plus (`vp`) powers the dev server, linting, formatting, and tests.
 - Path alias: `@/*` maps to `src/*`.
 - TypeScript is strict and uses Emotion's JSX runtime (`jsxImportSource: @emotion/react`).
