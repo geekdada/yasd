@@ -1,3 +1,26 @@
+# [3.3.0](https://github.com/geekdada/yasd/compare/v3.2.0...v3.3.0) (2026-10-11)
+
+
+### Bug Fixes
+
+* **ui:** align data group titles with their cells ([0781986](https://github.com/geekdada/yasd/commit/0781986a05a860ae8c29e7463e3dc6c6a70038ae))
+
+
+### Features
+
+* **data:** add external resources api hooks ([776de63](https://github.com/geekdada/yasd/commit/776de637c7cc7e21260e4dcbcda5a01332026d65))
+* **data:** add geoip api hooks ([c579b55](https://github.com/geekdada/yasd/commit/c579b55dcfd54c4a351a76e5c559d8548a4845a0))
+* **dns:** show geoip details for dns and requests ([4645588](https://github.com/geekdada/yasd/commit/464558805896002e802df3b74675363d690e5a23))
+* enhance component configuration and update dependencies ([8bb3274](https://github.com/geekdada/yasd/commit/8bb3274b5a1e8b4ef648026da73ebd9f545bb399))
+* **external-resources:** add External Resources page and related components ([fd82253](https://github.com/geekdada/yasd/commit/fd8225358de8485c73fd0de54314c7397d327082))
+* **home:** add an ip check panel under outbound mode ([1b285e9](https://github.com/geekdada/yasd/commit/1b285e9cd1e8b0b71d9f5a1f0a535f7d3712a03b))
+* **ui:** add arc accordion component ([f17dcb7](https://github.com/geekdada/yasd/commit/f17dcb7a5f6dbf67ab6de20273aeccb08067b8a3))
+
+
+### Performance Improvements
+
+* **requests:** poll the request list less often ([a741166](https://github.com/geekdada/yasd/commit/a741166da02c46a3cb9f59fde6c6d8c52e54a4c3))
+
 # [3.2.0](https://github.com/geekdada/yasd/compare/v3.1.0...v3.2.0) (2026-09-22)
 
 
