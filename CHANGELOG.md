@@ -1,3 +1,10 @@
+## [3.3.1](https://github.com/geekdada/yasd/compare/v3.3.0...v3.3.1) (2026-10-11)
+
+
+### Features
+
+* **home:** hide the ip check panel in surge builds ([5e0078b](https://github.com/geekdada/yasd/commit/5e0078bd9f234df3468cc15a90bc509e11a42e15))
+
 # [3.3.0](https://github.com/geekdada/yasd/compare/v3.2.0...v3.3.0) (2026-10-11)
 
 
