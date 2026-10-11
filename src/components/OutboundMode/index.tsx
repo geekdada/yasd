@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useOutbound } from '@/data/outbound'
+import { isRunInSurge } from '@/utils'
 import fetcher from '@/utils/fetcher'
 
 import IpCheck from './IpCheck'
@@ -58,9 +59,11 @@ export default function OutboundMode() {
           </Select>
         </DataRowMain>
       </DataRow>
-      <DataRow>
-        <IpCheck mode={data?.mode} />
-      </DataRow>
+      {!isRunInSurge() && (
+        <DataRow>
+          <IpCheck mode={data?.mode} />
+        </DataRow>
+      )}
     </DataGroup>
   )
 }

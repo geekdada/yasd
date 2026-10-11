@@ -26,6 +26,7 @@ describe('outbound mode control', () => {
   afterEach(() => {
     cleanup()
     vi.restoreAllMocks()
+    vi.unstubAllEnvs()
   })
 
   it.each(['direct', 'proxy', 'rule'])(
@@ -70,6 +71,19 @@ describe('outbound mode control', () => {
     fireEvent.click(screen.getByRole('button', { name: 'outbound.ip_check' }))
     const frame = await screen.findByTitle('outbound.ip_check')
     expect(frame.getAttribute('src')).toBe('https://ip.skk.moe/simple')
+  })
+
+  it('hides the ip check panel when running in surge', () => {
+    vi.stubEnv('VITE_RUN_IN_SURGE', 'true')
+    vi.mocked(fetcher).mockResolvedValue({ mode: 'rule' })
+    render(
+      <SWRConfig value={{ provider: () => new Map() }}>
+        <OutboundMode />
+      </SWRConfig>,
+    )
+    expect(
+      screen.queryByRole('button', { name: 'outbound.ip_check' }),
+    ).toBeNull()
   })
 
   it('remounts the ip check page when refreshed', async () => {
