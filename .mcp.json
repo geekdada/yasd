@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "vite-plus": {
+      "command": "npx",
+      "args": ["vp", "mcp"]
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": ["shadcn@latest", "mcp"]
+    }
+  }
+}
